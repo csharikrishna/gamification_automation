@@ -369,16 +369,21 @@ class SimulationEngine {
                   tile.crackAmount = Math.max(0, Math.min(1.0, 1.0 - (tile.currentHP / tile.maxHP)));
                   tile.glowIntensity = 1.0;
 
-                  // Localized stress fractures contained within barrier power cells
+                  // Organic crystalline stress fractures within barrier field
                   if (!tile.fractures) tile.fractures = [];
                   if (tile.fractures.length < 16 && this.rng.random() < 0.6) {
+                    const r1 = this.rng.range(10, 24);
+                    const r2 = this.rng.range(-0.45, 0.45);
+                    const hitOffsetX = b.x - tile.minX;
+                    // Record stress crack data with exact PRNG consumption
                     tile.fractures.push({
-                      x: b.x - tile.minX,
-                      y: 4,
-                      len: this.rng.range(6, 18),
-                      angle: this.rng.range(-Math.PI, Math.PI)
+                      x: hitOffsetX,
+                      depth: r1,
+                      slant: r2,
+                      branchDir: r2 > 0 ? 1 : -1,
+                      branchLen: r1 * 0.45
                     });
-                    if (tile.fractures.length > 20) tile.fractures.shift();
+                    if (tile.fractures.length > 16) tile.fractures.shift();
                   }
 
                   this.logBounce(lane.side, b.x, b.y, 0.08, 540 + tile.index * 60);
@@ -612,43 +617,70 @@ class SimulationEngine {
       maxLife: 1.1
     });
 
-    // 4. Flying Glass Shards (16 Shards) (PHY-05)
+    // 4. Flying Geometric Crystal Shards (16 Shards) (PHY-05)
     const shardCount = 16;
     for (let s = 0; s < shardCount; s++) {
       const sx = tile.minX + (s / shardCount) * tile.width;
       const angle = this.rng.range(-1.1, 1.1);
       const speed = this.rng.range(90, 310);
+      const sy = tile.y + this.rng.range(-4, 4);
+      const sw = this.rng.range(16, 28);
+      const sh = this.rng.range(8, 16);
+      const sAngle = this.rng.range(0, Math.PI);
+      const sRotVel = this.rng.range(-4.5, 4.5);
+
+      // Deterministic geometric faceted shard polygon
+      const shapeType = s % 4;
+      let vertices;
+      if (shapeType === 0) {
+        // Sharp triangular shard
+        vertices = [[-sw * 0.5, sh * 0.5], [0, -sh * 0.6], [sw * 0.5, sh * 0.4]];
+      } else if (shapeType === 1) {
+        // Faceted crystal polygon
+        vertices = [[-sw * 0.45, sh * 0.3], [-sw * 0.25, -sh * 0.5], [sw * 0.45, -sh * 0.3], [sw * 0.2, sh * 0.55]];
+      } else if (shapeType === 2) {
+        // Diamond crystal facet
+        vertices = [[0, -sh * 0.55], [sw * 0.5, 0], [0, sh * 0.55], [-sw * 0.5, 0]];
+      } else {
+        // Trapezoidal crystal flake
+        vertices = [[-sw * 0.5, -sh * 0.35], [sw * 0.45, -sh * 0.5], [sw * 0.3, sh * 0.5], [-sw * 0.4, sh * 0.4]];
+      }
+
       this.particles.push({
         type: 'shard',
         x: sx,
-        y: tile.y + this.rng.range(-4, 4),
+        y: sy,
         vx: Math.sin(angle) * speed,
         vy: -Math.cos(angle) * (speed * 0.6) + 40,
-        w: this.rng.range(16, 28),
-        h: this.rng.range(8, 16),
-        angle: this.rng.range(0, Math.PI),
-        rotVel: this.rng.range(-4.5, 4.5),
+        w: sw,
+        h: sh,
+        angle: sAngle,
+        rotVel: sRotVel,
         color: lane.color,
-        life: 0.9,
-        maxLife: 0.9,
-        gravity: 520
+        accentColor: lane.accentColor,
+        vertices: vertices,
+        life: 0.95,
+        maxLife: 0.95,
+        gravity: 540
       });
     }
 
-    // 5. Spark Particles
+    // 5. High-Impact Spark Particles
     for (let k = 0; k < 18; k++) {
       const angle = (k / 18) * Math.PI * 2;
       const spd = this.rng.range(60, 230);
+      const sparkX = (tile.minX + tile.maxX) / 2 + this.rng.range(-30, 30);
+      const sparkRadius = this.rng.range(2, 5);
       this.particles.push({
         type: 'spark',
-        x: (tile.minX + tile.maxX) / 2 + this.rng.range(-30, 30),
+        x: sparkX,
         y: tile.y,
         vx: Math.cos(angle) * spd,
         vy: Math.sin(angle) * spd,
-        radius: this.rng.range(2, 5),
-        color: '#ffffff',
-        life: 0.5,
-        maxLife: 0.5,
+        radius: sparkRadius,
+        color: (k % 2 === 0 ? '#ffffff' : (lane.accentColor || '#ffffff')),
+        life: 0.55,
+        maxLife: 0.55,
         gravity: 220
       });
     }
