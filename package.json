@@ -7,6 +7,7 @@
     "start": "node -e \"const http = require('http'); const fs = require('fs'); const path = require('path'); const { exec } = require('child_process'); const root = path.resolve(__dirname); const server = http.createServer((req, res) => { let rel = req.url.split('?')[0].replace(/^\\//, ''); if (!rel) rel = 'index.html'; let p = path.resolve(root, rel); if (!p.startsWith(root)) { res.writeHead(403); res.end('Forbidden'); return; } if (fs.existsSync(p) && fs.statSync(p).isFile()) { const ext = path.extname(p); const types = { '.html': 'text/html', '.js': 'application/javascript', '.css': 'text/css', '.json': 'application/json' }; res.writeHead(200, { 'Content-Type': types[ext] || 'text/plain' }); fs.createReadStream(p).pipe(res); } else { res.writeHead(404); res.end('Not found'); } }); server.listen(8080, '127.0.0.1', () => { console.log('Studio running at http://127.0.0.1:8080'); exec('start http://127.0.0.1:8080'); });\"",
     "studio": "npm start",
     "test": "node test/simulation.test.js",
+    "qualify": "node test/qualification_harness.js",
     "render": "node render.js --config configs/underdog_slow_composed.json",
     "render:slow": "node render.js --config configs/underdog_slow_composed.json",
     "render:math": "node render.js --config configs/math_n_factorial_vs_n_pow_n.json",

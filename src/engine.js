@@ -282,12 +282,13 @@ class SimulationEngine {
     // P0-06, P0-07, RACE-04, RACE-10: Unbiased Race Resolution at end of frame
     this.evaluateRaceResolution(dt);
 
-    if (this.simTime >= this.durationSeconds) {
+    if (this.simTime >= this.durationSeconds - 0.001 || (this.totalFrames && this.frameIndex >= this.totalFrames)) {
       this.isFinished = true;
     }
   }
 
   updatePhysicsSubstep(subDt) {
+    this.isUpdatingPhysics = true;
     const bottomFloor = this.bottomY - 14;
 
     for (const side of ['left', 'right']) {
@@ -303,6 +304,7 @@ class SimulationEngine {
 
       for (let i = balls.length - 1; i >= 0; i--) {
         const b = balls[i];
+        if (!b || b._dead) continue;
 
         b.vy += this.gravity * subDt;
         b.vx *= this.airResistance;
@@ -416,59 +418,92 @@ class SimulationEngine {
       // PHY-06, PHY-08: Relaxed 2-pass elastic collisions with coincident separation
       this.resolveElasticBallCollisions(lane);
       this.resolveElasticBallCollisions(lane);
+
+      // Safe purge of despawned balls after substep physics completes
+      lane.balls = lane.balls.filter(b => !b._dead);
     }
+    this.isUpdatingPhysics = false;
   }
 
   // PHY-06, PHY-08: Momentum-conserving marble collisions with coincident protection
+  // Risk B: O(N) Spatial Grid Collision Solver for 180-Marble Swarms
   resolveElasticBallCollisions(lane) {
     const balls = lane.balls;
     const len = balls.length;
     if (len < 2) return;
 
     const e = this.ballRestitution;
+    const cellSize = 30; // Grid cell slightly larger than max diameter (23px)
+    const grid = new Map();
+
+    for (let i = 0; i < len; i++) {
+      const b = balls[i];
+      if (b._dead) continue;
+      const cx = Math.floor(b.x / cellSize);
+      const cy = Math.floor(b.y / cellSize);
+      const key = (cx << 16) | (cy & 0xFFFF);
+      let list = grid.get(key);
+      if (!list) {
+        list = [];
+        grid.set(key, list);
+      }
+      list.push(b);
+    }
 
     for (let i = 0; i < len; i++) {
       const b1 = balls[i];
-      for (let j = i + 1; j < len; j++) {
-        const b2 = balls[j];
+      if (b1._dead) continue;
+      const cx = Math.floor(b1.x / cellSize);
+      const cy = Math.floor(b1.y / cellSize);
 
-        let dx = b2.x - b1.x;
-        let dy = b2.y - b1.y;
-        let distSq = dx * dx + dy * dy;
-        const minDist = b1.radius + b2.radius + 1.5;
+      for (let ox = -1; ox <= 1; ox++) {
+        for (let oy = -1; oy <= 1; oy++) {
+          const neighborKey = ((cx + ox) << 16) | ((cy + oy) & 0xFFFF);
+          const neighbors = grid.get(neighborKey);
+          if (!neighbors) continue;
 
-        // PHY-06: Coincident ball separation
-        if (distSq < 0.001) {
-          dx = (b1.id % 2 === 0 ? 1 : -1) * 0.5;
-          dy = 0.5;
-          distSq = dx * dx + dy * dy;
-        }
+          for (let k = 0; k < neighbors.length; k++) {
+            const b2 = neighbors[k];
+            if (b2._dead || b1.id >= b2.id) continue;
 
-        if (distSq < minDist * minDist) {
-          const dist = Math.sqrt(distSq) || 0.001;
-          const nx = dx / dist;
-          const ny = dy / dist;
+            let dx = b2.x - b1.x;
+            let dy = b2.y - b1.y;
+            let distSq = dx * dx + dy * dy;
+            const minDist = b1.radius + b2.radius + 1.5;
 
-          const overlap = (minDist - dist) * 0.5;
-          b1.x -= nx * overlap;
-          b1.y -= ny * overlap;
-          b2.x += nx * overlap;
-          b2.y += ny * overlap;
+            // PHY-06: Coincident ball separation
+            if (distSq < 0.001) {
+              dx = (b1.id % 2 === 0 ? 1 : -1) * 0.5;
+              dy = 0.5;
+              distSq = dx * dx + dy * dy;
+            }
 
-          const vrel = (b1.vx - b2.vx) * nx + (b1.vy - b2.vy) * ny;
-          if (vrel > 0) {
-            const impulse = (1 + e) * vrel * 0.5;
-            b1.vx -= impulse * nx;
-            b1.vy -= impulse * ny;
-            b2.vx += impulse * nx;
-            b2.vy += impulse * ny;
+            if (distSq < minDist * minDist) {
+              const dist = Math.sqrt(distSq) || 0.001;
+              const nx = dx / dist;
+              const ny = dy / dist;
+
+              const overlap = (minDist - dist) * 0.5;
+              b1.x -= nx * overlap;
+              b1.y -= ny * overlap;
+              b2.x += nx * overlap;
+              b2.y += ny * overlap;
+
+              const vrel = (b1.vx - b2.vx) * nx + (b1.vy - b2.vy) * ny;
+              if (vrel > 0) {
+                const impulse = (1 + e) * vrel * 0.5;
+                b1.vx -= impulse * nx;
+                b1.vy -= impulse * ny;
+                b2.vx += impulse * nx;
+                b2.vy += impulse * ny;
+              }
+            }
           }
         }
       }
     }
   }
 
-  // P0-04, RACE-05: Full operation support (multiply, add, subtract, divide) + Decoupled Population
   shatterTile(lane, tile) {
     tile.intact = false;
     tile.currentHP = 0;
@@ -577,22 +612,30 @@ class SimulationEngine {
         });
       }
     } else if (targetSimulated < currentBalls) {
-      // Remove excess marbles on subtraction or division
+      // Remove excess marbles on subtraction or division safely without mutating array during iteration
       const toRemove = currentBalls - targetSimulated;
-      const removed = lane.balls.splice(currentBalls - toRemove, toRemove);
-      for (const rem of removed) {
-        this.particles.push({
-          type: 'spark',
-          x: rem.x,
-          y: rem.y,
-          vx: this.rng.range(-60, 60),
-          vy: this.rng.range(-60, 60),
-          radius: 4,
-          color: '#ff4466',
-          life: 0.6,
-          maxLife: 0.6,
-          gravity: -100
-        });
+      let removedCount = 0;
+      for (let j = lane.balls.length - 1; j >= 0 && removedCount < toRemove; j--) {
+        const rem = lane.balls[j];
+        if (!rem._dead) {
+          rem._dead = true;
+          removedCount++;
+          this.particles.push({
+            type: 'spark',
+            x: rem.x,
+            y: rem.y,
+            vx: this.rng.range(-60, 60),
+            vy: this.rng.range(-60, 60),
+            radius: 4,
+            color: '#ff4466',
+            life: 0.6,
+            maxLife: 0.6,
+            gravity: -100
+          });
+        }
+      }
+      if (!this.isUpdatingPhysics) {
+        lane.balls = lane.balls.filter(b => !b._dead);
       }
     }
   }
@@ -663,7 +706,7 @@ class SimulationEngine {
         winner: this.winner.side
       });
 
-    } else if (this.simTime >= this.durationSeconds) {
+    } else if (this.simTime >= this.durationSeconds - 0.001 || (this.totalFrames && this.frameIndex >= this.totalFrames)) {
       // P0-06, RACE-03: Race timeout resolution
       const leftTier = left.currentTier;
       const rightTier = right.currentTier;
