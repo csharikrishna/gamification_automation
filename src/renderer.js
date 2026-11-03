@@ -932,82 +932,151 @@ class CanvasRenderer {
           const teamRgb = lane.side === 'left' ? '203, 114, 255' : '121, 239, 67';
           const accentRgb = lane.side === 'left' ? '245, 154, 255' : '178, 255, 138';
 
-          if (tile.shatterTime !== undefined && (engine.simTime - tile.shatterTime < 0.55)) {
+          if (tile.shatterTime !== undefined && (engine.simTime - tile.shatterTime < 0.19)) {
             const sAge = engine.simTime - tile.shatterTime;
             const centerX = tileX + tileW / 2;
             const centerY = tile.y;
+            const seedPhase = (tile.index * 2.399) + (lane.side === 'left' ? 1.15 : 3.82);
+            const numVerts = 24;
 
-            // 1. Energetic Blast Flash (Detonation flare across the chamber)
-            if (sAge < 0.22) {
-              const pFlash = sAge / 0.22;
+            // 1. Energetic Blast Flash (Tight localized organic detonation burst)
+            if (sAge < 0.13) {
+              const pFlash = sAge / 0.13;
               const flashAlpha = 1.0 - pFlash;
-              const flashRadius = Math.min(tileW * 0.45, 30 + pFlash * 180);
+              const flashRadius = Math.min(tileW * 0.12, 14 + pFlash * 28);
 
               ctx.save();
-              const blastGrad = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, flashRadius);
+              const blastGrad = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, flashRadius * 1.15);
               blastGrad.addColorStop(0, `rgba(255, 255, 255, ${flashAlpha * 0.95})`);
-              blastGrad.addColorStop(0.30, `rgba(${accentRgb}, ${flashAlpha * 0.70})`);
-              blastGrad.addColorStop(0.65, `rgba(${teamRgb}, ${flashAlpha * 0.30})`);
+              blastGrad.addColorStop(0.35, `rgba(${accentRgb}, ${flashAlpha * 0.70})`);
+              blastGrad.addColorStop(0.70, `rgba(${teamRgb}, ${flashAlpha * 0.25})`);
               blastGrad.addColorStop(1, `rgba(${teamRgb}, 0)`);
               ctx.fillStyle = blastGrad;
+
+              // Organic randomized circle contour fill for core flash (no rigid geometric circles)
               ctx.beginPath();
-              ctx.arc(centerX, centerY, flashRadius, 0, Math.PI * 2);
+              for (let k = 0; k < numVerts; k++) {
+                const angle = (k / numVerts) * Math.PI * 2;
+                const h1 = Math.sin(angle * 3 + seedPhase);
+                const h2 = Math.cos(angle * 5 - seedPhase * 1.5);
+                const h3 = Math.sin(angle * 7 + seedPhase * 0.7);
+                const h4 = Math.cos(angle * 9 + 0.6);
+                const rMod = 1.0 + 0.14 * h1 + 0.11 * h2 + 0.07 * h3 + 0.05 * h4;
+                const r = flashRadius * rMod;
+                const vx = centerX + Math.cos(angle) * r;
+                const vy = centerY + Math.sin(angle) * r;
+                if (k === 0) ctx.moveTo(vx, vy);
+                else ctx.lineTo(vx, vy);
+              }
+              ctx.closePath();
               ctx.fill();
 
-              // Energetic diamond blast cross flare
-              const flareLen = (1 - pFlash) * (tileW * 0.42);
-              ctx.strokeStyle = `rgba(255, 255, 255, ${flashAlpha * 0.85})`;
-              ctx.lineWidth = 2.5 * (1 - pFlash);
+              // Tight diamond blast cross flare
+              const flareLen = (1 - pFlash) * Math.min(tileW * 0.16, 36);
+              ctx.strokeStyle = `rgba(255, 255, 255, ${flashAlpha * 0.90})`;
+              ctx.lineWidth = 2.0 * (1 - pFlash);
               ctx.shadowColor = lane.accentColor;
-              ctx.shadowBlur = 12;
+              ctx.shadowBlur = 10;
               ctx.beginPath();
               ctx.moveTo(centerX - flareLen, centerY);
               ctx.lineTo(centerX + flareLen, centerY);
-              ctx.moveTo(centerX, centerY - flareLen * 0.35);
-              ctx.lineTo(centerX, centerY + flareLen * 0.35);
+              ctx.moveTo(centerX, centerY - flareLen * 0.40);
+              ctx.lineTo(centerX, centerY + flareLen * 0.40);
               ctx.stroke();
               ctx.restore();
             }
 
-            // 2. Expanding Radial Shockwave Ring (Proportionately scaled to barrier width)
-            if (sAge < 0.45) {
-              const pWave = sAge / 0.45;
+            // 2. Dynamic Organic Randomized Circular Shockwave (Tight localized impulse)
+            if (sAge < 0.19) {
+              const pWave = sAge / 0.19;
               const waveAlpha = 1.0 - pWave;
-              const maxWave = tileW * 0.54;
-              // Explosive ease-out expansion curve
-              const waveRadius = 14 + (1 - Math.pow(1 - pWave, 2.5)) * maxWave;
+              const maxWave = Math.min(tileW * 0.16, 58);
+              // Explosive ease-out curve for punchy, immediate feedback
+              const waveRadius = 15 + (1 - Math.pow(1 - pWave, 3)) * maxWave;
 
               ctx.save();
+
+              // Primary outer randomized organic shockwave ring (multi-harmonic non-uniform contour)
               ctx.beginPath();
-              ctx.arc(centerX, centerY, waveRadius, 0, Math.PI * 2);
-              ctx.strokeStyle = `rgba(255, 255, 255, ${waveAlpha * 0.92})`;
-              ctx.lineWidth = 3.0 * (1 - pWave);
+              for (let k = 0; k < numVerts; k++) {
+                const angle = (k / numVerts) * Math.PI * 2;
+                const h1 = Math.sin(angle * 3 + seedPhase);
+                const h2 = Math.cos(angle * 5 - seedPhase * 1.5);
+                const h3 = Math.sin(angle * 7 + seedPhase * 0.7);
+                const h4 = Math.cos(angle * 9 + 0.6);
+                const rMod = 1.0 + 0.14 * h1 + 0.11 * h2 + 0.07 * h3 + 0.05 * h4;
+                const r = waveRadius * rMod;
+                const vx = centerX + Math.cos(angle) * r;
+                const vy = centerY + Math.sin(angle) * r;
+                if (k === 0) ctx.moveTo(vx, vy);
+                else ctx.lineTo(vx, vy);
+              }
+              ctx.closePath();
+              ctx.strokeStyle = `rgba(255, 255, 255, ${waveAlpha * 0.95})`;
+              ctx.lineWidth = 2.4 * (1 - pWave);
               ctx.shadowColor = lane.accentColor;
-              ctx.shadowBlur = 14;
+              ctx.shadowBlur = 12;
               ctx.stroke();
 
-              // Secondary trailing harmonic concentric wave ring
+              // Secondary trailing inner harmonic organic ring (staggered angular phase)
               ctx.beginPath();
-              ctx.arc(centerX, centerY, waveRadius * 0.80, 0, Math.PI * 2);
-              ctx.strokeStyle = `rgba(${teamRgb}, ${waveAlpha * 0.65})`;
-              ctx.lineWidth = 1.6 * (1 - pWave);
-              ctx.shadowBlur = 8;
+              const innerRadius = waveRadius * 0.68;
+              for (let k = 0; k < numVerts; k++) {
+                const angle = ((k + 0.5) / numVerts) * Math.PI * 2;
+                const h1 = Math.sin(angle * 3 + seedPhase + 1.2);
+                const h2 = Math.cos(angle * 5 - seedPhase);
+                const h3 = Math.sin(angle * 7 + 0.4);
+                const rMod = 1.0 + 0.12 * h1 + 0.10 * h2 + 0.06 * h3;
+                const r = innerRadius * rMod;
+                const vx = centerX + Math.cos(angle) * r;
+                const vy = centerY + Math.sin(angle) * r;
+                if (k === 0) ctx.moveTo(vx, vy);
+                else ctx.lineTo(vx, vy);
+              }
+              ctx.closePath();
+              ctx.strokeStyle = `rgba(${teamRgb}, ${waveAlpha * 0.70})`;
+              ctx.lineWidth = 1.4 * (1 - pWave);
+              ctx.shadowBlur = 6;
               ctx.stroke();
+
+              // Anchored radial micro-fracture blast darts along prominent perimeter apexes
+              ctx.beginPath();
+              for (let k = 0; k < numVerts; k += 3) {
+                const angle = (k / numVerts) * Math.PI * 2;
+                const h1 = Math.sin(angle * 3 + seedPhase);
+                const h2 = Math.cos(angle * 5 - seedPhase * 1.5);
+                const h3 = Math.sin(angle * 7 + seedPhase * 0.7);
+                const h4 = Math.cos(angle * 9 + 0.6);
+                const rMod = 1.0 + 0.14 * h1 + 0.11 * h2 + 0.07 * h3 + 0.05 * h4;
+                const r = waveRadius * rMod;
+                const dartLen = (1 - pWave) * (6 + ((k * 5) % 8));
+                const x1 = centerX + Math.cos(angle) * r;
+                const y1 = centerY + Math.sin(angle) * r;
+                const x2 = centerX + Math.cos(angle) * (r + dartLen);
+                const y2 = centerY + Math.sin(angle) * (r + dartLen);
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+              }
+              ctx.strokeStyle = `rgba(255, 255, 255, ${waveAlpha * 0.85})`;
+              ctx.lineWidth = 1.2 * (1 - pWave);
+              ctx.stroke();
+
               ctx.restore();
             }
 
-            // 3. Horizontal Barrier Ejection Plasma Pulse
-            if (sAge < 0.20) {
-              const pBeam = sAge / 0.20;
+            // 3. Localized Barrier Core Ejection Plasma Pulse
+            if (sAge < 0.15) {
+              const pBeam = sAge / 0.15;
               const beamAlpha = 1.0 - pBeam;
+              const beamHalfLen = Math.min(tileW * 0.22, 92) * (1 - pBeam);
               ctx.save();
               ctx.beginPath();
-              ctx.moveTo(tileX + 16, tile.y);
-              ctx.lineTo(tileX + tileW - 16, tile.y);
+              ctx.moveTo(centerX - beamHalfLen, tile.y);
+              ctx.lineTo(centerX + beamHalfLen, tile.y);
               ctx.strokeStyle = `rgba(255, 255, 255, ${beamAlpha * 0.85})`;
-              ctx.lineWidth = 4.5 * (1 - pBeam);
+              ctx.lineWidth = 3.5 * (1 - pBeam);
               ctx.shadowColor = lane.accentColor;
-              ctx.shadowBlur = 14;
+              ctx.shadowBlur = 12;
               ctx.stroke();
               ctx.restore();
             }
