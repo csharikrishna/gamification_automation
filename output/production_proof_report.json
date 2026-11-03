@@ -1,0 +1,1043 @@
+{
+  "pipelineName": "Burstpoint Single-Game Autonomous Production Proof",
+  "gameType": "multi_race",
+  "executedAt": "2026-11-03T08:28:06.462Z",
+  "completionStatus": "SUCCESS (100% AUTONOMOUS PIPELINE CERTIFIED)",
+  "executionSummary": {
+    "totalSimulationsExecuted": 10,
+    "totalCandidateClipsExtracted": 30,
+    "approvedClipsCount": 30,
+    "rejectedClipsCount": 0,
+    "queuedClipsCount": 30,
+    "totalProcessingTimeMs": 8310,
+    "processingTimeSeconds": 8.31,
+    "peakHeapMemoryMb": 26.13
+  },
+  "videoValidation": {
+    "sourceFile": "underdog_slow_composed.mp4",
+    "fileSizeBytes": 7003609,
+    "fileSizeMb": 6.68,
+    "resolution": "1080x1920",
+    "fps": 60,
+    "videoCodec": "H.264 (High Profile)",
+    "audioCodec": "AAC Stereo (44.1 kHz)",
+    "durationSeconds": 16,
+    "streamDecodeStatus": "PASSED (0 decode errors across all 960 frames)"
+  },
+  "simulations": [
+    {
+      "simId": "proof_sim_01",
+      "seed": 20111,
+      "title": "⚡ 1 BALL VS 100 BALLS: CAN MULTIPLY WIN? ⚡",
+      "status": "COMPLETED",
+      "finishTime": 5.1,
+      "winner": "ADD",
+      "winningScore": 148,
+      "losingScore": 9,
+      "eventsCount": 414
+    },
+    {
+      "simId": "proof_sim_02",
+      "seed": 20222,
+      "title": "📈 EXPONENTIAL ×2 VS LINEAR +20 SHOWDOWN 📈",
+      "status": "COMPLETED",
+      "finishTime": 6.17,
+      "winner": "ADD",
+      "winningScore": 150,
+      "losingScore": 32,
+      "eventsCount": 478
+    },
+    {
+      "simId": "proof_sim_03",
+      "seed": 20333,
+      "title": "🔥 50,000 MARBLE AVALANCHE: ×4 VS ×3 🔥",
+      "status": "COMPLETED",
+      "finishTime": 4.33,
+      "winner": "ADD",
+      "winningScore": 8748,
+      "losingScore": 8,
+      "eventsCount": 377
+    },
+    {
+      "simId": "proof_sim_04",
+      "seed": 20444,
+      "title": "⚠️ HIGH STAKES: ×5 GAMBLE VS SAFE +15 ⚠️",
+      "status": "COMPLETED",
+      "finishTime": 4.23,
+      "winner": "MULTIPLY",
+      "winningScore": 78125,
+      "losingScore": 80,
+      "eventsCount": 412
+    },
+    {
+      "simId": "proof_sim_05",
+      "seed": 20555,
+      "title": "🌿 FACTORIAL GROWTH (n!) VS POWER (2ⁿ) 🌿",
+      "status": "COMPLETED",
+      "finishTime": 10.12,
+      "winner": "MULTIPLY",
+      "winningScore": 729,
+      "losingScore": 32,
+      "eventsCount": 484
+    },
+    {
+      "simId": "proof_sim_06",
+      "seed": 20666,
+      "title": "🏎️ ULTRA SPEED SPRINT: ×3 VS +30 🏎️",
+      "status": "COMPLETED",
+      "finishTime": 4.17,
+      "winner": "ADD",
+      "winningScore": 220,
+      "losingScore": 243,
+      "eventsCount": 328
+    },
+    {
+      "simId": "proof_sim_07",
+      "seed": 20777,
+      "title": "💥 2 BALLS VS 150 BALLS: THE IMPOSSIBLE REVERSAL 💥",
+      "status": "COMPLETED",
+      "finishTime": 5.03,
+      "winner": "ADD",
+      "winningScore": 210,
+      "losingScore": 32,
+      "eventsCount": 380
+    },
+    {
+      "simId": "proof_sim_08",
+      "seed": 20888,
+      "title": "⚔️ ×3 VS ×3: IDENTICAL WEAPONS BATTLE ⚔️",
+      "status": "COMPLETED",
+      "finishTime": 5.4,
+      "winner": "MULTIPLY",
+      "winningScore": 3645,
+      "losingScore": 3645,
+      "eventsCount": 383
+    },
+    {
+      "simId": "proof_sim_09",
+      "seed": 20999,
+      "title": "🛡️ THE SLOW TANK: +50 BALLS PER TIER 🛡️",
+      "status": "COMPLETED",
+      "finishTime": 4.67,
+      "winner": "ADD",
+      "winningScore": 350,
+      "losingScore": 3,
+      "eventsCount": 430
+    },
+    {
+      "simId": "proof_sim_10",
+      "seed": 21110,
+      "title": "🏆 CHAMPIONSHIP SHOWDOWN: 10,000 MARBLE CLASH 🏆",
+      "status": "COMPLETED",
+      "finishTime": 5.02,
+      "winner": "MULTIPLY",
+      "winningScore": 12288,
+      "losingScore": 150,
+      "eventsCount": 364
+    }
+  ],
+  "candidateClips": [
+    {
+      "clipId": "proof_sim_01_full",
+      "sourceSimId": "proof_sim_01",
+      "format": "FULL_MATCH",
+      "durationSeconds": 6.6,
+      "qualityScore": 99,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "dccff6f730"
+    },
+    {
+      "clipId": "proof_sim_01_climax",
+      "sourceSimId": "proof_sim_01",
+      "format": "CLIMAX_THRILLER",
+      "durationSeconds": 6.6,
+      "qualityScore": 97,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "2a8d3afccd"
+    },
+    {
+      "clipId": "proof_sim_01_blitz",
+      "sourceSimId": "proof_sim_01",
+      "format": "OPENING_BLITZ",
+      "durationSeconds": 6,
+      "qualityScore": 97,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "8eaac038a2"
+    },
+    {
+      "clipId": "proof_sim_02_full",
+      "sourceSimId": "proof_sim_02",
+      "format": "FULL_MATCH",
+      "durationSeconds": 7.67,
+      "qualityScore": 99,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "401ae34b78"
+    },
+    {
+      "clipId": "proof_sim_02_climax",
+      "sourceSimId": "proof_sim_02",
+      "format": "CLIMAX_THRILLER",
+      "durationSeconds": 7.7,
+      "qualityScore": 97,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "b09ae0407e"
+    },
+    {
+      "clipId": "proof_sim_02_blitz",
+      "sourceSimId": "proof_sim_02",
+      "format": "OPENING_BLITZ",
+      "durationSeconds": 6,
+      "qualityScore": 97,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "a05c7f3c4b"
+    },
+    {
+      "clipId": "proof_sim_03_full",
+      "sourceSimId": "proof_sim_03",
+      "format": "FULL_MATCH",
+      "durationSeconds": 5.83,
+      "qualityScore": 99,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "bc60eb1c37"
+    },
+    {
+      "clipId": "proof_sim_03_climax",
+      "sourceSimId": "proof_sim_03",
+      "format": "CLIMAX_THRILLER",
+      "durationSeconds": 5.8,
+      "qualityScore": 97,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "2b90d0f765"
+    },
+    {
+      "clipId": "proof_sim_03_blitz",
+      "sourceSimId": "proof_sim_03",
+      "format": "OPENING_BLITZ",
+      "durationSeconds": 6,
+      "qualityScore": 97,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "dc7bf36b9d"
+    },
+    {
+      "clipId": "proof_sim_04_full",
+      "sourceSimId": "proof_sim_04",
+      "format": "FULL_MATCH",
+      "durationSeconds": 5.73,
+      "qualityScore": 99,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "a84f060ec2"
+    },
+    {
+      "clipId": "proof_sim_04_climax",
+      "sourceSimId": "proof_sim_04",
+      "format": "CLIMAX_THRILLER",
+      "durationSeconds": 5.7,
+      "qualityScore": 97,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "bbe973452e"
+    },
+    {
+      "clipId": "proof_sim_04_blitz",
+      "sourceSimId": "proof_sim_04",
+      "format": "OPENING_BLITZ",
+      "durationSeconds": 6,
+      "qualityScore": 97,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "d0ab1305cc"
+    },
+    {
+      "clipId": "proof_sim_05_full",
+      "sourceSimId": "proof_sim_05",
+      "format": "FULL_MATCH",
+      "durationSeconds": 11.62,
+      "qualityScore": 99,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "209e8145b6"
+    },
+    {
+      "clipId": "proof_sim_05_climax",
+      "sourceSimId": "proof_sim_05",
+      "format": "CLIMAX_THRILLER",
+      "durationSeconds": 8,
+      "qualityScore": 97,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "57518ddd60"
+    },
+    {
+      "clipId": "proof_sim_05_blitz",
+      "sourceSimId": "proof_sim_05",
+      "format": "OPENING_BLITZ",
+      "durationSeconds": 6,
+      "qualityScore": 97,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "d8f7770d37"
+    },
+    {
+      "clipId": "proof_sim_06_full",
+      "sourceSimId": "proof_sim_06",
+      "format": "FULL_MATCH",
+      "durationSeconds": 5.67,
+      "qualityScore": 99,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "1764945f2a"
+    },
+    {
+      "clipId": "proof_sim_06_climax",
+      "sourceSimId": "proof_sim_06",
+      "format": "CLIMAX_THRILLER",
+      "durationSeconds": 5.7,
+      "qualityScore": 97,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "55f5df5f4b"
+    },
+    {
+      "clipId": "proof_sim_06_blitz",
+      "sourceSimId": "proof_sim_06",
+      "format": "OPENING_BLITZ",
+      "durationSeconds": 6,
+      "qualityScore": 97,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "885346eb71"
+    },
+    {
+      "clipId": "proof_sim_07_full",
+      "sourceSimId": "proof_sim_07",
+      "format": "FULL_MATCH",
+      "durationSeconds": 6.53,
+      "qualityScore": 99,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "aa7595a584"
+    },
+    {
+      "clipId": "proof_sim_07_climax",
+      "sourceSimId": "proof_sim_07",
+      "format": "CLIMAX_THRILLER",
+      "durationSeconds": 6.5,
+      "qualityScore": 97,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "df087d9273"
+    },
+    {
+      "clipId": "proof_sim_07_blitz",
+      "sourceSimId": "proof_sim_07",
+      "format": "OPENING_BLITZ",
+      "durationSeconds": 6,
+      "qualityScore": 97,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "8135b20e8a"
+    },
+    {
+      "clipId": "proof_sim_08_full",
+      "sourceSimId": "proof_sim_08",
+      "format": "FULL_MATCH",
+      "durationSeconds": 6.9,
+      "qualityScore": 99,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "6d57e6d0c6"
+    },
+    {
+      "clipId": "proof_sim_08_climax",
+      "sourceSimId": "proof_sim_08",
+      "format": "CLIMAX_THRILLER",
+      "durationSeconds": 6.9,
+      "qualityScore": 97,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "6d57781670"
+    },
+    {
+      "clipId": "proof_sim_08_blitz",
+      "sourceSimId": "proof_sim_08",
+      "format": "OPENING_BLITZ",
+      "durationSeconds": 6,
+      "qualityScore": 97,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "fb83c7763c"
+    },
+    {
+      "clipId": "proof_sim_09_full",
+      "sourceSimId": "proof_sim_09",
+      "format": "FULL_MATCH",
+      "durationSeconds": 6.17,
+      "qualityScore": 99,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "9888cc6984"
+    },
+    {
+      "clipId": "proof_sim_09_climax",
+      "sourceSimId": "proof_sim_09",
+      "format": "CLIMAX_THRILLER",
+      "durationSeconds": 6.2,
+      "qualityScore": 97,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "e55a7b5d02"
+    },
+    {
+      "clipId": "proof_sim_09_blitz",
+      "sourceSimId": "proof_sim_09",
+      "format": "OPENING_BLITZ",
+      "durationSeconds": 6,
+      "qualityScore": 97,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "2401eef72e"
+    },
+    {
+      "clipId": "proof_sim_10_full",
+      "sourceSimId": "proof_sim_10",
+      "format": "FULL_MATCH",
+      "durationSeconds": 6.52,
+      "qualityScore": 99,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "3f6f6d129b"
+    },
+    {
+      "clipId": "proof_sim_10_climax",
+      "sourceSimId": "proof_sim_10",
+      "format": "CLIMAX_THRILLER",
+      "durationSeconds": 6.5,
+      "qualityScore": 97,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "6251b9df85"
+    },
+    {
+      "clipId": "proof_sim_10_blitz",
+      "sourceSimId": "proof_sim_10",
+      "format": "OPENING_BLITZ",
+      "durationSeconds": 6,
+      "qualityScore": 97,
+      "status": "APPROVED",
+      "rejectionReason": null,
+      "fingerprint": "cb125d8bf4"
+    }
+  ],
+  "publishingQueue": [
+    {
+      "queueId": "queue_proof_sim_01_full",
+      "clipId": "proof_sim_01_full",
+      "simId": "proof_sim_01",
+      "scheduledDate": "2026-11-03",
+      "scheduledTime": "2026-11-03T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "⚡ 1 BALL VS 100 BALLS: CAN MULTIPLY WIN? ⚡",
+      "hookText": "Who breaks all 6 barriers first: 1 ball or 100 balls? 😱",
+      "description": "⚡ 1 BALL VS 100 BALLS: CAN MULTIPLY WIN? ⚡\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 99
+    },
+    {
+      "queueId": "queue_proof_sim_01_climax",
+      "clipId": "proof_sim_01_climax",
+      "simId": "proof_sim_01",
+      "scheduledDate": "2026-11-05",
+      "scheduledTime": "2026-11-05T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
+      "hookText": "Look at the speed difference on Tier 5 and 6! 😱",
+      "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 97
+    },
+    {
+      "queueId": "queue_proof_sim_01_blitz",
+      "clipId": "proof_sim_01_blitz",
+      "simId": "proof_sim_01",
+      "scheduledDate": "2026-11-07",
+      "scheduledTime": "2026-11-07T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡",
+      "hookText": "Watch this opening multiplication burst! 🤯",
+      "description": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 97
+    },
+    {
+      "queueId": "queue_proof_sim_02_full",
+      "clipId": "proof_sim_02_full",
+      "simId": "proof_sim_02",
+      "scheduledDate": "2026-11-09",
+      "scheduledTime": "2026-11-09T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "📈 EXPONENTIAL ×2 VS LINEAR +20 SHOWDOWN 📈",
+      "hookText": "Who breaks all 6 barriers first: 4 ball or 30 balls? 😱",
+      "description": "📈 EXPONENTIAL ×2 VS LINEAR +20 SHOWDOWN 📈\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 99
+    },
+    {
+      "queueId": "queue_proof_sim_02_climax",
+      "clipId": "proof_sim_02_climax",
+      "simId": "proof_sim_02",
+      "scheduledDate": "2026-11-11",
+      "scheduledTime": "2026-11-11T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
+      "hookText": "Look at the speed difference on Tier 5 and 6! 😱",
+      "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 97
+    },
+    {
+      "queueId": "queue_proof_sim_02_blitz",
+      "clipId": "proof_sim_02_blitz",
+      "simId": "proof_sim_02",
+      "scheduledDate": "2026-11-13",
+      "scheduledTime": "2026-11-13T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡",
+      "hookText": "Watch this opening multiplication burst! 🤯",
+      "description": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 97
+    },
+    {
+      "queueId": "queue_proof_sim_03_full",
+      "clipId": "proof_sim_03_full",
+      "simId": "proof_sim_03",
+      "scheduledDate": "2026-11-15",
+      "scheduledTime": "2026-11-15T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "🔥 50,000 MARBLE AVALANCHE: ×4 VS ×3 🔥",
+      "hookText": "Who breaks all 6 barriers first: 2 ball or 12 balls? 😱",
+      "description": "🔥 50,000 MARBLE AVALANCHE: ×4 VS ×3 🔥\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 99
+    },
+    {
+      "queueId": "queue_proof_sim_03_climax",
+      "clipId": "proof_sim_03_climax",
+      "simId": "proof_sim_03",
+      "scheduledDate": "2026-11-17",
+      "scheduledTime": "2026-11-17T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
+      "hookText": "Look at the speed difference on Tier 5 and 6! 😱",
+      "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 97
+    },
+    {
+      "queueId": "queue_proof_sim_03_blitz",
+      "clipId": "proof_sim_03_blitz",
+      "simId": "proof_sim_03",
+      "scheduledDate": "2026-11-19",
+      "scheduledTime": "2026-11-19T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡",
+      "hookText": "Watch this opening multiplication burst! 🤯",
+      "description": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 97
+    },
+    {
+      "queueId": "queue_proof_sim_04_full",
+      "clipId": "proof_sim_04_full",
+      "simId": "proof_sim_04",
+      "scheduledDate": "2026-11-21",
+      "scheduledTime": "2026-11-21T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "⚠️ HIGH STAKES: ×5 GAMBLE VS SAFE +15 ⚠️",
+      "hookText": "Who breaks all 6 barriers first: 5 ball or 20 balls? 😱",
+      "description": "⚠️ HIGH STAKES: ×5 GAMBLE VS SAFE +15 ⚠️\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 99
+    },
+    {
+      "queueId": "queue_proof_sim_04_climax",
+      "clipId": "proof_sim_04_climax",
+      "simId": "proof_sim_04",
+      "scheduledDate": "2026-11-23",
+      "scheduledTime": "2026-11-23T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "🔥 FINAL BARRIER SHOWDOWN: MULTIPLY TAKES IT! 🔥",
+      "hookText": "Look at the speed difference on Tier 5 and 6! 😱",
+      "description": "🔥 FINAL BARRIER SHOWDOWN: MULTIPLY TAKES IT! 🔥\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 97
+    },
+    {
+      "queueId": "queue_proof_sim_04_blitz",
+      "clipId": "proof_sim_04_blitz",
+      "simId": "proof_sim_04",
+      "scheduledDate": "2026-11-25",
+      "scheduledTime": "2026-11-25T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡",
+      "hookText": "Watch this opening multiplication burst! 🤯",
+      "description": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 97
+    },
+    {
+      "queueId": "queue_proof_sim_05_full",
+      "clipId": "proof_sim_05_full",
+      "simId": "proof_sim_05",
+      "scheduledDate": "2026-11-27",
+      "scheduledTime": "2026-11-27T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "🌿 FACTORIAL GROWTH (n!) VS POWER (2ⁿ) 🌿",
+      "hookText": "Who breaks all 6 barriers first: 1 ball or 2 balls? 😱",
+      "description": "🌿 FACTORIAL GROWTH (n!) VS POWER (2ⁿ) 🌿\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 99
+    },
+    {
+      "queueId": "queue_proof_sim_05_climax",
+      "clipId": "proof_sim_05_climax",
+      "simId": "proof_sim_05",
+      "scheduledDate": "2026-11-29",
+      "scheduledTime": "2026-11-29T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "🔥 FINAL BARRIER SHOWDOWN: MULTIPLY TAKES IT! 🔥",
+      "hookText": "Look at the speed difference on Tier 5 and 6! 😱",
+      "description": "🔥 FINAL BARRIER SHOWDOWN: MULTIPLY TAKES IT! 🔥\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 97
+    },
+    {
+      "queueId": "queue_proof_sim_05_blitz",
+      "clipId": "proof_sim_05_blitz",
+      "simId": "proof_sim_05",
+      "scheduledDate": "2026-12-01",
+      "scheduledTime": "2026-12-01T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡",
+      "hookText": "Watch this opening multiplication burst! 🤯",
+      "description": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 97
+    },
+    {
+      "queueId": "queue_proof_sim_06_full",
+      "clipId": "proof_sim_06_full",
+      "simId": "proof_sim_06",
+      "scheduledDate": "2026-12-03",
+      "scheduledTime": "2026-12-03T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "🏎️ ULTRA SPEED SPRINT: ×3 VS +30 🏎️",
+      "hookText": "Who breaks all 6 barriers first: 3 ball or 40 balls? 😱",
+      "description": "🏎️ ULTRA SPEED SPRINT: ×3 VS +30 🏎️\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 99
+    },
+    {
+      "queueId": "queue_proof_sim_06_climax",
+      "clipId": "proof_sim_06_climax",
+      "simId": "proof_sim_06",
+      "scheduledDate": "2026-12-05",
+      "scheduledTime": "2026-12-05T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
+      "hookText": "Look at the speed difference on Tier 5 and 6! 😱",
+      "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 97
+    },
+    {
+      "queueId": "queue_proof_sim_06_blitz",
+      "clipId": "proof_sim_06_blitz",
+      "simId": "proof_sim_06",
+      "scheduledDate": "2026-12-07",
+      "scheduledTime": "2026-12-07T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡",
+      "hookText": "Watch this opening multiplication burst! 🤯",
+      "description": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 97
+    },
+    {
+      "queueId": "queue_proof_sim_07_full",
+      "clipId": "proof_sim_07_full",
+      "simId": "proof_sim_07",
+      "scheduledDate": "2026-12-09",
+      "scheduledTime": "2026-12-09T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "💥 2 BALLS VS 150 BALLS: THE IMPOSSIBLE REVERSAL 💥",
+      "hookText": "Who breaks all 6 barriers first: 2 ball or 150 balls? 😱",
+      "description": "💥 2 BALLS VS 150 BALLS: THE IMPOSSIBLE REVERSAL 💥\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 99
+    },
+    {
+      "queueId": "queue_proof_sim_07_climax",
+      "clipId": "proof_sim_07_climax",
+      "simId": "proof_sim_07",
+      "scheduledDate": "2026-12-11",
+      "scheduledTime": "2026-12-11T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
+      "hookText": "Look at the speed difference on Tier 5 and 6! 😱",
+      "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 97
+    },
+    {
+      "queueId": "queue_proof_sim_07_blitz",
+      "clipId": "proof_sim_07_blitz",
+      "simId": "proof_sim_07",
+      "scheduledDate": "2026-12-13",
+      "scheduledTime": "2026-12-13T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡",
+      "hookText": "Watch this opening multiplication burst! 🤯",
+      "description": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 97
+    },
+    {
+      "queueId": "queue_proof_sim_08_full",
+      "clipId": "proof_sim_08_full",
+      "simId": "proof_sim_08",
+      "scheduledDate": "2026-12-15",
+      "scheduledTime": "2026-12-15T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "⚔️ ×3 VS ×3: IDENTICAL WEAPONS BATTLE ⚔️",
+      "hookText": "Who breaks all 6 barriers first: 5 ball or 5 balls? 😱",
+      "description": "⚔️ ×3 VS ×3: IDENTICAL WEAPONS BATTLE ⚔️\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 99
+    },
+    {
+      "queueId": "queue_proof_sim_08_climax",
+      "clipId": "proof_sim_08_climax",
+      "simId": "proof_sim_08",
+      "scheduledDate": "2026-12-17",
+      "scheduledTime": "2026-12-17T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "🔥 FINAL BARRIER SHOWDOWN: MULTIPLY TAKES IT! 🔥",
+      "hookText": "Look at the speed difference on Tier 5 and 6! 😱",
+      "description": "🔥 FINAL BARRIER SHOWDOWN: MULTIPLY TAKES IT! 🔥\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 97
+    },
+    {
+      "queueId": "queue_proof_sim_08_blitz",
+      "clipId": "proof_sim_08_blitz",
+      "simId": "proof_sim_08",
+      "scheduledDate": "2026-12-19",
+      "scheduledTime": "2026-12-19T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡",
+      "hookText": "Watch this opening multiplication burst! 🤯",
+      "description": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 97
+    },
+    {
+      "queueId": "queue_proof_sim_09_full",
+      "clipId": "proof_sim_09_full",
+      "simId": "proof_sim_09",
+      "scheduledDate": "2026-12-21",
+      "scheduledTime": "2026-12-21T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "🛡️ THE SLOW TANK: +50 BALLS PER TIER 🛡️",
+      "hookText": "Who breaks all 6 barriers first: 1 ball or 50 balls? 😱",
+      "description": "🛡️ THE SLOW TANK: +50 BALLS PER TIER 🛡️\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 99
+    },
+    {
+      "queueId": "queue_proof_sim_09_climax",
+      "clipId": "proof_sim_09_climax",
+      "simId": "proof_sim_09",
+      "scheduledDate": "2026-12-23",
+      "scheduledTime": "2026-12-23T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
+      "hookText": "Look at the speed difference on Tier 5 and 6! 😱",
+      "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 97
+    },
+    {
+      "queueId": "queue_proof_sim_09_blitz",
+      "clipId": "proof_sim_09_blitz",
+      "simId": "proof_sim_09",
+      "scheduledDate": "2026-12-25",
+      "scheduledTime": "2026-12-25T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡",
+      "hookText": "Watch this opening multiplication burst! 🤯",
+      "description": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 97
+    },
+    {
+      "queueId": "queue_proof_sim_10_full",
+      "clipId": "proof_sim_10_full",
+      "simId": "proof_sim_10",
+      "scheduledDate": "2026-12-27",
+      "scheduledTime": "2026-12-27T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "🏆 CHAMPIONSHIP SHOWDOWN: 10,000 MARBLE CLASH 🏆",
+      "hookText": "Who breaks all 6 barriers first: 3 ball or 25 balls? 😱",
+      "description": "🏆 CHAMPIONSHIP SHOWDOWN: 10,000 MARBLE CLASH 🏆\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 99
+    },
+    {
+      "queueId": "queue_proof_sim_10_climax",
+      "clipId": "proof_sim_10_climax",
+      "simId": "proof_sim_10",
+      "scheduledDate": "2026-12-29",
+      "scheduledTime": "2026-12-29T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "🔥 FINAL BARRIER SHOWDOWN: MULTIPLY TAKES IT! 🔥",
+      "hookText": "Look at the speed difference on Tier 5 and 6! 😱",
+      "description": "🔥 FINAL BARRIER SHOWDOWN: MULTIPLY TAKES IT! 🔥\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 97
+    },
+    {
+      "queueId": "queue_proof_sim_10_blitz",
+      "clipId": "proof_sim_10_blitz",
+      "simId": "proof_sim_10",
+      "scheduledDate": "2026-12-31",
+      "scheduledTime": "2026-12-31T17:00:00.000Z",
+      "status": "READY_TO_PUBLISH",
+      "title": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡",
+      "hookText": "Watch this opening multiplication burst! 🤯",
+      "description": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
+      "hashtags": [
+        "#shorts",
+        "#physics",
+        "#marblerun",
+        "#gaming",
+        "#satisfying"
+      ],
+      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
+      "qualityScore": 97
+    }
+  ]
+}

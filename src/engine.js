@@ -3,25 +3,18 @@
 // Features: Seeded PRNG, Substep Anti-Tunneling, Decoupled Population Model,
 // Full Operation Support (+, -, *, /), and Unbiased Race Resolution.
 
-const _ConfigValidator = (typeof require !== 'undefined')
+var _ConfigValidator = (typeof require !== 'undefined')
   ? require('./config_validator.js').ConfigValidator
   : (typeof window !== 'undefined' ? window.ConfigValidator : null);
 
 // Fast, High-Quality Deterministic Seeded PRNG (Mulberry32)
-class PRNG {
-  constructor(seed = 1337) {
-    this.s = (seed >>> 0) || 1337;
-  }
-  random() {
-    let t = (this.s += 0x6D2B79F5);
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  }
-  range(min, max) {
-    return min + this.random() * (max - min);
-  }
-}
+var _EnginePRNG = (typeof PRNG !== 'undefined')
+  ? PRNG
+  : (typeof require !== 'undefined' ? require('./prng.js').PRNG : class {
+      constructor(seed = 1337) { this.s = (seed >>> 0) || 1337; }
+      random() { let t = (this.s += 0x6D2B79F5); t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }
+      range(min, max) { return min + this.random() * (max - min); }
+    });
 
 class SimulationEngine {
   constructor(config = {}) {
@@ -33,7 +26,7 @@ class SimulationEngine {
 
     // Seeded PRNG for 100% Bit-Exact Determinism (PHY-01, TEST-03)
     this.seed = config.seed ?? 1337;
-    this.rng = new PRNG(this.seed);
+    this.rng = new _EnginePRNG(this.seed);
 
     this.width = config.resolution?.width || 1080;
     this.height = config.resolution?.height || 1920;
@@ -798,8 +791,9 @@ class SimulationEngine {
   }
 }
 
+if (typeof window !== 'undefined') {
+  window.SimulationEngine = SimulationEngine;
+}
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { SimulationEngine };
-} else if (typeof window !== 'undefined') {
-  window.SimulationEngine = SimulationEngine;
 }

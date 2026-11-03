@@ -2,11 +2,11 @@
 // Vertical 1080x1920 layout, peg pyramid, multiplier slot bins, jackpot explosions.
 // Conforms strictly to Universal GameAdapter contract with 100% Deterministic Seeded PRNG.
 
-const _PRNG = typeof PRNG !== 'undefined'
+var _PRNG = typeof PRNG !== 'undefined'
   ? PRNG
   : (typeof require !== 'undefined' ? require('../prng').PRNG : null);
 
-const _GameAdapter = typeof GameAdapter !== 'undefined'
+var _GameAdapter = typeof GameAdapter !== 'undefined'
   ? GameAdapter
   : (typeof require !== 'undefined' ? require('../game_adapter').GameAdapter : class {});
 

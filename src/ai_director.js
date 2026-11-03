@@ -1,19 +1,14 @@
 // AI Director Model for Automated Game & Physics Formulation
 // Guides, devises, and configures new daily physics environments, viral hooks, and YouTube Shorts packages.
 
-let _https = null;
-let _MathEvaluator = typeof MathEvaluator !== 'undefined' ? MathEvaluator : null;
+var _https = null;
+var _MathEvaluator = typeof MathEvaluator !== 'undefined' ? MathEvaluator : null;
+var _ConfigValidator = typeof ConfigValidator !== 'undefined' ? ConfigValidator : null;
 
 if (typeof require !== 'undefined') {
   try { _https = require('https'); } catch (e) {}
   try { if (!_MathEvaluator) _MathEvaluator = require('./math_evaluator').MathEvaluator; } catch (e) {}
-}
-
-let _ConfigValidator;
-if (typeof require !== 'undefined') {
-  try {
-    _ConfigValidator = require('./config_validator').ConfigValidator;
-  } catch (e) {}
+  try { if (!_ConfigValidator) _ConfigValidator = require('./config_validator').ConfigValidator; } catch (e) {}
 }
 
 class AIDirector {

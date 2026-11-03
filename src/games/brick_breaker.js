@@ -2,11 +2,11 @@
 // Hundreds of glowing physics balls demolishing high-HP neon bricks with ASMR shatter particles.
 // Conforms strictly to Universal GameAdapter contract with 100% Deterministic Seeded PRNG.
 
-const _PRNG = typeof PRNG !== 'undefined'
+var _PRNG = typeof PRNG !== 'undefined'
   ? PRNG
   : (typeof require !== 'undefined' ? require('../prng').PRNG : null);
 
-const _GameAdapter = typeof GameAdapter !== 'undefined'
+var _GameAdapter = typeof GameAdapter !== 'undefined'
   ? GameAdapter
   : (typeof require !== 'undefined' ? require('../game_adapter').GameAdapter : class {});
 

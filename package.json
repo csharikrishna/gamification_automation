@@ -11,6 +11,7 @@
     "test:scheduler": "node test/publishing_scheduler.test.js",
     "test:all": "node test/simulation.test.js && node test/four_games_adapter.test.js && node test/publishing_scheduler.test.js && node test/qualification_harness.js",
     "qualify": "node test/qualification_harness.js",
+    "production:proof": "node src/production_proof_pipeline.js",
     "batch:100": "node -e \"new (require('./src/clip_factory')).ClipFactory().generateBatch100()\"",
     "schedule:generate": "node -e \"new (require('./src/publishing_scheduler')).PublishingScheduler().scheduleFromCatalog()\"",
     "schedule:publish": "node -e \"console.log(new (require('./src/publishing_scheduler')).PublishingScheduler().publishNext())\"",
