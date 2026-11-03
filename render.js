@@ -254,8 +254,9 @@ async function renderVideo(options) {
       console.log(`🎵 Synthesizing procedural 44.1kHz audio track...`);
       const synth = new AudioSynthesizer(44100);
       const clipEvents = finishData.events
-        .filter(e => e.t >= clipStartTime && e.t <= (clipStartTime + clipDuration))
-        .map(e => ({ ...e, t: Math.max(0, e.t - clipStartTime) }));
+        .map(e => ({ ...e, time: (e.time !== undefined ? e.time : (e.t !== undefined ? e.t : 0)) }))
+        .filter(e => e.time >= clipStartTime && e.time <= (clipStartTime + clipDuration))
+        .map(e => ({ ...e, time: Math.max(0, e.time - clipStartTime) }));
       synth.generateWav(clipEvents, clipDuration, tempWavPath);
 
       console.log(`🎞️  Muxing video + audio into final MP4...`);

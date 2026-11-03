@@ -97,9 +97,12 @@ class ProductionProofPipeline {
   computeEvidenceScore(clip, sim) {
     const duration = clip.targetDuration || 1;
     // 1. Measured Event Density during this specific clip window
-    const windowEvents = (sim.events || []).filter(e => e.t >= clip.startTime && e.t <= clip.endTime);
+    const windowEvents = (sim.events || []).filter(e => {
+      const eventTime = e.time !== undefined ? e.time : (e.t !== undefined ? e.t : 0);
+      return eventTime >= clip.startTime && eventTime <= clip.endTime;
+    });
     const density = windowEvents.length / duration; // events per second
-    const pacingScore = Math.min(25, Math.round(density * 4.5));
+    const pacingScore = Math.min(25, Math.round(density * 0.8)); // 30+ events/sec gives 25 pts
 
     // 2. Drama & Comeback Tension (closeness of scores or climax finish)
     const totalScore = (sim.winningScore || 0) + (sim.losingScore || 0);
