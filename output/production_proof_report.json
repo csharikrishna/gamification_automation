@@ -1,29 +1,109 @@
 {
   "pipelineName": "Burstpoint Single-Game Autonomous Production Proof",
   "gameType": "multi_race",
-  "executedAt": "2026-11-03T08:28:06.462Z",
-  "completionStatus": "SUCCESS (100% AUTONOMOUS PIPELINE CERTIFIED)",
+  "executedAt": "2026-11-03T08:50:01.969Z",
+  "completionStatus": "SUCCESS (PRODUCTION CERTIFIED WITH RENDERED MEDIA & DRY-RUN RECEIPT)",
   "executionSummary": {
     "totalSimulationsExecuted": 10,
     "totalCandidateClipsExtracted": 30,
-    "approvedClipsCount": 30,
-    "rejectedClipsCount": 0,
-    "queuedClipsCount": 30,
-    "totalProcessingTimeMs": 8310,
-    "processingTimeSeconds": 8.31,
-    "peakHeapMemoryMb": 26.13
+    "approvedClipsCount": 11,
+    "rejectedClipsCount": 19,
+    "renderedClipsOnDiskCount": 4,
+    "queuedClipsCount": 4,
+    "totalProcessingTimeMs": 117152,
+    "processingTimeSeconds": 117.15,
+    "peakHeapMemoryMb": 14.24
   },
-  "videoValidation": {
-    "sourceFile": "underdog_slow_composed.mp4",
-    "fileSizeBytes": 7003609,
-    "fileSizeMb": 6.68,
-    "resolution": "1080x1920",
-    "fps": 60,
-    "videoCodec": "H.264 (High Profile)",
-    "audioCodec": "AAC Stereo (44.1 kHz)",
-    "durationSeconds": 16,
-    "streamDecodeStatus": "PASSED (0 decode errors across all 960 frames)"
-  },
+  "renderedClips": [
+    {
+      "clipId": "proof_sim_03_climax",
+      "videoPath": "output\\proof_clips\\proof_sim_03_climax.mp4",
+      "fileSizeBytes": 3463873,
+      "fileSizeMb": 3.3,
+      "sha256": "3bbf92c1fd7c50c7aa733b991813eea7c05d68659c1b80bc3cd73b516352b167",
+      "bitstreamVerified": true,
+      "resolution": "1080x1920",
+      "fps": 60,
+      "videoCodec": "H.264",
+      "audioCodec": "AAC",
+      "durationSeconds": 4.8,
+      "qualityScore": 75,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 25,
+        "growthScore": 25,
+        "technicalScore": 25
+      }
+    },
+    {
+      "clipId": "proof_sim_04_full",
+      "videoPath": "output\\proof_clips\\proof_sim_04_full.mp4",
+      "fileSizeBytes": 4310131,
+      "fileSizeMb": 4.11,
+      "sha256": "690c3dad4f0ad32f3febcfcace2afbdeec7dd6028646b20d7077d6cb0695a7fc",
+      "bitstreamVerified": true,
+      "resolution": "1080x1920",
+      "fps": 60,
+      "videoCodec": "H.264",
+      "audioCodec": "AAC",
+      "durationSeconds": 5.23,
+      "qualityScore": 75,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 25,
+        "growthScore": 25,
+        "technicalScore": 25
+      }
+    },
+    {
+      "clipId": "proof_sim_04_climax",
+      "videoPath": "output\\proof_clips\\proof_sim_04_climax.mp4",
+      "fileSizeBytes": 4062715,
+      "fileSizeMb": 3.87,
+      "sha256": "820d1b4fa90128af134499f5adef93eaba5be769df4f54e07480145f8b785136",
+      "bitstreamVerified": true,
+      "resolution": "1080x1920",
+      "fps": 60,
+      "videoCodec": "H.264",
+      "audioCodec": "AAC",
+      "durationSeconds": 4.8,
+      "qualityScore": 75,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 25,
+        "growthScore": 25,
+        "technicalScore": 25
+      }
+    },
+    {
+      "clipId": "proof_sim_04_blitz",
+      "videoPath": "output\\proof_clips\\proof_sim_04_blitz.mp4",
+      "fileSizeBytes": 3590660,
+      "fileSizeMb": 3.42,
+      "sha256": "cb0c8cb024bb2cb30555bd6d3c1a0f861abdb0b6e1eb1b72cce4641e6541650e",
+      "bitstreamVerified": true,
+      "resolution": "1080x1920",
+      "fps": 60,
+      "videoCodec": "H.264",
+      "audioCodec": "AAC",
+      "durationSeconds": 4.5,
+      "qualityScore": 75,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 25,
+        "growthScore": 25,
+        "technicalScore": 25
+      }
+    }
+  ],
   "simulations": [
     {
       "simId": "proof_sim_01",
@@ -141,903 +221,807 @@
       "clipId": "proof_sim_01_full",
       "sourceSimId": "proof_sim_01",
       "format": "FULL_MATCH",
-      "durationSeconds": 6.6,
-      "qualityScore": 99,
-      "status": "APPROVED",
-      "rejectionReason": null,
-      "fingerprint": "dccff6f730"
+      "durationSeconds": 6.1,
+      "qualityScore": 67,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 20,
+        "growthScore": 22,
+        "technicalScore": 25
+      },
+      "status": "REJECTED",
+      "rejectionReason": "QUALITY_BELOW_THRESHOLD (67/100)",
+      "fingerprint": "bda2029f09",
+      "hasRenderedFile": false
     },
     {
       "clipId": "proof_sim_01_climax",
       "sourceSimId": "proof_sim_01",
       "format": "CLIMAX_THRILLER",
-      "durationSeconds": 6.6,
-      "qualityScore": 97,
-      "status": "APPROVED",
-      "rejectionReason": null,
-      "fingerprint": "2a8d3afccd"
+      "durationSeconds": 4.8,
+      "qualityScore": 72,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 25,
+        "growthScore": 22,
+        "technicalScore": 25
+      },
+      "status": "REJECTED",
+      "rejectionReason": "QUALITY_BELOW_THRESHOLD (72/100)",
+      "fingerprint": "ce229da292",
+      "hasRenderedFile": false
     },
     {
       "clipId": "proof_sim_01_blitz",
       "sourceSimId": "proof_sim_01",
       "format": "OPENING_BLITZ",
-      "durationSeconds": 6,
-      "qualityScore": 97,
-      "status": "APPROVED",
-      "rejectionReason": null,
-      "fingerprint": "8eaac038a2"
+      "durationSeconds": 4.5,
+      "qualityScore": 67,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 20,
+        "growthScore": 22,
+        "technicalScore": 25
+      },
+      "status": "REJECTED",
+      "rejectionReason": "QUALITY_BELOW_THRESHOLD (67/100)",
+      "fingerprint": "34c0021cc6",
+      "hasRenderedFile": false
     },
     {
       "clipId": "proof_sim_02_full",
       "sourceSimId": "proof_sim_02",
       "format": "FULL_MATCH",
-      "durationSeconds": 7.67,
-      "qualityScore": 99,
-      "status": "APPROVED",
-      "rejectionReason": null,
-      "fingerprint": "401ae34b78"
+      "durationSeconds": 7.17,
+      "qualityScore": 67,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 20,
+        "growthScore": 22,
+        "technicalScore": 25
+      },
+      "status": "REJECTED",
+      "rejectionReason": "QUALITY_BELOW_THRESHOLD (67/100)",
+      "fingerprint": "d9d51a5a4c",
+      "hasRenderedFile": false
     },
     {
       "clipId": "proof_sim_02_climax",
       "sourceSimId": "proof_sim_02",
       "format": "CLIMAX_THRILLER",
-      "durationSeconds": 7.7,
-      "qualityScore": 97,
-      "status": "APPROVED",
-      "rejectionReason": null,
-      "fingerprint": "b09ae0407e"
+      "durationSeconds": 4.8,
+      "qualityScore": 72,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 25,
+        "growthScore": 22,
+        "technicalScore": 25
+      },
+      "status": "REJECTED",
+      "rejectionReason": "QUALITY_BELOW_THRESHOLD (72/100)",
+      "fingerprint": "ce229da292",
+      "hasRenderedFile": false
     },
     {
       "clipId": "proof_sim_02_blitz",
       "sourceSimId": "proof_sim_02",
       "format": "OPENING_BLITZ",
-      "durationSeconds": 6,
-      "qualityScore": 97,
-      "status": "APPROVED",
-      "rejectionReason": null,
-      "fingerprint": "a05c7f3c4b"
+      "durationSeconds": 4.5,
+      "qualityScore": 67,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 20,
+        "growthScore": 22,
+        "technicalScore": 25
+      },
+      "status": "REJECTED",
+      "rejectionReason": "QUALITY_BELOW_THRESHOLD (67/100)",
+      "fingerprint": "34c0021cc6",
+      "hasRenderedFile": false
     },
     {
       "clipId": "proof_sim_03_full",
       "sourceSimId": "proof_sim_03",
       "format": "FULL_MATCH",
-      "durationSeconds": 5.83,
-      "qualityScore": 99,
-      "status": "APPROVED",
-      "rejectionReason": null,
-      "fingerprint": "bc60eb1c37"
+      "durationSeconds": 5.33,
+      "qualityScore": 70,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 20,
+        "growthScore": 25,
+        "technicalScore": 25
+      },
+      "status": "REJECTED",
+      "rejectionReason": "QUALITY_BELOW_THRESHOLD (70/100)",
+      "fingerprint": "2f4484173d",
+      "hasRenderedFile": false
     },
     {
       "clipId": "proof_sim_03_climax",
       "sourceSimId": "proof_sim_03",
       "format": "CLIMAX_THRILLER",
-      "durationSeconds": 5.8,
-      "qualityScore": 97,
+      "durationSeconds": 4.8,
+      "qualityScore": 75,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 25,
+        "growthScore": 25,
+        "technicalScore": 25
+      },
       "status": "APPROVED",
       "rejectionReason": null,
-      "fingerprint": "2b90d0f765"
+      "fingerprint": "1d51dc1574",
+      "hasRenderedFile": true
     },
     {
       "clipId": "proof_sim_03_blitz",
       "sourceSimId": "proof_sim_03",
       "format": "OPENING_BLITZ",
-      "durationSeconds": 6,
-      "qualityScore": 97,
-      "status": "APPROVED",
-      "rejectionReason": null,
-      "fingerprint": "dc7bf36b9d"
+      "durationSeconds": 4.5,
+      "qualityScore": 70,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 20,
+        "growthScore": 25,
+        "technicalScore": 25
+      },
+      "status": "REJECTED",
+      "rejectionReason": "QUALITY_BELOW_THRESHOLD (70/100)",
+      "fingerprint": "0922edb1ca",
+      "hasRenderedFile": false
     },
     {
       "clipId": "proof_sim_04_full",
       "sourceSimId": "proof_sim_04",
       "format": "FULL_MATCH",
-      "durationSeconds": 5.73,
-      "qualityScore": 99,
+      "durationSeconds": 5.23,
+      "qualityScore": 75,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 25,
+        "growthScore": 25,
+        "technicalScore": 25
+      },
       "status": "APPROVED",
       "rejectionReason": null,
-      "fingerprint": "a84f060ec2"
+      "fingerprint": "6b768a80b7",
+      "hasRenderedFile": true
     },
     {
       "clipId": "proof_sim_04_climax",
       "sourceSimId": "proof_sim_04",
       "format": "CLIMAX_THRILLER",
-      "durationSeconds": 5.7,
-      "qualityScore": 97,
+      "durationSeconds": 4.8,
+      "qualityScore": 75,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 25,
+        "growthScore": 25,
+        "technicalScore": 25
+      },
       "status": "APPROVED",
       "rejectionReason": null,
-      "fingerprint": "bbe973452e"
+      "fingerprint": "8a9c4057e1",
+      "hasRenderedFile": true
     },
     {
       "clipId": "proof_sim_04_blitz",
       "sourceSimId": "proof_sim_04",
       "format": "OPENING_BLITZ",
-      "durationSeconds": 6,
-      "qualityScore": 97,
+      "durationSeconds": 4.5,
+      "qualityScore": 75,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 25,
+        "growthScore": 25,
+        "technicalScore": 25
+      },
       "status": "APPROVED",
       "rejectionReason": null,
-      "fingerprint": "d0ab1305cc"
+      "fingerprint": "19e93fe56a",
+      "hasRenderedFile": true
     },
     {
       "clipId": "proof_sim_05_full",
       "sourceSimId": "proof_sim_05",
       "format": "FULL_MATCH",
-      "durationSeconds": 11.62,
-      "qualityScore": 99,
+      "durationSeconds": 11.12,
+      "qualityScore": 75,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 25,
+        "growthScore": 25,
+        "technicalScore": 25
+      },
       "status": "APPROVED",
       "rejectionReason": null,
-      "fingerprint": "209e8145b6"
+      "fingerprint": "ec35c0e606",
+      "hasRenderedFile": false
     },
     {
       "clipId": "proof_sim_05_climax",
       "sourceSimId": "proof_sim_05",
       "format": "CLIMAX_THRILLER",
-      "durationSeconds": 8,
-      "qualityScore": 97,
+      "durationSeconds": 4.8,
+      "qualityScore": 75,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 25,
+        "growthScore": 25,
+        "technicalScore": 25
+      },
       "status": "APPROVED",
       "rejectionReason": null,
-      "fingerprint": "57518ddd60"
+      "fingerprint": "a84f574e72",
+      "hasRenderedFile": false
     },
     {
       "clipId": "proof_sim_05_blitz",
       "sourceSimId": "proof_sim_05",
       "format": "OPENING_BLITZ",
-      "durationSeconds": 6,
-      "qualityScore": 97,
+      "durationSeconds": 4.5,
+      "qualityScore": 75,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 25,
+        "growthScore": 25,
+        "technicalScore": 25
+      },
       "status": "APPROVED",
       "rejectionReason": null,
-      "fingerprint": "d8f7770d37"
+      "fingerprint": "7ad0a4bb87",
+      "hasRenderedFile": false
     },
     {
       "clipId": "proof_sim_06_full",
       "sourceSimId": "proof_sim_06",
       "format": "FULL_MATCH",
-      "durationSeconds": 5.67,
-      "qualityScore": 99,
-      "status": "APPROVED",
-      "rejectionReason": null,
-      "fingerprint": "1764945f2a"
+      "durationSeconds": 5.17,
+      "qualityScore": 71,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 24,
+        "growthScore": 22,
+        "technicalScore": 25
+      },
+      "status": "REJECTED",
+      "rejectionReason": "QUALITY_BELOW_THRESHOLD (71/100)",
+      "fingerprint": "33630cf086",
+      "hasRenderedFile": false
     },
     {
       "clipId": "proof_sim_06_climax",
       "sourceSimId": "proof_sim_06",
       "format": "CLIMAX_THRILLER",
-      "durationSeconds": 5.7,
-      "qualityScore": 97,
-      "status": "APPROVED",
-      "rejectionReason": null,
-      "fingerprint": "55f5df5f4b"
+      "durationSeconds": 4.8,
+      "qualityScore": 72,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 25,
+        "growthScore": 22,
+        "technicalScore": 25
+      },
+      "status": "REJECTED",
+      "rejectionReason": "QUALITY_BELOW_THRESHOLD (72/100)",
+      "fingerprint": "73d4c20b16",
+      "hasRenderedFile": false
     },
     {
       "clipId": "proof_sim_06_blitz",
       "sourceSimId": "proof_sim_06",
       "format": "OPENING_BLITZ",
-      "durationSeconds": 6,
-      "qualityScore": 97,
-      "status": "APPROVED",
-      "rejectionReason": null,
-      "fingerprint": "885346eb71"
+      "durationSeconds": 4.5,
+      "qualityScore": 71,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 24,
+        "growthScore": 22,
+        "technicalScore": 25
+      },
+      "status": "REJECTED",
+      "rejectionReason": "QUALITY_BELOW_THRESHOLD (71/100)",
+      "fingerprint": "42ab47a289",
+      "hasRenderedFile": false
     },
     {
       "clipId": "proof_sim_07_full",
       "sourceSimId": "proof_sim_07",
       "format": "FULL_MATCH",
-      "durationSeconds": 6.53,
-      "qualityScore": 99,
-      "status": "APPROVED",
-      "rejectionReason": null,
-      "fingerprint": "aa7595a584"
+      "durationSeconds": 6.03,
+      "qualityScore": 67,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 20,
+        "growthScore": 22,
+        "technicalScore": 25
+      },
+      "status": "REJECTED",
+      "rejectionReason": "QUALITY_BELOW_THRESHOLD (67/100)",
+      "fingerprint": "d23ee4f19f",
+      "hasRenderedFile": false
     },
     {
       "clipId": "proof_sim_07_climax",
       "sourceSimId": "proof_sim_07",
       "format": "CLIMAX_THRILLER",
-      "durationSeconds": 6.5,
-      "qualityScore": 97,
-      "status": "APPROVED",
-      "rejectionReason": null,
-      "fingerprint": "df087d9273"
+      "durationSeconds": 4.8,
+      "qualityScore": 72,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 25,
+        "growthScore": 22,
+        "technicalScore": 25
+      },
+      "status": "REJECTED",
+      "rejectionReason": "QUALITY_BELOW_THRESHOLD (72/100)",
+      "fingerprint": "522e22fc3c",
+      "hasRenderedFile": false
     },
     {
       "clipId": "proof_sim_07_blitz",
       "sourceSimId": "proof_sim_07",
       "format": "OPENING_BLITZ",
-      "durationSeconds": 6,
-      "qualityScore": 97,
-      "status": "APPROVED",
-      "rejectionReason": null,
-      "fingerprint": "8135b20e8a"
+      "durationSeconds": 4.5,
+      "qualityScore": 67,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 20,
+        "growthScore": 22,
+        "technicalScore": 25
+      },
+      "status": "REJECTED",
+      "rejectionReason": "QUALITY_BELOW_THRESHOLD (67/100)",
+      "fingerprint": "020773b7cc",
+      "hasRenderedFile": false
     },
     {
       "clipId": "proof_sim_08_full",
       "sourceSimId": "proof_sim_08",
       "format": "FULL_MATCH",
-      "durationSeconds": 6.9,
-      "qualityScore": 99,
-      "status": "APPROVED",
-      "rejectionReason": null,
-      "fingerprint": "6d57e6d0c6"
+      "durationSeconds": 6.4,
+      "qualityScore": 74,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 24,
+        "growthScore": 25,
+        "technicalScore": 25
+      },
+      "status": "REJECTED",
+      "rejectionReason": "QUALITY_BELOW_THRESHOLD (74/100)",
+      "fingerprint": "816528a1cb",
+      "hasRenderedFile": false
     },
     {
       "clipId": "proof_sim_08_climax",
       "sourceSimId": "proof_sim_08",
       "format": "CLIMAX_THRILLER",
-      "durationSeconds": 6.9,
-      "qualityScore": 97,
+      "durationSeconds": 4.8,
+      "qualityScore": 75,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 25,
+        "growthScore": 25,
+        "technicalScore": 25
+      },
       "status": "APPROVED",
       "rejectionReason": null,
-      "fingerprint": "6d57781670"
+      "fingerprint": "e03fdd0241",
+      "hasRenderedFile": false
     },
     {
       "clipId": "proof_sim_08_blitz",
       "sourceSimId": "proof_sim_08",
       "format": "OPENING_BLITZ",
-      "durationSeconds": 6,
-      "qualityScore": 97,
-      "status": "APPROVED",
-      "rejectionReason": null,
-      "fingerprint": "fb83c7763c"
+      "durationSeconds": 4.5,
+      "qualityScore": 74,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 24,
+        "growthScore": 25,
+        "technicalScore": 25
+      },
+      "status": "REJECTED",
+      "rejectionReason": "QUALITY_BELOW_THRESHOLD (74/100)",
+      "fingerprint": "4d0b58251f",
+      "hasRenderedFile": false
     },
     {
       "clipId": "proof_sim_09_full",
       "sourceSimId": "proof_sim_09",
       "format": "FULL_MATCH",
-      "durationSeconds": 6.17,
-      "qualityScore": 99,
-      "status": "APPROVED",
-      "rejectionReason": null,
-      "fingerprint": "9888cc6984"
+      "durationSeconds": 5.67,
+      "qualityScore": 67,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 20,
+        "growthScore": 22,
+        "technicalScore": 25
+      },
+      "status": "REJECTED",
+      "rejectionReason": "QUALITY_BELOW_THRESHOLD (67/100)",
+      "fingerprint": "34c02fec5d",
+      "hasRenderedFile": false
     },
     {
       "clipId": "proof_sim_09_climax",
       "sourceSimId": "proof_sim_09",
       "format": "CLIMAX_THRILLER",
-      "durationSeconds": 6.2,
-      "qualityScore": 97,
-      "status": "APPROVED",
-      "rejectionReason": null,
-      "fingerprint": "e55a7b5d02"
+      "durationSeconds": 4.8,
+      "qualityScore": 72,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 25,
+        "growthScore": 22,
+        "technicalScore": 25
+      },
+      "status": "REJECTED",
+      "rejectionReason": "QUALITY_BELOW_THRESHOLD (72/100)",
+      "fingerprint": "9918bb999d",
+      "hasRenderedFile": false
     },
     {
       "clipId": "proof_sim_09_blitz",
       "sourceSimId": "proof_sim_09",
       "format": "OPENING_BLITZ",
-      "durationSeconds": 6,
-      "qualityScore": 97,
-      "status": "APPROVED",
-      "rejectionReason": null,
-      "fingerprint": "2401eef72e"
+      "durationSeconds": 4.5,
+      "qualityScore": 67,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 20,
+        "growthScore": 22,
+        "technicalScore": 25
+      },
+      "status": "REJECTED",
+      "rejectionReason": "QUALITY_BELOW_THRESHOLD (67/100)",
+      "fingerprint": "96a64ca326",
+      "hasRenderedFile": false
     },
     {
       "clipId": "proof_sim_10_full",
       "sourceSimId": "proof_sim_10",
       "format": "FULL_MATCH",
-      "durationSeconds": 6.52,
-      "qualityScore": 99,
+      "durationSeconds": 6.02,
+      "qualityScore": 75,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 25,
+        "growthScore": 25,
+        "technicalScore": 25
+      },
       "status": "APPROVED",
       "rejectionReason": null,
-      "fingerprint": "3f6f6d129b"
+      "fingerprint": "391d0171e9",
+      "hasRenderedFile": false
     },
     {
       "clipId": "proof_sim_10_climax",
       "sourceSimId": "proof_sim_10",
       "format": "CLIMAX_THRILLER",
-      "durationSeconds": 6.5,
-      "qualityScore": 97,
+      "durationSeconds": 4.8,
+      "qualityScore": 75,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 25,
+        "growthScore": 25,
+        "technicalScore": 25
+      },
       "status": "APPROVED",
       "rejectionReason": null,
-      "fingerprint": "6251b9df85"
+      "fingerprint": "c5e3873153",
+      "hasRenderedFile": false
     },
     {
       "clipId": "proof_sim_10_blitz",
       "sourceSimId": "proof_sim_10",
       "format": "OPENING_BLITZ",
-      "durationSeconds": 6,
-      "qualityScore": 97,
+      "durationSeconds": 4.5,
+      "qualityScore": 75,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 25,
+        "growthScore": 25,
+        "technicalScore": 25
+      },
       "status": "APPROVED",
       "rejectionReason": null,
-      "fingerprint": "cb125d8bf4"
+      "fingerprint": "25a40b70d4",
+      "hasRenderedFile": false
     }
   ],
   "publishingQueue": [
     {
-      "queueId": "queue_proof_sim_01_full",
-      "clipId": "proof_sim_01_full",
-      "simId": "proof_sim_01",
-      "scheduledDate": "2026-11-03",
-      "scheduledTime": "2026-11-03T17:00:00.000Z",
-      "status": "READY_TO_PUBLISH",
-      "title": "⚡ 1 BALL VS 100 BALLS: CAN MULTIPLY WIN? ⚡",
-      "hookText": "Who breaks all 6 barriers first: 1 ball or 100 balls? 😱",
-      "description": "⚡ 1 BALL VS 100 BALLS: CAN MULTIPLY WIN? ⚡\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 99
-    },
-    {
-      "queueId": "queue_proof_sim_01_climax",
-      "clipId": "proof_sim_01_climax",
-      "simId": "proof_sim_01",
-      "scheduledDate": "2026-11-05",
-      "scheduledTime": "2026-11-05T17:00:00.000Z",
-      "status": "READY_TO_PUBLISH",
-      "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
-      "hookText": "Look at the speed difference on Tier 5 and 6! 😱",
-      "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 97
-    },
-    {
-      "queueId": "queue_proof_sim_01_blitz",
-      "clipId": "proof_sim_01_blitz",
-      "simId": "proof_sim_01",
-      "scheduledDate": "2026-11-07",
-      "scheduledTime": "2026-11-07T17:00:00.000Z",
-      "status": "READY_TO_PUBLISH",
-      "title": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡",
-      "hookText": "Watch this opening multiplication burst! 🤯",
-      "description": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 97
-    },
-    {
-      "queueId": "queue_proof_sim_02_full",
-      "clipId": "proof_sim_02_full",
-      "simId": "proof_sim_02",
-      "scheduledDate": "2026-11-09",
-      "scheduledTime": "2026-11-09T17:00:00.000Z",
-      "status": "READY_TO_PUBLISH",
-      "title": "📈 EXPONENTIAL ×2 VS LINEAR +20 SHOWDOWN 📈",
-      "hookText": "Who breaks all 6 barriers first: 4 ball or 30 balls? 😱",
-      "description": "📈 EXPONENTIAL ×2 VS LINEAR +20 SHOWDOWN 📈\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 99
-    },
-    {
-      "queueId": "queue_proof_sim_02_climax",
-      "clipId": "proof_sim_02_climax",
-      "simId": "proof_sim_02",
-      "scheduledDate": "2026-11-11",
-      "scheduledTime": "2026-11-11T17:00:00.000Z",
-      "status": "READY_TO_PUBLISH",
-      "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
-      "hookText": "Look at the speed difference on Tier 5 and 6! 😱",
-      "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 97
-    },
-    {
-      "queueId": "queue_proof_sim_02_blitz",
-      "clipId": "proof_sim_02_blitz",
-      "simId": "proof_sim_02",
-      "scheduledDate": "2026-11-13",
-      "scheduledTime": "2026-11-13T17:00:00.000Z",
-      "status": "READY_TO_PUBLISH",
-      "title": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡",
-      "hookText": "Watch this opening multiplication burst! 🤯",
-      "description": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 97
-    },
-    {
-      "queueId": "queue_proof_sim_03_full",
-      "clipId": "proof_sim_03_full",
-      "simId": "proof_sim_03",
-      "scheduledDate": "2026-11-15",
-      "scheduledTime": "2026-11-15T17:00:00.000Z",
-      "status": "READY_TO_PUBLISH",
-      "title": "🔥 50,000 MARBLE AVALANCHE: ×4 VS ×3 🔥",
-      "hookText": "Who breaks all 6 barriers first: 2 ball or 12 balls? 😱",
-      "description": "🔥 50,000 MARBLE AVALANCHE: ×4 VS ×3 🔥\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 99
-    },
-    {
       "queueId": "queue_proof_sim_03_climax",
       "clipId": "proof_sim_03_climax",
       "simId": "proof_sim_03",
-      "scheduledDate": "2026-11-17",
-      "scheduledTime": "2026-11-17T17:00:00.000Z",
+      "scheduledDate": "2026-11-03",
+      "scheduledTime": "2026-11-03T17:00:00.000Z",
       "status": "READY_TO_PUBLISH",
+      "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\proof_sim_03_climax.mp4",
+      "fileSizeBytes": 3463873,
+      "sha256": "3bbf92c1fd7c50c7aa733b991813eea7c05d68659c1b80bc3cd73b516352b167",
+      "durationSeconds": 4.8,
       "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
       "hookText": "Look at the speed difference on Tier 5 and 6! 😱",
-      "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
+      "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nUnderdog multiplication vs linear headstart in this autonomous marble simulation!\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!\n\n#shorts #physics #marblerun #gaming #satisfying",
+      "tags": [
+        "shorts",
+        "physics",
+        "marblerun",
+        "gaming",
+        "satisfying"
       ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 97
-    },
-    {
-      "queueId": "queue_proof_sim_03_blitz",
-      "clipId": "proof_sim_03_blitz",
-      "simId": "proof_sim_03",
-      "scheduledDate": "2026-11-19",
-      "scheduledTime": "2026-11-19T17:00:00.000Z",
-      "status": "READY_TO_PUBLISH",
-      "title": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡",
-      "hookText": "Watch this opening multiplication burst! 🤯",
-      "description": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 97
+      "pinnedComment": "Who was your pick? Comment below! 👇",
+      "qualityScore": 75,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 25,
+        "growthScore": 25,
+        "technicalScore": 25
+      }
     },
     {
       "queueId": "queue_proof_sim_04_full",
       "clipId": "proof_sim_04_full",
       "simId": "proof_sim_04",
-      "scheduledDate": "2026-11-21",
-      "scheduledTime": "2026-11-21T17:00:00.000Z",
+      "scheduledDate": "2026-11-05",
+      "scheduledTime": "2026-11-05T17:00:00.000Z",
       "status": "READY_TO_PUBLISH",
+      "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\proof_sim_04_full.mp4",
+      "fileSizeBytes": 4310131,
+      "sha256": "690c3dad4f0ad32f3febcfcace2afbdeec7dd6028646b20d7077d6cb0695a7fc",
+      "durationSeconds": 5.23,
       "title": "⚠️ HIGH STAKES: ×5 GAMBLE VS SAFE +15 ⚠️",
       "hookText": "Who breaks all 6 barriers first: 5 ball or 20 balls? 😱",
-      "description": "⚠️ HIGH STAKES: ×5 GAMBLE VS SAFE +15 ⚠️\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
+      "description": "⚠️ HIGH STAKES: ×5 GAMBLE VS SAFE +15 ⚠️\n\nUnderdog multiplication vs linear headstart in this autonomous marble simulation!\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!\n\n#shorts #physics #marblerun #gaming #satisfying",
+      "tags": [
+        "shorts",
+        "physics",
+        "marblerun",
+        "gaming",
+        "satisfying"
       ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 99
+      "pinnedComment": "Who was your pick? Comment below! 👇",
+      "qualityScore": 75,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 25,
+        "growthScore": 25,
+        "technicalScore": 25
+      }
     },
     {
       "queueId": "queue_proof_sim_04_climax",
       "clipId": "proof_sim_04_climax",
       "simId": "proof_sim_04",
-      "scheduledDate": "2026-11-23",
-      "scheduledTime": "2026-11-23T17:00:00.000Z",
+      "scheduledDate": "2026-11-07",
+      "scheduledTime": "2026-11-07T17:00:00.000Z",
       "status": "READY_TO_PUBLISH",
+      "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\proof_sim_04_climax.mp4",
+      "fileSizeBytes": 4062715,
+      "sha256": "820d1b4fa90128af134499f5adef93eaba5be769df4f54e07480145f8b785136",
+      "durationSeconds": 4.8,
       "title": "🔥 FINAL BARRIER SHOWDOWN: MULTIPLY TAKES IT! 🔥",
       "hookText": "Look at the speed difference on Tier 5 and 6! 😱",
-      "description": "🔥 FINAL BARRIER SHOWDOWN: MULTIPLY TAKES IT! 🔥\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
+      "description": "🔥 FINAL BARRIER SHOWDOWN: MULTIPLY TAKES IT! 🔥\n\nUnderdog multiplication vs linear headstart in this autonomous marble simulation!\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!\n\n#shorts #physics #marblerun #gaming #satisfying",
+      "tags": [
+        "shorts",
+        "physics",
+        "marblerun",
+        "gaming",
+        "satisfying"
       ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 97
+      "pinnedComment": "Who was your pick? Comment below! 👇",
+      "qualityScore": 75,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 25,
+        "growthScore": 25,
+        "technicalScore": 25
+      }
     },
     {
       "queueId": "queue_proof_sim_04_blitz",
       "clipId": "proof_sim_04_blitz",
       "simId": "proof_sim_04",
-      "scheduledDate": "2026-11-25",
-      "scheduledTime": "2026-11-25T17:00:00.000Z",
+      "scheduledDate": "2026-11-09",
+      "scheduledTime": "2026-11-09T17:00:00.000Z",
       "status": "READY_TO_PUBLISH",
+      "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\proof_sim_04_blitz.mp4",
+      "fileSizeBytes": 3590660,
+      "sha256": "cb0c8cb024bb2cb30555bd6d3c1a0f861abdb0b6e1eb1b72cce4641e6541650e",
+      "durationSeconds": 4.5,
       "title": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡",
       "hookText": "Watch this opening multiplication burst! 🤯",
-      "description": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
+      "description": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡\n\nUnderdog multiplication vs linear headstart in this autonomous marble simulation!\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!\n\n#shorts #physics #marblerun #gaming #satisfying",
+      "tags": [
+        "shorts",
+        "physics",
+        "marblerun",
+        "gaming",
+        "satisfying"
       ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 97
+      "pinnedComment": "Who was your pick? Comment below! 👇",
+      "qualityScore": 75,
+      "scoreBreakdown": {
+        "eventDensityPerSec": 0,
+        "windowEventsCount": 0,
+        "pacingScore": 0,
+        "dramaScore": 25,
+        "growthScore": 25,
+        "technicalScore": 25
+      }
+    }
+  ],
+  "dryRunReceipts": [
+    {
+      "success": true,
+      "mode": "DRY_RUN",
+      "platform": "youtube",
+      "platformVideoId": null,
+      "url": null,
+      "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\proof_sim_03_climax.mp4",
+      "fileSize": 3463873,
+      "sha256": "3bbf92c1fd7c50c7aa733b991813eea7c05d68659c1b80bc3cd73b516352b167",
+      "bitstreamVerified": true,
+      "status": "validated_ready_for_upload",
+      "metadata": {
+        "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
+        "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nUnderdog multiplication vs linear headstart in this autonomous marble simulation!\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!\n\n#shorts #physics #marblerun #gaming #satisfying",
+        "tags": [
+          "shorts",
+          "physics",
+          "marblerun",
+          "gaming",
+          "satisfying"
+        ],
+        "categoryId": "20"
+      },
+      "metrics": null,
+      "timestamp": "2026-11-03T08:50:00.360Z"
     },
     {
-      "queueId": "queue_proof_sim_05_full",
-      "clipId": "proof_sim_05_full",
-      "simId": "proof_sim_05",
-      "scheduledDate": "2026-11-27",
-      "scheduledTime": "2026-11-27T17:00:00.000Z",
-      "status": "READY_TO_PUBLISH",
-      "title": "🌿 FACTORIAL GROWTH (n!) VS POWER (2ⁿ) 🌿",
-      "hookText": "Who breaks all 6 barriers first: 1 ball or 2 balls? 😱",
-      "description": "🌿 FACTORIAL GROWTH (n!) VS POWER (2ⁿ) 🌿\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 99
+      "success": true,
+      "mode": "DRY_RUN",
+      "platform": "youtube",
+      "platformVideoId": null,
+      "url": null,
+      "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\proof_sim_04_full.mp4",
+      "fileSize": 4310131,
+      "sha256": "690c3dad4f0ad32f3febcfcace2afbdeec7dd6028646b20d7077d6cb0695a7fc",
+      "bitstreamVerified": true,
+      "status": "validated_ready_for_upload",
+      "metadata": {
+        "title": "⚠️ HIGH STAKES: ×5 GAMBLE VS SAFE +15 ⚠️",
+        "description": "⚠️ HIGH STAKES: ×5 GAMBLE VS SAFE +15 ⚠️\n\nUnderdog multiplication vs linear headstart in this autonomous marble simulation!\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!\n\n#shorts #physics #marblerun #gaming #satisfying",
+        "tags": [
+          "shorts",
+          "physics",
+          "marblerun",
+          "gaming",
+          "satisfying"
+        ],
+        "categoryId": "20"
+      },
+      "metrics": null,
+      "timestamp": "2026-11-03T08:50:00.958Z"
     },
     {
-      "queueId": "queue_proof_sim_05_climax",
-      "clipId": "proof_sim_05_climax",
-      "simId": "proof_sim_05",
-      "scheduledDate": "2026-11-29",
-      "scheduledTime": "2026-11-29T17:00:00.000Z",
-      "status": "READY_TO_PUBLISH",
-      "title": "🔥 FINAL BARRIER SHOWDOWN: MULTIPLY TAKES IT! 🔥",
-      "hookText": "Look at the speed difference on Tier 5 and 6! 😱",
-      "description": "🔥 FINAL BARRIER SHOWDOWN: MULTIPLY TAKES IT! 🔥\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 97
+      "success": true,
+      "mode": "DRY_RUN",
+      "platform": "youtube",
+      "platformVideoId": null,
+      "url": null,
+      "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\proof_sim_04_climax.mp4",
+      "fileSize": 4062715,
+      "sha256": "820d1b4fa90128af134499f5adef93eaba5be769df4f54e07480145f8b785136",
+      "bitstreamVerified": true,
+      "status": "validated_ready_for_upload",
+      "metadata": {
+        "title": "🔥 FINAL BARRIER SHOWDOWN: MULTIPLY TAKES IT! 🔥",
+        "description": "🔥 FINAL BARRIER SHOWDOWN: MULTIPLY TAKES IT! 🔥\n\nUnderdog multiplication vs linear headstart in this autonomous marble simulation!\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!\n\n#shorts #physics #marblerun #gaming #satisfying",
+        "tags": [
+          "shorts",
+          "physics",
+          "marblerun",
+          "gaming",
+          "satisfying"
+        ],
+        "categoryId": "20"
+      },
+      "metrics": null,
+      "timestamp": "2026-11-03T08:50:01.475Z"
     },
     {
-      "queueId": "queue_proof_sim_05_blitz",
-      "clipId": "proof_sim_05_blitz",
-      "simId": "proof_sim_05",
-      "scheduledDate": "2026-12-01",
-      "scheduledTime": "2026-12-01T17:00:00.000Z",
-      "status": "READY_TO_PUBLISH",
-      "title": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡",
-      "hookText": "Watch this opening multiplication burst! 🤯",
-      "description": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 97
-    },
-    {
-      "queueId": "queue_proof_sim_06_full",
-      "clipId": "proof_sim_06_full",
-      "simId": "proof_sim_06",
-      "scheduledDate": "2026-12-03",
-      "scheduledTime": "2026-12-03T17:00:00.000Z",
-      "status": "READY_TO_PUBLISH",
-      "title": "🏎️ ULTRA SPEED SPRINT: ×3 VS +30 🏎️",
-      "hookText": "Who breaks all 6 barriers first: 3 ball or 40 balls? 😱",
-      "description": "🏎️ ULTRA SPEED SPRINT: ×3 VS +30 🏎️\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 99
-    },
-    {
-      "queueId": "queue_proof_sim_06_climax",
-      "clipId": "proof_sim_06_climax",
-      "simId": "proof_sim_06",
-      "scheduledDate": "2026-12-05",
-      "scheduledTime": "2026-12-05T17:00:00.000Z",
-      "status": "READY_TO_PUBLISH",
-      "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
-      "hookText": "Look at the speed difference on Tier 5 and 6! 😱",
-      "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 97
-    },
-    {
-      "queueId": "queue_proof_sim_06_blitz",
-      "clipId": "proof_sim_06_blitz",
-      "simId": "proof_sim_06",
-      "scheduledDate": "2026-12-07",
-      "scheduledTime": "2026-12-07T17:00:00.000Z",
-      "status": "READY_TO_PUBLISH",
-      "title": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡",
-      "hookText": "Watch this opening multiplication burst! 🤯",
-      "description": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 97
-    },
-    {
-      "queueId": "queue_proof_sim_07_full",
-      "clipId": "proof_sim_07_full",
-      "simId": "proof_sim_07",
-      "scheduledDate": "2026-12-09",
-      "scheduledTime": "2026-12-09T17:00:00.000Z",
-      "status": "READY_TO_PUBLISH",
-      "title": "💥 2 BALLS VS 150 BALLS: THE IMPOSSIBLE REVERSAL 💥",
-      "hookText": "Who breaks all 6 barriers first: 2 ball or 150 balls? 😱",
-      "description": "💥 2 BALLS VS 150 BALLS: THE IMPOSSIBLE REVERSAL 💥\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 99
-    },
-    {
-      "queueId": "queue_proof_sim_07_climax",
-      "clipId": "proof_sim_07_climax",
-      "simId": "proof_sim_07",
-      "scheduledDate": "2026-12-11",
-      "scheduledTime": "2026-12-11T17:00:00.000Z",
-      "status": "READY_TO_PUBLISH",
-      "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
-      "hookText": "Look at the speed difference on Tier 5 and 6! 😱",
-      "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 97
-    },
-    {
-      "queueId": "queue_proof_sim_07_blitz",
-      "clipId": "proof_sim_07_blitz",
-      "simId": "proof_sim_07",
-      "scheduledDate": "2026-12-13",
-      "scheduledTime": "2026-12-13T17:00:00.000Z",
-      "status": "READY_TO_PUBLISH",
-      "title": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡",
-      "hookText": "Watch this opening multiplication burst! 🤯",
-      "description": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 97
-    },
-    {
-      "queueId": "queue_proof_sim_08_full",
-      "clipId": "proof_sim_08_full",
-      "simId": "proof_sim_08",
-      "scheduledDate": "2026-12-15",
-      "scheduledTime": "2026-12-15T17:00:00.000Z",
-      "status": "READY_TO_PUBLISH",
-      "title": "⚔️ ×3 VS ×3: IDENTICAL WEAPONS BATTLE ⚔️",
-      "hookText": "Who breaks all 6 barriers first: 5 ball or 5 balls? 😱",
-      "description": "⚔️ ×3 VS ×3: IDENTICAL WEAPONS BATTLE ⚔️\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 99
-    },
-    {
-      "queueId": "queue_proof_sim_08_climax",
-      "clipId": "proof_sim_08_climax",
-      "simId": "proof_sim_08",
-      "scheduledDate": "2026-12-17",
-      "scheduledTime": "2026-12-17T17:00:00.000Z",
-      "status": "READY_TO_PUBLISH",
-      "title": "🔥 FINAL BARRIER SHOWDOWN: MULTIPLY TAKES IT! 🔥",
-      "hookText": "Look at the speed difference on Tier 5 and 6! 😱",
-      "description": "🔥 FINAL BARRIER SHOWDOWN: MULTIPLY TAKES IT! 🔥\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 97
-    },
-    {
-      "queueId": "queue_proof_sim_08_blitz",
-      "clipId": "proof_sim_08_blitz",
-      "simId": "proof_sim_08",
-      "scheduledDate": "2026-12-19",
-      "scheduledTime": "2026-12-19T17:00:00.000Z",
-      "status": "READY_TO_PUBLISH",
-      "title": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡",
-      "hookText": "Watch this opening multiplication burst! 🤯",
-      "description": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 97
-    },
-    {
-      "queueId": "queue_proof_sim_09_full",
-      "clipId": "proof_sim_09_full",
-      "simId": "proof_sim_09",
-      "scheduledDate": "2026-12-21",
-      "scheduledTime": "2026-12-21T17:00:00.000Z",
-      "status": "READY_TO_PUBLISH",
-      "title": "🛡️ THE SLOW TANK: +50 BALLS PER TIER 🛡️",
-      "hookText": "Who breaks all 6 barriers first: 1 ball or 50 balls? 😱",
-      "description": "🛡️ THE SLOW TANK: +50 BALLS PER TIER 🛡️\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 99
-    },
-    {
-      "queueId": "queue_proof_sim_09_climax",
-      "clipId": "proof_sim_09_climax",
-      "simId": "proof_sim_09",
-      "scheduledDate": "2026-12-23",
-      "scheduledTime": "2026-12-23T17:00:00.000Z",
-      "status": "READY_TO_PUBLISH",
-      "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
-      "hookText": "Look at the speed difference on Tier 5 and 6! 😱",
-      "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 97
-    },
-    {
-      "queueId": "queue_proof_sim_09_blitz",
-      "clipId": "proof_sim_09_blitz",
-      "simId": "proof_sim_09",
-      "scheduledDate": "2026-12-25",
-      "scheduledTime": "2026-12-25T17:00:00.000Z",
-      "status": "READY_TO_PUBLISH",
-      "title": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡",
-      "hookText": "Watch this opening multiplication burst! 🤯",
-      "description": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 97
-    },
-    {
-      "queueId": "queue_proof_sim_10_full",
-      "clipId": "proof_sim_10_full",
-      "simId": "proof_sim_10",
-      "scheduledDate": "2026-12-27",
-      "scheduledTime": "2026-12-27T17:00:00.000Z",
-      "status": "READY_TO_PUBLISH",
-      "title": "🏆 CHAMPIONSHIP SHOWDOWN: 10,000 MARBLE CLASH 🏆",
-      "hookText": "Who breaks all 6 barriers first: 3 ball or 25 balls? 😱",
-      "description": "🏆 CHAMPIONSHIP SHOWDOWN: 10,000 MARBLE CLASH 🏆\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 99
-    },
-    {
-      "queueId": "queue_proof_sim_10_climax",
-      "clipId": "proof_sim_10_climax",
-      "simId": "proof_sim_10",
-      "scheduledDate": "2026-12-29",
-      "scheduledTime": "2026-12-29T17:00:00.000Z",
-      "status": "READY_TO_PUBLISH",
-      "title": "🔥 FINAL BARRIER SHOWDOWN: MULTIPLY TAKES IT! 🔥",
-      "hookText": "Look at the speed difference on Tier 5 and 6! 😱",
-      "description": "🔥 FINAL BARRIER SHOWDOWN: MULTIPLY TAKES IT! 🔥\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 97
-    },
-    {
-      "queueId": "queue_proof_sim_10_blitz",
-      "clipId": "proof_sim_10_blitz",
-      "simId": "proof_sim_10",
-      "scheduledDate": "2026-12-31",
-      "scheduledTime": "2026-12-31T17:00:00.000Z",
-      "status": "READY_TO_PUBLISH",
-      "title": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡",
-      "hookText": "Watch this opening multiplication burst! 🤯",
-      "description": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡\n\nUnderdog with multiplication vs huge headstart with addition: who shatters all 6 barriers first?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!",
-      "hashtags": [
-        "#shorts",
-        "#physics",
-        "#marblerun",
-        "#gaming",
-        "#satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Left or Right? Comment below! 👇",
-      "qualityScore": 97
+      "success": true,
+      "mode": "DRY_RUN",
+      "platform": "youtube",
+      "platformVideoId": null,
+      "url": null,
+      "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\proof_sim_04_blitz.mp4",
+      "fileSize": 3590660,
+      "sha256": "cb0c8cb024bb2cb30555bd6d3c1a0f861abdb0b6e1eb1b72cce4641e6541650e",
+      "bitstreamVerified": true,
+      "status": "validated_ready_for_upload",
+      "metadata": {
+        "title": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡",
+        "description": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡\n\nUnderdog multiplication vs linear headstart in this autonomous marble simulation!\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!\n\n#shorts #physics #marblerun #gaming #satisfying",
+        "tags": [
+          "shorts",
+          "physics",
+          "marblerun",
+          "gaming",
+          "satisfying"
+        ],
+        "categoryId": "20"
+      },
+      "metrics": null,
+      "timestamp": "2026-11-03T08:50:01.968Z"
     }
   ]
 }

@@ -4,7 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
-const { spawn } = require('child_process');
+const { spawn, execSync } = require('child_process');
 const puppeteer = require('puppeteer-core');
 const { AudioSynthesizer } = require('./src/audio_generator');
 
@@ -27,6 +27,7 @@ function parseArgs() {
     config: 'configs/underdog_x3_vs_plus2.json',
     output: null,
     fps: 60,
+    startTime: 0,
     duration: null,
     noAudio: false,
     quality: 0.82
@@ -37,6 +38,7 @@ function parseArgs() {
     if (arg === '--config' && args[i + 1]) options.config = args[++i];
     else if (arg === '--output' && args[i + 1]) options.output = args[++i];
     else if (arg === '--fps' && args[i + 1]) options.fps = parseInt(args[++i], 10);
+    else if (arg === '--start' && args[i + 1]) options.startTime = parseFloat(args[++i]);
     else if (arg === '--duration' && args[i + 1]) options.duration = parseFloat(args[++i]);
     else if (arg === '--quality' && args[i + 1]) options.quality = parseFloat(args[++i]);
     else if (arg === '--no-audio') options.noAudio = true;
@@ -77,19 +79,21 @@ async function renderVideo(options) {
   try {
     execSync('ffmpeg -version', { stdio: 'ignore' });
   } catch (err) {
-    throw new Error('FFmpeg is not installed or not in PATH. Please install FFmpeg to export MP4 videos.');
+    throw new Error(`FFmpeg is not installed or not in PATH: ${err.message}`);
   }
 
   const tempVideoMp4 = path.join(outputDir, `temp_${Date.now()}_video.mp4`);
   const tempWavPath = path.join(outputDir, `temp_${Date.now()}_audio.wav`);
 
-  const totalFrames = Math.ceil((config.durationSeconds || 15) * (config.fps || 60));
+  const clipStartTime = options.startTime || 0;
+  const clipDuration = options.duration || (config.durationSeconds - clipStartTime);
+  const totalFrames = Math.ceil(clipDuration * (config.fps || 60));
 
   console.log('='.repeat(65));
   console.log(`🎬 BURSTPOINT 1080x1920 UNIVERSAL VIDEO RENDERER`);
   console.log(`Game Mode: ${config.gameType || config.type || 'multi_race'}`);
   console.log(`Title:     ${config.title}`);
-  console.log(`Duration:  ${config.durationSeconds}s (${totalFrames} frames @ ${config.fps} FPS)`);
+  console.log(`Duration:  ${clipDuration.toFixed(2)}s (${totalFrames} frames @ ${config.fps || 60} FPS, start: ${clipStartTime}s)`);
   console.log(`Output:    ${finalMp4Path}`);
   console.log('='.repeat(65));
 
@@ -199,7 +203,7 @@ async function renderVideo(options) {
     await page.goto(`http://127.0.0.1:${serverPort}/index.html`, { waitUntil: 'domcontentloaded' });
 
     // Run deterministic frame generation in browser via GameManager
-    await page.evaluate(async (simConfig, jpegQuality) => {
+    await page.evaluate(async (simConfig, jpegQuality, clipStartSec, clipDurationSec) => {
       const canvas = document.createElement('canvas');
       canvas.width = 1080;
       canvas.height = 1920;
@@ -208,18 +212,22 @@ async function renderVideo(options) {
 
       const game = GameManager.createGame(simConfig);
 
-      const dt = 1 / (simConfig.fps || 60);
-      const totalFrames = Math.ceil(simConfig.durationSeconds * simConfig.fps);
+      const fps = simConfig.fps || 60;
+      const dt = 1 / fps;
+      const startFrame = Math.floor(clipStartSec * fps);
+      const endFrame = startFrame + Math.ceil(clipDurationSec * fps);
 
-      for (let f = 0; f < totalFrames; f++) {
+      for (let f = 0; f < endFrame; f++) {
         game.update(dt);
-        game.render(ctx);
+        if (f >= startFrame) {
+          game.render(ctx);
 
-        const blob = await new Promise(resolve => {
-          canvas.toBlob(resolve, 'image/jpeg', jpegQuality || 0.82);
-        });
+          const blob = await new Promise(resolve => {
+            canvas.toBlob(resolve, 'image/jpeg', jpegQuality || 0.82);
+          });
 
-        await fetch('/frame', { method: 'POST', body: blob });
+          await fetch('/frame', { method: 'POST', body: blob });
+        }
       }
 
       await fetch('/finish', {
@@ -230,7 +238,7 @@ async function renderVideo(options) {
           winner: game.winner || null
         })
       });
-    }, config, options.quality);
+    }, config, options.quality, clipStartTime, clipDuration);
 
     await finishPromise;
     await ffmpegVideoClosed;
@@ -245,7 +253,10 @@ async function renderVideo(options) {
     if (!options.noAudio && finishData?.events && finishData.events.length > 0) {
       console.log(`🎵 Synthesizing procedural 44.1kHz audio track...`);
       const synth = new AudioSynthesizer(44100);
-      synth.generateWav(finishData.events, config.durationSeconds, tempWavPath);
+      const clipEvents = finishData.events
+        .filter(e => e.t >= clipStartTime && e.t <= (clipStartTime + clipDuration))
+        .map(e => ({ ...e, t: Math.max(0, e.t - clipStartTime) }));
+      synth.generateWav(clipEvents, clipDuration, tempWavPath);
 
       console.log(`🎞️  Muxing video + audio into final MP4...`);
       await new Promise((resolve, reject) => {

@@ -58,31 +58,35 @@ console.log(`  ✓ Sample Title: "${day1.title}"`);
 console.log(`  ✓ Sample Hook:  "${day1.hookText}"`);
 console.log(`  ✓ Tags:         ${day1.tags.join(' ')}`);
 
-// Test 3: Publishing Dispatch & History Recording
-console.log('\n▶ [3/4] Executing Publishing Dispatch & Performance Recording...');
-const publishRes = scheduler.publishNext();
-assert(publishRes.success, 'Publish dispatch must succeed');
-assert.strictEqual(publishRes.post.status, 'PUBLISHED');
+(async () => {
+  // Test 3: Publishing Dispatch & History Recording
+  console.log('\n▶ [3/4] Executing Publishing Dispatch & Performance Recording...');
+  const publishRes = await scheduler.publishNext();
+  assert(publishRes.success, 'Publish dispatch must succeed');
+  assert.strictEqual(publishRes.post.status, 'PUBLISHED');
 
-const history = scheduler.getHistory();
-assert(history.length >= 1, 'History must record published video');
-const latest = history[history.length - 1];
-assert.strictEqual(latest.gameType, 'multi_race');
-assert(latest.metrics.simulatedViews > 0, 'Metrics must record viewership data');
-console.log(`  ✓ Post "${publishRes.post.title}" published successfully.`);
-console.log(`  ✓ Analytics logged: ${latest.metrics.simulatedViews} views, ${latest.metrics.averageRetentionPct}% retention.`);
+  const history = scheduler.getHistory();
+  assert(history.length >= 1, 'History must record published video');
+  const latest = history[history.length - 1];
+  assert.strictEqual(latest.gameType, 'multi_race');
+  assert(latest.status === 'PUBLISHED' || latest.status === 'DRY_RUN_VERIFIED', 'Status must be verified');
+  console.log(`  ✓ Post "${publishRes.post.title}" dispatched successfully (status: ${latest.status}).`);
 
-// Test 4: Duplicate Protection
-console.log('\n▶ [4/4] Verifying Duplicate Protection Guardrails...');
-const duplicateAttempt = scheduler.publishNext();
-// If the next pending item is not a duplicate, it should publish cleanly
-assert(duplicateAttempt.success, 'Subsequent unique post must publish cleanly');
+  // Test 4: Duplicate Protection
+  console.log('\n▶ [4/4] Verifying Duplicate Protection Guardrails...');
+  const duplicateAttempt = await scheduler.publishNext();
+  // If the next pending item is not a duplicate, it should publish cleanly
+  assert(duplicateAttempt.success, 'Subsequent unique post must publish cleanly');
 
-// Cleanup isolated test directory
-if (fs.existsSync(testDir)) {
-  fs.rmSync(testDir, { recursive: true, force: true });
-}
+  // Cleanup isolated test directory
+  if (fs.existsSync(testDir)) {
+    fs.rmSync(testDir, { recursive: true, force: true });
+  }
 
-console.log('\n' + '='.repeat(70));
-console.log('🎉 PUBLISHING AUTOMATION & ROTATING SCHEDULER TESTS PASSED (100%)!');
-console.log('='.repeat(70));
+  console.log('\n' + '='.repeat(70));
+  console.log('🎉 PUBLISHING AUTOMATION & ROTATING SCHEDULER TESTS PASSED (100%)!');
+  console.log('='.repeat(70));
+})().catch(err => {
+  console.error('Scheduler test failed:', err);
+  process.exit(1);
+});

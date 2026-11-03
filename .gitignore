@@ -8,8 +8,9 @@ temp/
 .temp_*
 *.log
 
-# Large binary video files (generate via `node render.js`)
+# Large binary video files (generate via `node render.js` or `npm run production:proof`)
 output/*.mp4
+output/proof_clips/*.mp4
 output/temp_*
 daily_queue/**/*.mp4
 share_server.py

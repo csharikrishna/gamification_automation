@@ -4,12 +4,14 @@
 
 const fs = require('fs');
 const path = require('path');
+const { YouTubePublisher } = require('./publishers/youtube_publisher');
 
 class PublishingScheduler {
   constructor(options = {}) {
     this.outputDir = options.outputDir || path.resolve('output');
     this.queuePath = path.join(this.outputDir, 'publishing_queue.json');
     this.historyPath = path.join(this.outputDir, 'publishing_history.json');
+    this.publisher = options.publisher || new YouTubePublisher(options.publisherConfig || {});
 
     // 8-Day Publishing Cycle: 4 Releases, 2 Gap Days, 2 Weekend Maintenance/Rest Days
     this.cadence = [
@@ -130,8 +132,8 @@ class PublishingScheduler {
     }
   }
 
-  // Simulate/Execute publishing next eligible post with safety retries and duplicate protection
-  publishNext(options = {}) {
+  // Execute publishing next eligible post with safety retries and duplicate protection
+  async publishNext(options = {}) {
     const queue = this.getQueue();
     const history = this.getHistory();
 
@@ -151,25 +153,50 @@ class PublishingScheduler {
     }
 
     try {
-      // Simulate/Execute publish action
-      const publishRecord = {
-        publishId: `pub_${Date.now()}`,
-        queueId: pendingItem.queueId,
-        candidateId: pendingItem.candidateId,
-        gameType: pendingItem.gameType,
-        title: pendingItem.title,
-        publishedAt: new Date().toISOString(),
-        scheduledFor: pendingItem.scheduledTime,
-        status: 'SUCCESS',
-        metrics: {
-          simulatedViews: 12500,
-          averageRetentionPct: 88.4,
-          likes: 940,
-          comments: 112
-        }
-      };
+      let publishRecord;
 
-      pendingItem.status = 'PUBLISHED';
+      // Real media validation via YouTubePublisher
+      if (pendingItem.videoPath && fs.existsSync(pendingItem.videoPath)) {
+        const pubResult = await this.publisher.publish(pendingItem, options);
+        publishRecord = {
+          publishId: `pub_${Date.now()}`,
+          queueId: pendingItem.queueId,
+          candidateId: pendingItem.candidateId,
+          gameType: pendingItem.gameType,
+          title: pendingItem.title,
+          videoPath: pendingItem.videoPath,
+          fileSize: pubResult.fileSize,
+          sha256: pubResult.sha256,
+          mode: pubResult.mode,
+          platform: 'youtube',
+          platformVideoId: pubResult.platformVideoId, // null in DRY_RUN, genuine ID in LIVE
+          url: pubResult.url,
+          publishedAt: new Date().toISOString(),
+          scheduledFor: pendingItem.scheduledTime,
+          status: pubResult.mode === 'LIVE' ? 'PUBLISHED' : 'DRY_RUN_VERIFIED',
+          metrics: pubResult.metrics // zero fake metrics (null)
+        };
+      } else {
+        // Fallback for metadata-only test schedules
+        publishRecord = {
+          publishId: `pub_${Date.now()}`,
+          queueId: pendingItem.queueId,
+          candidateId: pendingItem.candidateId,
+          gameType: pendingItem.gameType,
+          title: pendingItem.title,
+          publishedAt: new Date().toISOString(),
+          scheduledFor: pendingItem.scheduledTime,
+          status: 'PUBLISHED',
+          mode: 'SIMULATION',
+          metrics: options.includeSimulatedMetrics ? {
+            views: 0,
+            likes: 0,
+            comments: 0
+          } : null
+        };
+      }
+
+      pendingItem.status = publishRecord.status;
       pendingItem.publishedAt = publishRecord.publishedAt;
       pendingItem.publishId = publishRecord.publishId;
 
@@ -184,8 +211,8 @@ class PublishingScheduler {
         record: publishRecord
       };
     } catch (err) {
-      pendingItem.retryCount++;
-      if (pendingItem.retryCount >= pendingItem.maxRetries) {
+      pendingItem.retryCount = (pendingItem.retryCount || 0) + 1;
+      if (pendingItem.retryCount >= (pendingItem.maxRetries || 3)) {
         pendingItem.status = 'FAILED';
         pendingItem.error = err.message;
       } else {
