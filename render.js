@@ -178,6 +178,8 @@ async function renderVideo(options) {
   });
 
   const page = await browser.newPage();
+  page.on('console', msg => console.log('BROWSER CONSOLE:', msg.text()));
+  page.on('pageerror', err => console.error('BROWSER PAGE ERROR:', err.message));
   await page.setViewport({ width: 1080, height: 1920, deviceScaleFactor: 1 });
   await page.goto(`http://127.0.0.1:${serverPort}/index.html`, { waitUntil: 'domcontentloaded' });
 

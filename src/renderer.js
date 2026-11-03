@@ -94,12 +94,21 @@ class CanvasRenderer {
     const ctx = this.ctx;
     const w = this.width;
 
-    // 1. Top Hook Pill
+    // 1. Top Hook Pill with Dynamic Width & Font Scaling (VIS-03, VIS-09)
     const tagText = engine.config.title || '⚡ UNDERDOG BATTLE · MULTIPLY VS ADD ⚡';
     ctx.save();
-    ctx.font = '700 24px "Inter", "Segoe UI", sans-serif';
-    const textWidth = ctx.measureText(tagText).width;
-    const pillW = textWidth + 56;
+    let fontSize = 24;
+    ctx.font = `700 ${fontSize}px "Inter", "Segoe UI", sans-serif`;
+    let textWidth = ctx.measureText(tagText).width;
+    const maxTextWidth = w - 140;
+
+    while (textWidth > maxTextWidth && fontSize > 14) {
+      fontSize -= 1.5;
+      ctx.font = `700 ${fontSize}px "Inter", "Segoe UI", sans-serif`;
+      textWidth = ctx.measureText(tagText).width;
+    }
+
+    const pillW = Math.min(w - 60, textWidth + 56);
     const pillH = 46;
     const pillX = (w - pillW) / 2;
     const pillY = 32;
@@ -125,8 +134,9 @@ class CanvasRenderer {
     this.drawScoreCard(left, 285, 160);
     this.drawScoreCard(right, 795, 160);
 
-    // Current Stage n Indicator Badge in the middle
-    const currentN = Math.min(6, Math.floor(engine.simTime / (engine.stageDuration || 2.1)) + 1);
+    // VIS-01, RACE-01: Stage Indicator Badge derived from actual broken barrier progress
+    const leadingTier = Math.max(left.currentTier, right.currentTier);
+    const currentN = Math.min(6, leadingTier + 1);
     ctx.save();
     ctx.beginPath();
     ctx.roundRect(w / 2 - 80, 190, 160, 36, 18);
@@ -210,10 +220,11 @@ class CanvasRenderer {
       const tierDisplay = Math.min(lane.tiles.length, lane.currentTier + 1);
       ctx.fillText(`${lane.name} · TIER ${tierDisplay}/${lane.tiles.length}`, lane.minX + lane.width / 2, topY + 28);
 
-      // Race Leader Crown Pill
+      // Race Leader Crown Pill (VIS-02, RACE-02: Evaluated from complete race state)
       const otherSide = side === 'left' ? 'right' : 'left';
       const otherLane = engine.lanes[otherSide];
-      if (lane.currentTier > otherLane.currentTier) {
+      const isLeader = this.checkRaceLeader(lane, otherLane);
+      if (isLeader) {
         ctx.save();
         ctx.beginPath();
         ctx.roundRect(lane.minX + lane.width / 2 - 65, topY - 24, 130, 26, 13);
@@ -229,6 +240,24 @@ class CanvasRenderer {
 
       ctx.restore();
     }
+  }
+
+  // VIS-02, RACE-02: Comprehensive race leader comparison
+  checkRaceLeader(lane, other) {
+    if (lane.reachedBottom && !other.reachedBottom) return true;
+    if (other.reachedBottom && !lane.reachedBottom) return false;
+    if (lane.currentTier > other.currentTier) return true;
+    if (lane.currentTier < other.currentTier) return false;
+
+    // Same tier: compare damage dealt to current barrier
+    const t1 = lane.tiles[lane.currentTier];
+    const t2 = other.tiles[other.currentTier];
+    if (t1 && t2) {
+      const dmg1 = t1.maxHP - t1.currentHP;
+      const dmg2 = t2.maxHP - t2.currentHP;
+      if (Math.abs(dmg1 - dmg2) > 3) return dmg1 > dmg2;
+    }
+    return lane.exactScore > other.exactScore;
   }
 
   drawObstaclesAndTiles(engine) {

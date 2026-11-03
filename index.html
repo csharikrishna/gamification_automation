@@ -328,6 +328,7 @@
   </main>
 
   <!-- Load Game Environments, Sounds, Engine, and AI Director -->
+  <script src="src/config_validator.js"></script>
   <script src="src/sound.js"></script>
   <script src="src/engine.js"></script>
   <script src="src/renderer.js"></script>
@@ -442,6 +443,8 @@
     let isRunning = false;
     let playbackSpeed = 1.0;
     let lastTime = 0;
+    let accumulator = 0;
+    const fixedDt = 1 / 60;
     let animId = null;
     let processedEventCount = 0;
 
@@ -455,20 +458,28 @@
       }
     }
 
+    // UI-01, UI-08: Fixed-timestep accumulator (display refresh rate independent)
     function loop(now) {
       if (!isRunning) return;
       if (!lastTime) lastTime = now;
+      const elapsed = Math.min(0.1, (now - lastTime) / 1000);
       lastTime = now;
 
-      const step = (1 / 60) * playbackSpeed;
-      game.update(step);
-      syncLiveAudio();
+      accumulator += elapsed * playbackSpeed;
+      while (accumulator >= fixedDt) {
+        game.update(fixedDt);
+        syncLiveAudio();
+        accumulator -= fixedDt;
+        if (game.isFinished) {
+          isRunning = false;
+          document.getElementById('playBtn').textContent = '↻ Replay';
+          break;
+        }
+      }
+
       game.render(ctx);
 
-      if (game.isFinished) {
-        isRunning = false;
-        document.getElementById('playBtn').textContent = '↻ Replay';
-      } else {
+      if (isRunning) {
         animId = requestAnimationFrame(loop);
       }
     }
@@ -568,22 +579,30 @@ ${(meta.tags || []).join(', ')}`;
       play();
     });
 
-    // AI Director Formulate Button
+    // AI Director Formulate Button (UI-05: Robust try/finally handling)
     let aiSeed = 1;
     document.getElementById('aiDirectorBtn').addEventListener('click', async () => {
       const btn = document.getElementById('aiDirectorBtn');
       btn.textContent = '🧠 AI Formulating Concept...';
-      const newConfig = await director.formulateDailyGame(aiSeed++);
-      activeConfig = newConfig;
+      btn.disabled = true;
+      try {
+        const newConfig = await director.formulateDailyGame(aiSeed++);
+        activeConfig = newConfig;
 
-      document.querySelectorAll('.mode-tab').forEach(t => {
-        t.classList.toggle('active', t.dataset.mode === (newConfig.gameType || 'multi_race'));
-      });
+        document.querySelectorAll('.mode-tab').forEach(t => {
+          t.classList.toggle('active', t.dataset.mode === (newConfig.gameType || 'multi_race'));
+        });
 
-      reset();
-      updateUI();
-      play();
-      btn.textContent = '🤖 AI Director: Formulate New Game';
+        reset();
+        updateUI();
+        play();
+      } catch (err) {
+        console.error('AI Director formulation error:', err);
+        alert('AI Director formulation failed: ' + err.message);
+      } finally {
+        btn.textContent = '🤖 AI Director: Formulate New Game';
+        btn.disabled = false;
+      }
     });
 
     document.getElementById('playBtn').addEventListener('click', () => {
@@ -608,11 +627,16 @@ ${(meta.tags || []).join(', ')}`;
       playbackSpeed = parseFloat(e.target.value) || 1.0;
     });
 
-    document.getElementById('copyMetaBtn').addEventListener('click', () => {
-      const text = document.getElementById('metaContent').textContent;
-      navigator.clipboard.writeText(text);
+    // UI-06: Await clipboard writeText properly
+    document.getElementById('copyMetaBtn').addEventListener('click', async () => {
       const btn = document.getElementById('copyMetaBtn');
-      btn.textContent = '✅ Copied!';
+      const text = document.getElementById('metaContent').textContent;
+      try {
+        await navigator.clipboard.writeText(text);
+        btn.textContent = '✅ Copied!';
+      } catch (err) {
+        btn.textContent = '❌ Failed';
+      }
       setTimeout(() => btn.textContent = '📋 Copy', 2000);
     });
 

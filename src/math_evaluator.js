@@ -103,15 +103,24 @@ class MathEvaluator {
   };
 
   static factorial(n) {
+    if (n <= 1) return 1;
     let r = 1;
-    for (let i = 2; i <= n; i++) r *= i;
+    for (let i = 2; i <= n; i++) {
+      r *= i;
+      if (!Number.isSafeInteger(r)) {
+        // MATH-06, MATH-07: Guard against overflow
+        return r;
+      }
+    }
     return r;
   }
 
+  // MATH-01: Correct 1-based Fibonacci: F(1)=1, F(2)=1, F(3)=2, F(4)=3, F(5)=5, F(6)=8
   static fibonacci(n) {
-    if (n <= 1) return 1;
+    if (n <= 0) return 0;
+    if (n === 1 || n === 2) return 1;
     let a = 1, b = 1;
-    for (let i = 2; i <= n; i++) {
+    for (let i = 3; i <= n; i++) {
       const c = a + b;
       a = b;
       b = c;
@@ -119,8 +128,8 @@ class MathEvaluator {
     return b;
   }
 
-  // Safe expression evaluator for user-defined formulas
-  static evalFormula(expr, n) {
+  // Safe expression evaluator for user-defined formulas (MATH-02..MATH-09)
+  static evalFormula(expr, n = 1) {
     if (typeof expr === 'function') return expr(n);
     if (typeof expr === 'number') return expr;
 
@@ -130,18 +139,24 @@ class MathEvaluator {
     cleaned = cleaned.replace(/\^/g, '**');
     cleaned = cleaned.replace(/\bn\b/g, `(${n})`);
 
-    // Whitelist check
+    // Whitelist check: numbers, basic math operators, parentheses
     if (!/^[0-9\s\+\-\*\/\(\)\.\,]+$/.test(cleaned.replace(/\*\*/g, ''))) {
-      console.warn('Invalid math characters in formula:', expr);
-      return Math.max(1, n);
+      throw new Error(`Invalid mathematical characters in formula: "${expr}"`);
     }
 
     try {
       const val = new Function(`return (${cleaned})`)();
-      return Math.max(1, Math.round(Number(val) || 1));
+      const num = Number(val);
+      if (isNaN(num)) {
+        throw new Error(`Formula "${expr}" at n=${n} evaluated to NaN`);
+      }
+      if (!isFinite(num)) {
+        return num > 0 ? Number.MAX_SAFE_INTEGER : -Number.MAX_SAFE_INTEGER;
+      }
+      return num;
     } catch (err) {
       console.error('Error evaluating formula:', expr, err);
-      return Math.max(1, n);
+      throw err;
     }
   }
 

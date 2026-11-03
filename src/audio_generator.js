@@ -75,10 +75,11 @@ class AudioSynthesizer {
     for (let i = 0; i < numSamples; i++) {
       const t = i / this.sampleRate;
 
-      // Initial glass crack/shatter noise burst in the first 45ms
+      // AUD-01: Deterministic noise function replaces Math.random() for 100% reproducible audio
       let crackNoise = 0;
       if (t < 0.045) {
-        crackNoise = (Math.random() * 2 - 1) * Math.exp(-t * 120) * 0.45;
+        const pseudoNoise = (Math.sin(i * 127.1 + t * 43758.54) * 43758.54) % 1;
+        crackNoise = (pseudoNoise * 2 - 1) * Math.exp(-t * 120) * 0.45;
       }
 
       const env = Math.exp(-t * 6.5);
