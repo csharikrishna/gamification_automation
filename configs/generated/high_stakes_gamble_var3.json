@@ -1,0 +1,125 @@
+{
+  "id": "high_stakes_gamble_var3",
+  "title": "⚠️ HIGH STAKES: ×5 GAMBLE VS SAFE +15 ⚠️",
+  "subtitle": "One mistake could wipe out the lead!",
+  "durationSeconds": 15,
+  "fps": 60,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "physics": {
+    "gravity": 1300,
+    "bounce": 0.68,
+    "maxVisibleBalls": 350
+  },
+  "lanes": {
+    "left": {
+      "name": "HIGH ROLLER",
+      "ruleLabel": "SPECIAL RULES",
+      "subtitle": "starts with 10 balls",
+      "theme": "gold",
+      "color": "#ffd700",
+      "glowColor": "rgba(255,215,0,0.45)",
+      "accentColor": "#fff176",
+      "startBalls": 10,
+      "stages": [
+        {
+          "type": "multiply",
+          "value": 5,
+          "label": "×5",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "subtract",
+          "value": 20,
+          "label": "-20",
+          "pegRows": 2,
+          "pegsPerRow": 6
+        },
+        {
+          "type": "multiply",
+          "value": 4,
+          "label": "×4",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "subtract",
+          "value": 50,
+          "label": "-50",
+          "pegRows": 2,
+          "pegsPerRow": 6
+        },
+        {
+          "type": "multiply",
+          "value": 5,
+          "label": "×5",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        }
+      ]
+    },
+    "right": {
+      "name": "STEADY SAFE",
+      "ruleLabel": "SPECIAL RULES",
+      "subtitle": "starts with 15 balls",
+      "theme": "violet",
+      "color": "#bb44ff",
+      "glowColor": "rgba(187,68,255,0.45)",
+      "accentColor": "#dd88ff",
+      "startBalls": 15,
+      "stages": [
+        {
+          "type": "add",
+          "value": 20,
+          "label": "+20",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "add",
+          "value": 25,
+          "label": "+25",
+          "pegRows": 2,
+          "pegsPerRow": 6
+        },
+        {
+          "type": "add",
+          "value": 30,
+          "label": "+30",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "add",
+          "value": 35,
+          "label": "+35",
+          "pegRows": 2,
+          "pegsPerRow": 6
+        },
+        {
+          "type": "add",
+          "value": 40,
+          "label": "+40",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "youtubeTitle": "Gamble vs Safe Strategy: Who Takes the Trophy?! 🏆 #satisfying #shorts",
+    "description": "⚠️ HIGH STAKES: ×5 GAMBLE VS SAFE +15 ⚠️\n\nCan the underdog win or does the starting lead take the crown? Drop your prediction before the finish line!\n\n#physics #satisfying #oddlysatisfying #simulation #shorts #marblerun #math",
+    "tags": [
+      "physics simulation",
+      "marble race",
+      "oddly satisfying",
+      "youtube shorts",
+      "satisfying video",
+      "ball multiply",
+      "math simulation"
+    ]
+  }
+}

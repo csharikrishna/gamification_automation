@@ -1,0 +1,133 @@
+{
+  "id": "race_2026-11-03",
+  "date": "2026-11-03",
+  "gameType": "multi_race",
+  "title": "⚡ UNDERDOG: 1 BALL (×3) VS 12 BALLS (+2) ⚡",
+  "subtitle": "Can exponential math beat an initial headstart?",
+  "durationSeconds": 15,
+  "fps": 60,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "lanes": {
+    "left": {
+      "name": "MULTIPLY",
+      "ruleLabel": "×3 BALLS",
+      "subtitle": "starts with 1 ball",
+      "color": "#cb72ff",
+      "glowColor": "rgba(203,114,255,0.45)",
+      "accentColor": "#f59aff",
+      "startBalls": 1,
+      "stages": [
+        {
+          "type": "multiply",
+          "value": 3,
+          "label": "×3",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "multiply",
+          "value": 3,
+          "label": "×3",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "multiply",
+          "value": 3,
+          "label": "×3",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "multiply",
+          "value": 3,
+          "label": "×3",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "multiply",
+          "value": 3,
+          "label": "×3",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "multiply",
+          "value": 3,
+          "label": "×3",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        }
+      ]
+    },
+    "right": {
+      "name": "ADD",
+      "ruleLabel": "+2 BALLS",
+      "subtitle": "starts with 12 balls",
+      "color": "#79ef43",
+      "glowColor": "rgba(121,239,67,0.45)",
+      "accentColor": "#b2ff8a",
+      "startBalls": 12,
+      "stages": [
+        {
+          "type": "add",
+          "value": 2,
+          "label": "+2",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "add",
+          "value": 2,
+          "label": "+2",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "add",
+          "value": 2,
+          "label": "+2",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "add",
+          "value": 2,
+          "label": "+2",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "add",
+          "value": 2,
+          "label": "+2",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "add",
+          "value": 2,
+          "label": "+2",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "youtubeTitle": "⚡ UNDERDOG: 1 BALL (×3) VS 12 BALLS (+2) ⚡ 😱 Multiplying Physics #shorts",
+    "description": "⚡ UNDERDOG: 1 BALL (×3) VS 12 BALLS (+2) ⚡\n\nExponential multiplication vs linear addition! Who takes the crown?\n\n#physics #satisfying #math #oddlysatisfying #shorts",
+    "pinnedComment": "🤔 Who did you bet on: MULTIPLY or ADD? Comment below!",
+    "tags": [
+      "physics simulation",
+      "marble run",
+      "multiplying balls",
+      "oddly satisfying",
+      "youtube shorts"
+    ]
+  }
+}

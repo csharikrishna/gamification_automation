@@ -1,0 +1,15 @@
+{
+  "id": "plinko_jackpot_sample",
+  "gameType": "mega_plinko",
+  "title": "🎰 1,000× IMPOSSIBLE PLINKO JACKPOT 🎰",
+  "subtitle": "Dropping 240 balls · Can anyone hit the golden 1,000× slot?",
+  "durationSeconds": 16,
+  "fps": 60,
+  "ballCount": 240,
+  "rows": 14,
+  "metadata": {
+    "youtubeTitle": "1,000× Plinko Jackpot Drop! 😱 Can Anyone Hit It? #shorts #plinko",
+    "description": "Dropping 240 balls down the mega peg pyramid! Will we hit the 1,000× jackpot? #physics #satisfying #oddlysatisfying #shorts",
+    "tags": ["plinko", "physics simulation", "marble run", "jackpot", "shorts"]
+  }
+}

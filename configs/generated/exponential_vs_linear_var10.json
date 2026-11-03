@@ -1,0 +1,139 @@
+{
+  "id": "exponential_vs_linear_var10",
+  "title": "📈 EXPONENTIAL VS LINEAR: THE ULTIMATE TEST 📈",
+  "subtitle": "×2 Multiplication vs +20 Steady Addition",
+  "durationSeconds": 15,
+  "fps": 60,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "physics": {
+    "gravity": 1180,
+    "bounce": 0.7200000000000001,
+    "maxVisibleBalls": 350
+  },
+  "lanes": {
+    "left": {
+      "name": "EXPONENTIAL",
+      "ruleLabel": "×2 BALLS",
+      "subtitle": "starts with 5 balls",
+      "theme": "cyan",
+      "color": "#00f0ff",
+      "glowColor": "rgba(0,240,255,0.45)",
+      "accentColor": "#8df9ff",
+      "startBalls": 5,
+      "stages": [
+        {
+          "type": "multiply",
+          "value": 2,
+          "label": "×2",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "multiply",
+          "value": 2,
+          "label": "×2",
+          "pegRows": 2,
+          "pegsPerRow": 6
+        },
+        {
+          "type": "multiply",
+          "value": 2,
+          "label": "×2",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "multiply",
+          "value": 2,
+          "label": "×2",
+          "pegRows": 2,
+          "pegsPerRow": 6
+        },
+        {
+          "type": "multiply",
+          "value": 2,
+          "label": "×2",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "multiply",
+          "value": 2,
+          "label": "×2",
+          "pegRows": 2,
+          "pegsPerRow": 6
+        }
+      ]
+    },
+    "right": {
+      "name": "LINEAR",
+      "ruleLabel": "+20 BALLS",
+      "subtitle": "starts with 25 balls",
+      "theme": "orange",
+      "color": "#ff5500",
+      "glowColor": "rgba(255,85,0,0.45)",
+      "accentColor": "#ff9955",
+      "startBalls": 25,
+      "stages": [
+        {
+          "type": "add",
+          "value": 20,
+          "label": "+20",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "add",
+          "value": 20,
+          "label": "+20",
+          "pegRows": 2,
+          "pegsPerRow": 6
+        },
+        {
+          "type": "add",
+          "value": 20,
+          "label": "+20",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "add",
+          "value": 20,
+          "label": "+20",
+          "pegRows": 2,
+          "pegsPerRow": 6
+        },
+        {
+          "type": "add",
+          "value": 20,
+          "label": "+20",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "add",
+          "value": 20,
+          "label": "+20",
+          "pegRows": 2,
+          "pegsPerRow": 6
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "youtubeTitle": "Exponential Growth vs Linear: Insane Marble Race! 🤯 #physics #shorts",
+    "description": "📈 EXPONENTIAL VS LINEAR: THE ULTIMATE TEST 📈\n\nCan the underdog win or does the starting lead take the crown? Drop your prediction before the finish line!\n\n#physics #satisfying #oddlysatisfying #simulation #shorts #marblerun #math",
+    "tags": [
+      "physics simulation",
+      "marble race",
+      "oddly satisfying",
+      "youtube shorts",
+      "satisfying video",
+      "ball multiply",
+      "math simulation"
+    ]
+  }
+}

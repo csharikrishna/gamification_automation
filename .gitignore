@@ -1,0 +1,14 @@
+# Node dependencies
+node_modules/
+package-lock.json
+
+# Scratch and temporary folders
+scratch/
+temp/
+.temp_*
+*.log
+
+# Large binary video files (generate via `node render.js`)
+output/*.mp4
+output/temp_*
+daily_queue/**/*.mp4

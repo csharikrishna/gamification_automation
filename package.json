@@ -1,0 +1,38 @@
+{
+  "name": "burstpoint-physics-shorts-engine",
+  "version": "2.5.0",
+  "description": "AI-Guided Physics Simulation & Automated Shorts Production Engine",
+  "main": "render.js",
+  "scripts": {
+    "start": "node -e \"const http = require('http'); const fs = require('fs'); const path = require('path'); const { exec } = require('child_process'); const server = http.createServer((req, res) => { let rel = req.url.split('?')[0].replace(/^\\//, ''); if (!rel) rel = 'index.html'; let p = path.resolve(__dirname, rel); if (fs.existsSync(p) && fs.statSync(p).isFile()) { const ext = path.extname(p); const types = { '.html': 'text/html', '.js': 'application/javascript', '.css': 'text/css', '.json': 'application/json' }; res.writeHead(200, { 'Content-Type': types[ext] || 'text/plain' }); fs.createReadStream(p).pipe(res); } else { res.writeHead(404); res.end('Not found'); } }); server.listen(8080, () => { console.log('Studio running at http://localhost:8080'); exec('start http://localhost:8080'); });\"",
+    "studio": "npm start",
+    "test": "node test/simulation.test.js",
+    "render": "node render.js --config configs/underdog_slow_composed.json",
+    "render:slow": "node render.js --config configs/underdog_slow_composed.json",
+    "render:math": "node render.js --config configs/math_n_factorial_vs_n_pow_n.json",
+    "render:sumo": "node render.js --config configs/sumo_sample.json",
+    "render:plinko": "node render.js --config configs/plinko_sample.json",
+    "render:brick": "node render.js --config configs/brick_sample.json",
+    "render:marble": "node render.js --config configs/marble_run_sample.json",
+    "generate": "node generate_scenarios.js 10",
+    "batch": "node pipeline.js 3",
+    "daily": "node auto_daily.js",
+    "daily:week": "node auto_daily.js --days 7"
+  },
+  "keywords": [
+    "ai-director",
+    "physics-simulation",
+    "youtube-shorts",
+    "tiktok",
+    "automated-video-generation",
+    "marble-race",
+    "plinko",
+    "battle-royale",
+    "brick-breaker"
+  ],
+  "author": "Burstpoint",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer-core": "^24.3.0"
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "id": "avalanche_super_race_var4",
+  "title": "🔥 50,000 MARBLE AVALANCHE: ×4 VS ×3 🔥",
+  "subtitle": "Watch the screen completely fill up with glowing balls!",
+  "durationSeconds": 15,
+  "fps": 60,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "physics": {
+    "gravity": 1180,
+    "bounce": 0.7200000000000001,
+    "maxVisibleBalls": 350
+  },
+  "lanes": {
+    "left": {
+      "name": "×4 SURGE",
+      "ruleLabel": "×4 BALLS",
+      "subtitle": "starts with 2 balls",
+      "theme": "pink",
+      "color": "#ff007f",
+      "glowColor": "rgba(255,0,127,0.45)",
+      "accentColor": "#ff66b2",
+      "startBalls": 2,
+      "stages": [
+        {
+          "type": "multiply",
+          "value": 4,
+          "label": "×4",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "multiply",
+          "value": 4,
+          "label": "×4",
+          "pegRows": 2,
+          "pegsPerRow": 6
+        },
+        {
+          "type": "multiply",
+          "value": 4,
+          "label": "×4",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "multiply",
+          "value": 4,
+          "label": "×4",
+          "pegRows": 2,
+          "pegsPerRow": 6
+        },
+        {
+          "type": "multiply",
+          "value": 4,
+          "label": "×4",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        }
+      ]
+    },
+    "right": {
+      "name": "×3 SURGE",
+      "ruleLabel": "×3 BALLS",
+      "subtitle": "starts with 12 balls",
+      "theme": "blue",
+      "color": "#00b4d8",
+      "glowColor": "rgba(0,180,216,0.45)",
+      "accentColor": "#90e0ef",
+      "startBalls": 12,
+      "stages": [
+        {
+          "type": "multiply",
+          "value": 3,
+          "label": "×3",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "multiply",
+          "value": 3,
+          "label": "×3",
+          "pegRows": 2,
+          "pegsPerRow": 6
+        },
+        {
+          "type": "multiply",
+          "value": 3,
+          "label": "×3",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "multiply",
+          "value": 3,
+          "label": "×3",
+          "pegRows": 2,
+          "pegsPerRow": 6
+        },
+        {
+          "type": "multiply",
+          "value": 3,
+          "label": "×3",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "youtubeTitle": "INSANE Ball Avalanche! Can the Engine Handle This?! 🤯 #gaming #marblerun #shorts",
+    "description": "🔥 50,000 MARBLE AVALANCHE: ×4 VS ×3 🔥\n\nCan the underdog win or does the starting lead take the crown? Drop your prediction before the finish line!\n\n#physics #satisfying #oddlysatisfying #simulation #shorts #marblerun #math",
+    "tags": [
+      "physics simulation",
+      "marble race",
+      "oddly satisfying",
+      "youtube shorts",
+      "satisfying video",
+      "ball multiply",
+      "math simulation"
+    ]
+  }
+}

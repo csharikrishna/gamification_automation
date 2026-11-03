@@ -1,0 +1,141 @@
+{
+  "id": "math_showdown_2_n_vs_n_3",
+  "gameType": "multi_race",
+  "isMathShowdown": true,
+  "title": "⚡ THE PARADOX: 2ⁿ VS n³ ⚡",
+  "subtitle": "n³ leads early... but where does 2ⁿ take over?",
+  "durationSeconds": 16,
+  "fps": 60,
+  "hpTiers": [
+    3,
+    10,
+    28,
+    75,
+    180,
+    360
+  ],
+  "inflectionStep": 5,
+  "lanes": {
+    "left": {
+      "name": "EXPONENTIAL (2ⁿ)",
+      "formulaName": "f(n) = 2ⁿ",
+      "ruleLabel": "f(n) = 2ⁿ",
+      "subtitle": "starts with 2 ball",
+      "color": "#ff007f",
+      "accentColor": "#ff66b2",
+      "glowColor": "rgba(255,0,127,0.45)",
+      "startBalls": 2,
+      "stages": [
+        {
+          "stageNum": 2,
+          "type": "multiply",
+          "value": 2,
+          "exactValue": 4,
+          "label": "2^2 = 4"
+        },
+        {
+          "stageNum": 3,
+          "type": "multiply",
+          "value": 2,
+          "exactValue": 8,
+          "label": "2^3 = 8"
+        },
+        {
+          "stageNum": 4,
+          "type": "multiply",
+          "value": 2,
+          "exactValue": 16,
+          "label": "2^4 = 16"
+        },
+        {
+          "stageNum": 5,
+          "type": "multiply",
+          "value": 2,
+          "exactValue": 32,
+          "label": "2^5 = 32"
+        },
+        {
+          "stageNum": 6,
+          "type": "multiply",
+          "value": 2,
+          "exactValue": 64,
+          "label": "2^6 = 64"
+        },
+        {
+          "stageNum": 7,
+          "type": "multiply",
+          "value": 2,
+          "exactValue": 128,
+          "label": "2^7 = 128"
+        }
+      ]
+    },
+    "right": {
+      "name": "CUBIC (n³)",
+      "formulaName": "g(n) = n³",
+      "ruleLabel": "g(n) = n³",
+      "subtitle": "starts with 1 ball",
+      "color": "#ffd700",
+      "accentColor": "#fff176",
+      "glowColor": "rgba(255,215,0,0.45)",
+      "startBalls": 1,
+      "stages": [
+        {
+          "stageNum": 2,
+          "type": "multiply",
+          "value": 8,
+          "exactValue": 8,
+          "label": "2^3 = 8"
+        },
+        {
+          "stageNum": 3,
+          "type": "multiply",
+          "value": 3,
+          "exactValue": 27,
+          "label": "3^3 = 27"
+        },
+        {
+          "stageNum": 4,
+          "type": "multiply",
+          "value": 2,
+          "exactValue": 64,
+          "label": "4^3 = 64"
+        },
+        {
+          "stageNum": 5,
+          "type": "multiply",
+          "value": 2,
+          "exactValue": 125,
+          "label": "5^3 = 125"
+        },
+        {
+          "stageNum": 6,
+          "type": "multiply",
+          "value": 2,
+          "exactValue": 216,
+          "label": "6^3 = 216"
+        },
+        {
+          "stageNum": 7,
+          "type": "multiply",
+          "value": 2,
+          "exactValue": 343,
+          "label": "7^3 = 343"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "youtubeTitle": "⚡ THE PARADOX: 2ⁿ VS n³ ⚡ 😱 Which Function Wins? #shorts #math",
+    "description": "⚡ THE PARADOX: 2ⁿ VS n³ ⚡\n\nn³ dominates in the beginning... watch what happens at Stage 5!\n\nComment your prediction before stage n=4!\n\n#math #physics #simulation #calculus #oddlysatisfying #shorts",
+    "pinnedComment": "🧠 Math Challenge: n³ dominates in the beginning... watch what happens at Stage 5! Drop your proof below!",
+    "tags": [
+      "math showdown",
+      "factorial",
+      "exponential growth",
+      "physics simulation",
+      "math puzzle",
+      "youtube shorts"
+    ]
+  }
+}

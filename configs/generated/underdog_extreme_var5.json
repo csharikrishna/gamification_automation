@@ -1,0 +1,139 @@
+{
+  "id": "underdog_extreme_var5",
+  "title": "⚡ 1 BALL VS 100 BALLS: CAN MULTIPLY WIN? ⚡",
+  "subtitle": "Underdog starts with 1 ball · Leader starts with 100",
+  "durationSeconds": 15,
+  "fps": 60,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "physics": {
+    "gravity": 1240,
+    "bounce": 0.68,
+    "maxVisibleBalls": 350
+  },
+  "lanes": {
+    "left": {
+      "name": "×3 UNDERDOG",
+      "ruleLabel": "×3 BALLS",
+      "subtitle": "starts with 1 ball",
+      "theme": "purple",
+      "color": "#cb72ff",
+      "glowColor": "rgba(203,114,255,0.45)",
+      "accentColor": "#f59aff",
+      "startBalls": 1,
+      "stages": [
+        {
+          "type": "multiply",
+          "value": 3,
+          "label": "×3",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "multiply",
+          "value": 3,
+          "label": "×3",
+          "pegRows": 2,
+          "pegsPerRow": 6
+        },
+        {
+          "type": "multiply",
+          "value": 3,
+          "label": "×3",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "multiply",
+          "value": 3,
+          "label": "×3",
+          "pegRows": 2,
+          "pegsPerRow": 6
+        },
+        {
+          "type": "multiply",
+          "value": 3,
+          "label": "×3",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "multiply",
+          "value": 3,
+          "label": "×3",
+          "pegRows": 2,
+          "pegsPerRow": 6
+        }
+      ]
+    },
+    "right": {
+      "name": "100 HEADSTART",
+      "ruleLabel": "+5 BALLS",
+      "subtitle": "starts with 100 balls",
+      "theme": "green",
+      "color": "#79ef43",
+      "glowColor": "rgba(121,239,67,0.45)",
+      "accentColor": "#b2ff8a",
+      "startBalls": 100,
+      "stages": [
+        {
+          "type": "add",
+          "value": 5,
+          "label": "+5",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "add",
+          "value": 5,
+          "label": "+5",
+          "pegRows": 2,
+          "pegsPerRow": 6
+        },
+        {
+          "type": "add",
+          "value": 5,
+          "label": "+5",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "add",
+          "value": 5,
+          "label": "+5",
+          "pegRows": 2,
+          "pegsPerRow": 6
+        },
+        {
+          "type": "add",
+          "value": 5,
+          "label": "+5",
+          "pegRows": 2,
+          "pegsPerRow": 5
+        },
+        {
+          "type": "add",
+          "value": 5,
+          "label": "+5",
+          "pegRows": 2,
+          "pegsPerRow": 6
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "youtubeTitle": "Can 1 Ball Beat 100 Balls?! 😱 Never Underestimate Multiplication #shorts",
+    "description": "⚡ 1 BALL VS 100 BALLS: CAN MULTIPLY WIN? ⚡\n\nCan the underdog win or does the starting lead take the crown? Drop your prediction before the finish line!\n\n#physics #satisfying #oddlysatisfying #simulation #shorts #marblerun #math",
+    "tags": [
+      "physics simulation",
+      "marble race",
+      "oddly satisfying",
+      "youtube shorts",
+      "satisfying video",
+      "ball multiply",
+      "math simulation"
+    ]
+  }
+}

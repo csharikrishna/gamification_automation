@@ -1,0 +1,15 @@
+{
+  "id": "sumo_battle_royale_sample",
+  "gameType": "sumo_arena",
+  "title": "👑 32 MARBLE BATTLE ROYALE · 1 SURVIVOR 👑",
+  "subtitle": "Shrinking neon death ring · Last marble standing takes the crown!",
+  "durationSeconds": 15,
+  "fps": 60,
+  "competitorCount": 32,
+  "initialRadius": 430,
+  "metadata": {
+    "youtubeTitle": "32 Marble Battle Royale! 🤯 Who Takes The Crown? #shorts #gaming",
+    "description": "32 competitors enter the shrinking arena, only ONE survives! Tell me who you picked before second 3! #battle #marblerace #physics #shorts",
+    "tags": ["marble race", "battle royale", "sumo arena", "gaming", "shorts"]
+  }
+}

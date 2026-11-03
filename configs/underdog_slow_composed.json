@@ -1,0 +1,61 @@
+{
+  "id": "underdog_slow_composed",
+  "gameType": "multi_race",
+  "title": "⚡ UNDERDOG: 1 BALL (×3) VS 12 BALLS (+2) ⚡",
+  "subtitle": "Can exponential growth shatter every barrier and win?",
+  "durationSeconds": 16,
+  "fps": 60,
+  "hpTiers": [2, 8, 24, 72, 180, 360],
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "lanes": {
+    "left": {
+      "name": "MULTIPLY",
+      "ruleLabel": "×3 BALLS",
+      "subtitle": "starts with 1 ball",
+      "color": "#cb72ff",
+      "glowColor": "rgba(203,114,255,0.45)",
+      "accentColor": "#f59aff",
+      "startBalls": 1,
+      "stages": [
+        { "type": "multiply", "value": 3, "exactValue": 3, "label": "×3" },
+        { "type": "multiply", "value": 3, "exactValue": 9, "label": "×3" },
+        { "type": "multiply", "value": 3, "exactValue": 27, "label": "×3" },
+        { "type": "multiply", "value": 3, "exactValue": 81, "label": "×3" },
+        { "type": "multiply", "value": 3, "exactValue": 243, "label": "×3" },
+        { "type": "multiply", "value": 3, "exactValue": 729, "label": "×3" }
+      ]
+    },
+    "right": {
+      "name": "ADD",
+      "ruleLabel": "+2 BALLS",
+      "subtitle": "starts with 12 balls",
+      "color": "#79ef43",
+      "glowColor": "rgba(121,239,67,0.45)",
+      "accentColor": "#b2ff8a",
+      "startBalls": 12,
+      "stages": [
+        { "type": "add", "value": 2, "exactValue": 14, "label": "+2" },
+        { "type": "add", "value": 2, "exactValue": 16, "label": "+2" },
+        { "type": "add", "value": 2, "exactValue": 18, "label": "+2" },
+        { "type": "add", "value": 2, "exactValue": 20, "label": "+2" },
+        { "type": "add", "value": 2, "exactValue": 22, "label": "+2" },
+        { "type": "add", "value": 2, "exactValue": 24, "label": "+2" }
+      ]
+    }
+  },
+  "metadata": {
+    "youtubeTitle": "Can 1 Ball Beat 12 Balls?! 😱 Multiplying Physics Simulation #shorts",
+    "description": "Watch what happens when 1 ball multiplying by ×3 races against 12 balls adding +2! Who will cross the finish line first? #physics #satisfying #oddlysatisfying #simulation #shorts #marblerun",
+    "tags": [
+      "physics simulation",
+      "marble run",
+      "oddly satisfying",
+      "youtube shorts",
+      "ball race",
+      "satisfying video"
+    ]
+  }
+}

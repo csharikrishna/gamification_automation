@@ -1,0 +1,134 @@
+{
+  "id": "math_showdown_n__vs_n_n",
+  "gameType": "multi_race",
+  "isMathShowdown": true,
+  "title": "⚡ MATH SHOWDOWN: n! VS nⁿ ⚡",
+  "subtitle": "Which function explodes faster into infinity?",
+  "durationSeconds": 16,
+  "fps": 60,
+  "hpTiers": [3, 10, 28, 75, 180, 360],
+  "inflectionStep": 2,
+  "lanes": {
+    "left": {
+      "name": "FACTORIAL (n!)",
+      "formulaName": "f(n) = n!",
+      "ruleLabel": "f(n) = n!",
+      "subtitle": "starts with 1 ball",
+      "color": "#cb72ff",
+      "accentColor": "#f59aff",
+      "glowColor": "rgba(203,114,255,0.45)",
+      "startBalls": 1,
+      "stages": [
+        {
+          "stageNum": 2,
+          "type": "multiply",
+          "value": 2,
+          "exactValue": 2,
+          "label": "2! = 2"
+        },
+        {
+          "stageNum": 3,
+          "type": "multiply",
+          "value": 3,
+          "exactValue": 6,
+          "label": "3! = 6"
+        },
+        {
+          "stageNum": 4,
+          "type": "multiply",
+          "value": 4,
+          "exactValue": 24,
+          "label": "4! = 24"
+        },
+        {
+          "stageNum": 5,
+          "type": "multiply",
+          "value": 5,
+          "exactValue": 120,
+          "label": "5! = 120"
+        },
+        {
+          "stageNum": 6,
+          "type": "multiply",
+          "value": 6,
+          "exactValue": 720,
+          "label": "6! = 720"
+        },
+        {
+          "stageNum": 7,
+          "type": "multiply",
+          "value": 7,
+          "exactValue": 5040,
+          "label": "7! = 5,040"
+        }
+      ]
+    },
+    "right": {
+      "name": "HYPER-POWER (nⁿ)",
+      "formulaName": "g(n) = nⁿ",
+      "ruleLabel": "g(n) = nⁿ",
+      "subtitle": "starts with 1 ball",
+      "color": "#00f0ff",
+      "accentColor": "#8df9ff",
+      "glowColor": "rgba(0,240,255,0.45)",
+      "startBalls": 1,
+      "stages": [
+        {
+          "stageNum": 2,
+          "type": "multiply",
+          "value": 4,
+          "exactValue": 4,
+          "label": "2^2 = 4"
+        },
+        {
+          "stageNum": 3,
+          "type": "multiply",
+          "value": 7,
+          "exactValue": 27,
+          "label": "3^3 = 27"
+        },
+        {
+          "stageNum": 4,
+          "type": "multiply",
+          "value": 9,
+          "exactValue": 256,
+          "label": "4^4 = 256"
+        },
+        {
+          "stageNum": 5,
+          "type": "multiply",
+          "value": 12,
+          "exactValue": 3125,
+          "label": "5^5 = 3,125"
+        },
+        {
+          "stageNum": 6,
+          "type": "multiply",
+          "value": 15,
+          "exactValue": 46656,
+          "label": "6^6 = 46,656"
+        },
+        {
+          "stageNum": 7,
+          "type": "multiply",
+          "value": 18,
+          "exactValue": 823543,
+          "label": "7^7 = 823,543"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "youtubeTitle": "⚡ MATH SHOWDOWN: n! VS nⁿ ⚡ 😱 Which Function Wins? #shorts #math",
+    "description": "⚡ MATH SHOWDOWN: n! VS nⁿ ⚡\n\nAt n=1 they tie. By n=6, one of them reaches 46,656. Who wins?\n\nComment your prediction before stage n=4!\n\n#math #physics #simulation #calculus #oddlysatisfying #shorts",
+    "pinnedComment": "🧠 Math Challenge: At n=1 they tie. By n=6, one of them reaches 46,656. Who wins? Drop your proof below!",
+    "tags": [
+      "math showdown",
+      "factorial",
+      "exponential growth",
+      "physics simulation",
+      "math puzzle",
+      "youtube shorts"
+    ]
+  }
+}

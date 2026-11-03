@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Burstpoint Studio — AI Physics Simulation Engine</title>
+  <style>
+    :root {
+      --bg: #090c15;
+      --card-bg: #111625;
+      --border: rgba(255, 255, 255, 0.1);
+      --accent: #cb72ff;
+      --accent-green: #79ef43;
+      --accent-cyan: #00f0ff;
+      --accent-gold: #ffd700;
+      --text: #f0f2f8;
+      --text-muted: #8c93a8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: rgba(17, 22, 37, 0.85);
+      backdrop-filter: blur(12px);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 19px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+    }
+    .logo-badge {
+      background: linear-gradient(135deg, #cb72ff, #00f0ff);
+      padding: 3px 9px;
+      border-radius: 6px;
+      color: #000;
+      font-size: 11px;
+      font-weight: 900;
+    }
+    .ai-btn {
+      background: linear-gradient(135deg, #ff007f, #bb44ff);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-weight: 800;
+      box-shadow: 0 4px 18px rgba(255, 0, 127, 0.35);
+      animation: pulseGlow 2.5s infinite;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 4px 18px rgba(255, 0, 127, 0.35); }
+      50% { box-shadow: 0 4px 28px rgba(187, 68, 255, 0.65); }
+    }
+    .main-layout {
+      flex: 1;
+      display: grid;
+      grid-template-columns: minmax(360px, 480px) 1fr;
+      gap: 24px;
+      padding: 20px 28px;
+      max-width: 1720px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .viewport-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .phone-frame {
+      position: relative;
+      width: 100%;
+      max-width: 430px;
+      aspect-ratio: 9 / 16;
+      background: #000;
+      border-radius: 36px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 0 8px #1a2030, 0 0 35px rgba(203, 114, 255, 0.15);
+      overflow: hidden;
+    }
+    canvas#simCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .phone-notch {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 110px;
+      height: 20px;
+      background: #111;
+      border-radius: 12px;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .control-deck {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+    }
+    .card-title {
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .mode-tabs {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .mode-tab {
+      background: #171d2d;
+      border: 1px solid var(--border);
+      padding: 9px 6px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 800;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .mode-tab:hover { background: #232b40; }
+    .mode-tab.active {
+      background: linear-gradient(135deg, rgba(203,114,255,0.2), rgba(0,240,255,0.2));
+      border-color: var(--accent-cyan);
+      color: #fff;
+    }
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    button {
+      appearance: none;
+      background: #1e2538;
+      color: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 16px;
+      font: 700 13px inherit;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+    }
+    button:hover {
+      background: #28324a;
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-1px);
+    }
+    button.primary {
+      background: linear-gradient(135deg, #cb72ff, #9933ff);
+      border-color: #cb72ff;
+      color: #fff;
+    }
+    button.accent-green {
+      background: linear-gradient(135deg, #79ef43, #52bd22);
+      border-color: #79ef43;
+      color: #0c1806;
+    }
+    .meta-box {
+      background: #0b0e18;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      font-family: monospace;
+      font-size: 12px;
+      color: #c9d1d9;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      position: relative;
+    }
+    .copy-pill {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 4px 10px;
+      font-size: 11px;
+    }
+    .pill-btn {
+      background: #151a2d;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .pill-btn:hover {
+      background: #1f2742;
+      color: #fff;
+    }
+    .pill-btn.active {
+      background: rgba(203, 114, 255, 0.2);
+      border-color: #cb72ff;
+      color: #fff;
+    }
+    @media (max-width: 990px) {
+      .main-layout { grid-template-columns: 1fr; }
+      .mode-tabs { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <span>BURSTPOINT</span>
+      <span class="logo-badge">AI MULTI-SIM ENGINE</span>
+    </div>
+    <div style="display: flex; gap: 12px; align-items: center;">
+      <button class="ai-btn" id="aiDirectorBtn">🤖 AI Director: Formulate New Game</button>
+    </div>
+  </header>
+
+  <main class="main-layout">
+    <!-- Viewport Panel -->
+    <div class="viewport-panel">
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <canvas id="simCanvas" width="1080" height="1920"></canvas>
+      </div>
+      <div style="margin-top: 12px; font-size: 12px; color: var(--text-muted); text-align: center;">
+        Native 1080&times;1920 60 FPS viewport &bull; YouTube Shorts 9:16 layout
+      </div>
+    </div>
+
+    <!-- Control Station -->
+    <div class="control-deck">
+      <!-- Game Mode Selection -->
+      <div class="card">
+        <div class="card-title">🎮 Physics Environment / Game Mode</div>
+        <div class="mode-tabs">
+          <div class="mode-tab active" data-mode="multi_race">⚡ Multiplier Race</div>
+          <div class="mode-tab" data-mode="math_showdown">📐 Math Showdown (n! vs nⁿ)</div>
+          <div class="mode-tab" data-mode="mega_plinko">🎰 1,000× Plinko</div>
+          <div class="mode-tab" data-mode="sumo_arena">👑 Sumo Arena</div>
+          <div class="mode-tab" data-mode="brick_breaker">💥 Brick Demolition</div>
+          <div class="mode-tab" data-mode="marble_run">🌀 Rube Goldberg Run</div>
+        </div>
+        <div class="btn-row">
+          <button class="primary" id="playBtn">▶ Play</button>
+          <button id="stepBtn">⏭ Step Frame</button>
+          <button id="resetBtn">↻ Reset</button>
+          <button id="soundBtn">🔊 Sound: ON</button>
+          <select id="speedSelect" style="background:#0e121d; color:#fff; padding:8px 12px; border-radius:8px; border:1px solid var(--border);">
+            <option value="1">1.0× Speed</option>
+            <option value="1.5">1.5× Speed</option>
+            <option value="2.0">2.0× Speed</option>
+            <option value="0.5">0.5× Slow-Mo</option>
+          </select>
+          <button class="accent-green" id="browserRecordBtn">🔴 Record WebM/MP4</button>
+        </div>
+      </div>
+
+      <!-- Math Showdown Customizer Card -->
+      <div class="card" id="mathCard" style="border-color: rgba(203, 114, 255, 0.4); background: linear-gradient(180deg, #131728 0%, #101424 100%);">
+        <div class="card-title" style="color: #f59aff; display:flex; justify-content:space-between; align-items:center;">
+          <span>📐 Mathematical Equation Showdown Studio</span>
+          <span style="font-size:10px; background:rgba(203,114,255,0.25); color:#f59aff; padding:2px 8px; border-radius:4px; font-weight:800;">VIRAL HOOK</span>
+        </div>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+          Pit mathematical functions against each other! Physical breakable barrier tiles shatter at each stage <em>n</em> as formulas grow.
+        </p>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px;">
+          <button class="pill-btn active" data-math-preset="n!_vs_n^n">n! vs nⁿ</button>
+          <button class="pill-btn" data-math-preset="2^n_vs_n^3">2ⁿ vs n³</button>
+          <button class="pill-btn" data-math-preset="n!_vs_2^n">n! vs 2ⁿ</button>
+          <button class="pill-btn" data-math-preset="fib_vs_2^(n/2)">Fibonacci vs 2^(n/2)</button>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: end;">
+          <div>
+            <label style="font-size: 11px; color: #cb72ff; font-weight: 700; text-transform: uppercase;">Left Formula f(n)</label>
+            <input type="text" id="leftMathExpr" value="n!" style="width:100%; background:#0e121d; color:#fff; padding:8px 12px; border-radius:8px; border:1px solid #cb72ff; font-family:monospace; font-size:14px; margin-top:4px;" />
+          </div>
+          <div>
+            <label style="font-size: 11px; color: #00f0ff; font-weight: 700; text-transform: uppercase;">Right Formula g(n)</label>
+            <input type="text" id="rightMathExpr" value="n^n" style="width:100%; background:#0e121d; color:#fff; padding:8px 12px; border-radius:8px; border:1px solid #00f0ff; font-family:monospace; font-size:14px; margin-top:4px;" />
+          </div>
+          <button id="runCustomMathBtn" style="background: linear-gradient(135deg, #cb72ff, #00f0ff); color: #000; font-weight: 800; border: none; height: 38px; padding: 0 16px; border-radius: 8px; cursor: pointer;">⚡ Run Equation</button>
+        </div>
+      </div>
+
+      <!-- Active Game Status & Description -->
+      <div class="card">
+        <div class="card-title">📖 Current Simulation Formulation</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <h3 id="currentTitle" style="color: #00f0ff; font-size: 16px; font-weight: 800;">⚡ UNDERDOG: 1 BALL (×3) VS 12 BALLS (+2) ⚡</h3>
+          <p id="currentSubtitle" style="font-size: 13px; color: var(--text-muted);">Can exponential growth beat a starting headstart?</p>
+        </div>
+      </div>
+
+      <!-- YouTube Shorts Publishing Package -->
+      <div class="card">
+        <div class="card-title">📱 YouTube Shorts & TikTok Metadata</div>
+        <div class="meta-box" id="metadataBox">
+          <button class="copy-pill" id="copyMetaBtn">📋 Copy</button>
+          <div id="metaContent">Loading metadata...</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Load Game Environments, Sounds, Engine, and AI Director -->
+  <script src="src/sound.js"></script>
+  <script src="src/engine.js"></script>
+  <script src="src/renderer.js"></script>
+  <script src="src/math_evaluator.js"></script>
+  <script src="src/games/mega_plinko.js"></script>
+  <script src="src/games/sumo_arena.js"></script>
+  <script src="src/games/brick_breaker.js"></script>
+  <script src="src/games/marble_run.js"></script>
+  <script src="src/game_manager.js"></script>
+  <script src="src/ai_director.js"></script>
+
+  <script>
+    const canvas = document.getElementById('simCanvas');
+    const ctx = canvas.getContext('2d');
+    const sound = new WebAudioSynthesizer();
+    const director = new AIDirector();
+
+    const PRESETS = {
+      math_showdown: MathEvaluator.generateEquationConfig('n!_vs_n^n'),
+      multi_race: {
+        gameType: 'multi_race',
+        title: "⚡ UNDERDOG: 1 BALL VS 12 BALLS ⚡",
+        subtitle: "Can exponential growth beat a starting headstart?",
+        durationSeconds: 15,
+        fps: 60,
+        lanes: {
+          left: {
+            name: "MULTIPLY",
+            ruleLabel: "×3 BALLS",
+            subtitle: "starts with 1 ball",
+            color: "#cb72ff",
+            glowColor: "rgba(203,114,255,0.45)",
+            accentColor: "#f094ff",
+            startBalls: 1,
+            stages: Array(6).fill(0).map(() => ({ type: 'multiply', value: 3, label: '×3', pegRows: 2, pegsPerRow: 5 }))
+          },
+          right: {
+            name: "ADD",
+            ruleLabel: "+2 BALLS",
+            subtitle: "starts with 12 balls",
+            color: "#79ef43",
+            glowColor: "rgba(121,239,67,0.45)",
+            accentColor: "#b2ff8a",
+            startBalls: 12,
+            stages: Array(6).fill(0).map(() => ({ type: 'add', value: 2, label: '+2', pegRows: 2, pegsPerRow: 5 }))
+          }
+        },
+        metadata: {
+          youtubeTitle: "Can 1 Ball Beat 12 Balls?! 😱 Multiplying Physics Simulation #shorts",
+          description: "Watch what happens when 1 ball multiplying by ×3 races against 12 balls adding +2! Who crosses first? #physics #satisfying #shorts",
+          tags: ["physics simulation", "marble run", "oddly satisfying", "youtube shorts", "ball race"]
+        }
+      },
+      mega_plinko: {
+        gameType: 'mega_plinko',
+        title: "🎰 1,000× IMPOSSIBLE PLINKO JACKPOT 🎰",
+        subtitle: "Dropping 220 balls · Can anyone hit the golden 1,000× slot?",
+        durationSeconds: 16,
+        fps: 60,
+        ballCount: 220,
+        rows: 14,
+        metadata: {
+          youtubeTitle: "1,000× Plinko Jackpot Drop! 😱 Can Anyone Hit It? #shorts #plinko",
+          description: "Dropping 220 balls down the mega peg pyramid! Will we hit the 1,000× jackpot? #physics #satisfying #oddlysatisfying #shorts",
+          tags: ["plinko", "physics simulation", "marble run", "jackpot", "shorts"]
+        }
+      },
+      sumo_arena: {
+        gameType: 'sumo_arena',
+        title: "👑 32 MARBLE BATTLE ROYALE · 1 WINNER 👑",
+        subtitle: "Shrinking neon death ring · Last marble standing takes the crown!",
+        durationSeconds: 16,
+        fps: 60,
+        competitorCount: 32,
+        metadata: {
+          youtubeTitle: "32 Marble Battle Royale! 🤯 Who Takes The Crown? #shorts #gaming",
+          description: "32 competitors enter the shrinking arena, only ONE survives! Tell me who you picked before second 3! #battle #marblerace #shorts",
+          tags: ["marble race", "battle royale", "sumo arena", "gaming", "shorts"]
+        }
+      },
+      brick_breaker: {
+        gameType: 'brick_breaker',
+        title: "💥 300 BALLS VS 1,200 HP NEON BRICKS 💥",
+        subtitle: "High-speed demolition swarm · Can they clear 100% of the board?",
+        durationSeconds: 16,
+        fps: 60,
+        ballCount: 260,
+        metadata: {
+          youtubeTitle: "300 Physics Balls vs 1,200 HP Bricks! 🤯 #shorts #satisfying #asmr",
+          description: "Hundreds of glowing physics balls vs tough neon bricks! Will the board reach 100% clearance? #asmr #satisfying #shorts",
+          tags: ["brick breaker", "oddly satisfying", "physics swarm", "asmr", "shorts"]
+        }
+      },
+      marble_run: {
+        gameType: 'marble_run',
+        title: "🌀 EPIC RUBE GOLDBERG MARBLE MACHINE 🌀",
+        subtitle: "Can your marble survive the seesaws and rotary wheels?",
+        durationSeconds: 16,
+        fps: 60,
+        marbleCount: 6,
+        metadata: {
+          youtubeTitle: "Rube Goldberg Marble Run Machine! 😱 Who Wins? #shorts #marblerun",
+          description: "6 marbles enter the multi-tier Rube Goldberg track! Watch them navigate the seesaws and paddle wheel! #marblerun #physics #shorts",
+          tags: ["marble run", "rube goldberg", "physics simulation", "shorts"]
+        }
+      }
+    };
+
+    let activeConfig = JSON.parse(JSON.stringify(PRESETS.multi_race));
+    let game = GameManager.createGame(activeConfig);
+
+    let isRunning = false;
+    let playbackSpeed = 1.0;
+    let lastTime = 0;
+    let animId = null;
+    let processedEventCount = 0;
+
+    function syncLiveAudio() {
+      const events = game.events || [];
+      while (processedEventCount < events.length) {
+        const ev = events[processedEventCount++];
+        if (ev.type === 'bounce') sound.playBounce(ev.pitch, ev.volume);
+        else if (ev.type === 'gate') sound.playGate(ev.tier, ev.multiplier);
+        else if (ev.type === 'finish') sound.playFinish();
+      }
+    }
+
+    function loop(now) {
+      if (!isRunning) return;
+      if (!lastTime) lastTime = now;
+      lastTime = now;
+
+      const step = (1 / 60) * playbackSpeed;
+      game.update(step);
+      syncLiveAudio();
+      game.render(ctx);
+
+      if (game.isFinished) {
+        isRunning = false;
+        document.getElementById('playBtn').textContent = '↻ Replay';
+      } else {
+        animId = requestAnimationFrame(loop);
+      }
+    }
+
+    function play() {
+      if (game.isFinished) reset();
+      isRunning = true;
+      lastTime = performance.now();
+      document.getElementById('playBtn').textContent = '⏸ Pause';
+      animId = requestAnimationFrame(loop);
+    }
+
+    function pause() {
+      isRunning = false;
+      document.getElementById('playBtn').textContent = '▶ Play';
+      if (animId) cancelAnimationFrame(animId);
+    }
+
+    function reset() {
+      pause();
+      game = GameManager.createGame(activeConfig);
+      processedEventCount = 0;
+      game.render(ctx);
+    }
+
+    function updateUI() {
+      document.getElementById('currentTitle').textContent = activeConfig.title;
+      document.getElementById('currentSubtitle').textContent = activeConfig.subtitle;
+      const meta = activeConfig.metadata || {};
+      const html = `TITLE:
+${meta.youtubeTitle || activeConfig.title}
+
+DESCRIPTION:
+${meta.description || activeConfig.subtitle}
+
+TAGS:
+${(meta.tags || []).join(', ')}`;
+      document.getElementById('metaContent').textContent = html;
+    }
+
+    // Tabs
+    document.querySelectorAll('.mode-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const mode = tab.dataset.mode;
+        if (mode === 'math_showdown') {
+          activeConfig = MathEvaluator.generateEquationConfig('n!_vs_n^n');
+        } else {
+          activeConfig = JSON.parse(JSON.stringify(PRESETS[mode]));
+        }
+        reset();
+        updateUI();
+        play();
+      });
+    });
+
+    // Math Showdown Preset Pills
+    document.querySelectorAll('.pill-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const presetKey = btn.dataset.mathPreset;
+        if (presetKey === 'n!_vs_n^n') {
+          document.getElementById('leftMathExpr').value = 'n!';
+          document.getElementById('rightMathExpr').value = 'n^n';
+        } else if (presetKey === '2^n_vs_n^3') {
+          document.getElementById('leftMathExpr').value = '2^n';
+          document.getElementById('rightMathExpr').value = 'n^3';
+        } else if (presetKey === 'n!_vs_2^n') {
+          document.getElementById('leftMathExpr').value = 'n!';
+          document.getElementById('rightMathExpr').value = '2^n';
+        } else if (presetKey === 'fib_vs_2^(n/2)') {
+          document.getElementById('leftMathExpr').value = 'fib(n)';
+          document.getElementById('rightMathExpr').value = '2^(n/2)';
+        }
+        activeConfig = MathEvaluator.generateEquationConfig(presetKey);
+        document.querySelectorAll('.mode-tab').forEach(t => {
+          t.classList.toggle('active', t.dataset.mode === 'math_showdown');
+        });
+        reset();
+        updateUI();
+        play();
+      });
+    });
+
+    // Custom Math Equation Run Button
+    document.getElementById('runCustomMathBtn').addEventListener('click', () => {
+      const left = document.getElementById('leftMathExpr').value.trim() || 'n!';
+      const right = document.getElementById('rightMathExpr').value.trim() || 'n^n';
+      activeConfig = MathEvaluator.generateCustomConfig(left, right);
+      document.querySelectorAll('.mode-tab').forEach(t => {
+        t.classList.toggle('active', t.dataset.mode === 'math_showdown');
+      });
+      reset();
+      updateUI();
+      play();
+    });
+
+    // AI Director Formulate Button
+    let aiSeed = 1;
+    document.getElementById('aiDirectorBtn').addEventListener('click', async () => {
+      const btn = document.getElementById('aiDirectorBtn');
+      btn.textContent = '🧠 AI Formulating Concept...';
+      const newConfig = await director.formulateDailyGame(aiSeed++);
+      activeConfig = newConfig;
+
+      document.querySelectorAll('.mode-tab').forEach(t => {
+        t.classList.toggle('active', t.dataset.mode === (newConfig.gameType || 'multi_race'));
+      });
+
+      reset();
+      updateUI();
+      play();
+      btn.textContent = '🤖 AI Director: Formulate New Game';
+    });
+
+    document.getElementById('playBtn').addEventListener('click', () => {
+      if (isRunning) pause(); else play();
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', reset);
+
+    document.getElementById('stepBtn').addEventListener('click', () => {
+      pause();
+      game.update(1 / 60);
+      syncLiveAudio();
+      game.render(ctx);
+    });
+
+    document.getElementById('soundBtn').addEventListener('click', (e) => {
+      const muted = sound.toggleMute();
+      e.target.textContent = muted ? '🔇 Sound: OFF' : '🔊 Sound: ON';
+    });
+
+    document.getElementById('speedSelect').addEventListener('change', (e) => {
+      playbackSpeed = parseFloat(e.target.value) || 1.0;
+    });
+
+    document.getElementById('copyMetaBtn').addEventListener('click', () => {
+      const text = document.getElementById('metaContent').textContent;
+      navigator.clipboard.writeText(text);
+      const btn = document.getElementById('copyMetaBtn');
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => btn.textContent = '📋 Copy', 2000);
+    });
+
+    // In-browser WebM/MP4 Recording
+    let mediaRecorder = null;
+    let recordedChunks = [];
+    document.getElementById('browserRecordBtn').addEventListener('click', () => {
+      const btn = document.getElementById('browserRecordBtn');
+      if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.stop();
+        btn.textContent = '🔴 Record WebM/MP4';
+        return;
+      }
+
+      reset();
+      const stream = canvas.captureStream(60);
+      const mime = MediaRecorder.isTypeSupported('video/webm;codecs=vp9')
+        ? 'video/webm;codecs=vp9'
+        : 'video/webm';
+
+      recordedChunks = [];
+      mediaRecorder = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 16000000 });
+      mediaRecorder.ondataavailable = e => { if (e.data.size > 0) recordedChunks.push(e.data); };
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(recordedChunks, { type: mime });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `burstpoint_${activeConfig.gameType || 'sim'}.webm`;
+        a.click();
+        URL.revokeObjectURL(url);
+      };
+
+      mediaRecorder.start();
+      play();
+      btn.textContent = '⏹ Stop Recording';
+
+      const checkFinished = setInterval(() => {
+        if (game.isFinished) {
+          clearInterval(checkFinished);
+          if (mediaRecorder && mediaRecorder.state === 'recording') {
+            mediaRecorder.stop();
+            btn.textContent = '🔴 Record WebM/MP4';
+          }
+        }
+      }, 250);
+    });
+
+    updateUI();
+    reset();
+    play();
+  </script>
+</body>
+</html>

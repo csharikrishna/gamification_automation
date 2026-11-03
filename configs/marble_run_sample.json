@@ -1,0 +1,14 @@
+{
+  "id": "rube_goldberg_marble_run_sample",
+  "gameType": "marble_run",
+  "title": "🌀 EPIC RUBE GOLDBERG MARBLE MACHINE 🌀",
+  "subtitle": "Can your marble survive the seesaws and rotary wheels?",
+  "durationSeconds": 16,
+  "fps": 60,
+  "marbleCount": 6,
+  "metadata": {
+    "youtubeTitle": "Rube Goldberg Marble Run Machine! 😱 Who Wins? #shorts #marblerun",
+    "description": "6 marbles enter the multi-tier Rube Goldberg track! Watch them navigate the seesaws and paddle wheel! #marblerun #physics #shorts",
+    "tags": ["marble run", "rube goldberg", "physics simulation", "shorts"]
+  }
+}

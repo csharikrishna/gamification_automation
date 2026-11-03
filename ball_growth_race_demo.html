@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ball Growth Race — Simulation Demo</title>
+  <style>
+    :root {
+      --bg: #070911;
+      --panel: #0b0e19;
+      --purple: #cb72ff;
+      --purple-soft: rgba(203, 114, 255, .18);
+      --green: #79ef43;
+      --green-soft: rgba(121, 239, 67, .16);
+      --muted: #84899b;
+      --line: rgba(255,255,255,.09);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: #f7f7fb;
+      background:
+        radial-gradient(ellipse at 20% 12%, rgba(118,55,155,.13), transparent 34%),
+        radial-gradient(ellipse at 82% 58%, rgba(69,150,42,.10), transparent 35%),
+        var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      display: flex;
+      justify-content: center;
+      padding: 22px 14px 30px;
+    }
+    .app { width: min(760px, 100%); }
+    .topline { display:flex; justify-content:center; margin: 6px 0 24px; }
+    .tag {
+      border: 1px solid rgba(243,211,143,.65);
+      color: #f5dda6;
+      border-radius: 999px;
+      padding: 8px 17px;
+      font-weight: 700;
+      letter-spacing: .015em;
+      font-size: clamp(11px, 2.8vw, 15px);
+      background: rgba(211,168,91,.07);
+      box-shadow: 0 0 24px rgba(230,190,118,.06);
+    }
+    .score-heads, .lanes { display:grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .score-head { text-align:center; min-width:0; }
+    .score-title { font-size: clamp(24px, 6vw, 42px); font-weight: 950; line-height:1; letter-spacing:-.045em; }
+    .score-title.purple { color: var(--purple); text-shadow: 0 0 22px rgba(203,114,255,.17); }
+    .score-title.green { color: var(--green); text-shadow: 0 0 22px rgba(121,239,67,.15); }
+    .score-sub { margin-top: 9px; font-size: clamp(11px, 2.7vw, 15px); font-weight:700; color:#a78cbd; }
+    .score-head.right .score-sub { color:#8fc877; }
+    .lanes { margin-top: 18px; }
+    .lane {
+      position:relative;
+      min-width:0;
+      height: min(137vw, 890px);
+      min-height: 570px;
+      max-height: 890px;
+      border: 1px solid rgba(203,114,255,.19);
+      border-radius: 15px;
+      background: linear-gradient(180deg, rgba(11,14,25,.70), rgba(7,9,17,.90));
+      overflow:hidden;
+      isolation:isolate;
+    }
+    .lane.right { border-color: rgba(121,239,67,.18); }
+    .lane::before {
+      content:""; position:absolute; inset:0; pointer-events:none; z-index:-1;
+      background: radial-gradient(ellipse at 50% 62%, var(--purple-soft), transparent 48%);
+      opacity:.55;
+    }
+    .lane.right::before { background: radial-gradient(ellipse at 50% 62%, var(--green-soft), transparent 48%); }
+    .checkpoints { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:space-evenly; padding: 14px 8px 22px; }
+    .checkpoint { position:relative; height:1px; flex:1; display:flex; align-items:center; justify-content:flex-end; flex-direction:column; }
+    .checkpoint::after {
+      content:""; width:100%; height:4px; border-radius:10px;
+      background:rgba(203,114,255,.20); box-shadow: 0 0 8px rgba(203,114,255,.05);
+      position:absolute; bottom: 12px;
+    }
+    .right .checkpoint::after { background:rgba(121,239,67,.20); box-shadow:0 0 8px rgba(121,239,67,.05); }
+    .checkpoint.active::after { background:var(--purple); box-shadow:0 0 14px rgba(203,114,255,.45); }
+    .right .checkpoint.active::after { background:var(--green); box-shadow:0 0 14px rgba(121,239,67,.4); }
+    .checkpoint .count { position:absolute; bottom: 30px; font-size:clamp(16px,3.6vw,25px); font-weight:850; letter-spacing:-.04em; text-shadow:0 2px 7px #000; }
+    .progress-fill { position:absolute; z-index:2; left:8px; right:8px; height:4px; border-radius:8px; bottom:0; width:0%; pointer-events:none; }
+    .lane canvas { position:absolute; inset:0; width:100%; height:100%; z-index:3; pointer-events:none; }
+    .lane-label { position:absolute; z-index:4; top:12px; left:0; right:0; text-align:center; color:rgba(255,255,255,.34); font-size:10px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
+    .bottom-dash { position:absolute; bottom:7px; left:9px; right:9px; height:3px; z-index:4; background:repeating-linear-gradient(90deg, rgba(255,255,255,.25) 0 12px, transparent 12px 19px); }
+    .controls { display:flex; align-items:center; justify-content:center; gap:9px; flex-wrap:wrap; margin:20px 0 8px; }
+    button, select {
+      appearance:none; border:1px solid rgba(255,255,255,.12); border-radius:999px;
+      color:#f7f7fb; background:#141826; padding:10px 17px; font:700 13px inherit; font-size:13px;
+      cursor:pointer; transition:transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+    button:hover, select:hover { transform:translateY(-1px); border-color:rgba(255,255,255,.3); }
+    button.primary { background:#eee4ff; color:#171020; border-color:#eee4ff; }
+    button:focus-visible, select:focus-visible { outline:2px solid #fff; outline-offset:3px; }
+    .status { text-align:center; color:var(--muted); font-size:12px; min-height:18px; margin:8px 0 0; }
+    .footer { text-align:center; font-size:13px; font-weight:800; color:#dfe0e8; margin-top:22px; letter-spacing:-.02em; }
+    @media (max-width:480px) {
+      body { padding:15px 10px 24px; }
+      .topline { margin-bottom:22px; }
+      .score-heads,.lanes { gap:10px; }
+      .lanes { margin-top:15px; }
+      .lane { min-height:560px; height:128vw; border-radius:12px; }
+      .checkpoints { padding-left:6px; padding-right:6px; }
+      .checkpoint .count { font-size:clamp(15px,4vw,21px); }
+      button,select { padding:9px 13px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <div class="topline"><div class="tag">UNDERDOG · one lane starts with almost nothing</div></div>
+
+    <section class="score-heads" aria-label="Lane rules">
+      <div class="score-head">
+        <div class="score-title purple">×3 BALLS</div>
+        <div class="score-sub">starts with 1 ball</div>
+      </div>
+      <div class="score-head right">
+        <div class="score-title green">+2 BALLS</div>
+        <div class="score-sub">starts with 12 balls</div>
+      </div>
+    </section>
+
+    <section class="lanes" aria-label="Ball growth race">
+      <div class="lane" id="leftLane">
+        <div class="lane-label">MULTIPLY</div>
+        <div class="checkpoints" id="leftChecks"></div>
+        <canvas id="leftCanvas"></canvas>
+        <div class="bottom-dash"></div>
+      </div>
+      <div class="lane right" id="rightLane">
+        <div class="lane-label">ADD</div>
+        <div class="checkpoints" id="rightChecks"></div>
+        <canvas id="rightCanvas"></canvas>
+        <div class="bottom-dash"></div>
+      </div>
+    </section>
+
+    <div class="controls">
+      <button class="primary" id="playBtn">▶ Start race</button>
+      <button id="resetBtn">↻ Reset</button>
+      <select id="speed" aria-label="Animation speed">
+        <option value="1">1× speed</option>
+        <option value="1.6">1.6× speed</option>
+        <option value="2.4">2.4× speed</option>
+      </select>
+    </div>
+    <div class="status" id="status" aria-live="polite">Ready · press Start race</div>
+    <div class="footer">burstpoint</div>
+  </main>
+
+  <script>
+    // ------------------------------------------------------------
+    // Ball Growth Race demo — plain JavaScript + Canvas, no library.
+    // Change these values to experiment with different game rules.
+    // ------------------------------------------------------------
+    const CONFIG = {
+      stages: 7,
+      leftStart: 1,
+      leftMultiplier: 3,
+      rightStart: 12,
+      rightAddition: 2,
+      stageDuration: 2100, // milliseconds at 1x
+      maxVisibleBalls: 58  // visual cap; displayed counts remain exact
+    };
+
+    const COLORS = {
+      left: { main: '#ce7cff', glow: 'rgba(204,116,255,.50)', trail: 'rgba(204,116,255,.16)' },
+      right: { main: '#7bef43', glow: 'rgba(123,239,67,.48)', trail: 'rgba(123,239,67,.15)' }
+    };
+
+    const $ = (id) => document.getElementById(id);
+    const lanes = {
+      left: makeLane('left'),
+      right: makeLane('right')
+    };
+
+    let running = false;
+    let finished = false;
+    let stage = 0;
+    let stageStartedAt = 0;
+    let lastFrame = 0;
+    let rafId = 0;
+    let speed = 1;
+
+    function valuesFor(side, throughStage) {
+      const values = [];
+      let count = side === 'left' ? CONFIG.leftStart : CONFIG.rightStart;
+      for (let i = 0; i <= throughStage; i++) {
+        if (i > 0) count = side === 'left' ? count * CONFIG.leftMultiplier : count + CONFIG.rightAddition;
+        values.push(count);
+      }
+      return values;
+    }
+
+    function makeLane(side) {
+      const root = $(side + 'Lane');
+      const canvas = $(side + 'Canvas');
+      const ctx = canvas.getContext('2d');
+      const checks = $(side + 'Checks');
+      const color = COLORS[side];
+      const stageNodes = [];
+      for (let i = 0; i < CONFIG.stages; i++) {
+        const node = document.createElement('div');
+        node.className = 'checkpoint';
+        const count = document.createElement('span');
+        count.className = 'count';
+        count.textContent = '—';
+        node.appendChild(count);
+        checks.appendChild(node);
+        stageNodes.push({ node, count });
+      }
+      const fill = document.createElement('div');
+      fill.className = 'progress-fill';
+      fill.style.background = color.main;
+      root.appendChild(fill);
+      return { side, root, canvas, ctx, checks, stageNodes, fill, color, balls: [], width: 0, height: 0, dpr: 1 };
+    }
+
+    function resizeLane(lane) {
+      const rect = lane.root.getBoundingClientRect();
+      lane.dpr = Math.min(window.devicePixelRatio || 1, 2);
+      lane.width = rect.width;
+      lane.height = rect.height;
+      lane.canvas.width = Math.round(rect.width * lane.dpr);
+      lane.canvas.height = Math.round(rect.height * lane.dpr);
+      lane.ctx.setTransform(lane.dpr, 0, 0, lane.dpr, 0, 0);
+      seedBalls(lane, lane.side === 'left' ? CONFIG.leftStart : CONFIG.rightStart, 0);
+    }
+
+    function seedBalls(lane, exactCount, progress = 0) {
+      const count = Math.min(exactCount, CONFIG.maxVisibleBalls);
+      const w = lane.width || lane.root.clientWidth;
+      const h = lane.height || lane.root.clientHeight;
+      const targetY = h * (0.88 - (stage / (CONFIG.stages - 1)) * 0.72);
+      lane.balls = [];
+      for (let i = 0; i < count; i++) {
+        const angle = (i / Math.max(count, 1)) * Math.PI * 2;
+        const ring = 0.15 + (i % 5) * 0.11;
+        lane.balls.push({
+          x: w * (0.5 + Math.cos(angle) * ring),
+          y: targetY + Math.sin(angle) * ring * 24,
+          vx: (Math.random() - .5) * 26,
+          vy: (Math.random() - .5) * 20,
+          r: count > 35 ? 3.2 : count > 18 ? 4 : 5,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+      // Keep newly spawned balls clustered around the current checkpoint.
+      lane.spawnY = targetY;
+      lane.progress = progress;
+    }
+
+    function updateLabels() {
+      for (const side of ['left', 'right']) {
+        const lane = lanes[side];
+        const values = valuesFor(side, CONFIG.stages - 1);
+        lane.stageNodes.forEach((item, i) => {
+          item.count.textContent = values[i].toLocaleString('en-US');
+          item.node.classList.toggle('active', i === stage);
+          // Stages are visually arranged top-to-bottom in the screenshot style.
+          item.node.style.order = String(CONFIG.stages - 1 - i);
+        });
+        lane.fill.style.width = `${Math.max(0, Math.min(100, ((stage + lane.progress) / CONFIG.stages) * 100))}%`;
+      }
+    }
+
+    function startRace() {
+      if (finished) resetRace();
+      if (running) return;
+      running = true;
+      stageStartedAt = performance.now();
+      lastFrame = stageStartedAt;
+      $('playBtn').textContent = 'Ⅱ Pause';
+      $('status').textContent = 'Race running · watch the growth at each checkpoint';
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(frame);
+    }
+
+    function pauseRace() {
+      running = false;
+      cancelAnimationFrame(rafId);
+      $('playBtn').textContent = '▶ Resume';
+      $('status').textContent = 'Paused · press Resume to continue';
+    }
+
+    function resetRace() {
+      running = false;
+      finished = false;
+      stage = 0;
+      cancelAnimationFrame(rafId);
+      for (const side of ['left', 'right']) {
+        const lane = lanes[side];
+        const initial = side === 'left' ? CONFIG.leftStart : CONFIG.rightStart;
+        seedBalls(lane, initial, 0);
+      }
+      updateLabels();
+      $('playBtn').textContent = '▶ Start race';
+      $('status').textContent = 'Ready · press Start race';
+      drawAll(0);
+    }
+
+    function advanceStage(now) {
+      stage++;
+      if (stage >= CONFIG.stages) {
+        stage = CONFIG.stages - 1;
+        running = false;
+        finished = true;
+        $('playBtn').textContent = '↻ Race again';
+        const leftFinal = valuesFor('left', stage).at(-1);
+        const rightFinal = valuesFor('right', stage).at(-1);
+        $('status').textContent = `Finished · ×3 reached ${leftFinal.toLocaleString()} balls; +2 reached ${rightFinal.toLocaleString()} balls`;
+        return;
+      }
+      stageStartedAt = now;
+      for (const side of ['left', 'right']) {
+        const lane = lanes[side];
+        const total = valuesFor(side, stage)[stage];
+        seedBalls(lane, total, 0);
+      }
+      updateLabels();
+    }
+
+    function frame(now) {
+      if (!running) return;
+      const dt = Math.min((now - lastFrame) / 1000, .04);
+      lastFrame = now;
+      const elapsed = (now - stageStartedAt) / (CONFIG.stageDuration / speed);
+      const progress = Math.min(elapsed, 1);
+      for (const side of ['left', 'right']) {
+        const lane = lanes[side];
+        lane.progress = progress;
+        animateBalls(lane, dt, now);
+      }
+      updateLabels();
+      if (progress >= 1) advanceStage(now);
+      drawAll(now);
+      if (running) rafId = requestAnimationFrame(frame);
+    }
+
+    function animateBalls(lane, dt, now) {
+      const w = lane.width, h = lane.height;
+      const stageY = h * (0.88 - (stage / (CONFIG.stages - 1)) * 0.72);
+      const t = lane.progress || 0;
+      // Balls drift upward toward the next checkpoint, with gentle side-to-side motion.
+      const targetY = stageY - t * h * .105;
+      lane.balls.forEach((b, i) => {
+        b.phase += dt * (1.8 + (i % 4) * .17);
+        b.vx += (Math.sin(now * .0007 + b.phase) * 13 - b.vx * .20) * dt;
+        b.vy += ((targetY + Math.sin(b.phase * .8) * 17 - b.y) * 1.8 - b.vy * .55) * dt;
+        b.x += b.vx * dt;
+        b.y += b.vy * dt;
+        const margin = b.r + 5;
+        if (b.x < margin) { b.x = margin; b.vx = Math.abs(b.vx) * .7; }
+        if (b.x > w - margin) { b.x = w - margin; b.vx = -Math.abs(b.vx) * .7; }
+        if (b.y < 18) { b.y = 18; b.vy = Math.abs(b.vy) * .6; }
+        if (b.y > h - 18) { b.y = h - 18; b.vy = -Math.abs(b.vy) * .6; }
+      });
+    }
+
+    function drawLane(lane, now) {
+      const { ctx, width:w, height:h, color } = lane;
+      ctx.clearRect(0, 0, w, h);
+      // Small atmospheric light behind the active swarm.
+      const centerY = h * (0.88 - (stage / (CONFIG.stages - 1)) * 0.72) - (lane.progress || 0) * h * .105;
+      const glow = ctx.createRadialGradient(w/2, centerY, 2, w/2, centerY, w*.43);
+      glow.addColorStop(0, color.glow);
+      glow.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = glow;
+      ctx.fillRect(0, Math.max(0, centerY-w*.45), w, w*.9);
+
+      lane.balls.forEach((b, i) => {
+        const pulse = 1 + Math.sin((now || 0) * .004 + b.phase) * .10;
+        const r = b.r * pulse;
+        ctx.save();
+        ctx.shadowColor = color.main;
+        ctx.shadowBlur = 13;
+        const ballGrad = ctx.createRadialGradient(b.x-r*.35,b.y-r*.4,1,b.x,b.y,r*1.4);
+        ballGrad.addColorStop(0, '#ffffff');
+        ballGrad.addColorStop(.28, color.main);
+        ballGrad.addColorStop(1, lane.side === 'left' ? '#8737bd' : '#429b24');
+        ctx.fillStyle = ballGrad;
+        ctx.beginPath();
+        ctx.arc(b.x,b.y,r,0,Math.PI*2);
+        ctx.fill();
+        ctx.restore();
+      });
+    }
+
+    function drawAll(now) {
+      drawLane(lanes.left, now);
+      drawLane(lanes.right, now);
+    }
+
+    $('playBtn').addEventListener('click', () => {
+      if (running) pauseRace();
+      else startRace();
+    });
+    $('resetBtn').addEventListener('click', resetRace);
+    $('speed').addEventListener('change', (event) => { speed = Number(event.target.value) || 1; });
+
+    const resizeObserver = new ResizeObserver(() => {
+      Object.values(lanes).forEach(resizeLane);
+      updateLabels();
+      drawAll(performance.now());
+    });
+    Object.values(lanes).forEach(lane => resizeObserver.observe(lane.root));
+    window.addEventListener('beforeunload', () => cancelAnimationFrame(rafId));
+
+    // Initialize the display.
+    updateLabels();
+  </script>
+</body>
+</html>

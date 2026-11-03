@@ -1,0 +1,14 @@
+{
+  "id": "brick_demolition_sample",
+  "gameType": "brick_breaker",
+  "title": "💥 300 BALLS VS 1,200 HP NEON BRICKS 💥",
+  "subtitle": "High-speed demolition swarm · Can they clear 100% of the board?",
+  "durationSeconds": 16,
+  "fps": 60,
+  "ballCount": 260,
+  "metadata": {
+    "youtubeTitle": "300 Physics Balls vs 1,200 HP Bricks! 🤯 #shorts #satisfying #asmr",
+    "description": "Hundreds of glowing physics balls vs tough neon bricks! Will the board reach 100% clearance? #asmr #satisfying #shorts",
+    "tags": ["brick breaker", "oddly satisfying", "physics swarm", "asmr", "shorts"]
+  }
+}

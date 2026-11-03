@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Marble Machine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap">
+<style>
+:root{
+  --bg:#0e1424; --bg2:#151d33; --panel:#1b2540; --panel2:#243052;
+  --ink:#eaf2ff; --muted:#8ea0c4; --brass:#ffc861; --glass:#7fd2ff; --wood:#c98a4b; --good:#5ee08a; --hot:#ff6b8b;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);
+  font-family:"Fredoka",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-weight:600;
+  user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none}
+button{font:inherit;color:inherit;border:none;cursor:pointer;background:none}
+.screen{position:absolute;inset:0;display:none;flex-direction:column}
+.screen.on{display:flex}
+
+/* ---------- menu ---------- */
+#menu{background:radial-gradient(120% 90% at 50% 0%,#1d2a4d 0%,var(--bg) 70%);overflow:hidden}
+#menu header{padding:18px 20px 8px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+#menu h1{margin:0;font-size:clamp(26px,5.5vw,44px);font-weight:700;letter-spacing:.5px}
+#menu h1 b{color:var(--brass)}
+#menu .sub{color:var(--muted);font-size:14px;font-weight:500}
+#menu .tot{margin-left:auto;background:var(--panel);border-radius:999px;padding:8px 16px;font-size:16px;color:var(--brass)}
+#cards{flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;padding:10px 20px 28px;touch-action:pan-y;align-content:start}
+.card{background:var(--panel);border:2px solid #2c3a63;border-radius:18px;padding:10px;display:flex;flex-direction:column;gap:8px;text-align:left;transition:transform .12s,border-color .12s;position:relative;overflow:hidden}
+.card:hover{border-color:var(--brass)}
+.card:active{transform:translateY(3px)}
+.card canvas{width:100%;height:110px;display:block;border-radius:12px;background:#0b1120}
+.card .row{display:flex;align-items:center;gap:8px}
+.card .no{background:#0d152a;color:var(--muted);border-radius:8px;padding:2px 8px;font-size:12px}
+.card .nm{font-size:17px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .st{color:var(--brass);font-size:14px;letter-spacing:1px}
+.card.locked{opacity:.45}
+.card.locked::after{content:"🔒";position:absolute;right:14px;top:12px;font-size:26px}
+#menu footer{padding:0 20px 18px;color:var(--muted);font-size:12px;font-weight:500}
+
+/* ---------- play ---------- */
+#play{background:var(--bg)}
+#stage{position:relative;flex:1;min-height:0;overflow:hidden}
+canvas#c{display:block;width:100%;height:100%}
+#hud{position:absolute;left:10px;top:10px;right:10px;display:flex;gap:6px;align-items:center;pointer-events:none;flex-wrap:wrap}
+#hud>*{pointer-events:auto}
+.pill{background:rgba(8,14,28,.72);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:7px 12px;font-size:14px;line-height:1;white-space:nowrap;display:flex;align-items:center;gap:6px}
+#pStars{color:var(--brass)}
+.spacer{flex:1}
+#hint{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);background:rgba(8,14,28,.72);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:7px 14px;font-size:13px;color:#cfe0ff;pointer-events:none;white-space:nowrap;max-width:94%;overflow:hidden;text-overflow:ellipsis}
+#bar{display:flex;align-items:center;gap:8px;padding:9px 12px calc(10px + env(safe-area-inset-bottom));background:var(--panel);border-top:1px solid #0a0f1d}
+.btn{background:var(--panel2);border:1px solid #3a4a78;border-radius:14px;padding:11px 14px;font-size:16px;line-height:1;display:flex;align-items:center;gap:6px}
+.btn:active{transform:translateY(2px)}
+.btn.on{background:var(--brass);border-color:var(--brass);color:#2a1c00}
+#drop{flex:1;justify-content:center;background:linear-gradient(180deg,#ffd97a,#ffb43f);color:#3a2400;border-color:#ffd97a;font-size:19px;font-weight:700;padding:13px;box-shadow:0 4px 0 #b9760f}
+#drop:active{box-shadow:0 1px 0 #b9760f;transform:translateY(3px)}
+#drop[disabled]{opacity:.5;box-shadow:none}
+#over{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(8,12,24,.86);z-index:8}
+#over.on{display:flex}
+#over .box{background:var(--panel);border:2px solid #37477a;border-radius:22px;padding:22px 26px;text-align:center;max-width:420px;width:86%}
+#over h2{margin:0 0 4px;font-size:30px}
+#over .big{font-size:40px;letter-spacing:4px;color:var(--brass);margin:6px 0}
+#over p{color:var(--muted);margin:6px 0 16px;font-size:14px;font-weight:500}
+#over .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+#over .row .btn{padding:12px 18px}
+#over .btn.go{background:var(--good);border-color:var(--good);color:#06301a}
+#tap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(14,20,36,.95);z-index:20;font-size:clamp(26px,6vw,48px);text-align:center;padding:24px}
+#tap small{font-size:.44em;color:var(--muted);font-weight:500}
+#tap.hide{display:none}
+@media (max-width:640px){
+  .pill{font-size:12px;padding:6px 9px;gap:4px}
+  .btn{padding:10px 11px;font-size:15px}
+  #drop{font-size:17px;padding:12px}
+  #cards{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;padding:8px 12px 20px}
+  .card canvas{height:84px}
+  #menu header{padding:12px 14px 6px}
+}
+</style>
+</head>
+<body>
+
+<div id="menu" class="screen on">
+  <header>
+    <h1>Marble <b>Machine</b></h1>
+    <span class="sub">drop a marble, tap it to hop, collect the coins</span>
+    <span class="tot" id="totStars">🪙 0</span>
+  </header>
+  <div id="cards"></div>
+  <footer>Tap the marble to make it hop. Hold and drag to tug it along. 100 coins on every course.</footer>
+</div>
+
+<div id="play" class="screen">
+  <div id="stage">
+    <canvas id="c"></canvas>
+    <div id="hud">
+      <span class="pill" id="pName">Level</span>
+      <span class="pill" id="pGoal">🎯 0/1</span>
+      <span class="pill" id="pMarbles">⚪ 0</span>
+      <span class="pill" id="pStars">🪙 0/100</span>
+      <span class="spacer"></span>
+      <span class="pill" id="pTime">0.0s</span>
+    </div>
+    <div id="hint"></div>
+    <div id="over"><div class="box">
+      <h2 id="overT">Nice run!</h2>
+      <div class="big" id="overS">★★★</div>
+      <p id="overP"></p>
+      <div class="row">
+        <button class="btn" id="btnMenu2">☰ Levels</button>
+        <button class="btn" id="btnAgain2">↻ Again</button>
+        <button class="btn go" id="btnNext">Next ➜</button>
+      </div>
+    </div></div>
+    <div id="tap"><div>🔮 Marble Machine</div><small>Tap to start</small></div>
+  </div>
+  <div id="bar">
+    <button class="btn" id="btnBack">☰</button>
+    <button class="btn" id="btnRetry">↻</button>
+    <button class="btn" id="drop">DROP</button>
+    <button class="btn" id="btnView" title="See the whole machine">🔍</button>
+    <button class="btn" id="btnSpeed" title="Speed">1×</button>
+    <button class="btn" id="btnSound">🔊</button>
+  </div>
+</div>
+
+<script src="vendor/matter.min.js?v=16937dab"></script>
+<script src="levels.js?v=6fda08a2"></script>
+<script src="coins.js?v=a98bcb17"></script>
+<script src="game.js?v=d2a776ab"></script>
+</body>
+</html>
