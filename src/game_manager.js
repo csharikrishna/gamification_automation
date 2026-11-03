@@ -1,5 +1,5 @@
 // Unified Game Environment Manager
-// Factory and adapter that loads, ticks, and renders any game environment
+// Factory and adapter that loads, ticks, and renders any game environment via GameAdapter contract
 
 let _SimulationEngine = typeof SimulationEngine !== 'undefined' ? SimulationEngine : null;
 let _CanvasRenderer = typeof CanvasRenderer !== 'undefined' ? CanvasRenderer : null;
@@ -17,33 +17,77 @@ if (typeof require !== 'undefined') {
     if (!_BrickBreakerGame) _BrickBreakerGame = require('./games/brick_breaker').BrickBreakerGame;
     if (!_MarbleRunGame) _MarbleRunGame = require('./games/marble_run').MarbleRunGame;
   } catch (e) {
-    // ARCH-01: Log non-trivial module loading errors rather than swallowing silently
     console.warn('[GameManager] Notice while loading module:', e.message);
   }
 }
 
 class GameManager {
+  static getSupportedGames() {
+    return ['multi_race', 'mega_plinko', 'sumo_arena', 'brick_breaker'];
+  }
+
   static createGame(config) {
     const gameType = config.gameType || config.type || 'multi_race';
+    const seed = config.seed ?? 1337;
 
     if (gameType === 'mega_plinko' && _MegaPlinkoGame) {
-      return new _MegaPlinkoGame(config);
+      return new _MegaPlinkoGame(config, seed);
     } else if (gameType === 'sumo_arena' && _SumoArenaGame) {
-      return new _SumoArenaGame(config);
+      return new _SumoArenaGame(config, seed);
     } else if (gameType === 'brick_breaker' && _BrickBreakerGame) {
-      return new _BrickBreakerGame(config);
+      return new _BrickBreakerGame(config, seed);
     } else if (gameType === 'marble_run' && _MarbleRunGame) {
-      return new _MarbleRunGame(config);
+      return new _MarbleRunGame(config, seed);
     } else if (gameType === 'multi_race' && _SimulationEngine) {
-      // ARCH-02: Explicitly checks gameType === 'multi_race' instead of silently swallowing unknown types
       const engine = new _SimulationEngine(config);
       return {
+        gameType: 'multi_race',
         type: 'multi_race',
         engine,
+        config,
+        seed,
         events: engine.events,
+        get simTime() { return engine.simTime; },
+        get frameIndex() { return engine.frameIndex; },
         get isFinished() { return engine.isFinished; },
         get winner() { return engine.winner; },
+        step(dt) { engine.update(dt); },
         update(dt) { engine.update(dt); },
+        observe() {
+          return {
+            simTime: engine.simTime,
+            frameIndex: engine.frameIndex,
+            leftScore: engine.lanes.left.exactScore,
+            rightScore: engine.lanes.right.exactScore,
+            leftTier: engine.lanes.left.currentTier,
+            rightTier: engine.lanes.right.currentTier,
+            isFinished: engine.isFinished,
+            winner: engine.winner
+          };
+        },
+        getEvents() { return engine.events; },
+        getResult() {
+          return {
+            gameType: 'multi_race',
+            winner: engine.winner?.name || (engine.winner?.side === 'left' ? 'LEFT' : 'RIGHT'),
+            winnerSide: engine.winner?.side,
+            winnerColor: engine.winner?.color,
+            isDraw: !!engine.winner?.isDraw,
+            winningScore: engine.winner?.winningScore,
+            losingScore: engine.winner?.losingScore,
+            finishTime: engine.winner?.finishTime,
+            isFinished: engine.isFinished
+          };
+        },
+        getReplay() {
+          return {
+            gameType: 'multi_race',
+            seed: engine.seed,
+            config,
+            events: engine.events,
+            result: this.getResult()
+          };
+        },
         render(ctx) {
           if (!this.renderer || this.renderer.ctx !== ctx) {
             this.renderer = new _CanvasRenderer(ctx.canvas);

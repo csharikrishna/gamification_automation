@@ -1,0 +1,1209 @@
+[
+  {
+    "queueId": "post_2026-11-09_multi_race",
+    "date": "2026-11-09",
+    "dayOfWeek": "Monday",
+    "cycleDay": 1,
+    "gameType": "multi_race",
+    "gameLabel": "Game 1 — Multiplying Ball Race",
+    "status": "FAILED",
+    "candidateId": "clip_race_01",
+    "seed": 64942,
+    "title": "⚡ 1 BALL VS 100 BALLS: CAN MULTIPLY WIN? ⚡",
+    "hookText": "Who wins: 1 ball (×3) or 100 balls? 😱",
+    "tags": [
+      "#shorts",
+      "#physics",
+      "#gaming",
+      "#marblerun",
+      "#satisfying"
+    ],
+    "description": "⚡ 1 BALL VS 100 BALLS: CAN MULTIPLY WIN? ⚡\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
+    "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
+    "scheduledTime": "2026-11-09T17:00:00.000Z",
+    "retryCount": 0,
+    "maxRetries": 3,
+    "config": {
+      "id": "clip_race_01",
+      "gameType": "multi_race",
+      "seed": 64942,
+      "title": "⚡ 1 BALL VS 100 BALLS: CAN MULTIPLY WIN? ⚡",
+      "subtitle": "Candidate #1 · Seed 64942",
+      "durationSeconds": 15,
+      "fps": 60,
+      "lanes": {
+        "left": {
+          "startBalls": 1,
+          "stages": [
+            {
+              "type": "multiply",
+              "value": 3,
+              "label": "×3",
+              "maxHP": 4
+            },
+            {
+              "type": "multiply",
+              "value": 3,
+              "label": "×3",
+              "maxHP": 10
+            },
+            {
+              "type": "multiply",
+              "value": 3,
+              "label": "×3",
+              "maxHP": 25
+            },
+            {
+              "type": "multiply",
+              "value": 3,
+              "label": "×3",
+              "maxHP": 63
+            },
+            {
+              "type": "multiply",
+              "value": 3,
+              "label": "×3",
+              "maxHP": 156
+            },
+            {
+              "type": "multiply",
+              "value": 3,
+              "label": "×3",
+              "maxHP": 391
+            }
+          ]
+        },
+        "right": {
+          "startBalls": 100,
+          "stages": [
+            {
+              "type": "add",
+              "value": 8,
+              "label": "+8",
+              "maxHP": 4
+            },
+            {
+              "type": "add",
+              "value": 8,
+              "label": "+8",
+              "maxHP": 10
+            },
+            {
+              "type": "add",
+              "value": 8,
+              "label": "+8",
+              "maxHP": 25
+            },
+            {
+              "type": "add",
+              "value": 8,
+              "label": "+8",
+              "maxHP": 63
+            },
+            {
+              "type": "add",
+              "value": 8,
+              "label": "+8",
+              "maxHP": 156
+            },
+            {
+              "type": "add",
+              "value": 8,
+              "label": "+8",
+              "maxHP": 391
+            }
+          ]
+        }
+      },
+      "hookText": "Who wins: 1 ball (×3) or 100 balls? 😱",
+      "tags": [
+        "#shorts",
+        "#physics",
+        "#gaming",
+        "#marblerun",
+        "#satisfying"
+      ]
+    },
+    "qualityScore": 100,
+    "error": "Duplicate candidate protection triggered: already published in history!"
+  },
+  {
+    "queueId": "gap_2026-11-10",
+    "date": "2026-11-10",
+    "dayOfWeek": "Tuesday",
+    "cycleDay": 2,
+    "action": "GAP_DAY",
+    "gameType": null,
+    "gameLabel": "Gap day — No post",
+    "status": "GAP_DAY",
+    "notes": "Audience rest day between viral game releases"
+  },
+  {
+    "queueId": "post_2026-11-11_mega_plinko",
+    "date": "2026-11-11",
+    "dayOfWeek": "Wednesday",
+    "cycleDay": 3,
+    "gameType": "mega_plinko",
+    "gameLabel": "Game 2 — Mega Plinko",
+    "status": "SCHEDULED",
+    "candidateId": "clip_plinko_01",
+    "seed": 18721,
+    "title": "🎰 1,000× JACKPOT HUNT · CAN WE HIT GOLD? 🎰",
+    "hookText": "Can ANY of these 120 balls hit the 1,000× slot?! 🎰",
+    "tags": [
+      "#plinko",
+      "#jackpot",
+      "#satisfying",
+      "#shorts",
+      "#physics"
+    ],
+    "description": "🎰 1,000× JACKPOT HUNT · CAN WE HIT GOLD? 🎰\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
+    "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
+    "scheduledTime": "2026-11-11T17:00:00.000Z",
+    "retryCount": 0,
+    "maxRetries": 3,
+    "config": {
+      "id": "clip_plinko_01",
+      "gameType": "mega_plinko",
+      "seed": 18721,
+      "title": "🎰 1,000× JACKPOT HUNT · CAN WE HIT GOLD? 🎰",
+      "subtitle": "Dropping 120 balls · 1,000× jackpot hunt!",
+      "durationSeconds": 15,
+      "fps": 60,
+      "ballCount": 120,
+      "hookText": "Can ANY of these 120 balls hit the 1,000× slot?! 🎰",
+      "tags": [
+        "#plinko",
+        "#jackpot",
+        "#satisfying",
+        "#shorts",
+        "#physics"
+      ]
+    },
+    "qualityScore": 100
+  },
+  {
+    "queueId": "gap_2026-11-12",
+    "date": "2026-11-12",
+    "dayOfWeek": "Thursday",
+    "cycleDay": 4,
+    "action": "GAP_DAY",
+    "gameType": null,
+    "gameLabel": "Gap day — No post",
+    "status": "GAP_DAY",
+    "notes": "Audience rest day between viral game releases"
+  },
+  {
+    "queueId": "post_2026-11-13_sumo_arena",
+    "date": "2026-11-13",
+    "dayOfWeek": "Friday",
+    "cycleDay": 5,
+    "gameType": "sumo_arena",
+    "gameLabel": "Game 3 — Sumo Battle Royale",
+    "status": "SCHEDULED",
+    "candidateId": "clip_sumo_01",
+    "seed": 48471,
+    "title": "👑 32-MARBLE BATTLE ROYALE · 1 SOLE SURVIVOR 👑",
+    "hookText": "Pick your marble color before the ring shrinks! 👑",
+    "tags": [
+      "#battleroyale",
+      "#sumo",
+      "#marbles",
+      "#shorts",
+      "#gaming"
+    ],
+    "description": "👑 32-MARBLE BATTLE ROYALE · 1 SOLE SURVIVOR 👑\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
+    "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
+    "scheduledTime": "2026-11-13T17:00:00.000Z",
+    "retryCount": 0,
+    "maxRetries": 3,
+    "config": {
+      "id": "clip_sumo_01",
+      "gameType": "sumo_arena",
+      "seed": 48471,
+      "title": "👑 32-MARBLE BATTLE ROYALE · 1 SOLE SURVIVOR 👑",
+      "subtitle": "24 autonomous marbles battle for survival!",
+      "durationSeconds": 15,
+      "fps": 60,
+      "competitorCount": 24,
+      "hookText": "Pick your marble color before the ring shrinks! 👑",
+      "tags": [
+        "#battleroyale",
+        "#sumo",
+        "#marbles",
+        "#shorts",
+        "#gaming"
+      ]
+    },
+    "qualityScore": 95
+  },
+  {
+    "queueId": "gap_2026-11-14",
+    "date": "2026-11-14",
+    "dayOfWeek": "Saturday",
+    "cycleDay": 6,
+    "action": "MAINTENANCE",
+    "gameType": null,
+    "gameLabel": "Weekend — Batch production / analytics",
+    "status": "GAP_DAY",
+    "notes": "Analytics ingestion & batch simulation pipeline"
+  },
+  {
+    "queueId": "gap_2026-11-15",
+    "date": "2026-11-15",
+    "dayOfWeek": "Sunday",
+    "cycleDay": 7,
+    "action": "MAINTENANCE",
+    "gameType": null,
+    "gameLabel": "Weekend — Rest / queue preparation",
+    "status": "GAP_DAY",
+    "notes": "Analytics ingestion & batch simulation pipeline"
+  },
+  {
+    "queueId": "post_2026-11-16_brick_breaker",
+    "date": "2026-11-16",
+    "dayOfWeek": "Following Monday",
+    "cycleDay": 8,
+    "gameType": "brick_breaker",
+    "gameLabel": "Game 4 — Neon Brick Breaker",
+    "status": "SCHEDULED",
+    "candidateId": "clip_breaker_01",
+    "seed": 104858,
+    "title": "💥 300 BALL SWARM VS 1,000 HP NEON BRICKS 💥",
+    "hookText": "Watch the entire board get demolished in 15 seconds! 💥",
+    "tags": [
+      "#brickbreaker",
+      "#asmr",
+      "#satisfying",
+      "#shorts",
+      "#physics"
+    ],
+    "description": "💥 300 BALL SWARM VS 1,000 HP NEON BRICKS 💥\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
+    "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
+    "scheduledTime": "2026-11-16T17:00:00.000Z",
+    "retryCount": 0,
+    "maxRetries": 3,
+    "config": {
+      "id": "clip_breaker_01",
+      "gameType": "brick_breaker",
+      "seed": 104858,
+      "title": "💥 300 BALL SWARM VS 1,000 HP NEON BRICKS 💥",
+      "subtitle": "180 physics balls unleashed on heavy neon bricks!",
+      "durationSeconds": 15,
+      "fps": 60,
+      "ballCount": 180,
+      "hookText": "Watch the entire board get demolished in 15 seconds! 💥",
+      "tags": [
+        "#brickbreaker",
+        "#asmr",
+        "#satisfying",
+        "#shorts",
+        "#physics"
+      ]
+    },
+    "qualityScore": 100
+  },
+  {
+    "queueId": "post_2026-11-17_multi_race",
+    "date": "2026-11-17",
+    "dayOfWeek": "Monday",
+    "cycleDay": 1,
+    "gameType": "multi_race",
+    "gameLabel": "Game 1 — Multiplying Ball Race",
+    "status": "SCHEDULED",
+    "candidateId": "clip_race_02",
+    "seed": 100309,
+    "title": "📈 EXPONENTIAL ×2 VS LINEAR +25 SHOWDOWN 📈",
+    "hookText": "Who wins: 4 ball (×2) or 30 balls? 😱",
+    "tags": [
+      "#shorts",
+      "#physics",
+      "#gaming",
+      "#marblerun",
+      "#satisfying"
+    ],
+    "description": "📈 EXPONENTIAL ×2 VS LINEAR +25 SHOWDOWN 📈\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
+    "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
+    "scheduledTime": "2026-11-17T17:00:00.000Z",
+    "retryCount": 0,
+    "maxRetries": 3,
+    "config": {
+      "id": "clip_race_02",
+      "gameType": "multi_race",
+      "seed": 100309,
+      "title": "📈 EXPONENTIAL ×2 VS LINEAR +25 SHOWDOWN 📈",
+      "subtitle": "Candidate #2 · Seed 100309",
+      "durationSeconds": 15,
+      "fps": 60,
+      "lanes": {
+        "left": {
+          "startBalls": 4,
+          "stages": [
+            {
+              "type": "multiply",
+              "value": 2,
+              "label": "×2",
+              "maxHP": 4
+            },
+            {
+              "type": "multiply",
+              "value": 2,
+              "label": "×2",
+              "maxHP": 10
+            },
+            {
+              "type": "multiply",
+              "value": 2,
+              "label": "×2",
+              "maxHP": 25
+            },
+            {
+              "type": "multiply",
+              "value": 2,
+              "label": "×2",
+              "maxHP": 63
+            },
+            {
+              "type": "multiply",
+              "value": 2,
+              "label": "×2",
+              "maxHP": 156
+            },
+            {
+              "type": "multiply",
+              "value": 2,
+              "label": "×2",
+              "maxHP": 391
+            }
+          ]
+        },
+        "right": {
+          "startBalls": 30,
+          "stages": [
+            {
+              "type": "add",
+              "value": 25,
+              "label": "+25",
+              "maxHP": 4
+            },
+            {
+              "type": "add",
+              "value": 25,
+              "label": "+25",
+              "maxHP": 10
+            },
+            {
+              "type": "add",
+              "value": 25,
+              "label": "+25",
+              "maxHP": 25
+            },
+            {
+              "type": "add",
+              "value": 25,
+              "label": "+25",
+              "maxHP": 63
+            },
+            {
+              "type": "add",
+              "value": 25,
+              "label": "+25",
+              "maxHP": 156
+            },
+            {
+              "type": "add",
+              "value": 25,
+              "label": "+25",
+              "maxHP": 391
+            }
+          ]
+        }
+      },
+      "hookText": "Who wins: 4 ball (×2) or 30 balls? 😱",
+      "tags": [
+        "#shorts",
+        "#physics",
+        "#gaming",
+        "#marblerun",
+        "#satisfying"
+      ]
+    },
+    "qualityScore": 90
+  },
+  {
+    "queueId": "gap_2026-11-18",
+    "date": "2026-11-18",
+    "dayOfWeek": "Tuesday",
+    "cycleDay": 2,
+    "action": "GAP_DAY",
+    "gameType": null,
+    "gameLabel": "Gap day — No post",
+    "status": "GAP_DAY",
+    "notes": "Audience rest day between viral game releases"
+  },
+  {
+    "queueId": "post_2026-11-19_mega_plinko",
+    "date": "2026-11-19",
+    "dayOfWeek": "Wednesday",
+    "cycleDay": 3,
+    "gameType": "mega_plinko",
+    "gameLabel": "Game 2 — Mega Plinko",
+    "status": "SCHEDULED",
+    "candidateId": "clip_plinko_02",
+    "seed": 88089,
+    "title": "⚡ 250 GLOWING BALLS VS PYRAMID OF FORTUNE ⚡",
+    "hookText": "Can ANY of these 160 balls hit the 1,000× slot?! 🎰",
+    "tags": [
+      "#plinko",
+      "#jackpot",
+      "#satisfying",
+      "#shorts",
+      "#physics"
+    ],
+    "description": "⚡ 250 GLOWING BALLS VS PYRAMID OF FORTUNE ⚡\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
+    "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
+    "scheduledTime": "2026-11-19T17:00:00.000Z",
+    "retryCount": 0,
+    "maxRetries": 3,
+    "config": {
+      "id": "clip_plinko_02",
+      "gameType": "mega_plinko",
+      "seed": 88089,
+      "title": "⚡ 250 GLOWING BALLS VS PYRAMID OF FORTUNE ⚡",
+      "subtitle": "Dropping 160 balls · 1,000× jackpot hunt!",
+      "durationSeconds": 15,
+      "fps": 60,
+      "ballCount": 160,
+      "hookText": "Can ANY of these 160 balls hit the 1,000× slot?! 🎰",
+      "tags": [
+        "#plinko",
+        "#jackpot",
+        "#satisfying",
+        "#shorts",
+        "#physics"
+      ]
+    },
+    "qualityScore": 100
+  },
+  {
+    "queueId": "gap_2026-11-20",
+    "date": "2026-11-20",
+    "dayOfWeek": "Thursday",
+    "cycleDay": 4,
+    "action": "GAP_DAY",
+    "gameType": null,
+    "gameLabel": "Gap day — No post",
+    "status": "GAP_DAY",
+    "notes": "Audience rest day between viral game releases"
+  },
+  {
+    "queueId": "post_2026-11-21_sumo_arena",
+    "date": "2026-11-21",
+    "dayOfWeek": "Friday",
+    "cycleDay": 5,
+    "gameType": "sumo_arena",
+    "gameLabel": "Game 3 — Sumo Battle Royale",
+    "status": "SCHEDULED",
+    "candidateId": "clip_sumo_02",
+    "seed": 42660,
+    "title": "🔥 RING OF FIRE: LAST MARBLE IN THE CIRCLE WINS 🔥",
+    "hookText": "Pick your marble color before the ring shrinks! 👑",
+    "tags": [
+      "#battleroyale",
+      "#sumo",
+      "#marbles",
+      "#shorts",
+      "#gaming"
+    ],
+    "description": "🔥 RING OF FIRE: LAST MARBLE IN THE CIRCLE WINS 🔥\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
+    "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
+    "scheduledTime": "2026-11-21T17:00:00.000Z",
+    "retryCount": 0,
+    "maxRetries": 3,
+    "config": {
+      "id": "clip_sumo_02",
+      "gameType": "sumo_arena",
+      "seed": 42660,
+      "title": "🔥 RING OF FIRE: LAST MARBLE IN THE CIRCLE WINS 🔥",
+      "subtitle": "32 autonomous marbles battle for survival!",
+      "durationSeconds": 15,
+      "fps": 60,
+      "competitorCount": 32,
+      "hookText": "Pick your marble color before the ring shrinks! 👑",
+      "tags": [
+        "#battleroyale",
+        "#sumo",
+        "#marbles",
+        "#shorts",
+        "#gaming"
+      ]
+    },
+    "qualityScore": 95
+  },
+  {
+    "queueId": "gap_2026-11-22",
+    "date": "2026-11-22",
+    "dayOfWeek": "Saturday",
+    "cycleDay": 6,
+    "action": "MAINTENANCE",
+    "gameType": null,
+    "gameLabel": "Weekend — Batch production / analytics",
+    "status": "GAP_DAY",
+    "notes": "Analytics ingestion & batch simulation pipeline"
+  },
+  {
+    "queueId": "gap_2026-11-23",
+    "date": "2026-11-23",
+    "dayOfWeek": "Sunday",
+    "cycleDay": 7,
+    "action": "MAINTENANCE",
+    "gameType": null,
+    "gameLabel": "Weekend — Rest / queue preparation",
+    "status": "GAP_DAY",
+    "notes": "Analytics ingestion & batch simulation pipeline"
+  },
+  {
+    "queueId": "post_2026-11-24_brick_breaker",
+    "date": "2026-11-24",
+    "dayOfWeek": "Following Monday",
+    "cycleDay": 8,
+    "gameType": "brick_breaker",
+    "gameLabel": "Game 4 — Neon Brick Breaker",
+    "status": "SCHEDULED",
+    "candidateId": "clip_breaker_02",
+    "seed": 41968,
+    "title": "🌈 CAN THIS GLOWING SWARM CLEAR 100% OF THE BOARD? 🌈",
+    "hookText": "Watch the entire board get demolished in 15 seconds! 💥",
+    "tags": [
+      "#brickbreaker",
+      "#asmr",
+      "#satisfying",
+      "#shorts",
+      "#physics"
+    ],
+    "description": "🌈 CAN THIS GLOWING SWARM CLEAR 100% OF THE BOARD? 🌈\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
+    "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
+    "scheduledTime": "2026-11-24T17:00:00.000Z",
+    "retryCount": 0,
+    "maxRetries": 3,
+    "config": {
+      "id": "clip_breaker_02",
+      "gameType": "brick_breaker",
+      "seed": 41968,
+      "title": "🌈 CAN THIS GLOWING SWARM CLEAR 100% OF THE BOARD? 🌈",
+      "subtitle": "240 physics balls unleashed on heavy neon bricks!",
+      "durationSeconds": 15,
+      "fps": 60,
+      "ballCount": 240,
+      "hookText": "Watch the entire board get demolished in 15 seconds! 💥",
+      "tags": [
+        "#brickbreaker",
+        "#asmr",
+        "#satisfying",
+        "#shorts",
+        "#physics"
+      ]
+    },
+    "qualityScore": 100
+  },
+  {
+    "queueId": "post_2026-11-25_multi_race",
+    "date": "2026-11-25",
+    "dayOfWeek": "Monday",
+    "cycleDay": 1,
+    "gameType": "multi_race",
+    "gameLabel": "Game 1 — Multiplying Ball Race",
+    "status": "SCHEDULED",
+    "candidateId": "clip_race_03",
+    "seed": 52744,
+    "title": "🔥 50,000 MARBLE SURGE: ×4 VS ×3 🔥",
+    "hookText": "Who wins: 2 ball (×3) or 12 balls? 😱",
+    "tags": [
+      "#shorts",
+      "#physics",
+      "#gaming",
+      "#marblerun",
+      "#satisfying"
+    ],
+    "description": "🔥 50,000 MARBLE SURGE: ×4 VS ×3 🔥\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
+    "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
+    "scheduledTime": "2026-11-25T17:00:00.000Z",
+    "retryCount": 0,
+    "maxRetries": 3,
+    "config": {
+      "id": "clip_race_03",
+      "gameType": "multi_race",
+      "seed": 52744,
+      "title": "🔥 50,000 MARBLE SURGE: ×4 VS ×3 🔥",
+      "subtitle": "Candidate #3 · Seed 52744",
+      "durationSeconds": 15,
+      "fps": 60,
+      "lanes": {
+        "left": {
+          "startBalls": 2,
+          "stages": [
+            {
+              "type": "multiply",
+              "value": 3,
+              "label": "×3",
+              "maxHP": 4
+            },
+            {
+              "type": "multiply",
+              "value": 3,
+              "label": "×3",
+              "maxHP": 10
+            },
+            {
+              "type": "multiply",
+              "value": 3,
+              "label": "×3",
+              "maxHP": 25
+            },
+            {
+              "type": "multiply",
+              "value": 3,
+              "label": "×3",
+              "maxHP": 63
+            },
+            {
+              "type": "multiply",
+              "value": 3,
+              "label": "×3",
+              "maxHP": 156
+            },
+            {
+              "type": "multiply",
+              "value": 3,
+              "label": "×3",
+              "maxHP": 391
+            }
+          ]
+        },
+        "right": {
+          "startBalls": 12,
+          "stages": [
+            {
+              "type": "multiply",
+              "label": "×undefined",
+              "maxHP": 4
+            },
+            {
+              "type": "multiply",
+              "label": "×undefined",
+              "maxHP": 10
+            },
+            {
+              "type": "multiply",
+              "label": "×undefined",
+              "maxHP": 25
+            },
+            {
+              "type": "multiply",
+              "label": "×undefined",
+              "maxHP": 63
+            },
+            {
+              "type": "multiply",
+              "label": "×undefined",
+              "maxHP": 156
+            },
+            {
+              "type": "multiply",
+              "label": "×undefined",
+              "maxHP": 391
+            }
+          ]
+        }
+      },
+      "hookText": "Who wins: 2 ball (×3) or 12 balls? 😱",
+      "tags": [
+        "#shorts",
+        "#physics",
+        "#gaming",
+        "#marblerun",
+        "#satisfying"
+      ]
+    },
+    "qualityScore": 100
+  },
+  {
+    "queueId": "gap_2026-11-26",
+    "date": "2026-11-26",
+    "dayOfWeek": "Tuesday",
+    "cycleDay": 2,
+    "action": "GAP_DAY",
+    "gameType": null,
+    "gameLabel": "Gap day — No post",
+    "status": "GAP_DAY",
+    "notes": "Audience rest day between viral game releases"
+  },
+  {
+    "queueId": "post_2026-11-27_mega_plinko",
+    "date": "2026-11-27",
+    "dayOfWeek": "Wednesday",
+    "cycleDay": 3,
+    "gameType": "mega_plinko",
+    "gameLabel": "Game 2 — Mega Plinko",
+    "status": "SCHEDULED",
+    "candidateId": "clip_plinko_03",
+    "seed": 22220,
+    "title": "💰 EXTREME HIGH-ROLLER PLINKO: ALL OR NOTHING 💰",
+    "hookText": "Can ANY of these 200 balls hit the 1,000× slot?! 🎰",
+    "tags": [
+      "#plinko",
+      "#jackpot",
+      "#satisfying",
+      "#shorts",
+      "#physics"
+    ],
+    "description": "💰 EXTREME HIGH-ROLLER PLINKO: ALL OR NOTHING 💰\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
+    "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
+    "scheduledTime": "2026-11-27T17:00:00.000Z",
+    "retryCount": 0,
+    "maxRetries": 3,
+    "config": {
+      "id": "clip_plinko_03",
+      "gameType": "mega_plinko",
+      "seed": 22220,
+      "title": "💰 EXTREME HIGH-ROLLER PLINKO: ALL OR NOTHING 💰",
+      "subtitle": "Dropping 200 balls · 1,000× jackpot hunt!",
+      "durationSeconds": 15,
+      "fps": 60,
+      "ballCount": 200,
+      "hookText": "Can ANY of these 200 balls hit the 1,000× slot?! 🎰",
+      "tags": [
+        "#plinko",
+        "#jackpot",
+        "#satisfying",
+        "#shorts",
+        "#physics"
+      ]
+    },
+    "qualityScore": 100
+  },
+  {
+    "queueId": "gap_2026-11-28",
+    "date": "2026-11-28",
+    "dayOfWeek": "Thursday",
+    "cycleDay": 4,
+    "action": "GAP_DAY",
+    "gameType": null,
+    "gameLabel": "Gap day — No post",
+    "status": "GAP_DAY",
+    "notes": "Audience rest day between viral game releases"
+  },
+  {
+    "queueId": "post_2026-11-29_sumo_arena",
+    "date": "2026-11-29",
+    "dayOfWeek": "Friday",
+    "cycleDay": 5,
+    "gameType": "sumo_arena",
+    "gameLabel": "Game 3 — Sumo Battle Royale",
+    "status": "SCHEDULED",
+    "candidateId": "clip_sumo_03",
+    "seed": 51748,
+    "title": "⚡ TITAN GOLD VS CYBER CYAN · DEADLY KNOCKOUTS ⚡",
+    "hookText": "Pick your marble color before the ring shrinks! 👑",
+    "tags": [
+      "#battleroyale",
+      "#sumo",
+      "#marbles",
+      "#shorts",
+      "#gaming"
+    ],
+    "description": "⚡ TITAN GOLD VS CYBER CYAN · DEADLY KNOCKOUTS ⚡\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
+    "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
+    "scheduledTime": "2026-11-29T17:00:00.000Z",
+    "retryCount": 0,
+    "maxRetries": 3,
+    "config": {
+      "id": "clip_sumo_03",
+      "gameType": "sumo_arena",
+      "seed": 51748,
+      "title": "⚡ TITAN GOLD VS CYBER CYAN · DEADLY KNOCKOUTS ⚡",
+      "subtitle": "40 autonomous marbles battle for survival!",
+      "durationSeconds": 15,
+      "fps": 60,
+      "competitorCount": 40,
+      "hookText": "Pick your marble color before the ring shrinks! 👑",
+      "tags": [
+        "#battleroyale",
+        "#sumo",
+        "#marbles",
+        "#shorts",
+        "#gaming"
+      ]
+    },
+    "qualityScore": 95
+  },
+  {
+    "queueId": "gap_2026-11-30",
+    "date": "2026-11-30",
+    "dayOfWeek": "Saturday",
+    "cycleDay": 6,
+    "action": "MAINTENANCE",
+    "gameType": null,
+    "gameLabel": "Weekend — Batch production / analytics",
+    "status": "GAP_DAY",
+    "notes": "Analytics ingestion & batch simulation pipeline"
+  },
+  {
+    "queueId": "gap_2026-12-01",
+    "date": "2026-12-01",
+    "dayOfWeek": "Sunday",
+    "cycleDay": 7,
+    "action": "MAINTENANCE",
+    "gameType": null,
+    "gameLabel": "Weekend — Rest / queue preparation",
+    "status": "GAP_DAY",
+    "notes": "Analytics ingestion & batch simulation pipeline"
+  },
+  {
+    "queueId": "post_2026-12-02_brick_breaker",
+    "date": "2026-12-02",
+    "dayOfWeek": "Following Monday",
+    "cycleDay": 8,
+    "gameType": "brick_breaker",
+    "gameLabel": "Game 4 — Neon Brick Breaker",
+    "status": "SCHEDULED",
+    "candidateId": "clip_breaker_03",
+    "seed": 11988,
+    "title": "⚡ ASMR BRICK DEMOLITION: MAXIMUM SATISFACTION ⚡",
+    "hookText": "Watch the entire board get demolished in 15 seconds! 💥",
+    "tags": [
+      "#brickbreaker",
+      "#asmr",
+      "#satisfying",
+      "#shorts",
+      "#physics"
+    ],
+    "description": "⚡ ASMR BRICK DEMOLITION: MAXIMUM SATISFACTION ⚡\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
+    "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
+    "scheduledTime": "2026-12-02T17:00:00.000Z",
+    "retryCount": 0,
+    "maxRetries": 3,
+    "config": {
+      "id": "clip_breaker_03",
+      "gameType": "brick_breaker",
+      "seed": 11988,
+      "title": "⚡ ASMR BRICK DEMOLITION: MAXIMUM SATISFACTION ⚡",
+      "subtitle": "300 physics balls unleashed on heavy neon bricks!",
+      "durationSeconds": 15,
+      "fps": 60,
+      "ballCount": 300,
+      "hookText": "Watch the entire board get demolished in 15 seconds! 💥",
+      "tags": [
+        "#brickbreaker",
+        "#asmr",
+        "#satisfying",
+        "#shorts",
+        "#physics"
+      ]
+    },
+    "qualityScore": 100
+  },
+  {
+    "queueId": "post_2026-12-03_multi_race",
+    "date": "2026-12-03",
+    "dayOfWeek": "Monday",
+    "cycleDay": 1,
+    "gameType": "multi_race",
+    "gameLabel": "Game 1 — Multiplying Ball Race",
+    "status": "SCHEDULED",
+    "candidateId": "clip_race_04",
+    "seed": 75925,
+    "title": "⚠️ HIGH STAKES GAMBLE: ×5 VS SAFE +15 ⚠️",
+    "hookText": "Who wins: 5 ball (×5) or 20 balls? 😱",
+    "tags": [
+      "#shorts",
+      "#physics",
+      "#gaming",
+      "#marblerun",
+      "#satisfying"
+    ],
+    "description": "⚠️ HIGH STAKES GAMBLE: ×5 VS SAFE +15 ⚠️\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
+    "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
+    "scheduledTime": "2026-12-03T17:00:00.000Z",
+    "retryCount": 0,
+    "maxRetries": 3,
+    "config": {
+      "id": "clip_race_04",
+      "gameType": "multi_race",
+      "seed": 75925,
+      "title": "⚠️ HIGH STAKES GAMBLE: ×5 VS SAFE +15 ⚠️",
+      "subtitle": "Candidate #4 · Seed 75925",
+      "durationSeconds": 15,
+      "fps": 60,
+      "lanes": {
+        "left": {
+          "startBalls": 5,
+          "stages": [
+            {
+              "type": "multiply",
+              "value": 5,
+              "label": "×5",
+              "maxHP": 4
+            },
+            {
+              "type": "multiply",
+              "value": 5,
+              "label": "×5",
+              "maxHP": 10
+            },
+            {
+              "type": "multiply",
+              "value": 5,
+              "label": "×5",
+              "maxHP": 25
+            },
+            {
+              "type": "multiply",
+              "value": 5,
+              "label": "×5",
+              "maxHP": 63
+            },
+            {
+              "type": "multiply",
+              "value": 5,
+              "label": "×5",
+              "maxHP": 156
+            },
+            {
+              "type": "multiply",
+              "value": 5,
+              "label": "×5",
+              "maxHP": 391
+            }
+          ]
+        },
+        "right": {
+          "startBalls": 20,
+          "stages": [
+            {
+              "type": "add",
+              "value": 15,
+              "label": "+15",
+              "maxHP": 4
+            },
+            {
+              "type": "add",
+              "value": 15,
+              "label": "+15",
+              "maxHP": 10
+            },
+            {
+              "type": "add",
+              "value": 15,
+              "label": "+15",
+              "maxHP": 25
+            },
+            {
+              "type": "add",
+              "value": 15,
+              "label": "+15",
+              "maxHP": 63
+            },
+            {
+              "type": "add",
+              "value": 15,
+              "label": "+15",
+              "maxHP": 156
+            },
+            {
+              "type": "add",
+              "value": 15,
+              "label": "+15",
+              "maxHP": 391
+            }
+          ]
+        }
+      },
+      "hookText": "Who wins: 5 ball (×5) or 20 balls? 😱",
+      "tags": [
+        "#shorts",
+        "#physics",
+        "#gaming",
+        "#marblerun",
+        "#satisfying"
+      ]
+    },
+    "qualityScore": 90
+  },
+  {
+    "queueId": "gap_2026-12-04",
+    "date": "2026-12-04",
+    "dayOfWeek": "Tuesday",
+    "cycleDay": 2,
+    "action": "GAP_DAY",
+    "gameType": null,
+    "gameLabel": "Gap day — No post",
+    "status": "GAP_DAY",
+    "notes": "Audience rest day between viral game releases"
+  },
+  {
+    "queueId": "post_2026-12-05_mega_plinko",
+    "date": "2026-12-05",
+    "dayOfWeek": "Wednesday",
+    "cycleDay": 3,
+    "gameType": "mega_plinko",
+    "gameLabel": "Game 2 — Mega Plinko",
+    "status": "SCHEDULED",
+    "candidateId": "clip_plinko_04",
+    "seed": 102709,
+    "title": "🔥 UNSTOPPABLE MARBLE AVALANCHE · PICK YOUR BIN! 🔥",
+    "hookText": "Can ANY of these 250 balls hit the 1,000× slot?! 🎰",
+    "tags": [
+      "#plinko",
+      "#jackpot",
+      "#satisfying",
+      "#shorts",
+      "#physics"
+    ],
+    "description": "🔥 UNSTOPPABLE MARBLE AVALANCHE · PICK YOUR BIN! 🔥\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
+    "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
+    "scheduledTime": "2026-12-05T17:00:00.000Z",
+    "retryCount": 0,
+    "maxRetries": 3,
+    "config": {
+      "id": "clip_plinko_04",
+      "gameType": "mega_plinko",
+      "seed": 102709,
+      "title": "🔥 UNSTOPPABLE MARBLE AVALANCHE · PICK YOUR BIN! 🔥",
+      "subtitle": "Dropping 250 balls · 1,000× jackpot hunt!",
+      "durationSeconds": 15,
+      "fps": 60,
+      "ballCount": 250,
+      "hookText": "Can ANY of these 250 balls hit the 1,000× slot?! 🎰",
+      "tags": [
+        "#plinko",
+        "#jackpot",
+        "#satisfying",
+        "#shorts",
+        "#physics"
+      ]
+    },
+    "qualityScore": 100
+  },
+  {
+    "queueId": "gap_2026-12-06",
+    "date": "2026-12-06",
+    "dayOfWeek": "Thursday",
+    "cycleDay": 4,
+    "action": "GAP_DAY",
+    "gameType": null,
+    "gameLabel": "Gap day — No post",
+    "status": "GAP_DAY",
+    "notes": "Audience rest day between viral game releases"
+  },
+  {
+    "queueId": "post_2026-12-07_sumo_arena",
+    "date": "2026-12-07",
+    "dayOfWeek": "Friday",
+    "cycleDay": 5,
+    "gameType": "sumo_arena",
+    "gameLabel": "Game 3 — Sumo Battle Royale",
+    "status": "SCHEDULED",
+    "candidateId": "clip_sumo_04",
+    "seed": 75076,
+    "title": "💀 SHRINKING DANGER ZONE: WHO OUTLASTS THEM ALL? 💀",
+    "hookText": "Pick your marble color before the ring shrinks! 👑",
+    "tags": [
+      "#battleroyale",
+      "#sumo",
+      "#marbles",
+      "#shorts",
+      "#gaming"
+    ],
+    "description": "💀 SHRINKING DANGER ZONE: WHO OUTLASTS THEM ALL? 💀\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
+    "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
+    "scheduledTime": "2026-12-07T17:00:00.000Z",
+    "retryCount": 0,
+    "maxRetries": 3,
+    "config": {
+      "id": "clip_sumo_04",
+      "gameType": "sumo_arena",
+      "seed": 75076,
+      "title": "💀 SHRINKING DANGER ZONE: WHO OUTLASTS THEM ALL? 💀",
+      "subtitle": "48 autonomous marbles battle for survival!",
+      "durationSeconds": 15,
+      "fps": 60,
+      "competitorCount": 48,
+      "hookText": "Pick your marble color before the ring shrinks! 👑",
+      "tags": [
+        "#battleroyale",
+        "#sumo",
+        "#marbles",
+        "#shorts",
+        "#gaming"
+      ]
+    },
+    "qualityScore": 95
+  },
+  {
+    "queueId": "gap_2026-12-08",
+    "date": "2026-12-08",
+    "dayOfWeek": "Saturday",
+    "cycleDay": 6,
+    "action": "MAINTENANCE",
+    "gameType": null,
+    "gameLabel": "Weekend — Batch production / analytics",
+    "status": "GAP_DAY",
+    "notes": "Analytics ingestion & batch simulation pipeline"
+  },
+  {
+    "queueId": "gap_2026-12-09",
+    "date": "2026-12-09",
+    "dayOfWeek": "Sunday",
+    "cycleDay": 7,
+    "action": "MAINTENANCE",
+    "gameType": null,
+    "gameLabel": "Weekend — Rest / queue preparation",
+    "status": "GAP_DAY",
+    "notes": "Analytics ingestion & batch simulation pipeline"
+  },
+  {
+    "queueId": "post_2026-12-10_brick_breaker",
+    "date": "2026-12-10",
+    "dayOfWeek": "Following Monday",
+    "cycleDay": 8,
+    "gameType": "brick_breaker",
+    "gameLabel": "Game 4 — Neon Brick Breaker",
+    "status": "SCHEDULED",
+    "candidateId": "clip_breaker_09",
+    "seed": 71230,
+    "title": "💥 300 BALL SWARM VS 1,000 HP NEON BRICKS 💥",
+    "hookText": "Watch the entire board get demolished in 15 seconds! 💥",
+    "tags": [
+      "#brickbreaker",
+      "#asmr",
+      "#satisfying",
+      "#shorts",
+      "#physics"
+    ],
+    "description": "💥 300 BALL SWARM VS 1,000 HP NEON BRICKS 💥\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
+    "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
+    "scheduledTime": "2026-12-10T17:00:00.000Z",
+    "retryCount": 0,
+    "maxRetries": 3,
+    "config": {
+      "id": "clip_breaker_09",
+      "gameType": "brick_breaker",
+      "seed": 71230,
+      "title": "💥 300 BALL SWARM VS 1,000 HP NEON BRICKS 💥",
+      "subtitle": "180 physics balls unleashed on heavy neon bricks!",
+      "durationSeconds": 15,
+      "fps": 60,
+      "ballCount": 180,
+      "hookText": "Watch the entire board get demolished in 15 seconds! 💥",
+      "tags": [
+        "#brickbreaker",
+        "#asmr",
+        "#satisfying",
+        "#shorts",
+        "#physics"
+      ]
+    },
+    "qualityScore": 100
+  }
+]

@@ -1,9 +1,28 @@
 // Sumo Battle Royale Knockout Arena Physics Environment
 // Circular shrinking arena, elastic marble collisions, knockouts, kill feed, and Sole Survivor ceremony.
+// Conforms strictly to Universal GameAdapter contract with 100% Deterministic Seeded PRNG.
 
-class SumoArenaGame {
-  constructor(config = {}) {
+const _PRNG = typeof PRNG !== 'undefined'
+  ? PRNG
+  : (typeof require !== 'undefined' ? require('../prng').PRNG : null);
+
+const _GameAdapter = typeof GameAdapter !== 'undefined'
+  ? GameAdapter
+  : (typeof require !== 'undefined' ? require('../game_adapter').GameAdapter : class {});
+
+class SumoArenaGame extends _GameAdapter {
+  constructor(config = {}, seed = null) {
+    super(config, seed);
+    this.gameType = 'sumo_arena';
     this.type = 'sumo_arena';
+    this.initialize(config, seed);
+  }
+
+  initialize(config = {}, seed = null) {
+    this.config = config;
+    this.seed = seed ?? config.seed ?? 1337;
+    this.rng = new (_PRNG || class { random() { return 0.5; } range(a, b) { return (a + b) / 2; } choice(arr) { return arr[0]; } })(this.seed);
+
     this.title = config.title || '👑 MARBLE BATTLE ROYALE · 32 MARBLES 1 WINNER 👑';
     this.subtitle = config.subtitle || 'Pick your color before the knockouts begin!';
     this.durationSeconds = config.durationSeconds || 16;
@@ -41,7 +60,7 @@ class SumoArenaGame {
     for (let i = 0; i < totalCompetitors; i++) {
       const team = TEAMS[i % TEAMS.length];
       const angle = (i / totalCompetitors) * Math.PI * 2;
-      const r = Math.random() * (this.arenaRadius * 0.65);
+      const r = this.rng.range(30, this.arenaRadius * 0.65);
       this.marbles.push({
         id: i + 1,
         name: `${team.name} #${Math.floor(i / TEAMS.length) + 1}`,
@@ -49,8 +68,8 @@ class SumoArenaGame {
         flag: team.flag,
         x: this.centerX + Math.cos(angle) * r,
         y: this.centerY + Math.sin(angle) * r,
-        vx: (Math.random() - 0.5) * 160,
-        vy: (Math.random() - 0.5) * 160,
+        vx: this.rng.range(-80, 80),
+        vy: this.rng.range(-80, 80),
         radius: 14,
         mass: 1.0,
         alive: true,
@@ -64,6 +83,10 @@ class SumoArenaGame {
     this.winner = null;
     this.winnerBannerAlpha = 0;
     this.lastBounceTime = 0;
+  }
+
+  step(dt = 1 / 60) {
+    this.update(dt);
   }
 
   update(dt = 1 / 60) {
@@ -101,110 +124,112 @@ class SumoArenaGame {
           m2.x += nx * overlap;
           m2.y += ny * overlap;
 
-          // Normal relative velocity
-          const kx = m1.vx - m2.vx;
-          const ky = m1.vy - m2.vy;
-          const p = 2 * (nx * kx + ny * ky) / (m1.mass + m2.mass);
+          // Elastic collision impulse
+          const vrel = (m1.vx - m2.vx) * nx + (m1.vy - m2.vy) * ny;
+          if (vrel > 0) {
+            const e = 0.88;
+            const impulse = (1 + e) * vrel * 0.5;
+            m1.vx -= impulse * nx;
+            m1.vy -= impulse * ny;
+            m2.vx += impulse * nx;
+            m2.vy += impulse * ny;
 
-          // Impulse with recoil
-          m1.vx -= p * m2.mass * nx * 1.08;
-          m1.vy -= p * m2.mass * ny * 1.08;
-          m2.vx += p * m1.mass * nx * 1.08;
-          m2.vy += p * m1.mass * ny * 1.08;
-
-          this.logCollision((m1.x + m2.x) / 2, (m1.y + m2.y) / 2);
+            this.logCollision((m1.x + m2.x) / 2, (m1.y + m2.y) / 2);
+          }
         }
       }
     }
 
-    // Move marbles & check arena boundary
+    // Move marbles, check arena boundary knockouts
     for (const m of alive) {
-      // Gentle center-seeking gravity impulse to keep the action intense
-      const toCenterX = this.centerX - m.x;
-      const toCenterY = this.centerY - m.y;
-      const distFromCenter = Math.sqrt(toCenterX * toCenterX + toCenterY * toCenterY);
-
-      // Random jitter / drive
-      m.vx += (Math.random() - 0.5) * 80 * dt;
-      m.vy += (Math.random() - 0.5) * 80 * dt;
-
       m.x += m.vx * dt;
       m.y += m.vy * dt;
 
+      // Gentle friction
       m.vx *= 0.992;
       m.vy *= 0.992;
 
-      // Check if knocked out of the ring!
+      // Slight inward seeking force if moving too slow
+      const distFromCenter = Math.hypot(m.x - this.centerX, m.y - this.centerY);
+      if (distFromCenter > 40) {
+        const angleToCenter = Math.atan2(this.centerY - m.y, this.centerX - m.x);
+        m.vx += Math.cos(angleToCenter) * 14 * dt;
+        m.vy += Math.sin(angleToCenter) * 14 * dt;
+      }
+
+      // Check boundary knockout (Out of the ring!)
       if (distFromCenter > this.arenaRadius) {
         m.alive = false;
         m.knockoutTime = this.simTime;
         this.aliveCount--;
 
-        this.events.push({ time: this.simTime, type: 'gate', tier: 2 });
+        // Trigger knockout particle burst
+        this.triggerKnockoutBurst(m.x, m.y, m.color);
 
         // Add to kill feed
         this.killFeed.unshift({
-          text: `💀 ${m.name} ELIMINATED!`,
-          time: this.simTime,
-          color: m.color
+          text: `💀 ${m.name} KNOCKED OUT!`,
+          color: m.color,
+          time: this.simTime
         });
-        if (this.killFeed.length > 4) this.killFeed.pop();
+        if (this.killFeed.length > 5) this.killFeed.pop();
 
-        // Explosion particles
-        for (let k = 0; k < 18; k++) {
-          const angle = (k / 18) * Math.PI * 2;
-          const spd = Math.random() * 200 + 100;
-          this.particles.push({
-            x: m.x,
-            y: m.y,
-            vx: Math.cos(angle) * spd,
-            vy: Math.sin(angle) * spd,
-            radius: Math.random() * 4 + 2,
-            color: m.color,
-            life: 0.8,
-            maxLife: 0.8,
-            gravity: 300
-          });
-        }
+        this.events.push({
+          time: this.simTime,
+          type: 'knockout',
+          marbleId: m.id,
+          remaining: this.aliveCount
+        });
       }
     }
 
-    // Fall animation for knocked out marbles
-    for (const m of this.marbles) {
-      if (!m.alive && m.knockoutTime && this.simTime - m.knockoutTime < 1.0) {
-        m.y += 450 * dt;
-        m.radius = Math.max(0, m.radius - 12 * dt);
-      }
-    }
-
-    // Particles update
+    // Update Particles
     for (let i = this.particles.length - 1; i >= 0; i--) {
       const p = this.particles[i];
       p.x += p.vx * dt;
       p.y += p.vy * dt;
-      p.vy += p.gravity * dt;
+      p.vy += (p.gravity || 300) * dt;
       p.life -= dt;
       if (p.life <= 0) this.particles.splice(i, 1);
     }
 
-    // Check winner
-    if ((this.aliveCount <= 1 || this.simTime >= this.durationSeconds - 2.5) && !this.winner) {
-      const survivor = this.marbles.find(m => m.alive) || this.marbles[0];
+    // Winner resolution
+    if (this.aliveCount <= 1 && !this.winner) {
+      const survivor = this.marbles.find(m => m.alive) || alive[0] || this.marbles[0];
       this.winner = {
         name: survivor.name,
         color: survivor.color,
         flag: survivor.flag,
+        kills: survivor.kills,
         winningScore: 1,
-        totalKnockouts: this.totalInitial - 1
+        finishTime: this.simTime
       };
-      this.events.push({ time: this.simTime, type: 'finish' });
+      this.events.push({ time: this.simTime, type: 'finish', winner: survivor.name });
+    } else if (this.simTime >= this.durationSeconds - 0.001 && !this.winner) {
+      // Timeout resolution: closest to center wins
+      alive.sort((a, b) => {
+        const distA = Math.hypot(a.x - this.centerX, a.y - this.centerY);
+        const distB = Math.hypot(b.x - this.centerX, b.y - this.centerY);
+        return distA - distB;
+      });
+      const top = alive[0] || this.marbles[0];
+      this.winner = {
+        name: top.name,
+        color: top.color,
+        flag: top.flag,
+        kills: top.kills,
+        winningScore: 1,
+        finishTime: this.simTime,
+        isTimeout: true
+      };
+      this.events.push({ time: this.simTime, type: 'finish', winner: top.name });
     }
 
     if (this.winner) {
       this.winnerBannerAlpha = Math.min(1.0, this.winnerBannerAlpha + dt * 2.2);
     }
 
-    if (this.simTime >= this.durationSeconds) {
+    if (this.simTime >= this.durationSeconds - 0.001) {
       this.isFinished = true;
     }
   }
@@ -213,6 +238,71 @@ class SumoArenaGame {
     if (this.simTime - this.lastBounceTime < 0.04) return;
     this.lastBounceTime = this.simTime;
     this.events.push({ time: this.simTime, type: 'bounce', volume: 0.14, pitch: 480 });
+  }
+
+  triggerKnockoutBurst(x, y, color) {
+    for (let k = 0; k < 24; k++) {
+      const angle = (k / 24) * Math.PI * 2;
+      const spd = this.rng.range(120, 320);
+      this.particles.push({
+        x,
+        y,
+        vx: Math.cos(angle) * spd,
+        vy: Math.sin(angle) * spd,
+        radius: this.rng.range(3, 6),
+        color,
+        life: 0.85,
+        maxLife: 0.85,
+        gravity: 350
+      });
+    }
+  }
+
+  observe() {
+    return {
+      simTime: this.simTime,
+      frameIndex: this.frameIndex,
+      aliveCount: this.aliveCount,
+      totalInitial: this.totalInitial,
+      arenaRadius: this.arenaRadius,
+      winner: this.winner,
+      isFinished: this.isFinished
+    };
+  }
+
+  getEvents() {
+    return this.events;
+  }
+
+  getResult() {
+    return {
+      gameType: 'sumo_arena',
+      title: this.title,
+      winner: this.winner ? this.winner.name : (this.marbles.find(m => m.alive)?.name || 'UNKNOWN'),
+      winnerColor: this.winner ? this.winner.color : '#ffd700',
+      score: this.aliveCount,
+      winningScore: 1,
+      aliveCount: this.aliveCount,
+      totalCompetitors: this.totalInitial,
+      finishTime: this.simTime,
+      isFinished: this.isFinished,
+      stats: {
+        totalKnockouts: this.totalInitial - this.aliveCount,
+        knockoutFeed: [...this.killFeed]
+      }
+    };
+  }
+
+  getReplay() {
+    return {
+      gameType: 'sumo_arena',
+      seed: this.seed,
+      config: this.config,
+      durationSeconds: this.simTime,
+      aliveCount: this.aliveCount,
+      result: this.getResult(),
+      events: this.events
+    };
   }
 
   render(ctx) {
@@ -259,7 +349,6 @@ class SumoArenaGame {
 
     // Circular Battle Arena Ring
     ctx.save();
-    // Inner arena glow
     const ringGlow = ctx.createRadialGradient(this.centerX, this.centerY, 50, this.centerX, this.centerY, this.arenaRadius);
     ringGlow.addColorStop(0, 'rgba(0, 240, 255, 0.08)');
     ringGlow.addColorStop(0.85, 'rgba(255, 0, 127, 0.15)');
@@ -269,7 +358,7 @@ class SumoArenaGame {
     ctx.arc(this.centerX, this.centerY, this.arenaRadius, 0, Math.PI * 2);
     ctx.fill();
 
-    // Ring Outer Border Line (Danger boundary)
+    // Ring Danger boundary line
     ctx.strokeStyle = '#ff007f';
     ctx.lineWidth = 6;
     ctx.shadowColor = '#ff007f';
@@ -299,44 +388,49 @@ class SumoArenaGame {
       ctx.shadowColor = item.color;
       ctx.shadowBlur = 10;
       ctx.fillText(item.text, w / 2, feedY);
-      feedY += 36;
+      feedY += 34;
     }
     ctx.restore();
 
-    // Render Marbles
+    // Render Competitor Marbles
     for (const m of this.marbles) {
-      if (m.radius <= 0) continue;
+      if (!m.alive) continue;
       ctx.save();
       const r = m.radius;
       ctx.shadowColor = m.color;
-      ctx.shadowBlur = m.alive ? 16 : 4;
+      ctx.shadowBlur = 15;
 
-      const grad = ctx.createRadialGradient(m.x - r * 0.35, m.y - r * 0.35, 1, m.x, m.y, r * 1.35);
+      const grad = ctx.createRadialGradient(m.x - r * 0.35, m.y - r * 0.35, 1, m.x, m.y, r * 1.2);
       grad.addColorStop(0, '#ffffff');
       grad.addColorStop(0.4, m.color);
-      grad.addColorStop(1, '#000000');
+      grad.addColorStop(1, '#0a0d18');
       ctx.fillStyle = grad;
 
       ctx.beginPath();
       ctx.arc(m.x, m.y, r, 0, Math.PI * 2);
       ctx.fill();
+
+      // Outer highlight ring
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
       ctx.restore();
     }
 
-    // Particles
+    // Render Particles
     for (const p of this.particles) {
       ctx.save();
-      ctx.globalAlpha = Math.max(0, p.life / p.maxLife);
-      ctx.fillStyle = p.color;
-      ctx.shadowColor = p.color;
-      ctx.shadowBlur = 8;
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = p.life / p.maxLife;
+      ctx.shadowColor = p.color;
+      ctx.shadowBlur = 12;
       ctx.fill();
       ctx.restore();
     }
 
-    // Sole Survivor Banner
+    // Sole Survivor Banner Overlay
     if (this.winnerBannerAlpha > 0.01) {
       ctx.save();
       ctx.globalAlpha = this.winnerBannerAlpha;
@@ -378,6 +472,10 @@ class SumoArenaGame {
       ctx.restore();
     }
   }
+}
+
+if (typeof window !== 'undefined') {
+  window.SumoArenaGame = SumoArenaGame;
 }
 
 if (typeof module !== 'undefined' && module.exports) {

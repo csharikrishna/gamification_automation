@@ -1,9 +1,28 @@
 // Neon Brick Breaker Swarm Physics Environment
 // Hundreds of glowing physics balls demolishing high-HP neon bricks with ASMR shatter particles.
+// Conforms strictly to Universal GameAdapter contract with 100% Deterministic Seeded PRNG.
 
-class BrickBreakerGame {
-  constructor(config = {}) {
+const _PRNG = typeof PRNG !== 'undefined'
+  ? PRNG
+  : (typeof require !== 'undefined' ? require('../prng').PRNG : null);
+
+const _GameAdapter = typeof GameAdapter !== 'undefined'
+  ? GameAdapter
+  : (typeof require !== 'undefined' ? require('../game_adapter').GameAdapter : class {});
+
+class BrickBreakerGame extends _GameAdapter {
+  constructor(config = {}, seed = null) {
+    super(config, seed);
+    this.gameType = 'brick_breaker';
     this.type = 'brick_breaker';
+    this.initialize(config, seed);
+  }
+
+  initialize(config = {}, seed = null) {
+    this.config = config;
+    this.seed = seed ?? config.seed ?? 1337;
+    this.rng = new (_PRNG || class { random() { return 0.5; } range(a, b) { return (a + b) / 2; } choice(arr) { return arr[0]; } })(this.seed);
+
     this.title = config.title || '💥 300 BALLS VS 1,000 HP NEON BRICKS 💥';
     this.subtitle = config.subtitle || 'Can the swarm clear the entire board?';
     this.durationSeconds = config.durationSeconds || 16;
@@ -31,7 +50,7 @@ class BrickBreakerGame {
 
     for (let r = 0; r < rows; r++) {
       const rowColor = COLORS[r % COLORS.length];
-      const baseHp = (rows - r) * 25; // Top bricks have higher HP
+      const baseHp = (rows - r) * 25;
       for (let c = 0; c < cols; c++) {
         this.bricks.push({
           x: startX + c * (brickW + gap),
@@ -57,18 +76,23 @@ class BrickBreakerGame {
     this.winner = null;
     this.winnerBannerAlpha = 0;
     this.lastBounceTime = 0;
+    this.clearedPct = 0;
+  }
+
+  step(dt = 1 / 60) {
+    this.update(dt);
   }
 
   update(dt = 1 / 60) {
     this.simTime += dt;
     this.frameIndex++;
 
-    // Launch swarm from bottom cannon
+    // Launch swarm from bottom cannon with deterministic seeded spread
     if (this.spawnIndex < this.totalBallBudget && this.frameIndex % 2 === 0) {
-      const launchAngle = -Math.PI / 2 + (Math.random() - 0.5) * 1.1;
-      const speed = Math.random() * 200 + 850;
+      const launchAngle = -Math.PI / 2 + this.rng.range(-0.55, 0.55);
+      const speed = this.rng.range(850, 1050);
       this.balls.push({
-        x: 540 + (Math.random() - 0.5) * 40,
+        x: 540 + this.rng.range(-20, 20),
         y: 1720,
         vx: Math.cos(launchAngle) * speed,
         vy: Math.sin(launchAngle) * speed,
@@ -99,20 +123,17 @@ class BrickBreakerGame {
         this.logSound();
       }
 
-      // Ceiling
-      if (ball.y - ball.radius < 260) {
-        ball.y = 260 + ball.radius;
+      if (ball.y - ball.radius < 300) {
+        ball.y = 300 + ball.radius;
         ball.vy = Math.abs(ball.vy);
+        this.logSound();
+      } else if (ball.y + ball.radius > 1750) {
+        ball.y = 1750 - ball.radius;
+        ball.vy = -Math.abs(ball.vy);
         this.logSound();
       }
 
-      // Floor bounce (infinite rally!)
-      if (ball.y + ball.radius > 1750) {
-        ball.y = 1750 - ball.radius;
-        ball.vy = -Math.abs(ball.vy);
-      }
-
-      // Brick collisions
+      // Check Brick Collisions (AABB)
       for (const brick of this.bricks) {
         if (!brick.alive) continue;
 
@@ -122,62 +143,61 @@ class BrickBreakerGame {
           ball.y + ball.radius > brick.y &&
           ball.y - ball.radius < brick.y + brick.h
         ) {
-          // Determine collision face
+          // Bounce normal
           const overlapLeft = (ball.x + ball.radius) - brick.x;
           const overlapRight = (brick.x + brick.w) - (ball.x - ball.radius);
           const overlapTop = (ball.y + ball.radius) - brick.y;
           const overlapBottom = (brick.y + brick.h) - (ball.y - ball.radius);
 
-          const minOverlap = Math.min(overlapLeft, overlapRight, overlapTop, overlapBottom);
+          const minOverlapX = Math.min(overlapLeft, overlapRight);
+          const minOverlapY = Math.min(overlapTop, overlapBottom);
 
-          if (minOverlap === overlapLeft) {
-            ball.x = brick.x - ball.radius;
-            ball.vx = -Math.abs(ball.vx);
-          } else if (minOverlap === overlapRight) {
-            ball.x = brick.x + brick.w + ball.radius;
-            ball.vx = Math.abs(ball.vx);
-          } else if (minOverlap === overlapTop) {
-            ball.y = brick.y - ball.radius;
-            ball.vy = -Math.abs(ball.vy);
+          if (minOverlapX < minOverlapY) {
+            ball.vx = (overlapLeft < overlapRight ? -1 : 1) * Math.abs(ball.vx);
           } else {
-            ball.y = brick.y + brick.h + ball.radius;
-            ball.vy = Math.abs(ball.vy);
+            ball.vy = (overlapTop < overlapBottom ? -1 : 1) * Math.abs(ball.vy);
           }
 
-          brick.hp--;
+          brick.hp = Math.max(0, brick.hp - 1);
           brick.hitGlow = 1.0;
-          this.logSound(brick.color);
+          this.logSound(0.06, 680 + (1.0 - brick.hp / brick.maxHp) * 300);
 
-          // Brick Shatter if HP <= 0!
-          if (brick.hp <= 0) {
+          if (brick.hp <= 0 && brick.alive) {
             brick.alive = false;
             this.triggerBrickShatter(brick);
-            this.events.push({ time: this.simTime, type: 'gate', tier: 4 });
+            this.events.push({
+              time: this.simTime,
+              type: 'brick_shatter',
+              brickColor: brick.color
+            });
           }
           break;
         }
       }
     }
 
-    // Particles
+    // Update Particles
     for (let i = this.particles.length - 1; i >= 0; i--) {
       const p = this.particles[i];
       p.x += p.vx * dt;
       p.y += p.vy * dt;
-      p.vy += p.gravity * dt;
+      p.vy += (p.gravity || 400) * dt;
       p.life -= dt;
       if (p.life <= 0) this.particles.splice(i, 1);
     }
 
-    // Check winner / progress
-    const remainingHp = this.bricks.filter(b => b.alive).reduce((s, b) => s + b.hp, 0);
+    // Calculate Board Clearance %
+    const remainingHp = this.bricks.filter(b => b.alive).reduce((sum, b) => sum + b.hp, 0);
     this.clearedPct = Math.min(100, Math.round(((this.initialTotalHp - remainingHp) / this.initialTotalHp) * 100));
 
-    if ((this.clearedPct >= 100 || this.simTime >= this.durationSeconds - 2.5) && !this.winner) {
+    // Finish / Victory check
+    const allCleared = this.bricks.every(b => !b.alive);
+    if ((allCleared || this.simTime >= this.durationSeconds - 2.5) && !this.winner) {
       this.winner = {
-        name: 'SWARM DEMOLITION',
-        color: '#00f0ff',
-        winningScore: this.clearedPct
+        name: allCleared ? '100% BOARD CLEARED!' : `${this.clearedPct}% CLEARED`,
+        color: '#79ef43',
+        winningScore: this.clearedPct,
+        finishTime: this.simTime
       };
       this.events.push({ time: this.simTime, type: 'finish' });
     }
@@ -186,15 +206,15 @@ class BrickBreakerGame {
       this.winnerBannerAlpha = Math.min(1.0, this.winnerBannerAlpha + dt * 2.2);
     }
 
-    if (this.simTime >= this.durationSeconds) {
+    if (this.simTime >= this.durationSeconds - 0.001) {
       this.isFinished = true;
     }
   }
 
-  logSound() {
+  logSound(volume = 0.05, pitch = 640) {
     if (this.simTime - this.lastBounceTime < 0.02) return;
     this.lastBounceTime = this.simTime;
-    this.events.push({ time: this.simTime, type: 'bounce', volume: 0.08, pitch: 700 });
+    this.events.push({ time: this.simTime, type: 'bounce', volume, pitch });
   }
 
   triggerBrickShatter(brick) {
@@ -202,19 +222,69 @@ class BrickBreakerGame {
     const cy = brick.y + brick.h / 2;
     for (let k = 0; k < 22; k++) {
       const angle = (k / 22) * Math.PI * 2;
-      const spd = Math.random() * 220 + 80;
+      const spd = this.rng.range(80, 300);
       this.particles.push({
         x: cx,
         y: cy,
         vx: Math.cos(angle) * spd,
         vy: Math.sin(angle) * spd,
-        radius: Math.random() * 4 + 2,
+        radius: this.rng.range(2, 6),
         color: brick.color,
         life: 0.75,
         maxLife: 0.75,
         gravity: 400
       });
     }
+  }
+
+  observe() {
+    return {
+      simTime: this.simTime,
+      frameIndex: this.frameIndex,
+      clearedPct: this.clearedPct,
+      bricksRemaining: this.bricks.filter(b => b.alive).length,
+      totalBricks: this.bricks.length,
+      ballsActive: this.balls.length,
+      winner: this.winner,
+      isFinished: this.isFinished
+    };
+  }
+
+  getEvents() {
+    return this.events;
+  }
+
+  getResult() {
+    return {
+      gameType: 'brick_breaker',
+      title: this.title,
+      winner: `${this.clearedPct}% CLEARED`,
+      winnerColor: '#79ef43',
+      score: this.clearedPct,
+      winningScore: this.clearedPct,
+      clearedPct: this.clearedPct,
+      totalBricks: this.bricks.length,
+      bricksDemolished: this.bricks.filter(b => !b.alive).length,
+      finishTime: this.simTime,
+      isFinished: this.isFinished,
+      stats: {
+        totalBalls: this.balls.length,
+        initialHp: this.initialTotalHp,
+        remainingHp: this.bricks.filter(b => b.alive).reduce((s, b) => s + b.hp, 0)
+      }
+    };
+  }
+
+  getReplay() {
+    return {
+      gameType: 'brick_breaker',
+      seed: this.seed,
+      config: this.config,
+      durationSeconds: this.simTime,
+      clearedPct: this.clearedPct,
+      result: this.getResult(),
+      events: this.events
+    };
   }
 
   render(ctx) {
@@ -303,20 +373,20 @@ class BrickBreakerGame {
       ctx.restore();
     }
 
-    // Particles
+    // Render Particles
     for (const p of this.particles) {
       ctx.save();
-      ctx.globalAlpha = Math.max(0, p.life / p.maxLife);
-      ctx.fillStyle = p.color;
-      ctx.shadowColor = p.color;
-      ctx.shadowBlur = 8;
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = p.life / p.maxLife;
+      ctx.shadowColor = p.color;
+      ctx.shadowBlur = 10;
       ctx.fill();
       ctx.restore();
     }
 
-    // Demolition Complete Banner
+    // Clearance Result Overlay
     if (this.winnerBannerAlpha > 0.01) {
       ctx.save();
       ctx.globalAlpha = this.winnerBannerAlpha;
@@ -358,6 +428,10 @@ class BrickBreakerGame {
       ctx.restore();
     }
   }
+}
+
+if (typeof window !== 'undefined') {
+  window.BrickBreakerGame = BrickBreakerGame;
 }
 
 if (typeof module !== 'undefined' && module.exports) {

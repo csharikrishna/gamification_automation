@@ -1,9 +1,28 @@
 // Mega Plinko 1000x Jackpot Pyramid Physics Environment
-// Vertical 1080x1920 layout, peg pyramid, multiplier slot bins, jackpot explosions
+// Vertical 1080x1920 layout, peg pyramid, multiplier slot bins, jackpot explosions.
+// Conforms strictly to Universal GameAdapter contract with 100% Deterministic Seeded PRNG.
 
-class MegaPlinkoGame {
-  constructor(config = {}) {
+const _PRNG = typeof PRNG !== 'undefined'
+  ? PRNG
+  : (typeof require !== 'undefined' ? require('../prng').PRNG : null);
+
+const _GameAdapter = typeof GameAdapter !== 'undefined'
+  ? GameAdapter
+  : (typeof require !== 'undefined' ? require('../game_adapter').GameAdapter : class {});
+
+class MegaPlinkoGame extends _GameAdapter {
+  constructor(config = {}, seed = null) {
+    super(config, seed);
+    this.gameType = 'mega_plinko';
     this.type = 'mega_plinko';
+    this.initialize(config, seed);
+  }
+
+  initialize(config = {}, seed = null) {
+    this.config = config;
+    this.seed = seed ?? config.seed ?? 1337;
+    this.rng = new (_PRNG || class { random() { return 0.5; } range(a, b) { return (a + b) / 2; } choice(arr) { return arr[0]; } })(this.seed);
+
     this.title = config.title || '⚡ 1,000× JACKPOT PLINKO · CAN ANYONE HIT 1000×? ⚡';
     this.subtitle = config.subtitle || 'Dropping 250 balls · Pick your slot!';
     this.durationSeconds = config.durationSeconds || 16;
@@ -25,7 +44,7 @@ class MegaPlinkoGame {
     this.centerX = 540;
     this.rows = config.rows || 14;
     this.ballBudget = config.ballCount || 200;
-    this.spawnRate = 18; // balls per second
+    this.spawnRate = 18;
 
     // Build Peg Pyramid
     this.pegs = [];
@@ -62,10 +81,10 @@ class MegaPlinkoGame {
     for (let i = 0; i < slotCount; i++) {
       const val = slotValues[i];
       let color = '#79ef43';
-      if (val >= 1000) color = '#ffd700'; // Gold
-      else if (val >= 100) color = '#ff007f'; // Pink/Red
-      else if (val >= 10) color = '#cb72ff'; // Purple
-      else if (val >= 2) color = '#00f0ff'; // Cyan
+      if (val >= 1000) color = '#ffd700';
+      else if (val >= 100) color = '#ff007f';
+      else if (val >= 10) color = '#cb72ff';
+      else if (val >= 2) color = '#00f0ff';
 
       this.slotBins.push({
         index: i,
@@ -88,6 +107,10 @@ class MegaPlinkoGame {
     this.winnerBannerAlpha = 0;
   }
 
+  step(dt = 1 / 60) {
+    this.update(dt);
+  }
+
   update(dt = 1 / 60) {
     this.simTime += dt;
     this.frameIndex++;
@@ -96,7 +119,7 @@ class MegaPlinkoGame {
     const bounce = 0.72;
     const friction = 0.994;
 
-    // Spawn balls over time
+    // Deterministic ball spawns
     if (this.simTime < this.durationSeconds - 4.5 && this.balls.length < this.ballBudget) {
       if (this.frameIndex % 3 === 0) {
         this.spawnBall();
@@ -109,12 +132,10 @@ class MegaPlinkoGame {
       this.displayScore += Math.max(1, Math.ceil(diff * 0.15));
     }
 
-    // Peg glows decay
+    // Decay glows
     for (const p of this.pegs) {
       if (p.glow > 0) p.glow = Math.max(0, p.glow - dt * 4.0);
     }
-
-    // Slot glows decay
     for (const s of this.slotBins) {
       if (s.glow > 0) s.glow = Math.max(0, s.glow - dt * 3.0);
     }
@@ -140,7 +161,7 @@ class MegaPlinkoGame {
         b.vx = -Math.abs(b.vx) * bounce;
       }
 
-      // Peg collisions
+      // Peg collisions (Deterministic seeded scatter)
       for (const p of this.pegs) {
         const dx = b.x - p.x;
         const dy = b.y - p.y;
@@ -158,7 +179,7 @@ class MegaPlinkoGame {
 
           const dot = b.vx * nx + b.vy * ny;
           if (dot < 0) {
-            b.vx = (b.vx - 2 * dot * nx) * bounce + (Math.random() - 0.5) * 35;
+            b.vx = (b.vx - 2 * dot * nx) * bounce + this.rng.range(-17.5, 17.5);
             b.vy = (b.vy - 2 * dot * ny) * bounce;
             p.glow = 1.0;
             this.logBounce(p.x, p.y, 0.07, 650 + (p.y / this.bottomY) * 300);
@@ -244,19 +265,19 @@ class MegaPlinkoGame {
       this.winnerBannerAlpha = Math.min(1.0, this.winnerBannerAlpha + dt * 2.2);
     }
 
-    if (this.simTime >= this.durationSeconds) {
+    if (this.simTime >= this.durationSeconds - 0.001) {
       this.isFinished = true;
     }
   }
 
   spawnBall() {
     const colors = ['#00f0ff', '#cb72ff', '#79ef43', '#ffd700', '#ff007f'];
-    const color = colors[Math.floor(Math.random() * colors.length)];
+    const color = this.rng.choice(colors);
     this.balls.push({
-      x: this.centerX + (Math.random() - 0.5) * 60,
-      y: this.topY - 30 - Math.random() * 20,
-      vx: (Math.random() - 0.5) * 50,
-      vy: Math.random() * 20 + 20,
+      x: this.centerX + this.rng.range(-30, 30),
+      y: this.topY - 30 - this.rng.range(0, 20),
+      vx: this.rng.range(-25, 25),
+      vy: this.rng.range(20, 40),
       radius: 9,
       color,
       collected: false
@@ -272,19 +293,69 @@ class MegaPlinkoGame {
   triggerJackpotBurst(x, y) {
     for (let k = 0; k < 30; k++) {
       const angle = (k / 30) * Math.PI * 2;
-      const speed = Math.random() * 280 + 100;
+      const speed = this.rng.range(100, 380);
       this.particles.push({
         x,
         y,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed - 100,
-        radius: Math.random() * 4 + 3,
+        radius: this.rng.range(3, 7),
         color: '#ffd700',
         life: 1.2,
         maxLife: 1.2,
         gravity: 400
       });
     }
+  }
+
+  observe() {
+    return {
+      simTime: this.simTime,
+      frameIndex: this.frameIndex,
+      totalScore: Math.round(this.totalScore),
+      displayScore: Math.round(this.displayScore),
+      ballsActive: this.balls.filter(b => !b.collected).length,
+      jackpotHits: this.jackpotHits,
+      isFinished: this.isFinished,
+      winner: this.winner
+    };
+  }
+
+  getEvents() {
+    return this.events;
+  }
+
+  getResult() {
+    return {
+      gameType: 'mega_plinko',
+      title: this.title,
+      winner: 'TOTAL PAYOUT',
+      winnerColor: '#ffd700',
+      score: Math.round(this.totalScore),
+      winningScore: Math.round(this.totalScore),
+      jackpotHits: this.jackpotHits,
+      finishTime: this.simTime,
+      isFinished: this.isFinished,
+      stats: {
+        totalBalls: this.balls.length,
+        collectedBalls: this.balls.filter(b => b.collected).length,
+        jackpotHits: this.jackpotHits,
+        slotHitCounts: this.slotBins.map(s => ({ value: s.value, hits: s.hitCount }))
+      }
+    };
+  }
+
+  getReplay() {
+    return {
+      gameType: 'mega_plinko',
+      seed: this.seed,
+      config: this.config,
+      durationSeconds: this.simTime,
+      totalScore: Math.round(this.totalScore),
+      jackpotHits: this.jackpotHits,
+      events: this.events,
+      result: this.getResult()
+    };
   }
 
   render(ctx) {
@@ -319,123 +390,112 @@ class MegaPlinkoGame {
     ctx.lineWidth = 1.8;
     ctx.stroke();
 
-    ctx.fillStyle = '#fff4cc';
+    ctx.fillStyle = '#fff4a3';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(this.title, w / 2, 32 + pillH / 2);
+    ctx.fillText(this.title, w / 2, 55);
 
-    // Live Total Score Counter
-    ctx.textAlign = 'center';
+    // Dynamic Live Score Ticker
     ctx.font = '900 36px "Inter", sans-serif';
-    ctx.fillStyle = 'rgba(255,255,255,0.7)';
-    ctx.fillText('TOTAL WINNINGS', w / 2, 140);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+    ctx.fillText('TOTAL WINNINGS', w / 2, 130);
 
-    ctx.font = '950 72px "Inter", sans-serif';
+    ctx.font = '950 86px "Inter", sans-serif';
     ctx.fillStyle = '#ffd700';
     ctx.shadowColor = '#ffd700';
     ctx.shadowBlur = 24;
-    ctx.fillText(`$${Math.round(this.displayScore).toLocaleString()}`, w / 2, 220);
+    ctx.fillText(`$${this.displayScore.toLocaleString()}`, w / 2, 215);
+
+    // Subtitle
+    ctx.shadowBlur = 0;
+    ctx.font = '600 22px "Inter", sans-serif';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+    ctx.fillText(this.subtitle, w / 2, 275);
     ctx.restore();
 
-    // Funnel dropper at top
-    ctx.save();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
-    ctx.lineWidth = 4;
-    ctx.beginPath();
-    ctx.moveTo(this.centerX - 120, this.topY - 60);
-    ctx.lineTo(this.centerX - 40, this.topY);
-    ctx.moveTo(this.centerX + 120, this.topY - 60);
-    ctx.lineTo(this.centerX + 40, this.topY);
-    ctx.stroke();
-    ctx.restore();
-
-    // Pegs
+    // Pegs Pyramid
     for (const p of this.pegs) {
       ctx.save();
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-      if (p.glow > 0.05) {
-        ctx.fillStyle = '#ffffff';
-        ctx.shadowColor = '#00f0ff';
-        ctx.shadowBlur = 18 * p.glow;
-      } else {
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.28)';
-      }
+      ctx.fillStyle = p.glow > 0.1 ? '#ffffff' : '#6c7a9c';
+      ctx.shadowColor = '#00f0ff';
+      ctx.shadowBlur = p.glow * 18;
       ctx.fill();
       ctx.restore();
     }
 
-    // Slots at bottom
+    // Bottom Bins
     for (const slot of this.slotBins) {
       ctx.save();
-      const slotW = slot.maxX - slot.minX - 6;
+      const sw = slot.maxX - slot.minX;
       ctx.beginPath();
-      ctx.roundRect(slot.minX + 3, this.bottomY, slotW, 110, 12);
-      ctx.fillStyle = slot.glow > 0.1 ? slot.color : 'rgba(18, 22, 38, 0.9)';
+      ctx.roundRect(slot.minX + 2, this.bottomY, sw - 4, slot.height, 12);
+      ctx.fillStyle = slot.glow > 0.1 ? slot.color : 'rgba(20, 26, 46, 0.85)';
       ctx.fill();
       ctx.strokeStyle = slot.color;
-      ctx.lineWidth = 2 + slot.glow * 3;
+      ctx.lineWidth = 2.5 + slot.glow * 3;
       ctx.shadowColor = slot.color;
-      ctx.shadowBlur = 12 + slot.glow * 18;
+      ctx.shadowBlur = 12 + slot.glow * 20;
       ctx.stroke();
 
-      ctx.fillStyle = slot.glow > 0.1 ? '#000000' : '#ffffff';
       ctx.shadowBlur = 0;
       ctx.font = '900 24px "Inter", sans-serif';
+      ctx.fillStyle = slot.glow > 0.1 ? '#000000' : '#ffffff';
       ctx.textAlign = 'center';
-      ctx.fillText(`${slot.value}×`, (slot.minX + slot.maxX) / 2, this.bottomY + 45);
+      ctx.textBaseline = 'middle';
+      const label = slot.value >= 1000 ? '1000×' : `${slot.value}×`;
+      ctx.fillText(label, (slot.minX + slot.maxX) / 2, this.bottomY + 45);
 
-      ctx.font = '700 16px "Inter", sans-serif';
-      ctx.fillText(`(${slot.hitCount})`, (slot.minX + slot.maxX) / 2, this.bottomY + 85);
+      // Hit count badge
+      if (slot.hitCount > 0) {
+        ctx.font = '700 16px "Inter", sans-serif';
+        ctx.fillStyle = slot.glow > 0.1 ? '#000000' : slot.color;
+        ctx.fillText(`${slot.hitCount} hits`, (slot.minX + slot.maxX) / 2, this.bottomY + 75);
+      }
       ctx.restore();
     }
 
-    // Balls
+    // Render Balls
     for (const b of this.balls) {
       if (b.collected) continue;
       ctx.save();
-      const r = b.radius;
-      ctx.shadowColor = b.color;
-      ctx.shadowBlur = 12;
-      const grad = ctx.createRadialGradient(b.x - r * 0.35, b.y - r * 0.35, 1, b.x, b.y, r * 1.3);
-      grad.addColorStop(0, '#ffffff');
-      grad.addColorStop(0.35, b.color);
-      grad.addColorStop(1, '#111');
-      ctx.fillStyle = grad;
       ctx.beginPath();
-      ctx.arc(b.x, b.y, r, 0, Math.PI * 2);
+      ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
+      ctx.fillStyle = b.color;
+      ctx.shadowColor = b.color;
+      ctx.shadowBlur = 14;
       ctx.fill();
       ctx.restore();
     }
 
-    // Particles & Floating Text
+    // Particles
     for (const p of this.particles) {
       ctx.save();
-      ctx.globalAlpha = Math.max(0, p.life / p.maxLife);
-      ctx.fillStyle = p.color;
-      ctx.shadowColor = p.color;
-      ctx.shadowBlur = 8;
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = p.life / p.maxLife;
+      ctx.shadowColor = p.color;
+      ctx.shadowBlur = 10;
       ctx.fill();
       ctx.restore();
     }
 
+    // Floating Texts
     for (const ft of this.floatingTexts) {
       ctx.save();
-      ctx.globalAlpha = Math.max(0, ft.life / ft.maxLife);
-      ctx.font = '900 32px "Inter", sans-serif';
+      ctx.font = `950 ${Math.round(28 * ft.scale)}px "Inter", sans-serif`;
       ctx.fillStyle = ft.color;
-      ctx.shadowColor = ft.color;
-      ctx.shadowBlur = 14;
       ctx.textAlign = 'center';
-      ctx.translate(ft.x, ft.y);
-      ctx.scale(ft.scale, ft.scale);
-      ctx.fillText(ft.text, 0, 0);
+      ctx.globalAlpha = ft.life / ft.maxLife;
+      ctx.shadowColor = ft.color;
+      ctx.shadowBlur = 15;
+      ctx.fillText(ft.text, ft.x, ft.y);
       ctx.restore();
     }
 
-    // Winner Summary Card
+    // Winner Banner Overlay
     if (this.winnerBannerAlpha > 0.01) {
       ctx.save();
       ctx.globalAlpha = this.winnerBannerAlpha;
@@ -474,6 +534,10 @@ class MegaPlinkoGame {
       ctx.restore();
     }
   }
+}
+
+if (typeof window !== 'undefined') {
+  window.MegaPlinkoGame = MegaPlinkoGame;
 }
 
 if (typeof module !== 'undefined' && module.exports) {

@@ -1,0 +1,34 @@
+[
+  {
+    "publishId": "pub_1793693620289",
+    "queueId": "post_2026-11-09_multi_race",
+    "candidateId": "clip_race_01",
+    "gameType": "multi_race",
+    "title": "⚡ 1 BALL VS 100 BALLS: CAN MULTIPLY WIN? ⚡",
+    "publishedAt": "2026-11-03T08:13:40.289Z",
+    "scheduledFor": "2026-11-09T17:00:00.000Z",
+    "status": "SUCCESS",
+    "metrics": {
+      "simulatedViews": 12500,
+      "averageRetentionPct": 88.4,
+      "likes": 940,
+      "comments": 112
+    }
+  },
+  {
+    "publishId": "pub_1793693620294",
+    "queueId": "post_2026-11-11_mega_plinko",
+    "candidateId": "clip_plinko_01",
+    "gameType": "mega_plinko",
+    "title": "🎰 1,000× JACKPOT HUNT · CAN WE HIT GOLD? 🎰",
+    "publishedAt": "2026-11-03T08:13:40.294Z",
+    "scheduledFor": "2026-11-11T17:00:00.000Z",
+    "status": "SUCCESS",
+    "metrics": {
+      "simulatedViews": 12500,
+      "averageRetentionPct": 88.4,
+      "likes": 940,
+      "comments": 112
+    }
+  }
+]
