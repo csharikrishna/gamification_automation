@@ -2,10 +2,10 @@
   "id": "underdog_slow_composed",
   "gameType": "multi_race",
   "title": "3 BALLS VS 12 — CAN THE UNDERDOG WIN?",
-  "subtitle": "MULTIPLY (×3) VS ADD (+2) · RACE TO THE FINISH",
+  "subtitle": "MULTIPLY (×2) VS ADD (+8) · RACE TO THE FINISH",
   "durationSeconds": 20,
   "fps": 60,
-  "hpTiers": [17, 48, 125, 320, 880, 2200],
+  "maxSimulatedBalls": 200,
   "resolution": {
     "width": 1080,
     "height": 1920
@@ -13,42 +13,44 @@
   "lanes": {
     "left": {
       "name": "MULTIPLY",
-      "ruleLabel": "×3 MULTIPLY",
+      "ruleLabel": "×2 MULTIPLY",
       "subtitle": "starts with 3 balls",
       "color": "#cb72ff",
       "glowColor": "rgba(203,114,255,0.40)",
       "accentColor": "#f59aff",
       "startBalls": 3,
+      "hpTiers": [16, 30, 56, 105, 180, 100],
       "stages": [
-        { "type": "multiply", "value": 3, "exactValue": 9, "label": "×3" },
-        { "type": "multiply", "value": 3, "exactValue": 27, "label": "×3" },
-        { "type": "multiply", "value": 3, "exactValue": 81, "label": "×3" },
-        { "type": "multiply", "value": 3, "exactValue": 243, "label": "×3" },
-        { "type": "multiply", "value": 3, "exactValue": 729, "label": "×3" },
-        { "type": "multiply", "value": 3, "exactValue": 2187, "label": "×3" }
+        { "type": "multiply", "value": 2, "label": "×2" },
+        { "type": "multiply", "value": 2, "label": "×2" },
+        { "type": "multiply", "value": 2, "label": "×2" },
+        { "type": "multiply", "value": 2, "label": "×2" },
+        { "type": "multiply", "value": 2, "label": "×2" },
+        { "type": "multiply", "value": 2, "label": "×2" }
       ]
     },
     "right": {
       "name": "ADD",
-      "ruleLabel": "+2 ADD",
+      "ruleLabel": "+8 ADD",
       "subtitle": "starts with 12 balls",
       "color": "#79ef43",
       "glowColor": "rgba(121,239,67,0.40)",
       "accentColor": "#b2ff8a",
       "startBalls": 12,
+      "hpTiers": [24, 55, 110, 220, 390, 360],
       "stages": [
-        { "type": "add", "value": 2, "exactValue": 14, "label": "+2" },
-        { "type": "add", "value": 2, "exactValue": 16, "label": "+2" },
-        { "type": "add", "value": 2, "exactValue": 18, "label": "+2" },
-        { "type": "add", "value": 2, "exactValue": 20, "label": "+2" },
-        { "type": "add", "value": 2, "exactValue": 22, "label": "+2" },
-        { "type": "add", "value": 2, "exactValue": 24, "label": "+2" }
+        { "type": "add", "value": 8, "label": "+8" },
+        { "type": "add", "value": 8, "label": "+8" },
+        { "type": "add", "value": 10, "label": "+10" },
+        { "type": "add", "value": 12, "label": "+12" },
+        { "type": "add", "value": 16, "label": "+16" },
+        { "type": "add", "value": 20, "label": "+20" }
       ]
     }
   },
   "metadata": {
     "youtubeTitle": "3 BALLS VS 12: CAN THE UNDERDOG WIN?! 😱 Multiplying Physics Simulation #shorts",
-    "description": "Watch what happens when 3 balls multiplying by ×3 race against 12 balls adding +2! Can the underdog win before the finish line? #physics #satisfying #oddlysatisfying #simulation #shorts #marblerun",
+    "description": "Watch what happens when 3 balls multiplying by ×2 race against 12 balls adding +8! Can the underdog win before the finish line? #physics #satisfying #oddlysatisfying #simulation #shorts #marblerun",
     "tags": [
       "physics simulation",
       "marble run",

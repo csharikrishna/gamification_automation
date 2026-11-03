@@ -336,13 +336,31 @@ class SimulationEngine {
                   (b.y + b.radius >= tileTop && b.y < tileBottom && b.vy >= 0)) {
                 b.y = tileTop - b.radius;
 
-                if (Math.abs(b.vy) < 170) {
-                  b.vy = -Math.abs(b.vy) * 0.70 - this.rng.range(100, 230);
+                if (Math.abs(b.vy) < 160) {
+                  b.vy = -Math.abs(b.vy) * 0.75 - this.rng.range(110, 220);
                 } else {
                   b.vy = -Math.abs(b.vy) * this.tileBounce;
                 }
 
-                b.vx = b.vx * 0.96 + this.rng.range(-22.5, 22.5);
+                const tileCenter = (tile.minX + tile.maxX) / 2;
+                const halfW = tile.width / 2;
+                const centerDist = (b.x - tileCenter) / halfW;
+                b.vx = b.vx * 0.96 + Math.sign(centerDist || (this.rng.random() < 0.5 ? 1 : -1)) * (36 + Math.abs(centerDist) * 55) + this.rng.range(-15, 15);
+
+                // Record localized collision impact for visual feedback
+                if (!tile.recentImpacts) tile.recentImpacts = [];
+                tile.recentImpacts.push({
+                  x: b.x,
+                  y: tileTop,
+                  time: this.simTime,
+                  intensity: Math.min(1.0, Math.abs(b.vy) / 280 + 0.35)
+                });
+                if (tile.recentImpacts.length > 8) tile.recentImpacts.shift();
+
+                // Interactive trigger core activation if ball hits near central multiplier capsule
+                if (Math.abs(b.x - tileCenter) < 58) {
+                  tile.triggerPulse = 1.0;
+                }
 
                 // Only take damage and shatter before race is decided
                 if (!this.winner) {
@@ -351,14 +369,16 @@ class SimulationEngine {
                   tile.crackAmount = Math.max(0, Math.min(1.0, 1.0 - (tile.currentHP / tile.maxHP)));
                   tile.glowIntensity = 1.0;
 
-                  // Deterministic spiderweb fracture lines (PHY-05)
+                  // Localized stress fractures contained within barrier power cells
                   if (!tile.fractures) tile.fractures = [];
-                  if (tile.fractures.length < 12 && this.rng.random() < 0.6) {
+                  if (tile.fractures.length < 16 && this.rng.random() < 0.6) {
                     tile.fractures.push({
                       x: b.x - tile.minX,
-                      len: this.rng.range(14, 42),
-                      angle: this.rng.range(-0.8, 0.8)
+                      y: 4,
+                      len: this.rng.range(6, 18),
+                      angle: this.rng.range(-Math.PI, Math.PI)
                     });
+                    if (tile.fractures.length > 20) tile.fractures.shift();
                   }
 
                   this.logBounce(lane.side, b.x, b.y, 0.08, 540 + tile.index * 60);
@@ -400,11 +420,15 @@ class SimulationEngine {
           }
         }
 
-        // Bottom floor reservoir (Finish Line)
-        if (b.y + b.radius > bottomFloor) {
-          b.y = bottomFloor - b.radius;
-          b.vy = -Math.abs(b.vy) * 0.32;
-          b.vx *= 0.88;
+        // Bottom floor reservoir (Finish Line with gentle concave basin for natural settling)
+        const laneCenterX = (lane.minX + lane.maxX) / 2;
+        const normDistX = Math.min(1.0, Math.abs(b.x - laneCenterX) / (lane.width * 0.48));
+        const basinFloorY = bottomFloor - 8 * (1 - normDistX * normDistX);
+
+        if (b.y + b.radius > basinFloorY) {
+          b.y = basinFloorY - b.radius;
+          b.vy = -Math.abs(b.vy) * 0.35;
+          b.vx = b.vx * 0.982 + ((laneCenterX - b.x) / lane.width) * 12;
 
           const allTilesBroken = lane.tiles.every(t => !t.intact);
           if (allTilesBroken && !lane.reachedBottom) {
@@ -482,7 +506,7 @@ class SimulationEngine {
             let dx = b2.x - b1.x;
             let dy = b2.y - b1.y;
             let distSq = dx * dx + dy * dy;
-            const minDist = b1.radius + b2.radius + 1.5;
+            const minDist = b1.radius + b2.radius;
 
             // PHY-06: Coincident ball separation
             if (distSq < 0.001) {
@@ -496,11 +520,14 @@ class SimulationEngine {
               const nx = dx / dist;
               const ny = dy / dist;
 
-              const overlap = (minDist - dist) * 0.5;
-              b1.x -= nx * overlap;
-              b1.y -= ny * overlap;
-              b2.x += nx * overlap;
-              b2.y += ny * overlap;
+              // Baumgarte position correction: shared 50/50 without explosive overshooting
+              const overlap = minDist - dist;
+              const slop = 0.15;
+              const corr = Math.max(0, overlap - slop) * 0.40;
+              b1.x -= nx * corr;
+              b1.y -= ny * corr;
+              b2.x += nx * corr;
+              b2.y += ny * corr;
 
               const vrel = (b1.vx - b2.vx) * nx + (b1.vy - b2.vy) * ny;
               if (vrel > 0) {
@@ -509,6 +536,16 @@ class SimulationEngine {
                 b1.vy -= impulse * ny;
                 b2.vx += impulse * nx;
                 b2.vy += impulse * ny;
+
+                // Tangential rolling friction damping allows marbles to fluidly rotate past each other
+                const tx = -ny;
+                const ty = nx;
+                const vrelT = (b1.vx - b2.vx) * tx + (b1.vy - b2.vy) * ty;
+                const fImpulse = vrelT * 0.15;
+                b1.vx -= fImpulse * tx;
+                b1.vy -= fImpulse * ty;
+                b2.vx += fImpulse * tx;
+                b2.vy += fImpulse * ty;
               }
             }
           }
@@ -520,8 +557,19 @@ class SimulationEngine {
   shatterTile(lane, tile) {
     tile.intact = false;
     tile.currentHP = 0;
+    tile.shatterTime = this.simTime;
     lane.currentTier = tile.index + 1;
     lane.scoreScale = 1.45;
+
+    // Propel all balls in this chamber downward through the open gate
+    const stageHeight = this.trackHeight / (this.numStages + 1);
+    const chamberTop = tile.y - stageHeight;
+    for (const b of lane.balls) {
+      if (!b._dead && b.y < tile.y + 20 && b.y > chamberTop && b.x > tile.minX && b.x < tile.maxX) {
+        b.vy = Math.max(b.vy, 175) + this.rng.range(35, 95);
+        b.vx += this.rng.range(-20, 20);
+      }
+    }
 
     // 1. Math Score Update
     if (tile.exactValue !== undefined) {
@@ -638,16 +686,16 @@ class SimulationEngine {
       }
 
       for (let b = 0; b < toSpawn; b++) {
-        const spreadX = this.rng.range(-tile.width * 0.35, tile.width * 0.35);
-        const spreadAngle = this.rng.range(-0.75, 0.75);
-        const speed = this.rng.range(75, 215);
+        const spreadX = this.rng.range(-tile.width * 0.36, tile.width * 0.36);
+        const spreadAngle = this.rng.range(-0.65, 0.65);
+        const speed = this.rng.range(95, 230);
         const spawnX = (tile.minX + tile.maxX) / 2 + spreadX;
-        const spawnY = tile.y + 12 + this.rng.range(0, 10);
+        const spawnY = tile.y + 8 + this.rng.range(0, 24);
         this.addBall(lane, {
           x: spawnX,
           y: spawnY,
           vx: Math.sin(spreadAngle) * speed,
-          vy: Math.cos(spreadAngle) * speed + 55,
+          vy: Math.abs(Math.cos(spreadAngle) * speed) + 85,
           radius: targetSimulated > 50 ? 9.5 : (targetSimulated > 20 ? 10.5 : 11.5),
           spawnTime: this.simTime,
           sourceX: spawnX,
