@@ -1,5 +1,94 @@
-// High-Resolution 1080x1920 Canvas Visual Renderer
-// Specializing in neon aesthetic, glowing breakable tiles, glass shatter particles, and dynamic UI overlays for YouTube Shorts
+// High-Resolution 1080x1920 Premium Arcade Visual Renderer & Video Director
+// Broadcast typography, physical tactile tiles & chrome pegs, 3D shaded balls with
+// high-density silhouette separation, dynamic event-driven camera framing, and celebratory winner presentation.
+
+class VideoDirector {
+  constructor() {
+    this.camera = { zoom: 1.0, panY: 0, targetPanY: 0, targetZoom: 1.0 };
+    this.shake = { x: 0, y: 0, intensity: 0 };
+    this.lastTierBroken = -1;
+  }
+
+  update(engine) {
+    const t = engine.simTime;
+    const dur = engine.durationSeconds || 20;
+
+    // Phase detection & camera targeting
+    if (t < 2.0) {
+      // 0–2s Hook: Wide framing showcasing the match title and opening balls
+      this.camera.targetZoom = 1.0;
+      this.camera.targetPanY = 0;
+    } else if (t < dur - 3.2) {
+      // 2s–16.8s Competition & Escalation:
+      // Focus on active gameplay zone (leading action Y)
+      const leftBalls = engine.lanes.left.balls;
+      const rightBalls = engine.lanes.right.balls;
+
+      const leadingTier = Math.max(engine.lanes.left.currentTier, engine.lanes.right.currentTier);
+      const stageHeight = engine.trackHeight / (engine.numStages + 1);
+      const activeTileY = engine.topY + (leadingTier + 1) * stageHeight;
+
+      let maxBallY = 0;
+      for (let i = 0; i < leftBalls.length; i++) {
+        if (leftBalls[i].y > maxBallY) maxBallY = leftBalls[i].y;
+      }
+      for (let i = 0; i < rightBalls.length; i++) {
+        if (rightBalls[i].y > maxBallY) maxBallY = rightBalls[i].y;
+      }
+
+      const focusY = maxBallY > 0 ? (maxBallY * 0.70 + activeTileY * 0.30) : activeTileY;
+      const clampedFocusY = Math.max(engine.topY + 180, Math.min(engine.bottomY - 180, focusY));
+
+      // Active downward pan tracking: as action moves from tier 0 to tier 5, smoothly shift camera downward
+      const panProgress = Math.max(0, Math.min(1.0, (clampedFocusY - (engine.topY + 180)) / 1000));
+      this.camera.targetPanY = -panProgress * 105;
+
+      // Tension zoom: gently scales from 1.0 up to 1.06 during mid-to-late escalation
+      const escalationProgress = Math.sin((t / dur) * Math.PI);
+      this.camera.targetZoom = 1.0 + escalationProgress * 0.06;
+    } else {
+      // 16.8s–20s Winner Celebration: Smooth return to wide perspective showcasing reservoir and arena
+      this.camera.targetZoom = 1.0;
+      this.camera.targetPanY = 0;
+    }
+
+    // Smooth camera damping
+    this.camera.zoom += (this.camera.targetZoom - this.camera.zoom) * 0.08;
+    this.camera.panY += (this.camera.targetPanY - this.camera.panY) * 0.08;
+
+    // Screen shake decay
+    if (this.shake.intensity > 0.04) {
+      this.shake.intensity *= 0.88;
+      const angle = (t * 42.1) % (Math.PI * 2);
+      this.shake.x = Math.cos(angle) * this.shake.intensity * 7;
+      this.shake.y = Math.sin(angle) * this.shake.intensity * 7;
+    } else {
+      this.shake.x = 0;
+      this.shake.y = 0;
+      this.shake.intensity = 0;
+    }
+
+    // Detect new gate breaks for tactile impact shake
+    const currentLeadingTier = Math.max(engine.lanes.left.currentTier, engine.lanes.right.currentTier);
+    if (currentLeadingTier > this.lastTierBroken) {
+      this.lastTierBroken = currentLeadingTier;
+      this.shake.intensity = currentLeadingTier >= 4 ? 0.95 : 0.50;
+    }
+  }
+
+  applyCamera(ctx, w, h) {
+    ctx.save();
+    const cx = w / 2;
+    const cy = h / 2;
+    ctx.translate(cx + this.shake.x, cy + this.shake.y + this.camera.panY);
+    ctx.scale(this.camera.zoom, this.camera.zoom);
+    ctx.translate(-cx, -cy);
+  }
+
+  restoreCamera(ctx) {
+    ctx.restore();
+  }
+}
 
 class CanvasRenderer {
   constructor(canvas) {
@@ -7,6 +96,7 @@ class CanvasRenderer {
     this.ctx = canvas.getContext('2d');
     this.width = canvas.width || 1080;
     this.height = canvas.height || 1920;
+    this.director = new VideoDirector();
   }
 
   render(engine) {
@@ -14,35 +104,49 @@ class CanvasRenderer {
     const w = this.width;
     const h = this.height;
 
+    // Update director logic
+    this.director.update(engine);
+
     ctx.clearRect(0, 0, w, h);
 
-    // 1. Background Cyber Ambiance
+    // 1. Static Screen Background
     this.drawBackground(engine);
 
-    // 2. Topline Hook Badge & Score Headers
-    this.drawHeader(engine);
+    // 2. Camera-Transform World Rendering (Clipped to arena viewport below broadcast header)
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(0, 312, w, h - 312);
+    ctx.clip();
 
-    // 3. Lane Tracks & Tiers
+    this.director.applyCamera(ctx, w, h);
+
+    // Dynamic Tracks & Tiers
     this.drawTracks(engine);
 
-    // 4. Pegs & Breakable Barrier Tiles
+    // Pegs & Breakable Barrier Tiles
     this.drawObstaclesAndTiles(engine);
 
-    // 5. Balls (Clean, distinct, uncluttered)
+    // Balls with Individual Silhouette Delineation
     this.drawBalls(engine);
 
-    // 6. Flying Shards, Sparks & Floating Texts
+    // Flying Shards, Sparks & Floating Texts
     this.drawParticlesAndTexts(engine);
 
-    // 7. Bottom Reservoir & Progress Bar
+    // Bottom Reservoir & Finish Line
     this.drawFinishLineAndProgress(engine);
 
-    // 8. Winner Overlay (if completed)
+    this.director.restoreCamera(ctx);
+    ctx.restore();
+
+    // 3. Screen-Space UI Overlays (Fixed broadcast header, scoreboard, winner banner)
+    this.drawHeader(engine);
+
+    // 4. Winner Celebration Overlay (if completed)
     if (engine.winnerBannerAlpha > 0.01) {
       this.drawWinnerBanner(engine);
     }
 
-    // 9. Brand watermark
+    // 5. Brand watermark
     this.drawWatermark();
   }
 
@@ -51,32 +155,34 @@ class CanvasRenderer {
     const w = this.width;
     const h = this.height;
 
+    // Rich dark tournament chassis background
     const bgGrad = ctx.createLinearGradient(0, 0, 0, h);
     bgGrad.addColorStop(0, '#060810');
-    bgGrad.addColorStop(0.5, '#0a0d18');
-    bgGrad.addColorStop(1, '#05070e');
+    bgGrad.addColorStop(0.35, '#0a0d18');
+    bgGrad.addColorStop(0.7, '#070a14');
+    bgGrad.addColorStop(1, '#04060c');
     ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, w, h);
 
     const left = engine.lanes.left;
     const right = engine.lanes.right;
 
-    // Left ambient glow
-    const leftGlow = ctx.createRadialGradient(285, 950, 40, 285, 950, 520);
-    leftGlow.addColorStop(0, left.glowColor);
+    // Left ambient glow (restrained)
+    const leftGlow = ctx.createRadialGradient(285, 950, 60, 285, 950, 480);
+    leftGlow.addColorStop(0, left.glowColor || 'rgba(168,85,247,0.22)');
     leftGlow.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = leftGlow;
-    ctx.fillRect(0, 400, 540, 1100);
+    ctx.fillRect(0, 340, 540, 1200);
 
-    // Right ambient glow
-    const rightGlow = ctx.createRadialGradient(795, 950, 40, 795, 950, 520);
-    rightGlow.addColorStop(0, right.glowColor);
+    // Right ambient glow (restrained)
+    const rightGlow = ctx.createRadialGradient(795, 950, 60, 795, 950, 480);
+    rightGlow.addColorStop(0, right.glowColor || 'rgba(34,197,94,0.22)');
     rightGlow.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = rightGlow;
-    ctx.fillRect(540, 400, 540, 1100);
+    ctx.fillRect(540, 340, 540, 1200);
 
-    // Background grid lines
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.025)';
+    // Micro grid lines for tournament arena texture
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.018)';
     ctx.lineWidth = 1;
     for (let x = 60; x < w; x += 60) {
       ctx.beginPath();
@@ -93,96 +199,176 @@ class CanvasRenderer {
   drawHeader(engine) {
     const ctx = this.ctx;
     const w = this.width;
-
-    // 1. Top Hook Pill with Dynamic Width & Font Scaling (VIS-03, VIS-09)
-    const tagText = engine.config.title || '⚡ UNDERDOG BATTLE · MULTIPLY VS ADD ⚡';
-    ctx.save();
-    let fontSize = 24;
-    ctx.font = `700 ${fontSize}px "Inter", "Segoe UI", sans-serif`;
-    let textWidth = ctx.measureText(tagText).width;
-    const maxTextWidth = w - 140;
-
-    while (textWidth > maxTextWidth && fontSize > 14) {
-      fontSize -= 1.5;
-      ctx.font = `700 ${fontSize}px "Inter", "Segoe UI", sans-serif`;
-      textWidth = ctx.measureText(tagText).width;
-    }
-
-    const pillW = Math.min(w - 60, textWidth + 56);
-    const pillH = 46;
-    const pillX = (w - pillW) / 2;
-    const pillY = 32;
-
-    ctx.beginPath();
-    ctx.roundRect(pillX, pillY, pillW, pillH, 23);
-    ctx.fillStyle = 'rgba(240, 195, 100, 0.08)';
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(245, 205, 120, 0.65)';
-    ctx.lineWidth = 1.8;
-    ctx.stroke();
-
-    ctx.fillStyle = '#fce5b2';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(tagText, w / 2, pillY + pillH / 2);
-    ctx.restore();
-
-    // 2. Score Headers
     const left = engine.lanes.left;
     const right = engine.lanes.right;
 
-    this.drawScoreCard(left, 285, 160);
-    this.drawScoreCard(right, 795, 160);
+    // Fixed Broadcast Header Chassis Backing
+    const headerGrad = ctx.createLinearGradient(0, 0, 0, 312);
+    headerGrad.addColorStop(0, '#060810');
+    headerGrad.addColorStop(0.85, '#090d18');
+    headerGrad.addColorStop(1, '#0c1120');
+    ctx.fillStyle = headerGrad;
+    ctx.fillRect(0, 0, w, 312);
 
-    // VIS-01, RACE-01: Stage Indicator Badge derived from actual broken barrier progress
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.10)';
+    ctx.lineWidth = 1.0;
+    ctx.beginPath();
+    ctx.moveTo(30, 312);
+    ctx.lineTo(w - 30, 312);
+    ctx.stroke();
+
+    // 1. Top Broadcast Hook Banner (High mobile contrast & large bold typography)
+    const isUnderdogChallenge = engine.config.title?.includes('3 BALLS VS 12');
+    const headerTitle = engine.config.title || '3 BALLS VS 12 — CAN THE UNDERDOG WIN?';
+    const headerSubtitle = engine.config.subtitle || 'MULTIPLY (×3) VS ADD (+2) · RACE TO THE FINISH';
+
+    ctx.save();
+
+    // Hook Container Bar
+    const barW = w - 60;
+    const barH = 100;
+    const barX = 30;
+    const barY = 24;
+
+    ctx.beginPath();
+    ctx.roundRect(barX, barY, barW, barH, 22);
+    ctx.fillStyle = 'rgba(14, 18, 30, 0.94)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.16)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    const textCenter = w / 2;
+
+    if (isUnderdogChallenge) {
+      // High-impact multi-colored title (Symmetrically anchored around textCenter)
+      ctx.textBaseline = 'middle';
+
+      // Center "VS"
+      ctx.font = '800 22px "Inter", "Segoe UI", sans-serif';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.50)';
+      ctx.textAlign = 'center';
+      ctx.fillText('VS', textCenter, barY + 36);
+
+      // Left team "3 BALLS" (right-aligned to leave clean gap before VS)
+      ctx.font = '900 36px "Inter", "Segoe UI", sans-serif';
+      ctx.fillStyle = left.color;
+      ctx.textAlign = 'right';
+      ctx.fillText('3 BALLS', textCenter - 26, barY + 36);
+
+      // Right team "12 BALLS" (left-aligned to leave clean gap after VS)
+      ctx.font = '900 36px "Inter", "Segoe UI", sans-serif';
+      ctx.fillStyle = right.color;
+      ctx.textAlign = 'left';
+      ctx.fillText('12 BALLS', textCenter + 26, barY + 36);
+
+      // Subtitle
+      ctx.font = '800 20px "Inter", "Segoe UI", sans-serif';
+      ctx.fillStyle = '#ffd700';
+      ctx.textAlign = 'center';
+      ctx.fillText('CAN THE UNDERDOG WIN?', textCenter, barY + 74);
+    } else {
+      // Dynamic fallback for custom titles
+      ctx.font = '900 30px "Inter", "Segoe UI", sans-serif';
+      ctx.fillStyle = '#ffffff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(headerTitle, textCenter, barY + 36);
+
+      ctx.font = '700 18px "Inter", "Segoe UI", sans-serif';
+      ctx.fillStyle = '#ffd700';
+      ctx.fillText(headerSubtitle, textCenter, barY + 74);
+    }
+
+    ctx.restore();
+
+    // 2. Broadcast Team Scorecards
+    const isLeftLeader = this.checkRaceLeader(left, right);
+    const isRightLeader = this.checkRaceLeader(right, left);
+    this.drawScoreCard(left, 285, 210, isLeftLeader);
+    this.drawScoreCard(right, 795, 210, isRightLeader);
+
+    // 3. Central Stage Indicator Badge
     const leadingTier = Math.max(left.currentTier, right.currentTier);
     const currentN = Math.min(6, leadingTier + 1);
+
     ctx.save();
     ctx.beginPath();
-    ctx.roundRect(w / 2 - 80, 190, 160, 36, 18);
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+    ctx.roundRect(w / 2 - 75, 192, 150, 42, 21);
+    ctx.fillStyle = 'rgba(16, 22, 36, 0.90)';
     ctx.fill();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
+    ctx.lineWidth = 1.4;
     ctx.stroke();
 
     ctx.font = '900 16px "Inter", sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = '#ffffff';
-    ctx.fillText(`STAGE n = ${currentN}`, w / 2, 208);
+    ctx.fillText(`TIER ${currentN} / 6`, w / 2, 213);
+
+    // Progress pips underneath badge
+    const pipY = 246;
+    const pipSpacing = 16;
+    const startPipX = w / 2 - (5 * pipSpacing) / 2;
+    for (let p = 0; p < 6; p++) {
+      ctx.beginPath();
+      ctx.arc(startPipX + p * pipSpacing, pipY, 4, 0, Math.PI * 2);
+      ctx.fillStyle = p < currentN ? '#ffd700' : 'rgba(255, 255, 255, 0.2)';
+      ctx.fill();
+    }
+
     ctx.restore();
   }
 
-  drawScoreCard(lane, centerX, centerY) {
+  drawScoreCard(lane, centerX, centerY, isLeader = false) {
     const ctx = this.ctx;
     ctx.save();
 
-    // Rule Title (e.g. f(n) = n! or ×3 BALLS)
+    // If race leader, draw glowing crown badge cleanly above scorecard
+    if (isLeader) {
+      ctx.beginPath();
+      ctx.roundRect(centerX - 55, centerY - 72, 110, 22, 11);
+      ctx.fillStyle = '#ffd700';
+      ctx.shadowColor = '#ffd700';
+      ctx.shadowBlur = 8;
+      ctx.fill();
+      ctx.fillStyle = '#0b0e18';
+      ctx.font = '900 11px "Inter", "Segoe UI", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('👑 LEADER', centerX, centerY - 61);
+    }
+
+    // Team Identity Tag (e.g. PURPLE · ×3 MULTIPLY or GREEN · +2 ADD)
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.font = '900 44px "Inter", "Segoe UI", sans-serif';
+
+    ctx.beginPath();
+    ctx.roundRect(centerX - 130, centerY - 42, 260, 32, 16);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+    ctx.fill();
+    ctx.strokeStyle = lane.color;
+    ctx.lineWidth = 1.2;
+    ctx.stroke();
+
+    const teamIdentity = lane.side === 'left' ? 'PURPLE' : 'GREEN';
+    const cleanRule = lane.ruleLabel.includes(teamIdentity) ? lane.ruleLabel : `${teamIdentity} · ${lane.ruleLabel}`;
+
+    ctx.font = '800 15px "Inter", "Segoe UI", sans-serif';
     ctx.fillStyle = lane.color;
-    ctx.shadowColor = lane.color;
-    ctx.shadowBlur = 18;
-    ctx.fillText(lane.formulaName || lane.ruleLabel || lane.name, centerX, centerY - 45);
+    ctx.fillText(cleanRule, centerX, centerY - 26);
 
-    // Subtitle (starts with X balls)
-    ctx.shadowBlur = 0;
-    ctx.font = '600 20px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-    ctx.fillText(lane.subtitle, centerX, centerY - 10);
-
-    // Big Count Number with Spring Scale Punch
+    // Big Crisp Numeric Score with Spring-Scale Punch
     const scoreVal = Math.round(lane.displayScore).toLocaleString();
     ctx.save();
-    ctx.translate(centerX, centerY + 50);
+    ctx.translate(centerX, centerY + 40);
     ctx.scale(lane.scoreScale, lane.scoreScale);
 
-    ctx.font = '950 68px "Inter", "Segoe UI", sans-serif';
+    ctx.font = '950 66px "Inter", "Segoe UI", sans-serif';
     ctx.fillStyle = '#ffffff';
     ctx.shadowColor = lane.color;
-    ctx.shadowBlur = 24;
+    ctx.shadowBlur = 16;
     ctx.fillText(scoreVal, 0, 0);
 
     ctx.restore();
@@ -199,57 +385,46 @@ class CanvasRenderer {
       const lane = engine.lanes[side];
       ctx.save();
 
-      // Lane track container rounded rectangle
+      // Solid tournament arena chassis
       ctx.beginPath();
-      ctx.roundRect(lane.minX, topY, lane.width, trackH, 24);
-      ctx.fillStyle = 'rgba(12, 16, 28, 0.65)';
+      ctx.roundRect(lane.minX, topY, lane.width, trackH, 20);
+      ctx.fillStyle = 'rgba(13, 17, 28, 0.85)';
       ctx.fill();
 
-      // Neon outline
-      ctx.strokeStyle = lane.color;
-      ctx.lineWidth = 2.5;
-      ctx.shadowColor = lane.color;
-      ctx.shadowBlur = 12;
+      // Restrained chassis border (Not glowing wireframe!)
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+      ctx.lineWidth = 1.8;
       ctx.stroke();
 
-      // Lane Label and Tier Progress at top
-      ctx.shadowBlur = 0;
-      ctx.font = '800 18px "Inter", "Segoe UI", sans-serif';
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
-      ctx.textAlign = 'center';
-      const tierDisplay = Math.min(lane.tiles.length, lane.currentTier + 1);
-      ctx.fillText(`${lane.name} · TIER ${tierDisplay}/${lane.tiles.length}`, lane.minX + lane.width / 2, topY + 28);
+      // Subtle top accent line in team color
+      ctx.beginPath();
+      ctx.roundRect(lane.minX + 2, topY + 2, lane.width - 4, 6, 3);
+      ctx.fillStyle = lane.color;
+      ctx.fill();
 
-      // Race Leader Crown Pill (VIS-02, RACE-02: Evaluated from complete race state)
-      const otherSide = side === 'left' ? 'right' : 'left';
-      const otherLane = engine.lanes[otherSide];
-      const isLeader = this.checkRaceLeader(lane, otherLane);
-      if (isLeader) {
-        ctx.save();
+      // Subtle horizontal chamber guides
+      const numStages = lane.tiles.length;
+      const stageHeight = trackH / (numStages + 1);
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.035)';
+      ctx.lineWidth = 1;
+      for (let s = 1; s <= numStages; s++) {
+        const lineY = topY + s * stageHeight;
         ctx.beginPath();
-        ctx.roundRect(lane.minX + lane.width / 2 - 65, topY - 24, 130, 26, 13);
-        ctx.fillStyle = '#ffd700';
-        ctx.shadowColor = '#ffd700';
-        ctx.shadowBlur = 14;
-        ctx.fill();
-        ctx.fillStyle = '#0b0e18';
-        ctx.font = '900 12px "Inter", "Segoe UI", sans-serif';
-        ctx.fillText('👑 RACE LEADER', lane.minX + lane.width / 2, topY - 10);
-        ctx.restore();
+        ctx.moveTo(lane.minX + 8, lineY);
+        ctx.lineTo(lane.maxX - 8, lineY);
+        ctx.stroke();
       }
 
       ctx.restore();
     }
   }
 
-  // VIS-02, RACE-02: Comprehensive race leader comparison
   checkRaceLeader(lane, other) {
     if (lane.reachedBottom && !other.reachedBottom) return true;
     if (other.reachedBottom && !lane.reachedBottom) return false;
     if (lane.currentTier > other.currentTier) return true;
     if (lane.currentTier < other.currentTier) return false;
 
-    // Same tier: compare damage dealt to current barrier
     const t1 = lane.tiles[lane.currentTier];
     const t2 = other.tiles[other.currentTier];
     if (t1 && t2) {
@@ -266,93 +441,139 @@ class CanvasRenderer {
     for (const side of ['left', 'right']) {
       const lane = engine.lanes[side];
 
-      // Draw Pachinko Pegs
+      // 1. Draw Pachinko Pegs (3D Chrome Arcade Pinball Bumpers)
       for (const peg of lane.pegs) {
         ctx.save();
-        ctx.beginPath();
-        ctx.arc(peg.x, peg.y, peg.radius, 0, Math.PI * 2);
+        const r = peg.radius;
 
-        if (peg.glow > 0.05) {
-          ctx.fillStyle = '#ffffff';
-          ctx.shadowColor = lane.accentColor;
-          ctx.shadowBlur = 18 * peg.glow;
-        } else {
-          ctx.fillStyle = 'rgba(255, 255, 255, 0.22)';
-          ctx.shadowBlur = 0;
-        }
+        // Subtle contact shadow
+        ctx.beginPath();
+        ctx.arc(peg.x, peg.y + 2, r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
         ctx.fill();
+
+        // 3D Metallic Chrome Peg
+        ctx.beginPath();
+        ctx.arc(peg.x, peg.y, r, 0, Math.PI * 2);
+        const pegGrad = ctx.createRadialGradient(peg.x - r * 0.35, peg.y - r * 0.35, 1, peg.x, peg.y, r);
+        if (peg.glow > 0.05) {
+          pegGrad.addColorStop(0, '#ffffff');
+          pegGrad.addColorStop(0.4, '#ffffff');
+          pegGrad.addColorStop(1, lane.color);
+        } else {
+          pegGrad.addColorStop(0, '#ffffff');
+          pegGrad.addColorStop(0.28, '#e2e8f0');
+          pegGrad.addColorStop(0.70, '#94a3b8');
+          pegGrad.addColorStop(1, '#475569');
+        }
+        ctx.fillStyle = pegGrad;
+        ctx.fill();
+
+        // Dark nickel outer rim with crisp chrome outline
+        ctx.strokeStyle = peg.glow > 0.05 ? '#ffffff' : 'rgba(255, 255, 255, 0.40)';
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+
+        // Impact flash shockwave ring when hit
+        if (peg.glow > 0.15) {
+          ctx.beginPath();
+          ctx.arc(peg.x, peg.y, r + peg.glow * 7, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(255, 255, 255, ${peg.glow * 0.7})`;
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+        }
+
         ctx.restore();
       }
 
-      // Draw Breakable Barrier Tiles
+      // 2. Draw Multiplier Barrier Tiles (Physical 3D Acrylic Slabs)
       for (const tile of lane.tiles) {
         ctx.save();
         const tileX = tile.minX;
         const tileY = tile.y - tile.height / 2;
         const tileW = tile.width;
         const tileH = tile.height;
+        const isActive = (tile.index === lane.currentTier);
 
         if (tile.intact) {
-          // --- SOLID INTACT TILE BARRIER ---
+          // Subtle drop shadow under intact tile
           ctx.beginPath();
-          ctx.roundRect(tileX, tileY, tileW, tileH, 8);
-          ctx.fillStyle = tile.glowIntensity > 0.1
-            ? `rgba(255, 255, 255, ${0.25 + tile.glowIntensity * 0.3})`
-            : 'rgba(20, 24, 40, 0.92)';
+          ctx.roundRect(tileX + 2, tileY + 4, tileW - 4, tileH, 10);
+          ctx.fillStyle = 'rgba(0, 0, 0, 0.55)';
           ctx.fill();
 
-          ctx.strokeStyle = tile.crackAmount > 0.7 ? '#ffffff' : lane.color;
-          ctx.lineWidth = 3 + tile.glowIntensity * 3;
-          ctx.shadowColor = tile.crackAmount > 0.7 ? '#ffffff' : lane.color;
-          ctx.shadowBlur = 12 + tile.glowIntensity * 16;
+          // Physical 3D Tile Slab
+          ctx.beginPath();
+          ctx.roundRect(tileX, tileY, tileW, tileH, 10);
+          const slabGrad = ctx.createLinearGradient(tileX, tileY, tileX, tileY + tileH);
+          if (tile.glowIntensity > 0.1) {
+            slabGrad.addColorStop(0, '#ffffff');
+            slabGrad.addColorStop(0.3, 'rgba(255, 255, 255, 0.45)');
+            slabGrad.addColorStop(1, 'rgba(30, 36, 56, 0.95)');
+          } else if (isActive) {
+            slabGrad.addColorStop(0, 'rgba(36, 44, 70, 0.95)');
+            slabGrad.addColorStop(1, 'rgba(20, 25, 42, 0.95)');
+          } else {
+            // Inactive tile (restrained & less prominent)
+            slabGrad.addColorStop(0, 'rgba(24, 28, 42, 0.75)');
+            slabGrad.addColorStop(1, 'rgba(14, 17, 26, 0.75)');
+          }
+          ctx.fillStyle = slabGrad;
+          ctx.fill();
+
+          // Border: vibrant on active/hit, restrained on inactive
+          ctx.strokeStyle = isActive
+            ? (tile.crackAmount > 0.65 ? '#ffffff' : lane.color)
+            : 'rgba(255, 255, 255, 0.15)';
+          ctx.lineWidth = isActive ? (2.2 + tile.glowIntensity * 1.5) : 1.2;
           ctx.stroke();
 
-          // Dynamic Fracture Cracks from ball impact locations
+          // Tactile top bevel highlight (1px white line)
+          ctx.beginPath();
+          ctx.moveTo(tileX + 12, tileY + 1.5);
+          ctx.lineTo(tileX + tileW - 12, tileY + 1.5);
+          ctx.strokeStyle = isActive ? 'rgba(255, 255, 255, 0.55)' : 'rgba(255, 255, 255, 0.18)';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+
+          // Crystalline Fracture Cracks branching out from ball impacts
           if (tile.fractures && tile.fractures.length > 0) {
             ctx.save();
             ctx.strokeStyle = '#ffffff';
-            ctx.lineWidth = 1.8;
+            ctx.lineWidth = 1.6;
             ctx.shadowColor = '#ffffff';
-            ctx.shadowBlur = 8;
+            ctx.shadowBlur = 4;
             for (const f of tile.fractures) {
               ctx.beginPath();
               const fx = tileX + f.x;
-              ctx.moveTo(fx, tile.y - 6);
+              ctx.moveTo(fx, tile.y - 4);
               ctx.lineTo(fx + Math.cos(f.angle) * f.len, tile.y + Math.sin(f.angle) * f.len);
               ctx.stroke();
             }
             ctx.restore();
           }
 
-          // Tile Label Text (e.g. ×3 or +2)
-          ctx.shadowBlur = 10;
-          ctx.fillStyle = '#ffffff';
-          ctx.font = '900 22px "Inter", "Segoe UI", sans-serif';
+          // Clear Centered Multiplier Text (e.g. ×3 or +2)
+          ctx.fillStyle = isActive ? '#ffffff' : 'rgba(255, 255, 255, 0.70)';
+          ctx.font = '900 24px "Inter", "Segoe UI", sans-serif';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
-          ctx.fillText(tile.label, tileX + tileW / 2 - 20, tile.y - 4);
+          ctx.fillText(tile.label, tileX + tileW / 2, tile.y - 2);
 
-          // HP Tag
-          ctx.font = '800 11px monospace';
-          ctx.fillStyle = lane.accentColor;
-          ctx.fillText(`${Math.max(0, Math.ceil(tile.currentHP))} HP`, tileX + tileW - 45, tile.y - 4);
-
-          // Glowing Durability Health Bar
+          // Recessed Durability Health Bar
           const barX = tileX + 24;
           const barY = tile.y + 8;
           const barW = tileW - 48;
           const barH = 4;
 
-          ctx.fillStyle = 'rgba(255, 255, 255, 0.14)';
+          ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
           ctx.beginPath();
           ctx.roundRect(barX, barY, barW, barH, 2);
           ctx.fill();
 
           const hpRatio = Math.max(0, Math.min(1.0, tile.currentHP / tile.maxHP));
           if (hpRatio > 0.01) {
-            ctx.fillStyle = lane.accentColor;
-            ctx.shadowColor = lane.accentColor;
-            ctx.shadowBlur = 8;
+            ctx.fillStyle = isActive ? lane.accentColor : 'rgba(255, 255, 255, 0.35)';
             ctx.beginPath();
             ctx.roundRect(barX, barY, barW * hpRatio, barH, 2);
             ctx.fill();
@@ -360,24 +581,24 @@ class CanvasRenderer {
 
         } else {
           // --- SHATTERED OPEN GATEWAY ---
-          // The solid floor is broken! Draw open side frame indicators and dashed gateway
-          ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
-          ctx.lineWidth = 2;
+          // Broken threshold with clean open dotted boundary
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.16)';
+          ctx.lineWidth = 1.5;
           ctx.setLineDash([4, 6]);
           ctx.beginPath();
-          ctx.moveTo(tileX + 10, tile.y);
-          ctx.lineTo(tileX + tileW - 10, tile.y);
+          ctx.moveTo(tileX + 16, tile.y);
+          ctx.lineTo(tileX + tileW - 16, tile.y);
           ctx.stroke();
           ctx.setLineDash([]);
 
-          // Broken edge brackets
+          // Clean recessed gateway notches in team color (restrained arcade chassis)
           ctx.strokeStyle = lane.color;
-          ctx.lineWidth = 3;
-          ctx.shadowColor = lane.color;
-          ctx.shadowBlur = 8;
+          ctx.lineWidth = 2.0;
           ctx.beginPath();
-          ctx.moveTo(tileX, tileY - 4); ctx.lineTo(tileX + 16, tile.y); ctx.lineTo(tileX, tileY + tileH + 4);
-          ctx.moveTo(tileX + tileW, tileY - 4); ctx.lineTo(tileX + tileW - 16, tile.y); ctx.lineTo(tileX + tileW, tileY + tileH + 4);
+          ctx.moveTo(tileX, tileY + 4); ctx.lineTo(tileX + 10, tileY + 4);
+          ctx.moveTo(tileX, tileY + tileH - 4); ctx.lineTo(tileX + 10, tileY + tileH - 4);
+          ctx.moveTo(tileX + tileW, tileY + 4); ctx.lineTo(tileX + tileW - 10, tileY + 4);
+          ctx.moveTo(tileX + tileW, tileY + tileH - 4); ctx.lineTo(tileX + tileW - 10, tileY + tileH - 4);
           ctx.stroke();
         }
 
@@ -388,28 +609,77 @@ class CanvasRenderer {
 
   drawBalls(engine) {
     const ctx = this.ctx;
+    const t = engine.simTime;
 
     for (const side of ['left', 'right']) {
       const lane = engine.lanes[side];
 
-      for (const b of lane.balls) {
+      for (let i = 0; i < lane.balls.length; i++) {
+        const b = lane.balls[i];
+        if (!b || b._dead) continue;
+
         ctx.save();
-        const r = b.radius;
 
-        // Clean ball outer glow
-        ctx.shadowColor = lane.color;
-        ctx.shadowBlur = 14;
+        // Emergence scaling: newly spawned balls expand smoothly over 0.22s
+        let scale = 1.0;
+        let emergenceFlash = 0;
+        if (b.spawnTime !== undefined) {
+          const age = t - b.spawnTime;
+          if (age < 0.22) {
+            const p = Math.max(0, age / 0.22);
+            scale = 0.35 + 0.65 * Math.sin(p * Math.PI * 0.5);
+            emergenceFlash = 1.0 - p;
+          }
+        }
 
-        // 3D Specular Radial Gradient
-        const grad = ctx.createRadialGradient(b.x - r * 0.35, b.y - r * 0.38, 1, b.x, b.y, r * 1.35);
-        grad.addColorStop(0, '#ffffff');
-        grad.addColorStop(0.3, lane.accentColor);
-        grad.addColorStop(0.85, lane.color);
-        grad.addColorStop(1, '#1b1b22');
+        const r = b.radius * scale;
 
-        ctx.fillStyle = grad;
+        // 1. Contact shadow under each ball
+        ctx.beginPath();
+        ctx.arc(b.x + 1.5, b.y + 2, r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.40)';
+        ctx.fill();
+
+        // 2. High-Density Silhouette Contrast Rim
+        // CRITICAL FIX: Crisp 1.2px dark outer contour guarantees each individual ball
+        // remains clearly delineated even when hundreds of balls pack together!
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, r + 0.8, 0, Math.PI * 2);
+        ctx.fillStyle = '#080b12';
+        ctx.fill();
+
+        // 3. 3D Spherical Shading (Rich body gradient + specular reflection)
         ctx.beginPath();
         ctx.arc(b.x, b.y, r, 0, Math.PI * 2);
+        const ballGrad = ctx.createRadialGradient(
+          b.x - r * 0.35,
+          b.y - r * 0.35,
+          Math.max(0.5, r * 0.08),
+          b.x,
+          b.y,
+          r * 1.05
+        );
+
+        if (emergenceFlash > 0.05) {
+          // Bright energy gleam when newly multiplied
+          ballGrad.addColorStop(0, '#ffffff');
+          ballGrad.addColorStop(0.3, '#ffffff');
+          ballGrad.addColorStop(0.8, lane.accentColor);
+          ballGrad.addColorStop(1, lane.color);
+        } else {
+          ballGrad.addColorStop(0, '#ffffff');
+          ballGrad.addColorStop(0.22, lane.accentColor);
+          ballGrad.addColorStop(0.72, lane.color);
+          ballGrad.addColorStop(1, side === 'left' ? '#4c1d95' : '#14532d');
+        }
+
+        ctx.fillStyle = ballGrad;
+        ctx.fill();
+
+        // 4. Razor-sharp white specular hot-spot for physical gloss
+        ctx.beginPath();
+        ctx.arc(b.x - r * 0.32, b.y - r * 0.32, Math.max(1, r * 0.22), 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
         ctx.fill();
 
         ctx.restore();
@@ -420,33 +690,37 @@ class CanvasRenderer {
   drawParticlesAndTexts(engine) {
     const ctx = this.ctx;
 
-    // Draw Particles (Shards & Sparks)
-    for (const p of engine.particles) {
+    // Draw Particles (Shards, Sparks, Spawn Bursts)
+    for (let i = 0; i < engine.particles.length; i++) {
+      const p = engine.particles[i];
       ctx.save();
       const alpha = Math.max(0, p.life / p.maxLife);
       ctx.globalAlpha = alpha;
 
       if (p.type === 'shard') {
-        // Tumble flying glass tile shard
+        // Tumbling glass tile shard
         ctx.translate(p.x, p.y);
         ctx.rotate(p.angle || 0);
 
         ctx.fillStyle = p.color;
-        ctx.shadowColor = p.color;
-        ctx.shadowBlur = 10;
-
         ctx.beginPath();
         ctx.rect(-p.w / 2, -p.h / 2, p.w, p.h);
         ctx.fill();
+
         ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 1.2;
+        ctx.lineWidth = 1.0;
         ctx.stroke();
+
+      } else if (p.type === 'spawn_burst') {
+        // Multiplier emergence ring
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius || 3, 0, Math.PI * 2);
+        ctx.fill();
 
       } else {
         // Spark circle
         ctx.fillStyle = p.color;
-        ctx.shadowColor = p.color;
-        ctx.shadowBlur = 8;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius || 3, 0, Math.PI * 2);
         ctx.fill();
@@ -455,15 +729,16 @@ class CanvasRenderer {
       ctx.restore();
     }
 
-    // Draw Floating Texts
-    for (const ft of engine.floatingTexts) {
+    // Draw Floating Multiplier Tags (e.g. ×3! or +2!)
+    for (let i = 0; i < engine.floatingTexts.length; i++) {
+      const ft = engine.floatingTexts[i];
       ctx.save();
       const alpha = Math.max(0, ft.life / ft.maxLife);
       ctx.globalAlpha = alpha;
-      ctx.font = '900 38px "Inter", "Segoe UI", sans-serif';
+      ctx.font = '900 36px "Inter", "Segoe UI", sans-serif';
       ctx.fillStyle = ft.color;
       ctx.shadowColor = ft.color;
-      ctx.shadowBlur = 18;
+      ctx.shadowBlur = 14;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.translate(ft.x, ft.y);
@@ -478,46 +753,46 @@ class CanvasRenderer {
     const w = this.width;
     const bottomY = engine.bottomY;
 
-    // Glowing bottom collector tray
+    // Collector trays at bottom
     for (const side of ['left', 'right']) {
       const lane = engine.lanes[side];
       ctx.save();
       ctx.beginPath();
-      ctx.roundRect(lane.minX + 8, bottomY - 60, lane.width - 16, 68, 14);
+      ctx.roundRect(lane.minX + 8, bottomY - 55, lane.width - 16, 60, 12);
       ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
       ctx.fill();
-      ctx.strokeStyle = lane.color;
-      ctx.lineWidth = 2;
-      ctx.shadowColor = lane.color;
-      ctx.shadowBlur = 8;
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+      ctx.lineWidth = 1.5;
       ctx.stroke();
       ctx.restore();
     }
 
     // Dashed finish line
     ctx.save();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
-    ctx.lineWidth = 3;
-    ctx.setLineDash([12, 10]);
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+    ctx.lineWidth = 2.5;
+    ctx.setLineDash([10, 8]);
     ctx.beginPath();
-    ctx.moveTo(50, bottomY - 65);
-    ctx.lineTo(520, bottomY - 65);
-    ctx.moveTo(560, bottomY - 65);
-    ctx.lineTo(1030, bottomY - 65);
+    ctx.moveTo(50, bottomY - 60);
+    ctx.lineTo(520, bottomY - 60);
+    ctx.moveTo(560, bottomY - 60);
+    ctx.lineTo(1030, bottomY - 60);
     ctx.stroke();
     ctx.setLineDash([]);
+    ctx.restore();
 
-    // Progress bar at the very bottom
-    const progress = Math.min(1.0, engine.simTime / engine.durationSeconds);
-    const barY = 1880;
-    const barH = 8;
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+    // Sleek progress bar at bottom edge
+    const progress = Math.min(1.0, engine.simTime / (engine.durationSeconds || 20));
+    const barY = 1888;
+    const barH = 6;
+    ctx.save();
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
     ctx.fillRect(60, barY, w - 120, barH);
 
     const activeColor = engine.winner ? engine.winner.color : '#ffd700';
     ctx.fillStyle = activeColor;
     ctx.shadowColor = activeColor;
-    ctx.shadowBlur = 10;
+    ctx.shadowBlur = 8;
     ctx.fillRect(60, barY, (w - 120) * progress, barH);
     ctx.restore();
   }
@@ -532,68 +807,104 @@ class CanvasRenderer {
     ctx.save();
     ctx.globalAlpha = engine.winnerBannerAlpha;
 
-    ctx.fillStyle = 'rgba(4, 6, 14, 0.84)';
+    // Restrained tournament victory backdrop (Gameplay & arenas remain clearly visible behind!)
+    ctx.fillStyle = 'rgba(4, 6, 14, 0.40)';
     ctx.fillRect(0, 0, w, h);
 
-    const cardW = 900;
-    const cardH = 520;
+    // Winning Arena Radiant Highlight
+    const winLane = engine.lanes[winner.side];
+    const otherSide = winner.side === 'left' ? 'right' : 'left';
+    const loseLane = engine.lanes[otherSide];
+
+    // Subtle dimming veil only over losing lane
+    if (loseLane) {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.32)';
+      ctx.fillRect(loseLane.minX - 10, engine.topY, loseLane.width + 20, engine.trackHeight + 80);
+    }
+
+    if (winLane) {
+      // Golden victory aura radiating from winner's reservoir
+      const winAura = ctx.createRadialGradient(
+        winLane.minX + winLane.width / 2,
+        engine.bottomY - 60,
+        30,
+        winLane.minX + winLane.width / 2,
+        engine.bottomY - 60,
+        380
+      );
+      winAura.addColorStop(0, 'rgba(255, 215, 0, 0.35)');
+      winAura.addColorStop(0.6, winner.color === '#cb72ff' ? 'rgba(203, 114, 255, 0.20)' : 'rgba(121, 239, 67, 0.20)');
+      winAura.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = winAura;
+      ctx.fillRect(winLane.minX - 30, engine.topY, winLane.width + 60, engine.trackHeight + 120);
+
+      // Glowing golden championship outline around the winning lane chassis
+      ctx.strokeStyle = '#ffd700';
+      ctx.lineWidth = 3.5;
+      ctx.shadowColor = '#ffd700';
+      ctx.shadowBlur = 18;
+      ctx.beginPath();
+      ctx.roundRect(winLane.minX, engine.topY, winLane.width, engine.trackHeight, 20);
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+    }
+
+    // Sleek Broadcast Victory Card (Compact & non-obstructive)
+    const cardW = 780;
+    const cardH = 310;
     const cardX = (w - cardW) / 2;
-    const cardY = (h - cardH) / 2;
+    const cardY = 740;
 
     ctx.beginPath();
-    ctx.roundRect(cardX, cardY, cardW, cardH, 32);
-    ctx.fillStyle = 'rgba(16, 20, 36, 0.96)';
+    ctx.roundRect(cardX, cardY, cardW, cardH, 24);
+    ctx.fillStyle = 'rgba(12, 16, 28, 0.94)';
     ctx.fill();
 
     ctx.strokeStyle = winner.color;
-    ctx.lineWidth = 4;
+    ctx.lineWidth = 3.0;
     ctx.shadowColor = winner.color;
-    ctx.shadowBlur = 35;
+    ctx.shadowBlur = 20;
     ctx.stroke();
 
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
-    ctx.font = '900 44px "Inter", "Segoe UI", sans-serif';
+    const winnerTeamName = winner.side === 'left' ? 'PURPLE' : 'GREEN';
+
+    // 1. Trophy & Team Title
+    ctx.font = '950 42px "Inter", "Segoe UI", sans-serif';
     ctx.fillStyle = '#ffd700';
     ctx.shadowColor = '#ffd700';
-    ctx.shadowBlur = 20;
-    ctx.fillText('🏆 1ST PLACE FINISHER! 🏆', w / 2, cardY + 80);
+    ctx.shadowBlur = 16;
+    ctx.fillText(`🏆 ${winnerTeamName} TEAM WINS! 🏆`, w / 2, cardY + 54);
 
-    ctx.font = '950 58px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = winner.color;
-    ctx.shadowColor = winner.color;
-    ctx.shadowBlur = 24;
-    ctx.fillText(`${winner.name} TEAM`, w / 2, cardY + 160);
-
-    ctx.shadowBlur = 0;
-    const timeStr = winner.finishTime ? `${winner.finishTime.toFixed(1)}s` : '11.8s';
-    ctx.font = '800 24px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = '#00f0ff';
-    ctx.fillText(`⚡ REACHED BOTTOM FIRST AT ${timeStr}! ⚡`, w / 2, cardY + 225);
-
-    ctx.font = '700 28px "Inter", "Segoe UI", sans-serif';
+    // 2. Bold Final Score Comparison (2,187 vs 18 BALLS)
+    ctx.font = '950 50px "Inter", "Segoe UI", sans-serif';
     ctx.fillStyle = '#ffffff';
+    ctx.shadowColor = winner.color;
+    ctx.shadowBlur = 14;
     ctx.fillText(
       `${winner.winningScore.toLocaleString()} vs ${winner.losingScore.toLocaleString()} BALLS`,
       w / 2,
-      cardY + 285
+      cardY + 128
     );
 
-    const loserTier = winner.loserStuckTier !== undefined ? winner.loserStuckTier + 1 : 4;
-    ctx.font = '800 22px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = '#ff6688';
-    ctx.fillText(`RUNNER-UP: ${winner.loserName || 'OTHER'} (STUCK AT TIER ${loserTier} OF 6)`, w / 2, cardY + 345);
+    // 3. Exciting Outcome Subtitle
+    ctx.shadowBlur = 0;
+    ctx.font = '800 20px "Inter", "Segoe UI", sans-serif';
+    ctx.fillStyle = '#ffd700';
+    ctx.fillText('⚡ UNDERDOG MULTIPLIER TAKES THE VICTORY! ⚡', w / 2, cardY + 186);
 
-    const ctaY = cardY + 430;
+    // 4. Replay Loop CTA Button
+    const ctaY = cardY + 248;
     ctx.beginPath();
-    ctx.roundRect(w / 2 - 200, ctaY - 26, 400, 52, 26);
+    ctx.roundRect(w / 2 - 170, ctaY - 24, 340, 48, 24);
     ctx.fillStyle = winner.color;
     ctx.fill();
 
     ctx.fillStyle = '#0a0d18';
-    ctx.font = '900 22px "Inter", "Segoe UI", sans-serif';
-    ctx.fillText('SUBSCRIBE FOR NEXT RACE 🔔', w / 2, ctaY);
+    ctx.font = '900 20px "Inter", "Segoe UI", sans-serif';
+    ctx.fillText('WATCH AGAIN 🔄', w / 2, ctaY);
 
     ctx.restore();
   }
@@ -601,14 +912,18 @@ class CanvasRenderer {
   drawWatermark() {
     const ctx = this.ctx;
     ctx.save();
-    ctx.font = '800 18px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+    ctx.font = '800 13px "Inter", "Segoe UI", sans-serif';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.22)';
     ctx.textAlign = 'center';
-    ctx.fillText('BURSTPOINT SIMULATIONS', this.width / 2, 1855);
+    ctx.fillText('BURSTPOINT · ARCADE SIMULATION', this.width / 2, 1905);
     ctx.restore();
   }
 }
 
+if (typeof window !== 'undefined') {
+  window.CanvasRenderer = CanvasRenderer;
+  window.VideoDirector = VideoDirector;
+}
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { CanvasRenderer };
+  module.exports = { CanvasRenderer, VideoDirector };
 }

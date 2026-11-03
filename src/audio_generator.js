@@ -26,6 +26,8 @@ class AudioSynthesizer {
       } else if (ev.type === 'gate') {
         const baseFreq = 320 * Math.pow(1.18, ev.tier || 0);
         this.renderChime(leftChannel, rightChannel, startSample, baseFreq, ev.multiplier ? 0.45 : 0.35, leftGain, rightGain);
+      } else if (ev.type === 'multiplication') {
+        this.renderMultiplication(leftChannel, rightChannel, startSample, ev.count || 6, leftGain, rightGain);
       } else if (ev.type === 'tally') {
         this.renderBlip(leftChannel, rightChannel, startSample, 880 + (ev.count || 0) % 200, 0.08, leftGain, rightGain);
       } else if (ev.type === 'finish') {
@@ -60,6 +62,24 @@ class AudioSynthesizer {
       left[startSample + i] += val * leftGain;
       right[startSample + i] += val * rightGain;
     }
+  }
+
+  renderMultiplication(left, right, startSample, count, leftGain, rightGain) {
+    const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6 crystalline shimmer chord
+    const noteSpacing = 0.035;
+    notes.forEach((freq, idx) => {
+      const noteStart = startSample + Math.floor(idx * noteSpacing * this.sampleRate);
+      if (noteStart >= left.length) return;
+      const duration = 0.38;
+      const numSamples = Math.min(Math.floor(duration * this.sampleRate), left.length - noteStart);
+      for (let i = 0; i < numSamples; i++) {
+        const t = i / this.sampleRate;
+        const env = Math.exp(-t * 8.5);
+        const val = Math.sin(2 * Math.PI * freq * t) * env * 0.16;
+        left[noteStart + i] += val * leftGain;
+        right[noteStart + i] += val * rightGain;
+      }
+    });
   }
 
   renderChime(left, right, startSample, baseFreq, volume, leftGain, rightGain) {

@@ -200,6 +200,7 @@ async function renderVideo(options) {
     page.on('console', msg => console.log('BROWSER CONSOLE:', msg.text()));
     page.on('pageerror', err => console.error('BROWSER PAGE ERROR:', err.message));
     await page.setViewport({ width: 1080, height: 1920, deviceScaleFactor: 1 });
+    await page.setCacheEnabled(false);
     await page.goto(`http://127.0.0.1:${serverPort}/index.html`, { waitUntil: 'domcontentloaded' });
 
     // Run deterministic frame generation in browser via GameManager

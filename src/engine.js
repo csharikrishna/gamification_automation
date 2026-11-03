@@ -208,7 +208,10 @@ class SimulationEngine {
       vx: props.vx || 0,
       vy: props.vy || 0,
       radius: props.radius || 11,
-      color: lane.color
+      color: lane.color,
+      spawnTime: props.spawnTime !== undefined ? props.spawnTime : this.simTime,
+      sourceX: props.sourceX !== undefined ? props.sourceX : props.x,
+      sourceY: props.sourceY !== undefined ? props.sourceY : props.y
     });
   }
 
@@ -299,6 +302,8 @@ class SimulationEngine {
         const b = balls[i];
         if (!b || b._dead) continue;
 
+        const prevY = b.y;
+
         b.vy += this.gravity * subDt;
         b.vx *= this.airResistance;
         b.vy *= this.airResistance;
@@ -310,42 +315,25 @@ class SimulationEngine {
         b.x = Math.max(minX + b.radius, Math.min(maxX - b.radius, b.x));
 
         // Side Walls (Deterministic Pinball Ricochet)
-        if (b.x - b.radius < minX) {
+        if (b.x - b.radius <= minX) {
           b.x = minX + b.radius;
           b.vx = Math.abs(b.vx) * this.wallBounce + this.rng.range(0, 15);
           this.logBounce(lane.side, b.x, b.y, 0.06);
-        } else if (b.x + b.radius > maxX) {
+        } else if (b.x + b.radius >= maxX) {
           b.x = maxX - b.radius;
           b.vx = -Math.abs(b.vx) * this.wallBounce - this.rng.range(0, 15);
           this.logBounce(lane.side, b.x, b.y, 0.06);
         }
 
-        // Bottom floor reservoir (Finish Line)
-        if (b.y + b.radius > bottomFloor) {
-          b.y = bottomFloor - b.radius;
-          b.vy = -Math.abs(b.vy) * 0.32;
-          b.vx *= 0.88;
-
-          const allTilesBroken = lane.tiles.every(t => !t.intact);
-          if (allTilesBroken && !lane.reachedBottom) {
-            lane.reachedBottom = true;
-            lane.finishedTime = this.simTime;
-          }
-        }
-
-        // Breakable Tile Barrier Collisions
+        // Breakable Tile Barrier Collisions (Continuous sweep to prevent tunneling)
         for (const tile of lane.tiles) {
           if (tile.intact) {
             const tileTop = tile.y - tile.height / 2;
             const tileBottom = tile.y + tile.height / 2;
 
-            if (
-              b.x + b.radius > tile.minX &&
-              b.x - b.radius < tile.maxX &&
-              b.y + b.radius >= tileTop &&
-              b.y - b.radius <= tileBottom
-            ) {
-              if (b.vy > 0 && b.y < tile.y) {
+            if (b.x + b.radius > tile.minX && b.x - b.radius < tile.maxX) {
+              if ((prevY + b.radius <= tileTop + 6 && b.y + b.radius >= tileTop) ||
+                  (b.y + b.radius >= tileTop && b.y < tileBottom && b.vy >= 0)) {
                 b.y = tileTop - b.radius;
 
                 if (Math.abs(b.vy) < 170) {
@@ -356,25 +344,30 @@ class SimulationEngine {
 
                 b.vx = b.vx * 0.96 + this.rng.range(-22.5, 22.5);
 
-                tile.hits++;
-                tile.currentHP = Math.max(0, tile.currentHP - damagePerBounce);
-                tile.crackAmount = Math.max(0, Math.min(1.0, 1.0 - (tile.currentHP / tile.maxHP)));
-                tile.glowIntensity = 1.0;
+                // Only take damage and shatter before race is decided
+                if (!this.winner) {
+                  tile.hits++;
+                  tile.currentHP = Math.max(0, tile.currentHP - damagePerBounce);
+                  tile.crackAmount = Math.max(0, Math.min(1.0, 1.0 - (tile.currentHP / tile.maxHP)));
+                  tile.glowIntensity = 1.0;
 
-                // Deterministic spiderweb fracture lines (PHY-05)
-                if (!tile.fractures) tile.fractures = [];
-                if (tile.fractures.length < 12 && this.rng.random() < 0.6) {
-                  tile.fractures.push({
-                    x: b.x - tile.minX,
-                    len: this.rng.range(14, 42),
-                    angle: this.rng.range(-0.8, 0.8)
-                  });
-                }
+                  // Deterministic spiderweb fracture lines (PHY-05)
+                  if (!tile.fractures) tile.fractures = [];
+                  if (tile.fractures.length < 12 && this.rng.random() < 0.6) {
+                    tile.fractures.push({
+                      x: b.x - tile.minX,
+                      len: this.rng.range(14, 42),
+                      angle: this.rng.range(-0.8, 0.8)
+                    });
+                  }
 
-                this.logBounce(lane.side, b.x, b.y, 0.08, 540 + tile.index * 60);
+                  this.logBounce(lane.side, b.x, b.y, 0.08, 540 + tile.index * 60);
 
-                if (tile.currentHP <= 0 && tile.intact) {
-                  this.shatterTile(lane, tile);
+                  if (tile.currentHP <= 0 && tile.intact) {
+                    this.shatterTile(lane, tile);
+                  }
+                } else {
+                  this.logBounce(lane.side, b.x, b.y, 0.04, 520);
                 }
               }
             }
@@ -406,11 +399,38 @@ class SimulationEngine {
             }
           }
         }
+
+        // Bottom floor reservoir (Finish Line)
+        if (b.y + b.radius > bottomFloor) {
+          b.y = bottomFloor - b.radius;
+          b.vy = -Math.abs(b.vy) * 0.32;
+          b.vx *= 0.88;
+
+          const allTilesBroken = lane.tiles.every(t => !t.intact);
+          if (allTilesBroken && !lane.reachedBottom) {
+            lane.reachedBottom = true;
+            lane.finishedTime = this.simTime;
+          }
+        }
       }
 
       // PHY-06, PHY-08: Relaxed 2-pass elastic collisions with coincident separation
       this.resolveElasticBallCollisions(lane);
       this.resolveElasticBallCollisions(lane);
+
+      // Post-collision barrier containment: ensure ball-to-ball repulsion never pushes balls past intact tiles
+      for (const b of lane.balls) {
+        if (b._dead) continue;
+        for (const tile of lane.tiles) {
+          if (tile.intact && b.x + b.radius > tile.minX && b.x - b.radius < tile.maxX) {
+            const tileTop = tile.y - tile.height / 2;
+            if (b.y + b.radius > tileTop && b.y < tile.y) {
+              b.y = tileTop - b.radius;
+              if (b.vy > 0) b.vy = -b.vy * 0.5;
+            }
+          }
+        }
+      }
 
       // Safe purge of despawned balls after substep physics completes
       lane.balls = lane.balls.filter(b => !b._dead);
@@ -592,16 +612,46 @@ class SimulationEngine {
     if (targetSimulated > currentBalls) {
       // Spawn new marbles
       const toSpawn = targetSimulated - currentBalls;
+      this.events.push({
+        time: this.simTime,
+        type: 'multiplication',
+        lane: lane.side,
+        count: toSpawn
+      });
+
+      // Spawn visual energy burst at the shattering tile
+      for (let s = 0; s < 12; s++) {
+        const sAngle = (s / 12) * Math.PI * 2;
+        const sSpeed = this.rng.range(50, 160);
+        this.particles.push({
+          type: 'spawn_burst',
+          x: (tile.minX + tile.maxX) / 2 + this.rng.range(-tile.width * 0.3, tile.width * 0.3),
+          y: tile.y,
+          vx: Math.cos(sAngle) * sSpeed,
+          vy: Math.sin(sAngle) * sSpeed,
+          radius: this.rng.range(2.5, 6),
+          color: lane.accentColor,
+          life: 0.45,
+          maxLife: 0.45,
+          gravity: 120
+        });
+      }
+
       for (let b = 0; b < toSpawn; b++) {
         const spreadX = this.rng.range(-tile.width * 0.35, tile.width * 0.35);
         const spreadAngle = this.rng.range(-0.75, 0.75);
         const speed = this.rng.range(75, 215);
+        const spawnX = (tile.minX + tile.maxX) / 2 + spreadX;
+        const spawnY = tile.y + 12 + this.rng.range(0, 10);
         this.addBall(lane, {
-          x: (tile.minX + tile.maxX) / 2 + spreadX,
-          y: tile.y + 12 + this.rng.range(0, 10),
+          x: spawnX,
+          y: spawnY,
           vx: Math.sin(spreadAngle) * speed,
           vy: Math.cos(spreadAngle) * speed + 55,
-          radius: targetSimulated > 50 ? 9.5 : (targetSimulated > 20 ? 10.5 : 11.5)
+          radius: targetSimulated > 50 ? 9.5 : (targetSimulated > 20 ? 10.5 : 11.5),
+          spawnTime: this.simTime,
+          sourceX: spawnX,
+          sourceY: tile.y
         });
       }
     } else if (targetSimulated < currentBalls) {

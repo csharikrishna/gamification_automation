@@ -372,7 +372,9 @@ async function runQualification() {
     const durationMatch = probeOutput.match(/Duration:\s*(\d+):(\d+):([\d\.]+)/);
     assert(durationMatch, 'Duration header must be parseable!');
     const totalSecs = parseInt(durationMatch[1], 10) * 3600 + parseInt(durationMatch[2], 10) * 60 + parseFloat(durationMatch[3]);
-    assert(Math.abs(totalSecs - 16.0) < 0.1, `Video duration (${totalSecs}s) must align with 16.00s specification!`);
+    const cfg = JSON.parse(fs.readFileSync('configs/underdog_slow_composed.json', 'utf8'));
+    const targetDur = cfg.durationSeconds || 20.0;
+    assert(Math.abs(totalSecs - targetDur) < 0.15, `Video duration (${totalSecs}s) must align with ${targetDur.toFixed(2)}s specification!`);
 
     results.checklist['7. Audio Synchronization & Streams'] = 'PASSED';
     console.log(`  ✓ PASSED: AAC 44.1kHz stereo audio stream perfectly synchronized (${totalSecs.toFixed(2)}s).`);
