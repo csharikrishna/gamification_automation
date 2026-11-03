@@ -311,6 +311,9 @@ class SimulationEngine {
         b.x += b.vx * subDt;
         b.y += b.vy * subDt;
 
+        // PHY-14: Hard safety clamp ensures balls can never tunnel or escape track boundaries
+        b.x = Math.max(minX + b.radius, Math.min(maxX - b.radius, b.x));
+
         // Side Walls (Deterministic Pinball Ricochet)
         if (b.x - b.radius < minX) {
           b.x = minX + b.radius;

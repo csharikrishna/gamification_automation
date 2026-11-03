@@ -9,16 +9,28 @@ if (typeof require !== 'undefined') {
   try { if (!_MathEvaluator) _MathEvaluator = require('./math_evaluator').MathEvaluator; } catch (e) {}
 }
 
+let _ConfigValidator;
+if (typeof require !== 'undefined') {
+  try {
+    _ConfigValidator = require('./config_validator').ConfigValidator;
+  } catch (e) {}
+}
+
 class AIDirector {
   constructor(options = {}) {
     this.apiKey = options.apiKey || (typeof process !== 'undefined' && process.env ? process.env.GEMINI_API_KEY : null);
+    this.model = options.model || (typeof process !== 'undefined' && process.env ? process.env.GEMINI_MODEL : null) || 'gemini-1.5-flash';
   }
 
   // Formulate a brand new daily simulation
   async formulateDailyGame(dayOffset = 0) {
     const today = new Date();
     today.setDate(today.getDate() + dayOffset);
-    const dateStr = today.toISOString().split('T')[0];
+    // AI-11: Format using local calendar date instead of UTC ISO conversion
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    const dateStr = `${year}-${month}-${day}`;
 
     // If Gemini API Key is available, prompt the LLM
     if (this.apiKey && _https) {
@@ -48,20 +60,26 @@ Return ONLY valid JSON matching this schema:
             return mathConfig;
           }
           llmResult.date = dateStr;
-          return this.enrichConfig(llmResult);
+          const enriched = this.enrichConfig(llmResult);
+          // AI-06: Strict schema validation on LLM output
+          if (_ConfigValidator && enriched.gameType === 'multi_race') {
+            _ConfigValidator.validate(enriched);
+          }
+          return enriched;
         }
       } catch (err) {
         console.warn('Gemini API call failed, falling back to Autonomous Creative Engine:', err.message);
       }
     }
 
-    // Autonomous Creative Engine (Combinatorial physics formulation)
-    return this.formulateAutonomousGame(dateStr, dayOffset);
+    // AI-12: Autonomous Creative Engine called without double dayOffset
+    return this.formulateAutonomousGame(dateStr);
   }
 
-  formulateAutonomousGame(dateStr, seedOffset = 0) {
+  formulateAutonomousGame(dateStr) {
     const GAME_TYPES = ['math_showdown', 'mega_plinko', 'sumo_arena', 'brick_breaker', 'marble_run', 'multi_race'];
-    const dayNum = Math.floor(new Date(dateStr).getTime() / (1000 * 60 * 60 * 24)) + seedOffset;
+    // AI-12: Single offset calculation derived directly from dateStr
+    const dayNum = Math.floor(new Date(dateStr).getTime() / (1000 * 60 * 60 * 24));
     const gameType = GAME_TYPES[Math.abs(dayNum) % GAME_TYPES.length];
 
     if (gameType === 'math_showdown' && _MathEvaluator) {
@@ -220,27 +238,43 @@ Return ONLY valid JSON matching this schema:
   }
 
   async callGemini(promptText) {
-    if (!_https) throw new Error('https module not available');
+    if (!_https) throw new Error('https module not available in this environment');
     return new Promise((resolve, reject) => {
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${this.apiKey}`;
+      // AI-03: Configurable model name
+      const model = this.model || 'gemini-1.5-flash';
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${this.apiKey}`;
       const payload = JSON.stringify({
         contents: [{ parts: [{ text: promptText }] }],
         generationConfig: { responseMimeType: 'application/json' }
       });
 
       const req = _https.request(url, { method: 'POST', headers: { 'Content-Type': 'application/json' } }, res => {
+        // AI-05: Strict HTTP status code validation
+        if (res.statusCode < 200 || res.statusCode >= 300) {
+          reject(new Error(`Gemini API HTTP Error ${res.statusCode}: ${res.statusMessage}`));
+          res.resume();
+          return;
+        }
+
         let body = '';
         res.on('data', chunk => body += chunk);
         res.on('end', () => {
           try {
             const data = JSON.parse(body);
             const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (!text) throw new Error('Empty response from model');
             resolve(JSON.parse(text));
           } catch (e) {
-            reject(e);
+            reject(new Error(`Failed to parse Gemini model response: ${e.message}`));
           }
         });
       });
+
+      // AI-04: Robust 12-second timeout handling
+      req.setTimeout(12000, () => {
+        req.destroy(new Error('Gemini API request timed out after 12 seconds'));
+      });
+
       req.on('error', reject);
       req.write(payload);
       req.end();

@@ -16,7 +16,10 @@ if (typeof require !== 'undefined') {
     if (!_SumoArenaGame) _SumoArenaGame = require('./games/sumo_arena').SumoArenaGame;
     if (!_BrickBreakerGame) _BrickBreakerGame = require('./games/brick_breaker').BrickBreakerGame;
     if (!_MarbleRunGame) _MarbleRunGame = require('./games/marble_run').MarbleRunGame;
-  } catch (e) {}
+  } catch (e) {
+    // ARCH-01: Log non-trivial module loading errors rather than swallowing silently
+    console.warn('[GameManager] Notice while loading module:', e.message);
+  }
 }
 
 class GameManager {
@@ -31,7 +34,8 @@ class GameManager {
       return new _BrickBreakerGame(config);
     } else if (gameType === 'marble_run' && _MarbleRunGame) {
       return new _MarbleRunGame(config);
-    } else if (_SimulationEngine) {
+    } else if (gameType === 'multi_race' && _SimulationEngine) {
+      // ARCH-02: Explicitly checks gameType === 'multi_race' instead of silently swallowing unknown types
       const engine = new _SimulationEngine(config);
       return {
         type: 'multi_race',
@@ -48,7 +52,7 @@ class GameManager {
         }
       };
     } else {
-      throw new Error(`Game engine for ${gameType} not found.`);
+      throw new Error(`Game engine for gameType "${gameType}" not found or unsupported.`);
     }
   }
 }
