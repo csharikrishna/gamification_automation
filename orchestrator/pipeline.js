@@ -27,13 +27,20 @@ class ProductionOrchestrator {
     // P0: Explicit human creative review gate by default (Unattended requires explicit configuration)
     this.unattendedApproval = options.unattendedApproval !== undefined ? Boolean(options.unattendedApproval) : false;
     this.humanApprovalToken = options.humanApprovalToken || options.token || process.env.HUMAN_APPROVAL_TOKEN || null;
-    this.trustedApprovalToken = options.trustedApprovalToken || process.env.TRUSTED_APPROVAL_TOKEN || 'BURSTPOINT_CREATIVE_DIRECTOR_SIGN_OFF_2026_SECURE_TOKEN';
-    this.trustedApprovalTokens = new Set([this.trustedApprovalToken]);
+    this.trustedApprovalToken = options.trustedApprovalToken || process.env.TRUSTED_APPROVAL_TOKEN || null;
+    this.trustedApprovalTokens = new Set();
+    if (this.trustedApprovalToken && String(this.trustedApprovalToken).trim().length > 0) {
+      this.trustedApprovalTokens.add(String(this.trustedApprovalToken).trim());
+    }
     if (options.trustedApprovalTokens && Array.isArray(options.trustedApprovalTokens)) {
-      for (const t of options.trustedApprovalTokens) if (t) this.trustedApprovalTokens.add(String(t).trim());
+      for (const t of options.trustedApprovalTokens) {
+        if (t && String(t).trim().length > 0) this.trustedApprovalTokens.add(String(t).trim());
+      }
     }
     if (process.env.TRUSTED_APPROVAL_TOKENS) {
-      for (const t of process.env.TRUSTED_APPROVAL_TOKENS.split(',')) if (t.trim()) this.trustedApprovalTokens.add(t.trim());
+      for (const t of process.env.TRUSTED_APPROVAL_TOKENS.split(',')) {
+        if (t && t.trim().length > 0) this.trustedApprovalTokens.add(t.trim());
+      }
     }
     this.reviewer = options.reviewer || (process.env.REVIEWER_NAME ? { name: process.env.REVIEWER_NAME } : null);
     this.timezone = options.timezone || 'Asia/Kolkata';
@@ -708,6 +715,15 @@ class ProductionOrchestrator {
       };
     }
 
+    // Strict security: Fail closed if no external trusted secret is configured
+    if (!this.trustedApprovalToken && this.trustedApprovalTokens.size === 0) {
+      return {
+        authorized: false,
+        reason: 'NO_TRUSTED_SECRET_CONFIGURED',
+        notes: 'Human approval failed closed: no trusted approval secret is configured externally.'
+      };
+    }
+
     // 1. Check for token passed directly or in reviewer object
     const rawToken = approvalToken !== undefined && approvalToken !== null
       ? String(approvalToken).trim()
@@ -734,7 +750,7 @@ class ProductionOrchestrator {
           mode: 'TOKEN',
           approver: reviewer?.name || 'Human Creative Director',
           approverRole: reviewer?.role || 'Human QA Architect & Release Auditor',
-          token: rawToken,
+          token: true,
           notes: reviewer?.notes || 'Explicit human creative sign-off verified with trusted approval token.'
         };
       } else {
@@ -746,6 +762,9 @@ class ProductionOrchestrator {
     if (reviewer && (reviewer.signature || reviewer.signedApproval)) {
       if (!reviewer.signature) {
         return { authorized: false, reason: 'MISSING_SIGNATURE' };
+      }
+      if (!this.trustedApprovalToken) {
+        return { authorized: false, reason: 'NO_TRUSTED_SECRET_CONFIGURED' };
       }
       const approverName = reviewer.name || 'Human Creative Director';
       const approverRole = reviewer.role || 'Human QA Architect & Release Auditor';
@@ -762,8 +781,8 @@ class ProductionOrchestrator {
           mode: 'SIGNED_RECORD',
           approver: approverName,
           approverRole,
-          token: 'HMAC_VERIFIED',
-          signature: reviewer.signature,
+          token: true,
+          signatureVerified: true,
           notes: reviewer.notes || 'Explicit cryptographically signed human approval record verified.'
         };
       } else {

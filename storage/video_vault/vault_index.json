@@ -1,6 +1,6 @@
 {
   "vaultVersion": "1.0.0",
-  "lastUpdated": "2026-11-04T17:29:05.600Z",
+  "lastUpdated": "2026-11-04T17:52:22.261Z",
   "totalVideos": 5,
   "videos": [
     {
@@ -195,7 +195,7 @@
           "existing": null
         }
       },
-      "archivedAt": "2026-11-04T17:29:04.818Z",
+      "archivedAt": "2026-11-04T17:52:21.432Z",
       "tags": [],
       "scenarioId": "flagship_scenario_01",
       "configurationHash": "40dd6ea114978182",
@@ -280,7 +280,7 @@
       "publishingReceipt": null,
       "platformVideoId": null,
       "publicationTimestamp": null,
-      "updatedAt": "2026-11-04T17:29:05.586Z",
+      "updatedAt": "2026-11-04T17:52:22.246Z",
       "approvalRecord": null
     },
     {
@@ -499,7 +499,7 @@
           "existing": null
         }
       },
-      "archivedAt": "2026-11-04T17:29:05.016Z",
+      "archivedAt": "2026-11-04T17:52:21.632Z",
       "tags": [],
       "scenarioId": "flagship_scenario_02",
       "configurationHash": "bd39818b2e16ede1",
@@ -584,7 +584,7 @@
       "publishingReceipt": null,
       "platformVideoId": null,
       "publicationTimestamp": null,
-      "updatedAt": "2026-11-04T17:29:05.589Z",
+      "updatedAt": "2026-11-04T17:52:22.249Z",
       "approvalRecord": null
     },
     {
@@ -779,7 +779,7 @@
           "existing": null
         }
       },
-      "archivedAt": "2026-11-04T17:29:05.205Z",
+      "archivedAt": "2026-11-04T17:52:21.838Z",
       "tags": [],
       "scenarioId": "flagship_scenario_03",
       "configurationHash": "e077af27d6d003f2",
@@ -864,7 +864,7 @@
       "publishingReceipt": null,
       "platformVideoId": null,
       "publicationTimestamp": null,
-      "updatedAt": "2026-11-04T17:29:05.593Z",
+      "updatedAt": "2026-11-04T17:52:22.253Z",
       "approvalRecord": null
     },
     {
@@ -1052,7 +1052,7 @@
           "existing": null
         }
       },
-      "archivedAt": "2026-11-04T17:29:05.397Z",
+      "archivedAt": "2026-11-04T17:52:22.043Z",
       "tags": [],
       "scenarioId": "flagship_scenario_04",
       "configurationHash": "996f6cc5c7ce5139",
@@ -1137,7 +1137,7 @@
       "publishingReceipt": null,
       "platformVideoId": null,
       "publicationTimestamp": null,
-      "updatedAt": "2026-11-04T17:29:05.597Z",
+      "updatedAt": "2026-11-04T17:52:22.257Z",
       "approvalRecord": null
     },
     {
@@ -1344,7 +1344,7 @@
           "existing": null
         }
       },
-      "archivedAt": "2026-11-04T17:29:05.582Z",
+      "archivedAt": "2026-11-04T17:52:22.241Z",
       "tags": [],
       "scenarioId": "flagship_scenario_05",
       "configurationHash": "724ff7e6b95b43ea",
@@ -1429,7 +1429,7 @@
       "publishingReceipt": null,
       "platformVideoId": null,
       "publicationTimestamp": null,
-      "updatedAt": "2026-11-04T17:29:05.600Z",
+      "updatedAt": "2026-11-04T17:52:22.261Z",
       "approvalRecord": null
     }
   ]

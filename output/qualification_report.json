@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-11-04T17:29:37.999Z",
+  "generatedAt": "2026-11-04T17:52:55.055Z",
   "verdict": "100% CERTIFIED FOR PRODUCTION",
   "passedChecks": 12,
   "totalChecks": 12,
   "profiling": {
-    "maxFrameTimeMs": "2.05",
-    "avgFrameTimeMs": "0.74",
+    "maxFrameTimeMs": "7.92",
+    "avgFrameTimeMs": "1.21",
     "peakMemoryMb": "11.58",
-    "growthPerFrameBytes": 53.49,
+    "growthPerFrameBytes": 53.07,
     "continuous3000PeakHeapMb": 11.58,
     "multiCycleRepeatedRunsCount": 10,
     "multiCycleStartHeapMb": 11.61,

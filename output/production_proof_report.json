@@ -1,7 +1,7 @@
 {
   "orchestratorName": "Burstpoint Canonical Production Orchestrator",
   "version": "4.0.0",
-  "executedAt": "2026-11-04T17:29:05.604Z",
+  "executedAt": "2026-11-04T17:52:22.263Z",
   "gameCertified": "multiplying-ball-race",
   "productionStatus": "HUMAN_REVIEW_PENDING",
   "approvalGovernance": {
@@ -10,7 +10,7 @@
     "approver": null,
     "approvalMode": null,
     "approvalToken": null,
-    "rejectionReason": "MISSING_APPROVAL_CREDENTIALS",
+    "rejectionReason": "NO_TRUSTED_SECRET_CONFIGURED",
     "unattendedApprovalConfigured": false
   },
   "outputDurationContract": {
@@ -26,7 +26,7 @@
     ],
     "totalFramesRendered": 6000,
     "totalStorageMb": 60.38,
-    "lastUpdated": "2026-11-04T17:29:05.600Z",
+    "lastUpdated": "2026-11-04T17:52:22.261Z",
     "videosSummary": [
       {
         "clipId": "flagship_scenario_01_flagship",
@@ -76,19 +76,19 @@
     ]
   },
   "qualificationEvidence": {
-    "generatedAt": "2026-11-04T17:28:27.705Z",
+    "generatedAt": "2026-11-04T17:29:37.999Z",
     "verdict": "100% CERTIFIED FOR PRODUCTION",
     "passedChecks": 12,
     "totalChecks": 12,
     "profiling": {
-      "maxFrameTimeMs": "3.67",
-      "avgFrameTimeMs": "0.82",
-      "peakMemoryMb": "11.75",
-      "growthPerFrameBytes": 53.03,
-      "continuous3000PeakHeapMb": 11.75,
+      "maxFrameTimeMs": "2.05",
+      "avgFrameTimeMs": "0.74",
+      "peakMemoryMb": "11.58",
+      "growthPerFrameBytes": 53.49,
+      "continuous3000PeakHeapMb": 11.58,
       "multiCycleRepeatedRunsCount": 10,
-      "multiCycleStartHeapMb": 11.78,
-      "multiCycleEndHeapMb": 11.83,
+      "multiCycleStartHeapMb": 11.61,
+      "multiCycleEndHeapMb": 11.65,
       "multiCycleHeapGrowthMb": 0.05
     },
     "visualInspection": {
@@ -126,7 +126,7 @@
     "humanApprovedClips": 0,
     "queuedClips": 0,
     "dryRunReceiptsCount": 0,
-    "totalProcessingSeconds": 23.43
+    "totalProcessingSeconds": 23.41
   },
   "renderedClips": [
     {
