@@ -1,0 +1,57 @@
+{
+  "id": "exponential_chaos",
+  "title": "🔥 10,000 BALL AVALANCHE: ×2 VS ×3 🔥",
+  "subtitle": "Can the screen hold this many balls?!",
+  "durationSeconds": 16,
+  "fps": 60,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "physics": {
+    "gravity": 1250,
+    "bounce": 0.72,
+    "maxVisibleBalls": 350
+  },
+  "lanes": {
+    "left": {
+      "name": "MAGENTA",
+      "ruleLabel": "×3 SURGE",
+      "subtitle": "starts with 3 balls",
+      "theme": "magenta",
+      "color": "#ff007f",
+      "glowColor": "rgba(255,0,127,0.45)",
+      "accentColor": "#ff66b2",
+      "startBalls": 3,
+      "stages": [
+        { "type": "multiply", "value": 3, "label": "×3", "pegRows": 2, "pegsPerRow": 5 },
+        { "type": "multiply", "value": 3, "label": "×3", "pegRows": 2, "pegsPerRow": 6 },
+        { "type": "multiply", "value": 3, "label": "×3", "pegRows": 2, "pegsPerRow": 5 },
+        { "type": "multiply", "value": 3, "label": "×3", "pegRows": 2, "pegsPerRow": 6 },
+        { "type": "multiply", "value": 3, "label": "×3", "pegRows": 2, "pegsPerRow": 5 }
+      ]
+    },
+    "right": {
+      "name": "ELECTRIC BLUE",
+      "ruleLabel": "×2 SURGE",
+      "subtitle": "starts with 18 balls",
+      "theme": "blue",
+      "color": "#00b4d8",
+      "glowColor": "rgba(0,180,216,0.45)",
+      "accentColor": "#90e0ef",
+      "startBalls": 18,
+      "stages": [
+        { "type": "multiply", "value": 2, "label": "×2", "pegRows": 2, "pegsPerRow": 5 },
+        { "type": "multiply", "value": 2, "label": "×2", "pegRows": 2, "pegsPerRow": 6 },
+        { "type": "multiply", "value": 2, "label": "×2", "pegRows": 2, "pegsPerRow": 5 },
+        { "type": "multiply", "value": 2, "label": "×2", "pegRows": 2, "pegsPerRow": 6 },
+        { "type": "multiply", "value": 2, "label": "×2", "pegRows": 2, "pegsPerRow": 5 }
+      ]
+    }
+  },
+  "metadata": {
+    "youtubeTitle": "INSANE 10,000 Ball Avalanche Race! 🤯 #shorts #satisfying",
+    "description": "Insane multiplying physics simulation! The ultimate ball race competition on YouTube Shorts. Who takes the crown? #marblerun #oddlysatisfying #gaming #shorts",
+    "tags": ["avalanche", "marble run", "physics simulation", "youtube shorts", "10000 balls"]
+  }
+}

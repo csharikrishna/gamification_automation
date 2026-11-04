@@ -30,5 +30,55 @@
       "likes": 940,
       "comments": 112
     }
+  },
+  {
+    "queueId": "queue_flagship_scenario_01_climax",
+    "clipId": "flagship_scenario_01_climax",
+    "simId": "flagship_scenario_01",
+    "scheduledDate": "2026-11-04",
+    "scheduledTime": "2026-11-04T17:00:00.000Z",
+    "status": "DRY_RUN_PASSED",
+    "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\flagship_scenario_01_climax.mp4",
+    "fileSizeBytes": 3088347,
+    "sha256": "1072e7e963285a8643aaefe43cfa5b5cd24e44d2e0983b5cef7b44799a70fae4",
+    "durationSeconds": 6.2,
+    "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
+    "hookText": "Look at the final gate breakthrough! 😱",
+    "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nLook at the final gate breakthrough! 😱\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
+    "tags": [
+      "shorts",
+      "physics",
+      "marblerun",
+      "gaming",
+      "satisfying"
+    ],
+    "qualityScore": 97,
+    "lifecycleState": "UPLOAD_PREFLIGHT_PASSED",
+    "enqueuedAt": "2026-11-04T11:44:37.088Z",
+    "attempts": 1,
+    "claimedBy": "scheduler-dispatch",
+    "claimedAt": "2026-11-04T12:30:38.351Z",
+    "success": true,
+    "mode": "DRY_RUN",
+    "platform": "youtube",
+    "platformVideoId": null,
+    "url": null,
+    "fileSize": 3406522,
+    "bitstreamVerified": true,
+    "metadata": {
+      "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
+      "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nLook at the final gate breakthrough! 😱\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
+      "tags": [
+        "shorts",
+        "physics",
+        "marblerun",
+        "gaming",
+        "satisfying"
+      ],
+      "categoryId": "20"
+    },
+    "metrics": null,
+    "timestamp": "2026-11-04T12:30:38.888Z",
+    "completedAt": "2026-11-04T12:30:38.889Z"
   }
 ]

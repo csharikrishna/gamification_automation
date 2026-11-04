@@ -1,0 +1,57 @@
+{
+  "id": "rich_vs_poor",
+  "title": "💰 RICH VS POOR: 100 BALLS VS 2 💰",
+  "subtitle": "Can 2 balls with ×4 multiply beat 100 balls?",
+  "durationSeconds": 15,
+  "fps": 60,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "physics": {
+    "gravity": 1200,
+    "bounce": 0.69,
+    "maxVisibleBalls": 320
+  },
+  "lanes": {
+    "left": {
+      "name": "POOR TEAM",
+      "ruleLabel": "×4 MULTIPLY",
+      "subtitle": "starts with 2 balls",
+      "theme": "cyan",
+      "color": "#00f0ff",
+      "glowColor": "rgba(0,240,255,0.45)",
+      "accentColor": "#8df9ff",
+      "startBalls": 2,
+      "stages": [
+        { "type": "multiply", "value": 4, "label": "×4", "pegRows": 2, "pegsPerRow": 5 },
+        { "type": "multiply", "value": 4, "label": "×4", "pegRows": 2, "pegsPerRow": 6 },
+        { "type": "multiply", "value": 4, "label": "×4", "pegRows": 2, "pegsPerRow": 5 },
+        { "type": "multiply", "value": 4, "label": "×4", "pegRows": 2, "pegsPerRow": 6 },
+        { "type": "multiply", "value": 4, "label": "×4", "pegRows": 2, "pegsPerRow": 5 }
+      ]
+    },
+    "right": {
+      "name": "RICH TEAM",
+      "ruleLabel": "+25 LINEAR",
+      "subtitle": "starts with 100 balls",
+      "theme": "gold",
+      "color": "#ffd700",
+      "glowColor": "rgba(255,215,0,0.45)",
+      "accentColor": "#fff176",
+      "startBalls": 100,
+      "stages": [
+        { "type": "add", "value": 25, "label": "+25", "pegRows": 2, "pegsPerRow": 5 },
+        { "type": "add", "value": 25, "label": "+25", "pegRows": 2, "pegsPerRow": 6 },
+        { "type": "add", "value": 25, "label": "+25", "pegRows": 2, "pegsPerRow": 5 },
+        { "type": "add", "value": 25, "label": "+25", "pegRows": 2, "pegsPerRow": 6 },
+        { "type": "add", "value": 25, "label": "+25", "pegRows": 2, "pegsPerRow": 5 }
+      ]
+    }
+  },
+  "metadata": {
+    "youtubeTitle": "2 Balls vs 100 Balls: Who Wins?! 😱 Math Simulation #shorts",
+    "description": "2 balls multiplying by ×4 vs 100 rich balls adding +25 each stage! Never underestimate exponential math! #physics #simulation #shorts #satisfying #math",
+    "tags": ["physics", "math simulation", "exponential growth", "youtube shorts", "satisfying"]
+  }
+}

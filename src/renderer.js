@@ -668,69 +668,26 @@ class CanvasRenderer {
             ctx.stroke();
           }
 
-          // 3. Subtle Organic Internal Crystalline Stress Cracks (Team Color Glow)
-          // Strictly clipped inside the crystal body, omitted near center capsule
-          if (tile.fractures && tile.fractures.length > 0 && hpRatio < 0.90) {
-            const crackAmount = Math.max(0, 1.0 - hpRatio);
-            const crackAlpha = Math.min(1.0, crackAmount * 1.25);
-            // Team color glow ALWAYS preserved (purple for left, green for right)
-            const glowColor = lane.color;
-            const coreColor = lane.accentColor || '#ffffff';
-            const halfW = tileW / 2;
-
-            for (const f of tile.fractures) {
-              const fx = tileX + f.x;
-              // Ensure crack is outside center capsule area
-              if (Math.abs(fx - (tileX + halfW)) < 55) continue;
-
-              const depth = Math.min(f.depth || (f.len || 14), tileH - 7);
-              const slant = f.slant !== undefined ? f.slant : Math.cos(f.angle || 0) * 0.4;
-              const bDir = f.branchDir || (slant > 0 ? 1 : -1);
-              const bLen = f.branchLen || (depth * 0.45);
-
-              // Multi-segment crystalline cleavage path (zig-zag micro-facets)
-              const y0 = tileY + 3;
-              const y1 = y0 + depth * 0.35;
-              const x1 = fx + slant * depth * 0.4;
-
-              const y2 = y0 + depth * 0.70;
-              const x2 = fx + slant * depth * 0.75 - bDir * 3;
-
-              const y3 = y0 + depth;
-              const x3 = fx + slant * depth;
-
-              ctx.save();
-              ctx.beginPath();
-              ctx.moveTo(fx, y0);
-              ctx.lineTo(x1, y1);
-              ctx.lineTo(x2, y2);
-              ctx.lineTo(x3, y3);
-
-              // Secondary crystalline lattice bifurcation
-              ctx.moveTo(x1, y1);
-              ctx.lineTo(x1 + bDir * bLen, y1 + bLen * 0.55);
-
-              if (depth > 14) {
-                ctx.moveTo(x2, y2);
-                ctx.lineTo(x2 - bDir * (bLen * 0.5), y2 + bLen * 0.4);
-              }
-
-              // Layer 1: Diffuse team neon glow
-              ctx.strokeStyle = glowColor;
-              ctx.lineWidth = 1.8;
-              ctx.globalAlpha = crackAlpha * (isWarning ? 0.95 : 0.80);
-              ctx.shadowColor = glowColor;
-              ctx.shadowBlur = isWarning ? 9 : 6;
-              ctx.stroke();
-
-              // Layer 2: Sharp luminous crystalline core
-              ctx.strokeStyle = coreColor;
-              ctx.lineWidth = 0.85;
-              ctx.globalAlpha = crackAlpha * 0.95;
-              ctx.shadowBlur = 0;
-              ctx.stroke();
-              ctx.restore();
+          // 3. Dynamic Internal Shield Energy Excitation & Stress Field (Zero Disconnected Slashes)
+          // Clean team-color energy pulse responding to cumulative barrier degradation
+          if (hpRatio < 0.85) {
+            const stressAmount = Math.max(0, 1.0 - hpRatio);
+            const stressAlpha = Math.min(0.85, stressAmount * 0.9);
+            
+            ctx.save();
+            const stressGrad = ctx.createLinearGradient(fieldX, tileY, fieldX + fieldW, tileY);
+            if (isWarning) {
+              stressGrad.addColorStop(0, `rgba(255, 70, 0, ${stressAlpha * 0.35})`);
+              stressGrad.addColorStop(0.5, `rgba(255, 180, 0, ${stressAlpha * 0.65})`);
+              stressGrad.addColorStop(1, `rgba(255, 70, 0, ${stressAlpha * 0.35})`);
+            } else {
+              stressGrad.addColorStop(0, `rgba(${lane.side === 'left' ? '203,114,255' : '121,239,67'}, ${stressAlpha * 0.25})`);
+              stressGrad.addColorStop(0.5, `rgba(255, 255, 255, ${stressAlpha * 0.45})`);
+              stressGrad.addColorStop(1, `rgba(${lane.side === 'left' ? '203,114,255' : '121,239,67'}, ${stressAlpha * 0.25})`);
             }
+            ctx.fillStyle = stressGrad;
+            ctx.fillRect(fieldX + 2, tileY + 4, fieldW - 4, tileH - 8);
+            ctx.restore();
           }
 
           ctx.restore(); // end clip
@@ -874,57 +831,42 @@ class CanvasRenderer {
           ctx.fillText(tile.label, tileX + tileW / 2, tile.y);
           ctx.restore();
 
-          // D. Attached Collision Shockwave Ripples & Flashes (Tactile kinetic feedback from marble impacts)
+          // D. Attached Collision Kinetic Feedback (Tight Localized Contact Flares, No Semicircular Wireframes)
           if (tile.recentImpacts && tile.recentImpacts.length > 0) {
             for (const imp of tile.recentImpacts) {
               const age = engine.simTime - imp.time;
-              if (age < 0.22) {
-                const p = age / 0.22;
-                const ringRadius = 4 + p * 26;
+              if (age < 0.12) {
+                const p = age / 0.12;
                 const alpha = (1 - p) * imp.intensity;
 
                 ctx.save();
-                // Localized semi-circular kinetic ripple arc into barrier
-                ctx.beginPath();
-                ctx.arc(imp.x, imp.y, ringRadius, 0, Math.PI);
-                ctx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.90})`;
-                ctx.lineWidth = 1.8 * (1 - p);
-                ctx.shadowColor = lane.accentColor;
-                ctx.shadowBlur = 8;
-                ctx.stroke();
-
-                // Concentric inner harmonic wave
-                ctx.beginPath();
-                ctx.arc(imp.x, imp.y, ringRadius * 0.65, 0, Math.PI);
-                ctx.strokeStyle = `rgba(${lane.side === 'left' ? '203,114,255' : '121,239,67'}, ${alpha * 0.70})`;
-                ctx.lineWidth = 1.2 * (1 - p);
-                ctx.stroke();
-
                 // Horizontal top surface kinetic energy pulse
                 ctx.beginPath();
-                const ripW = 20 * (1 - p);
+                const ripW = 14 * (1 - p);
                 ctx.moveTo(Math.max(fieldX + 2, imp.x - ripW), tileY + 2);
                 ctx.lineTo(Math.min(fieldX + fieldW - 2, imp.x + ripW), tileY + 2);
                 ctx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.90})`;
-                ctx.lineWidth = 2.0 * (1 - p);
+                ctx.lineWidth = 1.8 * (1 - p);
+                ctx.shadowColor = lane.accentColor;
+                ctx.shadowBlur = 6;
                 ctx.stroke();
 
-                // Kinetic impact starburst flash at exact contact point
-                const starSize = 5.0 * (1 - p);
+                // Tight kinetic impact starburst at contact point
+                const starSize = 4.0 * (1 - p);
                 ctx.beginPath();
                 ctx.moveTo(imp.x - starSize, imp.y);
                 ctx.lineTo(imp.x + starSize, imp.y);
                 ctx.moveTo(imp.x, imp.y - starSize);
                 ctx.lineTo(imp.x, imp.y + starSize);
-                ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
-                ctx.lineWidth = 1.5;
+                ctx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.95})`;
+                ctx.lineWidth = 1.2;
                 ctx.shadowColor = '#ffffff';
-                ctx.shadowBlur = 10;
+                ctx.shadowBlur = 8;
                 ctx.stroke();
 
-                // Central bright flash point
+                // Core contact spark
                 ctx.beginPath();
-                ctx.arc(imp.x, imp.y, 2.5 * (1 - p), 0, Math.PI * 2);
+                ctx.arc(imp.x, imp.y, 2.0 * (1 - p), 0, Math.PI * 2);
                 ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
                 ctx.fill();
                 ctx.restore();
@@ -933,158 +875,72 @@ class CanvasRenderer {
           }
 
         } else {
-          // --- HIGH-IMPACT SHATTER DESTRUCTION & OPEN GATEWAY ---
+          // --- HIGH-SPEED LINEAR SEAM DISCHARGE & CLEAN OPEN GATEWAY ---
           const teamRgb = lane.side === 'left' ? '203, 114, 255' : '121, 239, 67';
           const accentRgb = lane.side === 'left' ? '245, 154, 255' : '178, 255, 138';
 
-          if (tile.shatterTime !== undefined && (engine.simTime - tile.shatterTime < 0.19)) {
+          if (tile.shatterTime !== undefined && (engine.simTime - tile.shatterTime < 0.11)) {
             const sAge = engine.simTime - tile.shatterTime;
+            const p = sAge / 0.11;
+            const alpha = 1.0 - p;
             const centerX = tileX + tileW / 2;
             const centerY = tile.y;
-            const seedPhase = (tile.index * 2.399) + (lane.side === 'left' ? 1.15 : 3.82);
-            const numVerts = 24;
 
-            // 1. Energetic Blast Flash (Tight localized organic detonation burst)
-            if (sAge < 0.13) {
-              const pFlash = sAge / 0.13;
-              const flashAlpha = 1.0 - pFlash;
-              const flashRadius = Math.min(tileW * 0.12, 14 + pFlash * 28);
+            ctx.save();
 
-              ctx.save();
-              const blastGrad = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, flashRadius * 1.15);
-              blastGrad.addColorStop(0, `rgba(255, 255, 255, ${flashAlpha * 0.95})`);
-              blastGrad.addColorStop(0.35, `rgba(${accentRgb}, ${flashAlpha * 0.70})`);
-              blastGrad.addColorStop(0.70, `rgba(${teamRgb}, ${flashAlpha * 0.25})`);
-              blastGrad.addColorStop(1, `rgba(${teamRgb}, 0)`);
-              ctx.fillStyle = blastGrad;
+            // 1. Horizontal Linear Seam Plasma Discharge (Clean threshold snap, NO expanding circular shockwave)
+            const seamW = tileW - 32;
+            const seamX = tileX + 16;
+            const seamGrad = ctx.createLinearGradient(seamX, centerY, seamX + seamW, centerY);
+            seamGrad.addColorStop(0, 'rgba(255, 255, 255, 0)');
+            seamGrad.addColorStop(0.2, `rgba(${teamRgb}, ${alpha * 0.75})`);
+            seamGrad.addColorStop(0.5, `rgba(255, 255, 255, ${alpha * 0.95})`);
+            seamGrad.addColorStop(0.8, `rgba(${teamRgb}, ${alpha * 0.75})`);
+            seamGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
 
-              // Organic randomized circle contour fill for core flash (no rigid geometric circles)
+            ctx.beginPath();
+            ctx.moveTo(seamX, centerY);
+            ctx.lineTo(seamX + seamW, centerY);
+            ctx.strokeStyle = seamGrad;
+            ctx.lineWidth = 3.2 * (1 - p);
+            ctx.shadowColor = lane.accentColor;
+            ctx.shadowBlur = 12;
+            ctx.stroke();
+
+            // Secondary hairline core fracture
+            ctx.beginPath();
+            ctx.moveTo(seamX + 20, centerY);
+            ctx.lineTo(seamX + seamW - 20, centerY);
+            ctx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.95})`;
+            ctx.lineWidth = 1.2 * (1 - p);
+            ctx.shadowBlur = 0;
+            ctx.stroke();
+
+            // 2. Compact Trigger Core Starburst (Tight 12px radius, vanishes in 0.08s)
+            if (sAge < 0.08) {
+              const pCore = sAge / 0.08;
+              const coreAlpha = 1.0 - pCore;
+              const coreR = 4 + (1 - Math.pow(1 - pCore, 2)) * 8;
+
               ctx.beginPath();
-              for (let k = 0; k < numVerts; k++) {
-                const angle = (k / numVerts) * Math.PI * 2;
-                const h1 = Math.sin(angle * 3 + seedPhase);
-                const h2 = Math.cos(angle * 5 - seedPhase * 1.5);
-                const h3 = Math.sin(angle * 7 + seedPhase * 0.7);
-                const h4 = Math.cos(angle * 9 + 0.6);
-                const rMod = 1.0 + 0.14 * h1 + 0.11 * h2 + 0.07 * h3 + 0.05 * h4;
-                const r = flashRadius * rMod;
-                const vx = centerX + Math.cos(angle) * r;
-                const vy = centerY + Math.sin(angle) * r;
-                if (k === 0) ctx.moveTo(vx, vy);
-                else ctx.lineTo(vx, vy);
-              }
-              ctx.closePath();
-              ctx.fill();
-
-              // Tight diamond blast cross flare
-              const flareLen = (1 - pFlash) * Math.min(tileW * 0.16, 36);
-              ctx.strokeStyle = `rgba(255, 255, 255, ${flashAlpha * 0.90})`;
-              ctx.lineWidth = 2.0 * (1 - pFlash);
+              ctx.arc(centerX, centerY, coreR, 0, Math.PI * 2);
+              ctx.fillStyle = `rgba(255, 255, 255, ${coreAlpha * 0.9})`;
               ctx.shadowColor = lane.accentColor;
               ctx.shadowBlur = 10;
+              ctx.fill();
+
+              const flareLen = (1 - pCore) * 18;
               ctx.beginPath();
               ctx.moveTo(centerX - flareLen, centerY);
               ctx.lineTo(centerX + flareLen, centerY);
-              ctx.moveTo(centerX, centerY - flareLen * 0.40);
-              ctx.lineTo(centerX, centerY + flareLen * 0.40);
+              ctx.moveTo(centerX, centerY - flareLen * 0.45);
+              ctx.lineTo(centerX, centerY + flareLen * 0.45);
+              ctx.strokeStyle = `rgba(255, 255, 255, ${coreAlpha * 0.95})`;
+              ctx.lineWidth = 1.4 * (1 - pCore);
               ctx.stroke();
-              ctx.restore();
             }
 
-            // 2. Dynamic Organic Randomized Circular Shockwave (Tight localized impulse)
-            if (sAge < 0.19) {
-              const pWave = sAge / 0.19;
-              const waveAlpha = 1.0 - pWave;
-              const maxWave = Math.min(tileW * 0.16, 58);
-              // Explosive ease-out curve for punchy, immediate feedback
-              const waveRadius = 15 + (1 - Math.pow(1 - pWave, 3)) * maxWave;
-
-              ctx.save();
-
-              // Primary outer randomized organic shockwave ring (multi-harmonic non-uniform contour)
-              ctx.beginPath();
-              for (let k = 0; k < numVerts; k++) {
-                const angle = (k / numVerts) * Math.PI * 2;
-                const h1 = Math.sin(angle * 3 + seedPhase);
-                const h2 = Math.cos(angle * 5 - seedPhase * 1.5);
-                const h3 = Math.sin(angle * 7 + seedPhase * 0.7);
-                const h4 = Math.cos(angle * 9 + 0.6);
-                const rMod = 1.0 + 0.14 * h1 + 0.11 * h2 + 0.07 * h3 + 0.05 * h4;
-                const r = waveRadius * rMod;
-                const vx = centerX + Math.cos(angle) * r;
-                const vy = centerY + Math.sin(angle) * r;
-                if (k === 0) ctx.moveTo(vx, vy);
-                else ctx.lineTo(vx, vy);
-              }
-              ctx.closePath();
-              ctx.strokeStyle = `rgba(255, 255, 255, ${waveAlpha * 0.95})`;
-              ctx.lineWidth = 2.4 * (1 - pWave);
-              ctx.shadowColor = lane.accentColor;
-              ctx.shadowBlur = 12;
-              ctx.stroke();
-
-              // Secondary trailing inner harmonic organic ring (staggered angular phase)
-              ctx.beginPath();
-              const innerRadius = waveRadius * 0.68;
-              for (let k = 0; k < numVerts; k++) {
-                const angle = ((k + 0.5) / numVerts) * Math.PI * 2;
-                const h1 = Math.sin(angle * 3 + seedPhase + 1.2);
-                const h2 = Math.cos(angle * 5 - seedPhase);
-                const h3 = Math.sin(angle * 7 + 0.4);
-                const rMod = 1.0 + 0.12 * h1 + 0.10 * h2 + 0.06 * h3;
-                const r = innerRadius * rMod;
-                const vx = centerX + Math.cos(angle) * r;
-                const vy = centerY + Math.sin(angle) * r;
-                if (k === 0) ctx.moveTo(vx, vy);
-                else ctx.lineTo(vx, vy);
-              }
-              ctx.closePath();
-              ctx.strokeStyle = `rgba(${teamRgb}, ${waveAlpha * 0.70})`;
-              ctx.lineWidth = 1.4 * (1 - pWave);
-              ctx.shadowBlur = 6;
-              ctx.stroke();
-
-              // Anchored radial micro-fracture blast darts along prominent perimeter apexes
-              ctx.beginPath();
-              for (let k = 0; k < numVerts; k += 3) {
-                const angle = (k / numVerts) * Math.PI * 2;
-                const h1 = Math.sin(angle * 3 + seedPhase);
-                const h2 = Math.cos(angle * 5 - seedPhase * 1.5);
-                const h3 = Math.sin(angle * 7 + seedPhase * 0.7);
-                const h4 = Math.cos(angle * 9 + 0.6);
-                const rMod = 1.0 + 0.14 * h1 + 0.11 * h2 + 0.07 * h3 + 0.05 * h4;
-                const r = waveRadius * rMod;
-                const dartLen = (1 - pWave) * (6 + ((k * 5) % 8));
-                const x1 = centerX + Math.cos(angle) * r;
-                const y1 = centerY + Math.sin(angle) * r;
-                const x2 = centerX + Math.cos(angle) * (r + dartLen);
-                const y2 = centerY + Math.sin(angle) * (r + dartLen);
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-              }
-              ctx.strokeStyle = `rgba(255, 255, 255, ${waveAlpha * 0.85})`;
-              ctx.lineWidth = 1.2 * (1 - pWave);
-              ctx.stroke();
-
-              ctx.restore();
-            }
-
-            // 3. Localized Barrier Core Ejection Plasma Pulse
-            if (sAge < 0.15) {
-              const pBeam = sAge / 0.15;
-              const beamAlpha = 1.0 - pBeam;
-              const beamHalfLen = Math.min(tileW * 0.22, 92) * (1 - pBeam);
-              ctx.save();
-              ctx.beginPath();
-              ctx.moveTo(centerX - beamHalfLen, tile.y);
-              ctx.lineTo(centerX + beamHalfLen, tile.y);
-              ctx.strokeStyle = `rgba(255, 255, 255, ${beamAlpha * 0.85})`;
-              ctx.lineWidth = 3.5 * (1 - pBeam);
-              ctx.shadowColor = lane.accentColor;
-              ctx.shadowBlur = 12;
-              ctx.stroke();
-              ctx.restore();
-            }
+            ctx.restore();
           }
 
           // Open threshold with clean dotted energy line
@@ -1269,29 +1125,21 @@ class CanvasRenderer {
         ctx.arc(p.x, p.y, p.radius || 3, 0, Math.PI * 2);
         ctx.fill();
 
-      } else if (p.type === 'ember' || p.color === '#00f0ff' || p.color === '#ff007f') {
-        // Subtle, elegant atmospheric golden ember / luminous light mote
+      } else if (p.type === 'ember') {
+        // Atmospheric motes skipped to maintain clean, professional broadcast aesthetic
+        continue;
+
+      } else if (p.color === '#00f0ff' || p.color === '#ff007f') {
+        // High-contrast arena kinetic spark
         ctx.save();
         ctx.globalCompositeOperation = 'lighter';
         const pulse = 0.82 + 0.18 * Math.sin((p.maxLife - p.life) * 5.2 + p.x);
-        const r = (p.radius || 2.4) * pulse;
+        const r = (p.radius || 2.0) * pulse;
 
-        // Radiant soft aura
-        const moteGrad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r * 3.5);
-        moteGrad.addColorStop(0, '#ffd700');
-        moteGrad.addColorStop(0.4, 'rgba(255, 215, 0, 0.35)');
-        moteGrad.addColorStop(1, 'rgba(255, 215, 0, 0)');
-        ctx.fillStyle = moteGrad;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, r * 3.5, 0, Math.PI * 2);
-        ctx.fill();
-
-        // White-hot luminous center core
         ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.95})`;
         ctx.beginPath();
         ctx.arc(p.x, p.y, r * 0.65, 0, Math.PI * 2);
         ctx.fill();
-
         ctx.restore();
 
       } else {
@@ -1383,7 +1231,7 @@ class CanvasRenderer {
     ctx.restore();
   }
 
-  // World-space Arena Celebration Lighting (Tracks with camera, spotlighting resting marbles in reservoir)
+  // World-space Arena Celebration Lighting (Sleek broadcast spotlighting resting marbles in reservoir)
   drawArenaCelebrationGlow(engine) {
     const ctx = this.ctx;
     const winner = engine.winner;
@@ -1398,44 +1246,43 @@ class CanvasRenderer {
 
     // 1. Subtle, elegant dimming veil over losing lane to direct focal attention
     if (loseLane) {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
       ctx.fillRect(loseLane.minX - 6, engine.topY, loseLane.width + 12, engine.trackHeight + 70);
     }
 
-    // 2. Spotlight the Winning Action & Reservoir
+    // 2. Crisp, Professional Spotlight over Winning Chassis & Reservoir
     if (winLane) {
       const reservoirCenterX = winLane.minX + winLane.width / 2;
       const reservoirFloorY = engine.bottomY - 25;
 
-      // Radiant golden victory illumination emanating directly from winner's marble reservoir
+      // Soft team-accented radial illumination spotlighting resting winner marbles in the collection tray
       const winAura = ctx.createRadialGradient(
         reservoirCenterX,
         reservoirFloorY,
-        20,
+        15,
         reservoirCenterX,
         reservoirFloorY,
-        420
+        220
       );
-      winAura.addColorStop(0, 'rgba(255, 215, 0, 0.35)');
-      winAura.addColorStop(0.35, winner.color === '#cb72ff' ? 'rgba(203, 114, 255, 0.22)' : 'rgba(121, 239, 67, 0.22)');
-      winAura.addColorStop(0.75, 'rgba(255, 215, 0, 0.06)');
+      winAura.addColorStop(0, winner.color === '#cb72ff' ? 'rgba(203, 114, 255, 0.28)' : 'rgba(121, 239, 67, 0.28)');
+      winAura.addColorStop(0.5, winner.color === '#cb72ff' ? 'rgba(203, 114, 255, 0.08)' : 'rgba(121, 239, 67, 0.08)');
       winAura.addColorStop(1, 'rgba(0, 0, 0, 0)');
       ctx.fillStyle = winAura;
-      ctx.fillRect(winLane.minX - 40, engine.topY, winLane.width + 80, engine.trackHeight + 120);
+      ctx.fillRect(winLane.minX - 20, engine.bottomY - 100, winLane.width + 40, 140);
 
-      // Clean metallic golden championship outline around the winning lane chassis
-      ctx.strokeStyle = '#ffd700';
-      ctx.lineWidth = 3.2;
-      ctx.shadowColor = '#ffd700';
-      ctx.shadowBlur = 18;
+      // Clean, refined team-accented outline around the winning lane chassis (No gaudy yellow borders)
+      ctx.strokeStyle = winner.color;
+      ctx.lineWidth = 1.6;
+      ctx.shadowColor = winner.color;
+      ctx.shadowBlur = 10;
       ctx.beginPath();
       ctx.roundRect(winLane.minX, engine.topY, winLane.width, engine.trackHeight, 20);
       ctx.stroke();
       ctx.shadowBlur = 0;
 
-      // Golden accent trim spotlighting the winner's reservoir collector tray
-      ctx.strokeStyle = 'rgba(255, 215, 0, 0.70)';
-      ctx.lineWidth = 2.0;
+      // Crisp metallic trim on reservoir collector tray
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+      ctx.lineWidth = 1.2;
       ctx.beginPath();
       ctx.roundRect(winLane.minX + 8, engine.bottomY - 55, winLane.width - 16, 60, 12);
       ctx.stroke();
@@ -1516,6 +1363,21 @@ class CanvasRenderer {
     ctx.strokeStyle = specGrad;
     ctx.lineWidth = 1.0;
     ctx.stroke();
+
+    // Specular entry sheen sweep across the glass card
+    const sheenProgress = Math.min(1.0, engine.winnerBannerAlpha * 1.4);
+    const sheenX = cardX - 80 + sheenProgress * (cardW + 160);
+    ctx.save();
+    ctx.beginPath();
+    ctx.roundRect(cardX, cardY, cardW, cardH, 18);
+    ctx.clip();
+    const sheenGrad = ctx.createLinearGradient(sheenX - 35, cardY, sheenX + 35, cardY + cardH);
+    sheenGrad.addColorStop(0, 'rgba(255, 255, 255, 0)');
+    sheenGrad.addColorStop(0.5, 'rgba(255, 255, 255, 0.12)');
+    sheenGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    ctx.fillStyle = sheenGrad;
+    ctx.fillRect(sheenX - 50, cardY, 100, cardH);
+    ctx.restore();
 
     // -------------------------------------------------------------
     // Tier 1: Top Broadcast Badge & Motion Replay Cue (cardY + 13)

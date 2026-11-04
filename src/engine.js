@@ -335,10 +335,16 @@ class SimulationEngine {
           this.logBounce(lane.side, b.x, b.y, 0.06);
         }
 
-        // Breakable Tile Barrier Collisions (Continuous sweep to prevent tunneling)
+        // Breakable Tile Barrier Collisions (Continuous sweep with dynamic funneling to prevent flat shelf accumulation)
         for (const tile of lane.tiles) {
           if (tile.intact) {
-            const tileTop = tile.y - tile.height / 2;
+            const tileCenter = (tile.minX + tile.maxX) / 2;
+            const halfW = tile.width / 2;
+            const distFromCenter = b.x - tileCenter;
+            const normDist = Math.max(-1, Math.min(1, distFromCenter / halfW));
+            // Subtle arcade deflector funnel: 7px pitch toward central multiplier capsule
+            const funnelDip = 7 * (1 - Math.pow(Math.abs(normDist), 1.4));
+            const tileTop = (tile.y - tile.height / 2) + funnelDip;
             const tileBottom = tile.y + tile.height / 2;
 
             if (b.x + b.radius > tile.minX && b.x - b.radius < tile.maxX) {
@@ -346,16 +352,22 @@ class SimulationEngine {
                   (b.y + b.radius >= tileTop && b.y < tileBottom && b.vy >= 0)) {
                 b.y = tileTop - b.radius;
 
-                if (Math.abs(b.vy) < 160) {
-                  b.vy = -Math.abs(b.vy) * 0.75 - this.rng.range(110, 220);
-                } else {
-                  b.vy = -Math.abs(b.vy) * this.tileBounce;
-                }
+                const isNearCenter = Math.abs(distFromCenter) < 56;
 
-                const tileCenter = (tile.minX + tile.maxX) / 2;
-                const halfW = tile.width / 2;
-                const centerDist = (b.x - tileCenter) / halfW;
-                b.vx = b.vx * 0.96 + Math.sign(centerDist || (this.rng.random() < 0.5 ? 1 : -1)) * (36 + Math.abs(centerDist) * 55) + this.rng.range(-15, 15);
+                if (isNearCenter) {
+                  // Interactive multiplier trigger activation: dynamic kinetic rebound
+                  tile.triggerPulse = 1.0;
+                  b.vy = -Math.abs(b.vy) * 0.85 - this.rng.range(160, 260);
+                  b.vx = b.vx * 0.90 + (this.rng.random() < 0.5 ? 1 : -1) * this.rng.range(35, 75);
+                } else {
+                  // Funnel deflection rolls balls toward center multiplier trigger
+                  if (Math.abs(b.vy) < 160) {
+                    b.vy = -Math.abs(b.vy) * 0.75 - this.rng.range(110, 220);
+                  } else {
+                    b.vy = -Math.abs(b.vy) * this.tileBounce;
+                  }
+                  b.vx = b.vx * 0.92 - Math.sign(distFromCenter || (this.rng.random() < 0.5 ? 1 : -1)) * (42 + Math.abs(normDist) * 35) + this.rng.range(-12, 12);
+                }
 
                 // Record localized collision impact for visual feedback
                 if (!tile.recentImpacts) tile.recentImpacts = [];
@@ -367,25 +379,20 @@ class SimulationEngine {
                 });
                 if (tile.recentImpacts.length > 8) tile.recentImpacts.shift();
 
-                // Interactive trigger core activation if ball hits near central multiplier capsule
-                if (Math.abs(b.x - tileCenter) < 58) {
-                  tile.triggerPulse = 1.0;
-                }
-
                 // Only take damage and shatter before race is decided
                 if (!this.winner) {
                   tile.hits++;
-                  tile.currentHP = Math.max(0, tile.currentHP - damagePerBounce);
+                  const impactDamage = damagePerBounce * (isNearCenter ? 1.4 : 1.1);
+                  tile.currentHP = Math.max(0, tile.currentHP - impactDamage);
                   tile.crackAmount = Math.max(0, Math.min(1.0, 1.0 - (tile.currentHP / tile.maxHP)));
                   tile.glowIntensity = 1.0;
 
-                  // Organic crystalline stress fractures within barrier field
+                  // Maintain PRNG consumption for deterministic replay invariants
                   if (!tile.fractures) tile.fractures = [];
                   if (tile.fractures.length < 16 && this.rng.random() < 0.6) {
                     const r1 = this.rng.range(10, 24);
                     const r2 = this.rng.range(-0.45, 0.45);
                     const hitOffsetX = b.x - tile.minX;
-                    // Record stress crack data with exact PRNG consumption
                     tile.fractures.push({
                       x: hitOffsetX,
                       depth: r1,
@@ -457,15 +464,22 @@ class SimulationEngine {
       this.resolveElasticBallCollisions(lane);
       this.resolveElasticBallCollisions(lane);
 
-      // Post-collision barrier containment: ensure ball-to-ball repulsion never pushes balls past intact tiles
+      // Post-collision barrier containment: ensure dynamic agitation and prevent flat horizontal parking
       for (const b of lane.balls) {
         if (b._dead) continue;
         for (const tile of lane.tiles) {
           if (tile.intact && b.x + b.radius > tile.minX && b.x - b.radius < tile.maxX) {
-            const tileTop = tile.y - tile.height / 2;
+            const tileCenter = (tile.minX + tile.maxX) / 2;
+            const halfW = tile.width / 2;
+            const distFromCenter = b.x - tileCenter;
+            const normDist = Math.max(-1, Math.min(1, distFromCenter / halfW));
+            const funnelDip = 7 * (1 - Math.pow(Math.abs(normDist), 1.4));
+            const tileTop = (tile.y - tile.height / 2) + funnelDip;
+
             if (b.y + b.radius > tileTop && b.y < tile.y) {
               b.y = tileTop - b.radius;
-              if (b.vy > 0) b.vy = -b.vy * 0.5;
+              if (b.vy > 0) b.vy = -b.vy * 0.45;
+              b.vx += -Math.sign(distFromCenter) * 14;
             }
           }
         }
@@ -661,7 +675,7 @@ class SimulationEngine {
         x: sx,
         y: sy,
         vx: Math.sin(angle) * speed,
-        vy: -Math.cos(angle) * (speed * 0.6) + 40,
+        vy: Math.abs(Math.cos(angle) * speed * 0.75) + 60,
         w: sw,
         h: sh,
         angle: sAngle,

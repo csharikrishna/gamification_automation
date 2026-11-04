@@ -1,5 +1,12 @@
 // Unified Game Environment Manager
-// Factory and adapter that loads, ticks, and renders any game environment via GameAdapter contract
+// Supports both Node.js (via GameRegistry) and Browser/Studio (via global constructors)
+
+let _GameRegistry = null;
+if (typeof require !== 'undefined') {
+  try {
+    _GameRegistry = require('../orchestrator/registry').GameRegistry;
+  } catch (e) {}
+}
 
 let _SimulationEngine = typeof SimulationEngine !== 'undefined' ? SimulationEngine : null;
 let _CanvasRenderer = typeof CanvasRenderer !== 'undefined' ? CanvasRenderer : null;
@@ -16,9 +23,7 @@ if (typeof require !== 'undefined') {
     if (!_SumoArenaGame) _SumoArenaGame = require('./games/sumo_arena').SumoArenaGame;
     if (!_BrickBreakerGame) _BrickBreakerGame = require('./games/brick_breaker').BrickBreakerGame;
     if (!_MarbleRunGame) _MarbleRunGame = require('./games/marble_run').MarbleRunGame;
-  } catch (e) {
-    console.warn('[GameManager] Notice while loading module:', e.message);
-  }
+  } catch (e) {}
 }
 
 class GameManager {
@@ -27,6 +32,10 @@ class GameManager {
   }
 
   static createGame(config) {
+    if (_GameRegistry) {
+      return _GameRegistry.createGame(config);
+    }
+
     const gameType = config.gameType || config.type || 'multi_race';
     const seed = config.seed ?? 1337;
 
@@ -104,7 +113,6 @@ class GameManager {
 if (typeof window !== 'undefined') {
   window.GameManager = GameManager;
 }
-
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { GameManager };
 }

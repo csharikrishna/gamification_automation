@@ -1,7 +1,8 @@
 {
   "orchestratorName": "Burstpoint Canonical Production Orchestrator",
-  "version": "2.5.0",
-  "executedAt": "2026-11-04T00:13:39.203Z",
+  "version": "3.0.0",
+  "executedAt": "2026-11-04T12:29:25.719Z",
+  "gameCertified": "multiplying-ball-race",
   "artifactLifecycle": [
     "GENERATED",
     "SIMULATED",
@@ -10,114 +11,84 @@
     "VALIDATED",
     "APPROVED",
     "SCHEDULED",
+    "UPLOAD_PENDING",
+    "UPLOAD_IN_PROGRESS",
+    "UPLOAD_PREFLIGHT_PASSED",
     "UPLOADED",
-    "ANALYTICS_AVAILABLE"
+    "PROCESSING",
+    "PUBLISHED",
+    "ANALYTICS_AVAILABLE",
+    "FAILED",
+    "RETRY_PENDING",
+    "REJECTED"
   ],
-  "completionStatus": "PRODUCTION_CERTIFIED_WITH_VERIFIED_MEDIA",
   "executionSummary": {
-    "totalSimulationsExecuted": 10,
-    "totalCandidateClipsExtracted": 30,
-    "approvedCandidatesCount": 27,
-    "renderedClipsOnDiskCount": 4,
-    "queuedClipsCount": 4,
-    "totalProcessingTimeMs": 199351,
-    "processingTimeSeconds": 199.35,
-    "peakHeapMemoryMb": 14.12
+    "scenariosExecuted": 5,
+    "candidatesExtracted": 10,
+    "approvedCandidates": 10,
+    "renderedClipsOnDisk": 5,
+    "queuedClips": 1,
+    "totalProcessingSeconds": 188.3
   },
   "renderedClips": [
     {
-      "clipId": "canonical_sim_01_full",
-      "videoPath": "output\\proof_clips\\canonical_sim_01_full.mp4",
-      "fileSizeBytes": 12466943,
-      "fileSizeMb": 11.89,
-      "sha256": "513044e2f6d12ebf19c96d7356f393f1403360eacae4640047928629c1a609d7",
+      "clipId": "flagship_scenario_01_climax",
+      "videoPath": "output\\proof_clips\\flagship_scenario_01_climax.mp4",
+      "fileSizeMb": 3.25,
+      "sha256": "1072e7e963285a8643aaefe43cfa5b5cd24e44d2e0983b5cef7b44799a70fae4",
       "bitstreamVerified": true,
-      "resolution": "1080x1920",
-      "fps": 60,
-      "durationSeconds": 13.47,
-      "qualityScore": 96,
-      "scoreBreakdown": {
-        "eventDensityPerSec": 52.64,
-        "windowEventsCount": 709,
-        "pacingScore": 25,
-        "dramaScore": 24,
-        "growthScore": 22,
-        "technicalScore": 25
-      }
+      "durationSeconds": 6.2,
+      "qualityScore": 97
     },
     {
-      "clipId": "canonical_sim_01_climax",
-      "videoPath": "output\\proof_clips\\canonical_sim_01_climax.mp4",
-      "fileSizeBytes": 2880999,
-      "fileSizeMb": 2.75,
-      "sha256": "5486c41bc6d8f261a3aa8ddf01b510416916298c8d50f69dd39c36682929fa11",
+      "clipId": "flagship_scenario_02_climax",
+      "videoPath": "output\\proof_clips\\flagship_scenario_02_climax.mp4",
+      "fileSizeMb": 3.65,
+      "sha256": "2c802be075e57669ed7feca425d93185a6225d3b938af99d74bc236c71c40a30",
       "bitstreamVerified": true,
-      "resolution": "1080x1920",
-      "fps": 60,
-      "durationSeconds": 5.7,
-      "qualityScore": 97,
-      "scoreBreakdown": {
-        "eventDensityPerSec": 59.12,
-        "windowEventsCount": 337,
-        "pacingScore": 25,
-        "dramaScore": 25,
-        "growthScore": 22,
-        "technicalScore": 25
-      }
+      "durationSeconds": 6.2,
+      "qualityScore": 97
     },
     {
-      "clipId": "canonical_sim_01_blitz",
-      "videoPath": "output\\proof_clips\\canonical_sim_01_blitz.mp4",
-      "fileSizeBytes": 3646010,
-      "fileSizeMb": 3.48,
-      "sha256": "840d7102c582ebe6ca379cdaa6aff64e9852d5ba1d62f730239fdebbc0276964",
+      "clipId": "flagship_scenario_03_climax",
+      "videoPath": "output\\proof_clips\\flagship_scenario_03_climax.mp4",
+      "fileSizeMb": 3.16,
+      "sha256": "36746ff6bfad7984e2fb4611afb552f68ae60753bab07510c95bf5868253aeaf",
       "bitstreamVerified": true,
-      "resolution": "1080x1920",
-      "fps": 60,
-      "durationSeconds": 4.5,
-      "qualityScore": 96,
-      "scoreBreakdown": {
-        "eventDensityPerSec": 41.33,
-        "windowEventsCount": 186,
-        "pacingScore": 25,
-        "dramaScore": 24,
-        "growthScore": 22,
-        "technicalScore": 25
-      }
+      "durationSeconds": 6.2,
+      "qualityScore": 97
     },
     {
-      "clipId": "canonical_sim_02_full",
-      "videoPath": "output\\proof_clips\\canonical_sim_02_full.mp4",
-      "fileSizeBytes": 10890436,
-      "fileSizeMb": 10.39,
-      "sha256": "3a69ede27c4ae3b8a3d92a417ac7b52bc082e08e3263a2f4f08857fb58a86420",
+      "clipId": "flagship_scenario_04_climax",
+      "videoPath": "output\\proof_clips\\flagship_scenario_04_climax.mp4",
+      "fileSizeMb": 3.82,
+      "sha256": "598091429560fb263cd42be269c5bd3698865469f81841698266a7ab85db28a5",
       "bitstreamVerified": true,
-      "resolution": "1080x1920",
-      "fps": 60,
-      "durationSeconds": 9.969999999999999,
-      "qualityScore": 96,
-      "scoreBreakdown": {
-        "eventDensityPerSec": 53.76,
-        "windowEventsCount": 536,
-        "pacingScore": 25,
-        "dramaScore": 24,
-        "growthScore": 22,
-        "technicalScore": 25
-      }
+      "durationSeconds": 6.2,
+      "qualityScore": 97
+    },
+    {
+      "clipId": "flagship_scenario_05_climax",
+      "videoPath": "output\\proof_clips\\flagship_scenario_05_climax.mp4",
+      "fileSizeMb": 3.66,
+      "sha256": "27af9bb4955c0a1e21e69594b65c82a861b58ca1f8d04db234488725ce60713a",
+      "bitstreamVerified": true,
+      "durationSeconds": 6.2,
+      "qualityScore": 97
     }
   ],
   "simulations": [
     {
-      "simId": "canonical_sim_01",
-      "seed": 30137,
+      "simId": "flagship_scenario_01",
+      "seed": 40317,
       "title": "⚡ 3 BALLS VS 12 BALLS: CAN MULTIPLY WIN? ⚡",
-      "finishTime": 11.47,
       "winner": "ADD",
+      "finishTime": 10.13,
       "leftMetrics": {
-        "actualBallCount": 96,
-        "totalGeneratedBalls": 96,
-        "mathematicalPopulation": 96,
-        "score": 96
+        "actualBallCount": 24,
+        "totalGeneratedBalls": 24,
+        "mathematicalPopulation": 24,
+        "score": 24
       },
       "rightMetrics": {
         "actualBallCount": 60,
@@ -127,168 +98,35 @@
       }
     },
     {
-      "simId": "canonical_sim_02",
-      "seed": 30274,
-      "title": "📈 EXPONENTIAL ×2 VS LINEAR +15 SHOWDOWN 📈",
-      "finishTime": 7.97,
+      "simId": "flagship_scenario_02",
+      "seed": 40634,
+      "title": "📈 4 BALLS VS 16 BALLS: PHOTO FINISH SHOWDOWN 📈",
       "winner": "ADD",
+      "finishTime": 9.67,
       "leftMetrics": {
-        "actualBallCount": 64,
-        "totalGeneratedBalls": 64,
-        "mathematicalPopulation": 64,
-        "score": 64
-      },
-      "rightMetrics": {
-        "actualBallCount": 115,
-        "totalGeneratedBalls": 115,
-        "mathematicalPopulation": 115,
-        "score": 115
-      }
-    },
-    {
-      "simId": "canonical_sim_03",
-      "seed": 30411,
-      "title": "🔥 5,000 MARBLE AVALANCHE: ×3 VS ×2 🔥",
-      "finishTime": 8.67,
-      "winner": "ADD",
-      "leftMetrics": {
-        "actualBallCount": 162,
-        "totalGeneratedBalls": 162,
-        "mathematicalPopulation": 162,
-        "score": 162
-      },
-      "rightMetrics": {
-        "actualBallCount": 200,
-        "totalGeneratedBalls": 200,
-        "mathematicalPopulation": 512,
-        "score": 512
-      }
-    },
-    {
-      "simId": "canonical_sim_04",
-      "seed": 30548,
-      "title": "⚠️ HIGH STAKES: ×4 GAMBLE VS SAFE +12 ⚠️",
-      "finishTime": 5.83,
-      "winner": "MULTIPLY",
-      "leftMetrics": {
-        "actualBallCount": 200,
-        "totalGeneratedBalls": 200,
-        "mathematicalPopulation": 12288,
-        "score": 12288
-      },
-      "rightMetrics": {
-        "actualBallCount": 66,
-        "totalGeneratedBalls": 66,
-        "mathematicalPopulation": 66,
-        "score": 66
-      }
-    },
-    {
-      "simId": "canonical_sim_05",
-      "seed": 30685,
-      "title": "🌿 FACTORIAL GROWTH (n!) VS POWER (2ⁿ) 🌿",
-      "finishTime": 10.97,
-      "winner": "MULTIPLY",
-      "leftMetrics": {
-        "actualBallCount": 200,
-        "totalGeneratedBalls": 200,
-        "mathematicalPopulation": 729,
-        "score": 729
-      },
-      "rightMetrics": {
         "actualBallCount": 32,
         "totalGeneratedBalls": 32,
         "mathematicalPopulation": 32,
         "score": 32
-      }
-    },
-    {
-      "simId": "canonical_sim_06",
-      "seed": 30822,
-      "title": "🏎️ ULTRA SPEED SPRINT: ×2 VS +20 🏎️",
-      "finishTime": 5.5,
-      "winner": "ADD",
-      "leftMetrics": {
-        "actualBallCount": 48,
-        "totalGeneratedBalls": 48,
-        "mathematicalPopulation": 48,
-        "score": 48
       },
       "rightMetrics": {
-        "actualBallCount": 150,
-        "totalGeneratedBalls": 150,
-        "mathematicalPopulation": 150,
-        "score": 150
+        "actualBallCount": 88,
+        "totalGeneratedBalls": 88,
+        "mathematicalPopulation": 88,
+        "score": 88
       }
     },
     {
-      "simId": "canonical_sim_07",
-      "seed": 30959,
-      "title": "💥 2 BALLS VS 100 BALLS: THE IMPOSSIBLE REVERSAL 💥",
-      "finishTime": 7.02,
+      "simId": "flagship_scenario_03",
+      "seed": 40951,
+      "title": "💥 2 BALLS VS 24 BALLS: THE COMEBACK REVERSAL 💥",
       "winner": "ADD",
+      "finishTime": 9.9,
       "leftMetrics": {
-        "actualBallCount": 54,
-        "totalGeneratedBalls": 54,
-        "mathematicalPopulation": 54,
-        "score": 54
-      },
-      "rightMetrics": {
-        "actualBallCount": 160,
-        "totalGeneratedBalls": 160,
-        "mathematicalPopulation": 160,
-        "score": 160
-      }
-    },
-    {
-      "simId": "canonical_sim_08",
-      "seed": 31096,
-      "title": "⚔️ ×2 VS ×2: IDENTICAL WEAPONS BATTLE ⚔️",
-      "finishTime": 10.62,
-      "winner": "MULTIPLY",
-      "leftMetrics": {
-        "actualBallCount": 200,
-        "totalGeneratedBalls": 200,
-        "mathematicalPopulation": 256,
-        "score": 256
-      },
-      "rightMetrics": {
-        "actualBallCount": 128,
-        "totalGeneratedBalls": 128,
-        "mathematicalPopulation": 128,
-        "score": 128
-      }
-    },
-    {
-      "simId": "canonical_sim_09",
-      "seed": 31233,
-      "title": "🛡️ THE SLOW TANK: +30 BALLS PER TIER 🛡️",
-      "finishTime": 6,
-      "winner": "ADD",
-      "leftMetrics": {
-        "actualBallCount": 54,
-        "totalGeneratedBalls": 54,
-        "mathematicalPopulation": 54,
-        "score": 54
-      },
-      "rightMetrics": {
-        "actualBallCount": 200,
-        "totalGeneratedBalls": 200,
-        "mathematicalPopulation": 220,
-        "score": 220
-      }
-    },
-    {
-      "simId": "canonical_sim_10",
-      "seed": 31370,
-      "title": "🏆 CHAMPIONSHIP SHOWDOWN: PHOTO FINISH CLASH 🏆",
-      "finishTime": 10.65,
-      "winner": "ADD",
-      "leftMetrics": {
-        "actualBallCount": 96,
-        "totalGeneratedBalls": 96,
-        "mathematicalPopulation": 96,
-        "score": 96
+        "actualBallCount": 8,
+        "totalGeneratedBalls": 8,
+        "mathematicalPopulation": 8,
+        "score": 8
       },
       "rightMetrics": {
         "actualBallCount": 60,
@@ -296,144 +134,44 @@
         "mathematicalPopulation": 60,
         "score": 60
       }
-    }
-  ],
-  "publishingQueue": [
-    {
-      "queueId": "queue_canonical_sim_01_full",
-      "clipId": "canonical_sim_01_full",
-      "simId": "canonical_sim_01",
-      "scheduledDate": "2026-11-04",
-      "scheduledTime": "2026-11-04T17:00:00.000Z",
-      "timezone": "UTC",
-      "status": "READY_TO_PUBLISH",
-      "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\canonical_sim_01_full.mp4",
-      "fileSizeBytes": 12466943,
-      "sha256": "513044e2f6d12ebf19c96d7356f393f1403360eacae4640047928629c1a609d7",
-      "durationSeconds": 13.47,
-      "title": "⚡ 3 BALLS VS 12 BALLS: CAN MULTIPLY WIN? ⚡",
-      "hookText": "Who breaks Tier 6 first: 3 balls or 12 balls? 😱",
-      "description": "⚡ 3 BALLS VS 12 BALLS: CAN MULTIPLY WIN? ⚡\n\nAutonomous marble physics showdown! Can the underdog overcome the headstart?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!\n\n#shorts #physics #marblerun #gaming #satisfying",
-      "tags": [
-        "shorts",
-        "physics",
-        "marblerun",
-        "gaming",
-        "satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Let us know in the comments below! 👇",
-      "qualityScore": 96,
-      "scoreBreakdown": {
-        "eventDensityPerSec": 52.64,
-        "windowEventsCount": 709,
-        "pacingScore": 25,
-        "dramaScore": 24,
-        "growthScore": 22,
-        "technicalScore": 25
-      },
-      "lifecycleState": "SCHEDULED"
     },
     {
-      "queueId": "queue_canonical_sim_01_climax",
-      "clipId": "canonical_sim_01_climax",
-      "simId": "canonical_sim_01",
-      "scheduledDate": "2026-11-06",
-      "scheduledTime": "2026-11-06T17:00:00.000Z",
-      "timezone": "UTC",
-      "status": "READY_TO_PUBLISH",
-      "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\canonical_sim_01_climax.mp4",
-      "fileSizeBytes": 2880999,
-      "sha256": "5486c41bc6d8f261a3aa8ddf01b510416916298c8d50f69dd39c36682929fa11",
-      "durationSeconds": 5.7,
-      "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
-      "hookText": "Look at the speed difference on the final gate! 😱",
-      "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nAutonomous marble physics showdown! Can the underdog overcome the headstart?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!\n\n#shorts #physics #marblerun #gaming #satisfying",
-      "tags": [
-        "shorts",
-        "physics",
-        "marblerun",
-        "gaming",
-        "satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Let us know in the comments below! 👇",
-      "qualityScore": 97,
-      "scoreBreakdown": {
-        "eventDensityPerSec": 59.12,
-        "windowEventsCount": 337,
-        "pacingScore": 25,
-        "dramaScore": 25,
-        "growthScore": 22,
-        "technicalScore": 25
+      "simId": "flagship_scenario_04",
+      "seed": 41268,
+      "title": "🔥 HIGH MULTIPLIER: ×3 GAMBLE VS +14 TANK 🔥",
+      "winner": "ADD",
+      "finishTime": 9.23,
+      "leftMetrics": {
+        "actualBallCount": 18,
+        "totalGeneratedBalls": 18,
+        "mathematicalPopulation": 18,
+        "score": 18
       },
-      "lifecycleState": "SCHEDULED"
+      "rightMetrics": {
+        "actualBallCount": 102,
+        "totalGeneratedBalls": 102,
+        "mathematicalPopulation": 102,
+        "score": 102
+      }
     },
     {
-      "queueId": "queue_canonical_sim_01_blitz",
-      "clipId": "canonical_sim_01_blitz",
-      "simId": "canonical_sim_01",
-      "scheduledDate": "2026-11-08",
-      "scheduledTime": "2026-11-08T17:00:00.000Z",
-      "timezone": "UTC",
-      "status": "READY_TO_PUBLISH",
-      "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\canonical_sim_01_blitz.mp4",
-      "fileSizeBytes": 3646010,
-      "sha256": "840d7102c582ebe6ca379cdaa6aff64e9852d5ba1d62f730239fdebbc0276964",
-      "durationSeconds": 4.5,
-      "title": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡",
-      "hookText": "Watch this opening multiplier burst! 🤯",
-      "description": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡\n\nAutonomous marble physics showdown! Can the underdog overcome the headstart?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!\n\n#shorts #physics #marblerun #gaming #satisfying",
-      "tags": [
-        "shorts",
-        "physics",
-        "marblerun",
-        "gaming",
-        "satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Let us know in the comments below! 👇",
-      "qualityScore": 96,
-      "scoreBreakdown": {
-        "eventDensityPerSec": 41.33,
-        "windowEventsCount": 186,
-        "pacingScore": 25,
-        "dramaScore": 24,
-        "growthScore": 22,
-        "technicalScore": 25
+      "simId": "flagship_scenario_05",
+      "seed": 41585,
+      "title": "🏆 CHAMPIONSHIP SHOWDOWN: DRAMATIC FINAL FLOOR 🏆",
+      "winner": "ADD",
+      "finishTime": 9.03,
+      "leftMetrics": {
+        "actualBallCount": 12,
+        "totalGeneratedBalls": 12,
+        "mathematicalPopulation": 12,
+        "score": 12
       },
-      "lifecycleState": "SCHEDULED"
-    },
-    {
-      "queueId": "queue_canonical_sim_02_full",
-      "clipId": "canonical_sim_02_full",
-      "simId": "canonical_sim_02",
-      "scheduledDate": "2026-11-10",
-      "scheduledTime": "2026-11-10T17:00:00.000Z",
-      "timezone": "UTC",
-      "status": "READY_TO_PUBLISH",
-      "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\canonical_sim_02_full.mp4",
-      "fileSizeBytes": 10890436,
-      "sha256": "3a69ede27c4ae3b8a3d92a417ac7b52bc082e08e3263a2f4f08857fb58a86420",
-      "durationSeconds": 9.969999999999999,
-      "title": "📈 EXPONENTIAL ×2 VS LINEAR +15 SHOWDOWN 📈",
-      "hookText": "Who breaks Tier 6 first: 4 balls or 25 balls? 😱",
-      "description": "📈 EXPONENTIAL ×2 VS LINEAR +15 SHOWDOWN 📈\n\nAutonomous marble physics showdown! Can the underdog overcome the headstart?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!\n\n#shorts #physics #marblerun #gaming #satisfying",
-      "tags": [
-        "shorts",
-        "physics",
-        "marblerun",
-        "gaming",
-        "satisfying"
-      ],
-      "pinnedComment": "Who did you bet on? Let us know in the comments below! 👇",
-      "qualityScore": 96,
-      "scoreBreakdown": {
-        "eventDensityPerSec": 53.76,
-        "windowEventsCount": 536,
-        "pacingScore": 25,
-        "dramaScore": 24,
-        "growthScore": 22,
-        "technicalScore": 25
-      },
-      "lifecycleState": "SCHEDULED"
+      "rightMetrics": {
+        "actualBallCount": 80,
+        "totalGeneratedBalls": 80,
+        "mathematicalPopulation": 80,
+        "score": 80
+      }
     }
   ],
   "dryRunReceipts": [
@@ -443,42 +181,14 @@
       "platform": "youtube",
       "platformVideoId": null,
       "url": null,
-      "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\canonical_sim_01_full.mp4",
-      "fileSize": 12466943,
-      "sha256": "513044e2f6d12ebf19c96d7356f393f1403360eacae4640047928629c1a609d7",
-      "bitstreamVerified": true,
-      "status": "validated_ready_for_upload",
-      "metadata": {
-        "title": "⚡ 3 BALLS VS 12 BALLS: CAN MULTIPLY WIN? ⚡",
-        "description": "⚡ 3 BALLS VS 12 BALLS: CAN MULTIPLY WIN? ⚡\n\nAutonomous marble physics showdown! Can the underdog overcome the headstart?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!\n\n#shorts #physics #marblerun #gaming #satisfying",
-        "tags": [
-          "shorts",
-          "physics",
-          "marblerun",
-          "gaming",
-          "satisfying"
-        ],
-        "categoryId": "20"
-      },
-      "metrics": null,
-      "timestamp": "2026-11-04T00:13:37.084Z",
-      "queueId": "queue_canonical_sim_01_full",
-      "lifecycleState": "UPLOADED"
-    },
-    {
-      "success": true,
-      "mode": "DRY_RUN",
-      "platform": "youtube",
-      "platformVideoId": null,
-      "url": null,
-      "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\canonical_sim_01_climax.mp4",
-      "fileSize": 2880999,
-      "sha256": "5486c41bc6d8f261a3aa8ddf01b510416916298c8d50f69dd39c36682929fa11",
+      "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\flagship_scenario_03_climax.mp4",
+      "fileSize": 3311261,
+      "sha256": "36746ff6bfad7984e2fb4611afb552f68ae60753bab07510c95bf5868253aeaf",
       "bitstreamVerified": true,
       "status": "validated_ready_for_upload",
       "metadata": {
         "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
-        "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nAutonomous marble physics showdown! Can the underdog overcome the headstart?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!\n\n#shorts #physics #marblerun #gaming #satisfying",
+        "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nLook at the final gate breakthrough! 😱\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
         "tags": [
           "shorts",
           "physics",
@@ -489,65 +199,9 @@
         "categoryId": "20"
       },
       "metrics": null,
-      "timestamp": "2026-11-04T00:13:37.641Z",
-      "queueId": "queue_canonical_sim_01_climax",
-      "lifecycleState": "UPLOADED"
-    },
-    {
-      "success": true,
-      "mode": "DRY_RUN",
-      "platform": "youtube",
-      "platformVideoId": null,
-      "url": null,
-      "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\canonical_sim_01_blitz.mp4",
-      "fileSize": 3646010,
-      "sha256": "840d7102c582ebe6ca379cdaa6aff64e9852d5ba1d62f730239fdebbc0276964",
-      "bitstreamVerified": true,
-      "status": "validated_ready_for_upload",
-      "metadata": {
-        "title": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡",
-        "description": "⚡ CRAZY OPENING SURGE: WHO BREAKS TIER 1 FIRST? ⚡\n\nAutonomous marble physics showdown! Can the underdog overcome the headstart?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!\n\n#shorts #physics #marblerun #gaming #satisfying",
-        "tags": [
-          "shorts",
-          "physics",
-          "marblerun",
-          "gaming",
-          "satisfying"
-        ],
-        "categoryId": "20"
-      },
-      "metrics": null,
-      "timestamp": "2026-11-04T00:13:38.087Z",
-      "queueId": "queue_canonical_sim_01_blitz",
-      "lifecycleState": "UPLOADED"
-    },
-    {
-      "success": true,
-      "mode": "DRY_RUN",
-      "platform": "youtube",
-      "platformVideoId": null,
-      "url": null,
-      "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\canonical_sim_02_full.mp4",
-      "fileSize": 10890436,
-      "sha256": "3a69ede27c4ae3b8a3d92a417ac7b52bc082e08e3263a2f4f08857fb58a86420",
-      "bitstreamVerified": true,
-      "status": "validated_ready_for_upload",
-      "metadata": {
-        "title": "📈 EXPONENTIAL ×2 VS LINEAR +15 SHOWDOWN 📈",
-        "description": "📈 EXPONENTIAL ×2 VS LINEAR +15 SHOWDOWN 📈\n\nAutonomous marble physics showdown! Can the underdog overcome the headstart?\n\n🔔 Subscribe to Burstpoint for daily autonomous marble showdowns!\n\n#shorts #physics #marblerun #gaming #satisfying",
-        "tags": [
-          "shorts",
-          "physics",
-          "marblerun",
-          "gaming",
-          "satisfying"
-        ],
-        "categoryId": "20"
-      },
-      "metrics": null,
-      "timestamp": "2026-11-04T00:13:39.202Z",
-      "queueId": "queue_canonical_sim_02_full",
-      "lifecycleState": "UPLOADED"
+      "timestamp": "2026-11-04T12:29:25.719Z",
+      "queueId": "queue_flagship_scenario_03_climax",
+      "lifecycleState": "UPLOAD_PREFLIGHT_PASSED"
     }
   ]
 }

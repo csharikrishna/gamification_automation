@@ -1,0 +1,59 @@
+{
+  "id": "underdog_x3_vs_plus2",
+  "title": "⚡ UNDERDOG: 1 BALL VS 12 BALLS ⚡",
+  "subtitle": "Can exponential growth beat a head start?",
+  "durationSeconds": 15,
+  "fps": 60,
+  "resolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "physics": {
+    "gravity": 1180,
+    "bounce": 0.70,
+    "maxVisibleBalls": 300
+  },
+  "lanes": {
+    "left": {
+      "name": "MULTIPLY",
+      "ruleLabel": "×3 BALLS",
+      "subtitle": "starts with 1 ball",
+      "theme": "purple",
+      "color": "#cb72ff",
+      "glowColor": "rgba(203,114,255,0.45)",
+      "accentColor": "#f094ff",
+      "startBalls": 1,
+      "stages": [
+        { "type": "multiply", "value": 3, "label": "×3", "pegRows": 2, "pegsPerRow": 5 },
+        { "type": "multiply", "value": 3, "label": "×3", "pegRows": 2, "pegsPerRow": 6 },
+        { "type": "multiply", "value": 3, "label": "×3", "pegRows": 2, "pegsPerRow": 5 },
+        { "type": "multiply", "value": 3, "label": "×3", "pegRows": 2, "pegsPerRow": 6 },
+        { "type": "multiply", "value": 3, "label": "×3", "pegRows": 2, "pegsPerRow": 5 },
+        { "type": "multiply", "value": 3, "label": "×3", "pegRows": 2, "pegsPerRow": 6 }
+      ]
+    },
+    "right": {
+      "name": "ADD",
+      "ruleLabel": "+2 BALLS",
+      "subtitle": "starts with 12 balls",
+      "theme": "green",
+      "color": "#79ef43",
+      "glowColor": "rgba(121,239,67,0.45)",
+      "accentColor": "#b2ff8a",
+      "startBalls": 12,
+      "stages": [
+        { "type": "add", "value": 2, "label": "+2", "pegRows": 2, "pegsPerRow": 5 },
+        { "type": "add", "value": 2, "label": "+2", "pegRows": 2, "pegsPerRow": 6 },
+        { "type": "add", "value": 2, "label": "+2", "pegRows": 2, "pegsPerRow": 5 },
+        { "type": "add", "value": 2, "label": "+2", "pegRows": 2, "pegsPerRow": 6 },
+        { "type": "add", "value": 2, "label": "+2", "pegRows": 2, "pegsPerRow": 5 },
+        { "type": "add", "value": 2, "label": "+2", "pegRows": 2, "pegsPerRow": 6 }
+      ]
+    }
+  },
+  "metadata": {
+    "youtubeTitle": "Can 1 Ball Beat 12 Balls?! 😱 Multiplying Physics Simulation #shorts",
+    "description": "Watch what happens when 1 ball multiplying by ×3 races against 12 balls adding +2! Who will cross the finish line first? #physics #satisfying #oddlysatisfying #simulation #shorts #marblerun",
+    "tags": ["physics simulation", "marble run", "oddly satisfying", "youtube shorts", "ball race", "satisfying video"]
+  }
+}
