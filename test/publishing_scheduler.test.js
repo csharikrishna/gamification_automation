@@ -98,7 +98,7 @@ console.log(`  ✓ Tags:         ${day1.tags.join(' ')}`);
   }
 
   // Test 4: Duplicate Protection
-  console.log('\n▶ [4/4] Verifying Duplicate Protection Guardrails...');
+  console.log('\n▶ [4/5] Verifying Duplicate Protection Guardrails...');
   const q3 = scheduler.getQueue();
   const thirdScheduled = q3.find(q => q.status === 'SCHEDULED');
   if (thirdScheduled) {
@@ -108,10 +108,73 @@ console.log(`  ✓ Tags:         ${day1.tags.join(' ')}`);
     assert(dupRes.success, 'Subsequent unique post with valid media must publish cleanly');
   }
 
-  // Cleanup isolated test directory
-  if (fs.existsSync(testDir)) {
-    fs.rmSync(testDir, { recursive: true, force: true });
-  }
+  // Test 5: Core QueueRepository Hardened Invariants (Locking, Corruption Quarantine, Future Protection, Bounded Retries)
+  console.log('\n▶ [5/5] Auditing Core QueueRepository Invariants (Hardened Store)...');
+  const { QueueRepository } = require('../core/publishing/queue-repository');
+  const coreTestDir = path.resolve('output/test_core_queue');
+  if (fs.existsSync(coreTestDir)) fs.rmSync(coreTestDir, { recursive: true, force: true });
+  fs.mkdirSync(coreTestDir, { recursive: true });
+
+  const coreRepo = new QueueRepository({ outputDir: coreTestDir });
+
+  // 5a. Future Schedule Protection: Never claim items before scheduled time
+  const futureItem = {
+    queueId: 'future_test_01',
+    videoPath: testMedia,
+    scheduledTime: new Date(Date.now() + 3600000).toISOString(), // 1 hour in future
+    status: 'READY_TO_PUBLISH'
+  };
+  coreRepo.enqueue(futureItem);
+  const claimedFuture = coreRepo.claimNext('worker-test');
+  assert.strictEqual(claimedFuture, null, 'QueueRepository must never claim items before their scheduled time');
+  console.log('  ✓ Future schedule invariant verified: future items remain safely untouched.');
+
+  // 5b. Bounded Retries: Exceeding maxRetries transitions item to FAILED
+  const retryItem = {
+    queueId: 'retry_test_01',
+    videoPath: testMedia,
+    scheduledTime: new Date(Date.now() - 1000).toISOString(), // Due now
+    status: 'READY_TO_PUBLISH',
+    attempts: 3 // Max retries
+  };
+  coreRepo.enqueue(retryItem);
+  const claimedRetry = coreRepo.claimNext('worker-test');
+  assert.strictEqual(claimedRetry, null, 'Items exceeding maxRetries must not be claimed');
+  const queueAfterRetry = coreRepo.getAll();
+  const failedItem = queueAfterRetry.find(q => q.queueId === 'retry_test_01');
+  assert.strictEqual(failedItem.status, 'FAILED', 'Item exceeding maxRetries must be transitioned to FAILED');
+  console.log('  ✓ Bounded retries invariant verified: items with 3 failed attempts strictly quarantined as FAILED.');
+
+  // 5c. Live Publish Platform ID Validation: Live mode must have valid platform video ID
+  const readyItem = {
+    queueId: 'live_test_01',
+    videoPath: testMedia,
+    scheduledTime: new Date(Date.now() - 1000).toISOString(),
+    status: 'READY_TO_PUBLISH'
+  };
+  coreRepo.enqueue(readyItem);
+  const claimedLive = coreRepo.claimNext('worker-test');
+  assert(claimedLive, 'Due item must be claimed');
+    assert.throws(() => {
+    coreRepo.completePublish(claimedLive.queueId, {
+      mode: 'LIVE',
+      platformVideoId: null // Illegal in LIVE mode
+    });
+  }, /Cannot complete live publishing without a valid platformVideoId/, 'Live publish without platform video ID must be rejected');
+  console.log('  ✓ Live upload guardrail verified: live publications strictly require verifiable platformVideoId.');
+
+  // 5d. Corruption Defense: Never overwrite corrupt file with empty array, quarantine corrupt file
+  fs.writeFileSync(coreRepo.queuePath, '{{{ corrupt unparseable json content', 'utf8');
+  assert.throws(() => {
+    coreRepo.getAll();
+  }, /Corrupt queue data detected/, 'Reading corrupt queue must throw and quarantine');
+  const quarantinedFiles = fs.readdirSync(coreTestDir).filter(f => f.startsWith('publishing_queue.corrupt.'));
+  assert(quarantinedFiles.length >= 1, 'Corrupt file must be preserved in quarantine');
+  console.log(`  ✓ Corruption defense verified: corrupted file isolated to ${quarantinedFiles[0]} without data loss.`);
+
+  // Cleanup isolated test directories
+  if (fs.existsSync(coreTestDir)) fs.rmSync(coreTestDir, { recursive: true, force: true });
+  if (fs.existsSync(testDir)) fs.rmSync(testDir, { recursive: true, force: true });
 
   console.log('\n' + '='.repeat(70));
   console.log('🎉 PUBLISHING AUTOMATION & ROTATING SCHEDULER TESTS PASSED (100%)!');

@@ -13,14 +13,16 @@
 Burstpoint has completed its master architectural reorganization and flagship engineering release. The flagship game, **Multiplying Ball Race**, has progressed from an experimental prototype into a modular, production-ready simulation and video production pipeline.
 
 ### Core Deliverables Achieved
-1. **Repository Architecture Reorganization:** Disentangled monolithic roots into modular boundaries: `apps/studio/`, `core/` (contracts, simulation, production, publishing), `games/` (flagship `multiplying-ball-race` and adapted secondary games), `orchestrator/`, and `docs/`.
-2. **Physics Engine Calibration & Zero-Shelf Anti-Accumulation:** Eliminated the horizontal shelf defect where marbles settled into flat static parking rows on top of barriers. Implemented a 7px curved arcade funnel camber, active kinetic multiplier trigger core rebounds, responsive cumulative swarm damage, and downward shard explosions.
-3. **Visual & Aesthetic Directing Overhaul:**
-   - **Zero Disconnected White Slashes:** Completely eliminated arbitrary white chalk scratches (`fractures`), replacing them with internal team-color shield plasma excitation and warning states.
-   - **Redesigned Tile Breaking Animation:** Replaced expanding circular shockwaves and radial darts with an ultra-short (0.10s) horizontal linear seam plasma fracture and compact 12px core starburst.
-   - **Professional Broadcast Celebration:** Replaced craftie floating yellow motes with a 30% runner-up focus dimming, crisp 1.6px team-neon winner chassis illumination, soft reservoir collection spotlight, and a broadcast-grade glass lower-third overlay with a specular entry sheen sweep.
-4. **Physical Video Proofs:** Rendered exactly 5 distinct flagship video clips (1080×1920 @ 60 FPS H.264/AAC), fully verified with FFmpeg null decode bitstream checks (0 errors) and SHA-256 cryptographic hashes.
-5. **Unified Production Orchestrator & Publishing Queue:** Established canonical 9-stage pipeline (`orchestrator/pipeline.js`), atomic publishing queue writes, rotating cadence scheduler, and strict zero-fabrication YouTube dry-run pre-flight.
+1. **P0 Video Duration Contract & Truthful Narrative (~20.0s):** Replaced truncated 6.2s clips with an explicit 20.0-second output duration contract (1,200 frames @ 60 FPS, 1080×1920) across all 5 flagship proofs. Presents a truthful full-match narrative: 0–1.5s opening hook, 1.5–12/14s authentic gameplay progression, decisive gate breakthrough, and 14–20s broadcast victory celebration.
+2. **P0 Ground-Truth Scenario Diversity:** Eliminated repetitive ADD-dominated outcomes. Calibrated and certified 5 diverse archetypes with verified competitive arcs: Underdog comeback (MULTIPLY), Neck-and-neck photo finish with 5 lead changes (ADD by 0.10s), Final-tier reversal (MULTIPLY), High-escalation tank swarm (ADD), and Razor-thin upset (MULTIPLY by 0.07s with 3 lead changes).
+3. **P1 Multi-Dimensional Quality Evaluation:** Replaced fixed arbitrary technical/drama scores with transparent evaluation dimensions: simulation validity, event density, score progression ratio, lead change verification, visual readability, and audio synchronization.
+4. **P1 Hardened QueueRepository & Cadence Scheduler:** Implemented file-based concurrency locking (`.lock`), corruption quarantine defense (preserving corrupt files without data loss), future schedule protection (`schedTime <= now`), bounded retries (max 3 with exponential backoff), and verified live upload credentials.
+5. **P2 Physics & Visual Directing Overhaul:**
+   - **Zero-Shelf Chamber Funneling:** 7px camber and lateral agitation prevent marbles from parking statically on top of multipliers.
+   - **Zero Disconnected White Slashes:** Replaced chalk scratches with team-color shield excitation and dynamic power rails.
+   - **Seam Plasma Fracture:** Replaced circular bomb shockwaves with an ultra-short (<0.11s) horizontal seam snap and 12px core burst.
+   - **Broadcast Celebration:** Clean 35% focus dimming, soft reservoir lighting, and esports frosted glass lower-third card with specular sheen.
+6. **Physical Video Proofs:** Rendered and verified all 5 physical MP4 files (1080×1920 @ 60 FPS H.264/AAC stereo, ~12 MB, ~20.0s), fully validated via FFmpeg null decode (0 bitstream errors) and streaming SHA-256 hashes.
 
 ---
 
@@ -117,19 +119,19 @@ Visual inspection of previous video renders identified four major aesthetic weak
 
 ---
 
-## 5. PHYSICAL VIDEO ARTIFACTS TABLE
+## 5. PHYSICAL VIDEO ARTIFACTS TABLE (~20.0s DURATION CONTRACT)
 
-All 5 flagship scenarios were simulated, scored, rendered, and verified as physical MP4 files in `output/proof_clips/`:
+All 5 flagship scenarios were simulated, scored, rendered, and verified as physical MP4 files in `output/proof_clips/` under the strict 20.0-second full-match narrative contract (1200 frames @ 60 FPS, 1080×1920 H.264/AAC stereo):
 
-| Scenario Archetype | Clip ID | Target Duration | File Size | SHA-256 Checksum | Bitstream Status |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **1. Underdog Race** | `flagship_scenario_01_climax` | 6.20s (372 frames) | 3.25 MB | `1072e7e963285a8643aaefe43cfa5b5cd24e44d2e0983b5cef7b44799a70fae4` | 0 bitstream errors |
-| **2. Close Match** | `flagship_scenario_02_climax` | 6.20s (372 frames) | 3.65 MB | `2c802be075e57669ed7feca425d93185a6225d3b938af99d74bc236c71c40a30` | 0 bitstream errors |
-| **3. Reversal Match** | `flagship_scenario_03_climax` | 6.20s (372 frames) | 3.16 MB | `36746ff6bfad7984e2fb4611afb552f68ae60753bab07510c95bf5868253aeaf` | 0 bitstream errors |
-| **4. High Escalation** | `flagship_scenario_04_climax` | 6.20s (372 frames) | 3.82 MB | `598091429560fb263cd42be269c5bd3698865469f81841698266a7ab85db28a5` | 0 bitstream errors |
-| **5. Unexpected Drama**| `flagship_scenario_05_climax` | 6.20s (372 frames) | 3.66 MB | `27af9bb4955c0a1e21e69594b65c82a861b58ca1f8d04db234488725ce60713a` | 0 bitstream errors |
+| Scenario Archetype | Clip ID | Narrative Arc & Winner | Target Duration | File Size | SHA-256 Checksum | Loudness | Bitstream Status |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **1. Underdog Race** | `flagship_scenario_01_flagship.mp4` | 3 vs 12 start; MULTIPLY overtakes at 9.15s; wins 192 vs 42 at 12.57s | 20.00s (1200 f) | 11.97 MB | `cdef0f2191070e7731c8b0a2c8aa94e64e4b696c9ca5ff157841d3dc037afdff` | -19.6 LUFS | 0 bitstream errors |
+| **2. Close Match** | `flagship_scenario_02_flagship.mp4` | Neck-and-neck; 5 lead changes; ADD wins by 0.10s photo finish at 12.42s | 20.00s (1200 f) | 12.52 MB | `e6702a1bf22c34d2e1637e52b4991a566949ad4149250637cbe7994292acbc81` | -19.3 LUFS | 0 bitstream errors |
+| **3. Lead Reversal** | `flagship_scenario_03_flagship.mp4` | ADD leads tiers 1–5; MULTIPLY overtakes on tier 6; wins 128 vs 52 at 13.88s | 20.00s (1200 f) | 12.52 MB | `19bec9dd66eef920047b60edff9502aef9ebc19c7f8aee425d2796e7f901286f` | -19.9 LUFS | 0 bitstream errors |
+| **4. High Escalation**| `flagship_scenario_04_flagship.mp4` | ×3 gamble vs +14 tank; ADD heavy swarm wins 162 vs 102 at 10.65s | 20.00s (1200 f) | 11.80 MB | `f12fb96877a73aabc3b86722e57caa727ef738a59d04e4581634faefeb8827e9` | -19.7 LUFS | 0 bitstream errors |
+| **5. Razor Upset** | `flagship_scenario_05_flagship.mp4` | 3 lead changes; MULTIPLY clinches 0.07s razor upset victory at 12.52s | 20.00s (1200 f) | 12.40 MB | `9c892887b5342ee1aa0e5687b6ca4788e7246f3a80f7a2a9c316447f3caf187f` | -19.7 LUFS | 0 bitstream errors |
 
-*Exact file sizes and cryptographic hashes are synced directly to `output/production_proof_report.json`.*
+*Container duration, bitstream decode, exact frame count, and cryptographic hashes are synced directly to `output/production_proof_report.json`.*
 
 ---
 

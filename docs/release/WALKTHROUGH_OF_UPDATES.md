@@ -97,17 +97,17 @@ Gamification/
 
 ---
 
-## 4. Five Certified Flagship Video Proofs
+## 4. Five Certified Flagship Video Proofs (~20.0s Narrative Contract)
 
-All 5 flagship scenarios were generated, simulated, scored, rendered, and verified as physical 1080×1920 MP4 files in `output/proof_clips/`:
+All 5 flagship scenarios were generated, simulated, scored, rendered, and verified as physical 1080×1920 MP4 files in `output/proof_clips/` under the strict 20.00-second full-match narrative contract (1,200 frames @ 60 FPS, 1080×1920 H.264/AAC stereo):
 
-| Scenario Archetype | Clip ID | Target Duration | Resolution | File Size | SHA-256 Checksum | Bitstream Status |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **1. Underdog Race** | `flagship_scenario_01_climax` | 6.20s (372 frames) | 1080×1920 @ 60 FPS | 3.25 MB | `1072e7e963285a8643aaefe43cfa5b5cd24e44d2e0983b5cef7b44799a70fae4` | 0 bitstream decode errors |
-| **2. Close Match** | `flagship_scenario_02_climax` | 6.20s (372 frames) | 1080×1920 @ 60 FPS | 3.65 MB | `2c802be075e57669ed7feca425d93185a6225d3b938af99d74bc236c71c40a30` | 0 bitstream decode errors |
-| **3. Reversal Match** | `flagship_scenario_03_climax` | 6.20s (372 frames) | 1080×1920 @ 60 FPS | 3.16 MB | `36746ff6bfad7984e2fb4611afb552f68ae60753bab07510c95bf5868253aeaf` | 0 bitstream decode errors |
-| **4. High Escalation** | `flagship_scenario_04_climax` | 6.20s (372 frames) | 1080×1920 @ 60 FPS | 3.82 MB | `598091429560fb263cd42be269c5bd3698865469f81841698266a7ab85db28a5` | 0 bitstream decode errors |
-| **5. Unexpected Drama**| `flagship_scenario_05_climax` | 6.20s (372 frames) | 1080×1920 @ 60 FPS | 3.66 MB | `27af9bb4955c0a1e21e69594b65c82a861b58ca1f8d04db234488725ce60713a` | 0 bitstream decode errors |
+| Scenario Archetype | Clip ID | Narrative Arc & Winner | Target Duration | Resolution | File Size | SHA-256 Checksum | Loudness | Bitstream Status |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **1. Underdog Race** | `flagship_scenario_01_flagship.mp4` | 3 vs 12 balls start; MULTIPLY overtakes at 9.15s; wins 192 vs 42 at 12.57s | 20.00s (1200 f) | 1080×1920 @ 60 FPS | 11.97 MB | `cdef0f2191070e7731c8b0a2c8aa94e64e4b696c9ca5ff157841d3dc037afdff` | -19.6 LUFS | 0 bitstream decode errors |
+| **2. Close Match** | `flagship_scenario_02_flagship.mp4` | Neck-and-neck; 5 lead changes; ADD wins by 0.10s photo finish at 12.42s | 20.00s (1200 f) | 1080×1920 @ 60 FPS | 12.52 MB | `e6702a1bf22c34d2e1637e52b4991a566949ad4149250637cbe7994292acbc81` | -19.3 LUFS | 0 bitstream decode errors |
+| **3. Lead Reversal** | `flagship_scenario_03_flagship.mp4` | ADD leads tiers 1–5; MULTIPLY overtakes on tier 6; wins 128 vs 52 at 13.88s | 20.00s (1200 f) | 1080×1920 @ 60 FPS | 12.52 MB | `19bec9dd66eef920047b60edff9502aef9ebc19c7f8aee425d2796e7f901286f` | -19.9 LUFS | 0 bitstream decode errors |
+| **4. High Escalation**| `flagship_scenario_04_flagship.mp4` | ×3 gamble vs +14 tank; ADD heavy swarm wins 162 vs 102 at 10.65s | 20.00s (1200 f) | 1080×1920 @ 60 FPS | 11.80 MB | `f12fb96877a73aabc3b86722e57caa727ef738a59d04e4581634faefeb8827e9` | -19.7 LUFS | 0 bitstream decode errors |
+| **5. Razor Upset** | `flagship_scenario_05_flagship.mp4` | 3 lead changes; MULTIPLY clinches 0.07s razor upset victory at 12.52s | 20.00s (1200 f) | 1080×1920 @ 60 FPS | 12.40 MB | `9c892887b5342ee1aa0e5687b6ca4788e7246f3a80f7a2a9c316447f3caf187f` | -19.7 LUFS | 0 bitstream decode errors |
 
 ---
 
@@ -116,7 +116,7 @@ All 5 flagship scenarios were generated, simulated, scored, rendered, and verifi
 ```
 🧪 Comprehensive Simulation & Regression Suite:   9/9 PASSED (100%)
 🎮 Universal Four-Game Adapter Architecture:       4/4 PASSED (100%)
-📅 Publishing Scheduler & 8-Day Cadence:          4/4 PASSED (100%)
+📅 Publishing Scheduler & QueueRepository:         5/5 PASSED (100%)
 📡 YouTube Publisher & Pre-Flight Validation:     4/4 PASSED (100%)
 🏆 Official Release Qualification Harness:        12/12 PASSED (100%)
    ├── Gate 1:  Configuration Schema Validation: PASSED

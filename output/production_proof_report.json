@@ -1,207 +1,445 @@
 {
   "orchestratorName": "Burstpoint Canonical Production Orchestrator",
-  "version": "3.0.0",
-  "executedAt": "2026-11-04T12:29:25.719Z",
+  "version": "3.1.0",
+  "executedAt": "2026-11-04T13:15:19.622Z",
   "gameCertified": "multiplying-ball-race",
-  "artifactLifecycle": [
-    "GENERATED",
-    "SIMULATED",
-    "SCORED",
-    "RENDERED",
-    "VALIDATED",
-    "APPROVED",
-    "SCHEDULED",
-    "UPLOAD_PENDING",
-    "UPLOAD_IN_PROGRESS",
-    "UPLOAD_PREFLIGHT_PASSED",
-    "UPLOADED",
-    "PROCESSING",
-    "PUBLISHED",
-    "ANALYTICS_AVAILABLE",
-    "FAILED",
-    "RETRY_PENDING",
-    "REJECTED"
-  ],
+  "productionStatus": "CERTIFIED_FLAGSHIP_PRODUCTION_READY",
+  "outputDurationContract": {
+    "targetDurationSeconds": 20,
+    "fps": 60,
+    "expectedFrames": 1200,
+    "toleranceSeconds": 0.6
+  },
   "executionSummary": {
     "scenariosExecuted": 5,
-    "candidatesExtracted": 10,
-    "approvedCandidates": 10,
+    "candidatesExtracted": 5,
+    "approvedCandidates": 5,
     "renderedClipsOnDisk": 5,
-    "queuedClips": 1,
-    "totalProcessingSeconds": 188.3
+    "queuedClips": 5,
+    "dryRunReceiptsCount": 5,
+    "totalProcessingSeconds": 442.37
   },
   "renderedClips": [
     {
-      "clipId": "flagship_scenario_01_climax",
-      "videoPath": "output\\proof_clips\\flagship_scenario_01_climax.mp4",
-      "fileSizeMb": 3.25,
-      "sha256": "1072e7e963285a8643aaefe43cfa5b5cd24e44d2e0983b5cef7b44799a70fae4",
+      "clipId": "flagship_scenario_01_flagship",
+      "videoPath": "output\\proof_clips\\flagship_scenario_01_flagship.mp4",
+      "fileSizeMb": 11.97,
+      "fileSizeBytes": 12553299,
+      "sha256": "cdef0f2191070e7731c8b0a2c8aa94e64e4b696c9ca5ff157841d3dc037afdff",
+      "durationSeconds": 20,
+      "exactFrameCount": 1200,
+      "resolution": "1080x1920",
+      "fps": 60,
+      "audioRate": 44100,
+      "audioChannels": "stereo",
+      "loudnessLufs": -19.6,
       "bitstreamVerified": true,
-      "durationSeconds": 6.2,
-      "qualityScore": 97
+      "evaluation": {
+        "simulationValidity": {
+          "valid": true,
+          "deterministic": true,
+          "escapedMarbles": 0,
+          "finishDecided": true
+        },
+        "metrics": {
+          "totalSimulatedEvents": 1025,
+          "eventDensityEventsPerSec": 51.25,
+          "scoreProgressionRatio": 4.57,
+          "leadChangeCount": 1,
+          "finishMarginSeconds": null,
+          "leftScore": 192,
+          "rightScore": 42
+        },
+        "visualReadability": {
+          "resolution": "1080x1920",
+          "fps": 60,
+          "contrastRatioVerified": true,
+          "fontLegibilityVerified": true
+        },
+        "narrativeStructure": {
+          "format": "FULL_MATCH",
+          "openingHookDurationSeconds": 1.5,
+          "gameplayProgressionDurationSeconds": 12.57,
+          "celebrationDurationSeconds": 7.43,
+          "totalDurationSeconds": 20
+        },
+        "status": "APPROVED",
+        "rejectionReason": null
+      }
     },
     {
-      "clipId": "flagship_scenario_02_climax",
-      "videoPath": "output\\proof_clips\\flagship_scenario_02_climax.mp4",
-      "fileSizeMb": 3.65,
-      "sha256": "2c802be075e57669ed7feca425d93185a6225d3b938af99d74bc236c71c40a30",
+      "clipId": "flagship_scenario_02_flagship",
+      "videoPath": "output\\proof_clips\\flagship_scenario_02_flagship.mp4",
+      "fileSizeMb": 12.52,
+      "fileSizeBytes": 13132063,
+      "sha256": "e6702a1bf22c34d2e1637e52b4991a566949ad4149250637cbe7994292acbc81",
+      "durationSeconds": 20,
+      "exactFrameCount": 1200,
+      "resolution": "1080x1920",
+      "fps": 60,
+      "audioRate": 44100,
+      "audioChannels": "stereo",
+      "loudnessLufs": -19.3,
       "bitstreamVerified": true,
-      "durationSeconds": 6.2,
-      "qualityScore": 97
+      "evaluation": {
+        "simulationValidity": {
+          "valid": true,
+          "deterministic": true,
+          "escapedMarbles": 0,
+          "finishDecided": true
+        },
+        "metrics": {
+          "totalSimulatedEvents": 1061,
+          "eventDensityEventsPerSec": 53.05,
+          "scoreProgressionRatio": 4.13,
+          "leadChangeCount": 5,
+          "finishMarginSeconds": 0.1,
+          "leftScore": 256,
+          "rightScore": 62
+        },
+        "visualReadability": {
+          "resolution": "1080x1920",
+          "fps": 60,
+          "contrastRatioVerified": true,
+          "fontLegibilityVerified": true
+        },
+        "narrativeStructure": {
+          "format": "FULL_MATCH",
+          "openingHookDurationSeconds": 1.5,
+          "gameplayProgressionDurationSeconds": 12.42,
+          "celebrationDurationSeconds": 7.58,
+          "totalDurationSeconds": 20
+        },
+        "status": "APPROVED",
+        "rejectionReason": null
+      }
     },
     {
-      "clipId": "flagship_scenario_03_climax",
-      "videoPath": "output\\proof_clips\\flagship_scenario_03_climax.mp4",
-      "fileSizeMb": 3.16,
-      "sha256": "36746ff6bfad7984e2fb4611afb552f68ae60753bab07510c95bf5868253aeaf",
+      "clipId": "flagship_scenario_03_flagship",
+      "videoPath": "output\\proof_clips\\flagship_scenario_03_flagship.mp4",
+      "fileSizeMb": 12.52,
+      "fileSizeBytes": 13125910,
+      "sha256": "19bec9dd66eef920047b60edff9502aef9ebc19c7f8aee425d2796e7f901286f",
+      "durationSeconds": 20,
+      "exactFrameCount": 1200,
+      "resolution": "1080x1920",
+      "fps": 60,
+      "audioRate": 44100,
+      "audioChannels": "stereo",
+      "loudnessLufs": -19.9,
       "bitstreamVerified": true,
-      "durationSeconds": 6.2,
-      "qualityScore": 97
+      "evaluation": {
+        "simulationValidity": {
+          "valid": true,
+          "deterministic": true,
+          "escapedMarbles": 0,
+          "finishDecided": true
+        },
+        "metrics": {
+          "totalSimulatedEvents": 1002,
+          "eventDensityEventsPerSec": 50.1,
+          "scoreProgressionRatio": 2.46,
+          "leadChangeCount": 1,
+          "finishMarginSeconds": 0.27,
+          "leftScore": 128,
+          "rightScore": 52
+        },
+        "visualReadability": {
+          "resolution": "1080x1920",
+          "fps": 60,
+          "contrastRatioVerified": true,
+          "fontLegibilityVerified": true
+        },
+        "narrativeStructure": {
+          "format": "FULL_MATCH",
+          "openingHookDurationSeconds": 1.5,
+          "gameplayProgressionDurationSeconds": 13.88,
+          "celebrationDurationSeconds": 6.12,
+          "totalDurationSeconds": 20
+        },
+        "status": "APPROVED",
+        "rejectionReason": null
+      }
     },
     {
-      "clipId": "flagship_scenario_04_climax",
-      "videoPath": "output\\proof_clips\\flagship_scenario_04_climax.mp4",
-      "fileSizeMb": 3.82,
-      "sha256": "598091429560fb263cd42be269c5bd3698865469f81841698266a7ab85db28a5",
+      "clipId": "flagship_scenario_04_flagship",
+      "videoPath": "output\\proof_clips\\flagship_scenario_04_flagship.mp4",
+      "fileSizeMb": 11.8,
+      "fileSizeBytes": 12369040,
+      "sha256": "f12fb96877a73aabc3b86722e57caa727ef738a59d04e4581634faefeb8827e9",
+      "durationSeconds": 20,
+      "exactFrameCount": 1200,
+      "resolution": "1080x1920",
+      "fps": 60,
+      "audioRate": 44100,
+      "audioChannels": "stereo",
+      "loudnessLufs": -19.7,
       "bitstreamVerified": true,
-      "durationSeconds": 6.2,
-      "qualityScore": 97
+      "evaluation": {
+        "simulationValidity": {
+          "valid": true,
+          "deterministic": true,
+          "escapedMarbles": 0,
+          "finishDecided": true
+        },
+        "metrics": {
+          "totalSimulatedEvents": 1075,
+          "eventDensityEventsPerSec": 53.75,
+          "scoreProgressionRatio": 1.59,
+          "leadChangeCount": 0,
+          "finishMarginSeconds": null,
+          "leftScore": 162,
+          "rightScore": 102
+        },
+        "visualReadability": {
+          "resolution": "1080x1920",
+          "fps": 60,
+          "contrastRatioVerified": true,
+          "fontLegibilityVerified": true
+        },
+        "narrativeStructure": {
+          "format": "FULL_MATCH",
+          "openingHookDurationSeconds": 1.5,
+          "gameplayProgressionDurationSeconds": 10.65,
+          "celebrationDurationSeconds": 9.35,
+          "totalDurationSeconds": 20
+        },
+        "status": "APPROVED",
+        "rejectionReason": null
+      }
     },
     {
-      "clipId": "flagship_scenario_05_climax",
-      "videoPath": "output\\proof_clips\\flagship_scenario_05_climax.mp4",
-      "fileSizeMb": 3.66,
-      "sha256": "27af9bb4955c0a1e21e69594b65c82a861b58ca1f8d04db234488725ce60713a",
+      "clipId": "flagship_scenario_05_flagship",
+      "videoPath": "output\\proof_clips\\flagship_scenario_05_flagship.mp4",
+      "fileSizeMb": 12.4,
+      "fileSizeBytes": 13005518,
+      "sha256": "9c892887b5342ee1aa0e5687b6ca4788e7246f3a80f7a2a9c316447f3caf187f",
+      "durationSeconds": 20,
+      "exactFrameCount": 1200,
+      "resolution": "1080x1920",
+      "fps": 60,
+      "audioRate": 44100,
+      "audioChannels": "stereo",
+      "loudnessLufs": -19.7,
       "bitstreamVerified": true,
-      "durationSeconds": 6.2,
-      "qualityScore": 97
+      "evaluation": {
+        "simulationValidity": {
+          "valid": true,
+          "deterministic": true,
+          "escapedMarbles": 0,
+          "finishDecided": true
+        },
+        "metrics": {
+          "totalSimulatedEvents": 1053,
+          "eventDensityEventsPerSec": 52.65,
+          "scoreProgressionRatio": 2.91,
+          "leadChangeCount": 3,
+          "finishMarginSeconds": 0.07,
+          "leftScore": 192,
+          "rightScore": 66
+        },
+        "visualReadability": {
+          "resolution": "1080x1920",
+          "fps": 60,
+          "contrastRatioVerified": true,
+          "fontLegibilityVerified": true
+        },
+        "narrativeStructure": {
+          "format": "FULL_MATCH",
+          "openingHookDurationSeconds": 1.5,
+          "gameplayProgressionDurationSeconds": 12.52,
+          "celebrationDurationSeconds": 7.48,
+          "totalDurationSeconds": 20
+        },
+        "status": "APPROVED",
+        "rejectionReason": null
+      }
     }
   ],
   "simulations": [
     {
       "simId": "flagship_scenario_01",
+      "archetypeId": "underdog_classic",
+      "narrativeRole": "UNDERDOG_EXPONENTIAL_WIN",
       "seed": 40317,
-      "title": "⚡ 3 BALLS VS 12 BALLS: CAN MULTIPLY WIN? ⚡",
-      "winner": "ADD",
-      "finishTime": 10.13,
+      "title": "⚡ 3 BALLS VS 12 BALLS: CAN THE UNDERDOG WIN? ⚡",
+      "winner": "MULTIPLY",
+      "finishTime": 12.57,
+      "finishMargin": null,
+      "leadChanges": 1,
       "leftMetrics": {
-        "actualBallCount": 24,
-        "totalGeneratedBalls": 24,
-        "mathematicalPopulation": 24,
-        "score": 24
+        "actualBallCount": 192,
+        "totalGeneratedBalls": 192,
+        "mathematicalPopulation": 192,
+        "score": 192
       },
       "rightMetrics": {
-        "actualBallCount": 60,
-        "totalGeneratedBalls": 60,
-        "mathematicalPopulation": 60,
-        "score": 60
-      }
+        "actualBallCount": 42,
+        "totalGeneratedBalls": 42,
+        "mathematicalPopulation": 42,
+        "score": 42
+      },
+      "timelineEvents": [
+        {
+          "time": 9.15,
+          "event": "LEAD_CHANGE",
+          "previousLeader": "ADD",
+          "newLeader": "MULTIPLY"
+        }
+      ]
     },
     {
       "simId": "flagship_scenario_02",
-      "seed": 40634,
-      "title": "📈 4 BALLS VS 16 BALLS: PHOTO FINISH SHOWDOWN 📈",
+      "archetypeId": "close_clash",
+      "narrativeRole": "PHOTO_FINISH_CLASH",
+      "seed": 303,
+      "title": "📈 PHOTO FINISH: MULTIPLY VS ADD NECK-AND-NECK 📈",
       "winner": "ADD",
-      "finishTime": 9.67,
+      "finishTime": 12.42,
+      "finishMargin": 0.1,
+      "leadChanges": 5,
       "leftMetrics": {
-        "actualBallCount": 32,
-        "totalGeneratedBalls": 32,
-        "mathematicalPopulation": 32,
-        "score": 32
+        "actualBallCount": 200,
+        "totalGeneratedBalls": 200,
+        "mathematicalPopulation": 256,
+        "score": 256
       },
       "rightMetrics": {
-        "actualBallCount": 88,
-        "totalGeneratedBalls": 88,
-        "mathematicalPopulation": 88,
-        "score": 88
-      }
+        "actualBallCount": 62,
+        "totalGeneratedBalls": 62,
+        "mathematicalPopulation": 62,
+        "score": 62
+      },
+      "timelineEvents": [
+        {
+          "time": 9.37,
+          "event": "LEAD_CHANGE",
+          "previousLeader": "ADD",
+          "newLeader": "MULTIPLY"
+        },
+        {
+          "time": 9.6,
+          "event": "LEAD_CHANGE",
+          "previousLeader": "MULTIPLY",
+          "newLeader": "ADD"
+        },
+        {
+          "time": 10.95,
+          "event": "LEAD_CHANGE",
+          "previousLeader": "ADD",
+          "newLeader": "MULTIPLY"
+        },
+        {
+          "time": 12.07,
+          "event": "LEAD_CHANGE",
+          "previousLeader": "MULTIPLY",
+          "newLeader": "ADD"
+        },
+        {
+          "time": 12.27,
+          "event": "LEAD_CHANGE",
+          "previousLeader": "ADD",
+          "newLeader": "MULTIPLY"
+        }
+      ]
     },
     {
       "simId": "flagship_scenario_03",
-      "seed": 40951,
-      "title": "💥 2 BALLS VS 24 BALLS: THE COMEBACK REVERSAL 💥",
-      "winner": "ADD",
-      "finishTime": 9.9,
+      "archetypeId": "lead_reversal",
+      "narrativeRole": "COMEBACK_REVERSAL",
+      "seed": 101,
+      "title": "💥 EARLY DEFICIT TO DRAMATIC FINAL TIER REVERSAL 💥",
+      "winner": "MULTIPLY",
+      "finishTime": 13.88,
+      "finishMargin": 0.27,
+      "leadChanges": 1,
       "leftMetrics": {
-        "actualBallCount": 8,
-        "totalGeneratedBalls": 8,
-        "mathematicalPopulation": 8,
-        "score": 8
+        "actualBallCount": 128,
+        "totalGeneratedBalls": 128,
+        "mathematicalPopulation": 128,
+        "score": 128
       },
       "rightMetrics": {
-        "actualBallCount": 60,
-        "totalGeneratedBalls": 60,
-        "mathematicalPopulation": 60,
-        "score": 60
-      }
+        "actualBallCount": 52,
+        "totalGeneratedBalls": 52,
+        "mathematicalPopulation": 52,
+        "score": 52
+      },
+      "timelineEvents": [
+        {
+          "time": 11.75,
+          "event": "LEAD_CHANGE",
+          "previousLeader": "ADD",
+          "newLeader": "MULTIPLY"
+        }
+      ]
     },
     {
       "simId": "flagship_scenario_04",
-      "seed": 41268,
+      "archetypeId": "high_escalation",
+      "narrativeRole": "HEAVY_SWARM_ESCALATION",
+      "seed": 101,
       "title": "🔥 HIGH MULTIPLIER: ×3 GAMBLE VS +14 TANK 🔥",
       "winner": "ADD",
-      "finishTime": 9.23,
+      "finishTime": 10.65,
+      "finishMargin": null,
+      "leadChanges": 0,
       "leftMetrics": {
-        "actualBallCount": 18,
-        "totalGeneratedBalls": 18,
-        "mathematicalPopulation": 18,
-        "score": 18
+        "actualBallCount": 162,
+        "totalGeneratedBalls": 162,
+        "mathematicalPopulation": 162,
+        "score": 162
       },
       "rightMetrics": {
         "actualBallCount": 102,
         "totalGeneratedBalls": 102,
         "mathematicalPopulation": 102,
         "score": 102
-      }
+      },
+      "timelineEvents": []
     },
     {
       "simId": "flagship_scenario_05",
-      "seed": 41585,
-      "title": "🏆 CHAMPIONSHIP SHOWDOWN: DRAMATIC FINAL FLOOR 🏆",
-      "winner": "ADD",
-      "finishTime": 9.03,
+      "archetypeId": "unexpected_turn",
+      "narrativeRole": "RAZOR_THIN_UPSET",
+      "seed": 1100,
+      "title": "🏆 FINAL TIER SHOWDOWN: 0.06s UPSET VICTORY 🏆",
+      "winner": "MULTIPLY",
+      "finishTime": 12.52,
+      "finishMargin": 0.07,
+      "leadChanges": 3,
       "leftMetrics": {
-        "actualBallCount": 12,
-        "totalGeneratedBalls": 12,
-        "mathematicalPopulation": 12,
-        "score": 12
+        "actualBallCount": 192,
+        "totalGeneratedBalls": 192,
+        "mathematicalPopulation": 192,
+        "score": 192
       },
       "rightMetrics": {
-        "actualBallCount": 80,
-        "totalGeneratedBalls": 80,
-        "mathematicalPopulation": 80,
-        "score": 80
-      }
-    }
-  ],
-  "dryRunReceipts": [
-    {
-      "success": true,
-      "mode": "DRY_RUN",
-      "platform": "youtube",
-      "platformVideoId": null,
-      "url": null,
-      "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\flagship_scenario_03_climax.mp4",
-      "fileSize": 3311261,
-      "sha256": "36746ff6bfad7984e2fb4611afb552f68ae60753bab07510c95bf5868253aeaf",
-      "bitstreamVerified": true,
-      "status": "validated_ready_for_upload",
-      "metadata": {
-        "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
-        "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nLook at the final gate breakthrough! 😱\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
-        "tags": [
-          "shorts",
-          "physics",
-          "marblerun",
-          "gaming",
-          "satisfying"
-        ],
-        "categoryId": "20"
+        "actualBallCount": 66,
+        "totalGeneratedBalls": 66,
+        "mathematicalPopulation": 66,
+        "score": 66
       },
-      "metrics": null,
-      "timestamp": "2026-11-04T12:29:25.719Z",
-      "queueId": "queue_flagship_scenario_03_climax",
-      "lifecycleState": "UPLOAD_PREFLIGHT_PASSED"
+      "timelineEvents": [
+        {
+          "time": 10.87,
+          "event": "LEAD_CHANGE",
+          "previousLeader": "ADD",
+          "newLeader": "MULTIPLY"
+        },
+        {
+          "time": 12.22,
+          "event": "LEAD_CHANGE",
+          "previousLeader": "MULTIPLY",
+          "newLeader": "ADD"
+        },
+        {
+          "time": 12.3,
+          "event": "LEAD_CHANGE",
+          "previousLeader": "ADD",
+          "newLeader": "MULTIPLY"
+        }
+      ]
     }
   ]
 }

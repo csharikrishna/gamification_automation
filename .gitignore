@@ -1,4 +1,6 @@
-# Node dependencies
+# Local environment
+.env
+.env.*
 node_modules/
 package-lock.json
 

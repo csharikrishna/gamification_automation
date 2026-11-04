@@ -111,7 +111,10 @@ async function main() {
     case 'publishing:dry-run': {
       console.log('🚀 Executing strict publishing DRY_RUN pre-flight...');
       const scheduler = new PublishingScheduler();
-      const result = await scheduler.publishNext({ dryRun: true });
+      const result = await scheduler.publishNext({
+        dryRun: true,
+        ignoreScheduleTime: options.ignoreTime || options.force
+      });
       console.log(JSON.stringify(result, null, 2));
       break;
     }

@@ -9,7 +9,8 @@ const { QueueRepository } = require('./queue-repository');
 class PublishingScheduler {
   constructor(options = {}) {
     this.outputDir = options.outputDir || path.resolve('output');
-    this.queueRepo = options.queueRepo || new QueueRepository({ outputDir: this.outputDir });
+    this.timezone = options.timezone || 'UTC';
+    this.queueRepo = options.queueRepo || new QueueRepository({ outputDir: this.outputDir, timezone: this.timezone });
     this.publisher = options.publisher || new YouTubePublisher(options.publisherConfig || {});
 
     // 8-Day Publishing Cycle: 4 Releases, 2 Gap Days, 2 Weekend Maintenance/Rest Days
@@ -23,6 +24,30 @@ class PublishingScheduler {
       { dayIndex: 7, dayName: 'Sunday', action: 'MAINTENANCE', gameType: null, label: 'Weekend — Rest / queue preparation' },
       { dayIndex: 8, dayName: 'Following Monday', action: 'PUBLISH', gameType: 'brick_breaker', label: 'Game 4 — Neon Brick Breaker' }
     ];
+  }
+
+  // Generates 32-day calendar aligned with the 8-day rotating cadence
+  generateCalendar(startDate = new Date(), cycles = 4) {
+    const calendar = [];
+    const current = new Date(startDate);
+
+    for (let c = 0; c < cycles; c++) {
+      for (const step of this.cadence) {
+        const dateStr = current.toISOString().split('T')[0];
+        calendar.push({
+          date: dateStr,
+          dayIndex: step.dayIndex + (c * 8),
+          dayName: step.dayName,
+          action: step.action,
+          gameType: step.gameType,
+          label: step.label,
+          scheduledTime: `${dateStr}T17:00:00.000Z`,
+          timezone: this.timezone
+        });
+        current.setDate(current.getDate() + 1);
+      }
+    }
+    return calendar;
   }
 
   // Generates social metadata packaging for an approved clip
@@ -44,9 +69,10 @@ class PublishingScheduler {
 
   // Dispatches next queued item for publishing (DRY_RUN or LIVE)
   async publishNext(options = {}) {
-    const item = this.queueRepo.claimNext('scheduler-dispatch');
+    const workerId = options.workerId || `worker-${process.pid}`;
+    const item = this.queueRepo.claimNext(workerId, options);
     if (!item) {
-      return { success: false, message: 'Publishing queue is empty or has no pending items.' };
+      return { success: false, message: 'Publishing queue is empty or has no pending items eligible at this time.' };
     }
 
     const videoPath = item.videoPath ? path.resolve(item.videoPath) : null;
