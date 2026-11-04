@@ -311,4 +311,56 @@ console.log('▶ TEST 9: Underdog Slow Composed Race Causality Verification');
   console.log('  PASSED: Shatter → Reservoir Contact → Celebration strictly preserved.\n');
 }
 
-console.log('🎉 ALL 9 COMPREHENSIVE SIMULATION AND REGRESSION TEST SUITES PASSED (100%)!');
+// =========================================================================
+// TEST 10: AUD-02 Waveform-Level Dynamic Ducking Amplitude Verification
+// =========================================================================
+console.log('▶ TEST 10: AUD-02 Waveform-Level Dynamic Ducking Amplitude Verification');
+{
+  const { AudioSynthesizer } = require('../core/audio/audio-mixer.js');
+  const synth = new AudioSynthesizer(44100);
+  const total = 44100;
+
+  // 1. Verify Multiplication Chime Ducking
+  const leftMultAlone = new Float32Array(total);
+  const rightMultAlone = new Float32Array(total);
+  synth.renderMultiplication(leftMultAlone, rightMultAlone, 1000, 6, 0.7, 0.7, null);
+
+  const breakthroughEnv = new Float32Array(total);
+  breakthroughEnv.fill(0.35); // -9dB during breakthrough
+  const leftMultDucked = new Float32Array(total);
+  const rightMultDucked = new Float32Array(total);
+  synth.renderMultiplication(leftMultDucked, rightMultDucked, 1000, 6, 0.7, 0.7, breakthroughEnv);
+
+  let peakMultAlone = 0, peakMultDucked = 0;
+  for (let i = 0; i < total; i++) {
+    if (Math.abs(leftMultAlone[i]) > peakMultAlone) peakMultAlone = Math.abs(leftMultAlone[i]);
+    if (Math.abs(leftMultDucked[i]) > peakMultDucked) peakMultDucked = Math.abs(leftMultDucked[i]);
+  }
+  const multRatio = peakMultDucked / peakMultAlone;
+  assert(Math.abs(multRatio - 0.35) < 0.005, `Multiplication ducked ratio (${multRatio}) must match 0.35 envelope!`);
+
+  // 2. Verify Gate Chime Ducking During Fanfare
+  const leftChimeAlone = new Float32Array(total);
+  const rightChimeAlone = new Float32Array(total);
+  synth.renderChime(leftChimeAlone, rightChimeAlone, 1000, 300, 0.5, 0.7, 0.7, false, null);
+
+  const fanfareEnv = new Float32Array(total);
+  fanfareEnv.fill(0.20); // -14dB during fanfare
+  const leftChimeDucked = new Float32Array(total);
+  const rightChimeDucked = new Float32Array(total);
+  synth.renderChime(leftChimeDucked, rightChimeDucked, 1000, 300, 0.5, 0.7, 0.7, false, fanfareEnv);
+
+  let peakChimeAlone = 0, peakChimeDucked = 0;
+  for (let i = 0; i < total; i++) {
+    if (Math.abs(leftChimeAlone[i]) > peakChimeAlone) peakChimeAlone = Math.abs(leftChimeAlone[i]);
+    if (Math.abs(leftChimeDucked[i]) > peakChimeDucked) peakChimeDucked = Math.abs(leftChimeDucked[i]);
+  }
+  const chimeRatio = peakChimeDucked / peakChimeAlone;
+  assert(Math.abs(chimeRatio - 0.20) < 0.005, `Gate chime ducked ratio (${chimeRatio}) must match 0.20 envelope!`);
+
+  console.log(`  ✓ Multiplication ducked ratio: ${(multRatio * 100).toFixed(1)}% (expected 35.0%)`);
+  console.log(`  ✓ Gate chime fanfare ducked ratio: ${(chimeRatio * 100).toFixed(1)}% (expected 20.0%)`);
+  console.log('  PASSED: Sample-level dynamic ducking verified at waveform amplitude precision.\n');
+}
+
+console.log('🎉 ALL 10 COMPREHENSIVE SIMULATION AND REGRESSION TEST SUITES PASSED (100%)!');

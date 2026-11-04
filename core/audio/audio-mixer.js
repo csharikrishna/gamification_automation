@@ -15,25 +15,76 @@ class AudioSynthesizer {
     const leftChannel = new Float32Array(totalSamples);
     const rightChannel = new Float32Array(totalSamples);
 
-    // 1. Compute continuous sample-level time-dependent ducking envelope
-    // High-priority intervals (gate breakthroughs, finish fanfare, multiplication)
-    const duckingEnvelope = new Float32Array(totalSamples);
-    duckingEnvelope.fill(1.0);
+    // 1. Identify high-priority intervals: gate breakthroughs (0.75s, gain 0.35) and finish fanfare (2.8s, gain 0.20)
+    const breakthroughAndFanfareIntervals = [];
+    const gateEvents = [];
 
-    const highPriorityIntervals = [];
-    for (const ev of events) {
-      if (ev.type === 'gate' || ev.type === 'finish' || ev.type === 'multiplication') {
+    for (let i = 0; i < events.length; i++) {
+      const ev = events[i];
+      if (ev.type === 'finish') {
         const startSec = Math.max(0, ev.time);
-        const durSec = ev.type === 'finish' ? 2.8 : (ev.type === 'gate' ? 0.75 : 0.45);
-        const duckGain = ev.type === 'finish' ? 0.20 : 0.35; // -14dB during finish, -9dB during gate
-        highPriorityIntervals.push({ start: startSec, end: startSec + durSec, gain: duckGain });
+        breakthroughAndFanfareIntervals.push({ start: startSec, end: startSec + 2.8, gain: 0.20, eventIndex: i });
+      } else if (ev.type === 'gate') {
+        const startSec = Math.max(0, ev.time);
+        breakthroughAndFanfareIntervals.push({ start: startSec, end: startSec + 0.75, gain: 0.35, eventIndex: i });
+        gateEvents.push({ event: ev, index: i, start: startSec, end: startSec + 0.75 });
       }
     }
+
+    // Master ducking envelope for all background audio layers (bounce, tally, multiplication chimes)
+    const backgroundDuckingEnvelope = this.createDuckingEnvelope(totalSamples, breakthroughAndFanfareIntervals);
+
+    // 2. Synthesize events with priority, velocity sensitivity, and sample-level dynamic ducking
+    for (let i = 0; i < events.length; i++) {
+      const ev = events[i];
+      const startSample = Math.floor(ev.time * this.sampleRate);
+      if (startSample >= totalSamples) continue;
+
+      const pan = ev.lane === 'left' ? -0.45 : ev.lane === 'right' ? 0.45 : 0;
+      const leftGain = Math.cos((pan + 1) * Math.PI / 4);
+      const rightGain = Math.sin((pan + 1) * Math.PI / 4);
+
+      if (ev.type === 'bounce') {
+        // Velocity-sensitive collision intensity
+        const force = ev.impactForce || ev.force || 1.0;
+        const basePitch = ev.pitch || (force > 1.4 ? 480 : 640);
+        const baseVol = ev.volume || (force > 1.4 ? 0.14 : 0.08);
+        this.renderClick(leftChannel, rightChannel, startSample, basePitch, baseVol, leftGain, rightGain, backgroundDuckingEnvelope);
+      } else if (ev.type === 'gate') {
+        // High-priority barrier breakthrough with sub-harmonic thump & resonant chime
+        const tier = ev.tier || 0;
+        const baseFreq = 300 * Math.pow(1.15, tier);
+        const isFinalTier = (tier >= 5);
+        // Gate chimes receive ducking from finish fanfare and any overlapping external gate breakthroughs
+        const chimeIntervals = breakthroughAndFanfareIntervals.filter(interval => interval.eventIndex !== i);
+        const chimeDucking = chimeIntervals.length > 0
+          ? this.createDuckingEnvelope(totalSamples, chimeIntervals)
+          : null;
+        this.renderChime(leftChannel, rightChannel, startSample, baseFreq, isFinalTier ? 0.55 : 0.42, leftGain, rightGain, isFinalTier, chimeDucking);
+      } else if (ev.type === 'multiplication') {
+        // Multiplication crystalline shimmer receives dynamic ducking envelope
+        this.renderMultiplication(leftChannel, rightChannel, startSample, ev.count || 6, leftGain, rightGain, backgroundDuckingEnvelope);
+      } else if (ev.type === 'tally') {
+        this.renderBlip(leftChannel, rightChannel, startSample, 880 + (ev.count || 0) % 200, 0.08, leftGain, rightGain, backgroundDuckingEnvelope);
+      } else if (ev.type === 'finish') {
+        this.renderFanfare(leftChannel, rightChannel, startSample);
+      }
+    }
+
+    // 3. Master Bus Headroom Management & Peak Soft Limiting
+    const wavBuffer = this.encodeWAV([leftChannel, rightChannel], this.sampleRate);
+    fs.writeFileSync(outputPath, wavBuffer);
+    return outputPath;
+  }
+
+  createDuckingEnvelope(totalSamples, intervals) {
+    const duckingEnvelope = new Float32Array(totalSamples);
+    duckingEnvelope.fill(1.0);
 
     const attackSamples = Math.floor(0.020 * this.sampleRate); // 20ms attack
     const releaseSamples = Math.floor(0.060 * this.sampleRate); // 60ms release
 
-    for (const interval of highPriorityIntervals) {
+    for (const interval of intervals) {
       const startIdx = Math.floor(interval.start * this.sampleRate);
       const endIdx = Math.min(totalSamples, Math.floor(interval.end * this.sampleRate));
       const targetGain = interval.gain;
@@ -60,40 +111,7 @@ class AudioSynthesizer {
       }
     }
 
-    // 2. Synthesize events with priority, velocity sensitivity, and sample-level dynamic ducking
-    for (const ev of events) {
-      const startSample = Math.floor(ev.time * this.sampleRate);
-      if (startSample >= totalSamples) continue;
-
-      const pan = ev.lane === 'left' ? -0.45 : ev.lane === 'right' ? 0.45 : 0;
-      const leftGain = Math.cos((pan + 1) * Math.PI / 4);
-      const rightGain = Math.sin((pan + 1) * Math.PI / 4);
-
-      if (ev.type === 'bounce') {
-        // Velocity-sensitive collision intensity
-        const force = ev.impactForce || ev.force || 1.0;
-        const basePitch = ev.pitch || (force > 1.4 ? 480 : 640);
-        const baseVol = ev.volume || (force > 1.4 ? 0.14 : 0.08);
-        this.renderClick(leftChannel, rightChannel, startSample, basePitch, baseVol, leftGain, rightGain, duckingEnvelope);
-      } else if (ev.type === 'gate') {
-        // High-priority barrier breakthrough with sub-harmonic thump & resonant chime
-        const tier = ev.tier || 0;
-        const baseFreq = 300 * Math.pow(1.15, tier);
-        const isFinalTier = (tier >= 5);
-        this.renderChime(leftChannel, rightChannel, startSample, baseFreq, isFinalTier ? 0.55 : 0.42, leftGain, rightGain, isFinalTier);
-      } else if (ev.type === 'multiplication') {
-        this.renderMultiplication(leftChannel, rightChannel, startSample, ev.count || 6, leftGain, rightGain);
-      } else if (ev.type === 'tally') {
-        this.renderBlip(leftChannel, rightChannel, startSample, 880 + (ev.count || 0) % 200, 0.08, leftGain, rightGain, duckingEnvelope);
-      } else if (ev.type === 'finish') {
-        this.renderFanfare(leftChannel, rightChannel, startSample);
-      }
-    }
-
-    // 3. Master Bus Headroom Management & Peak Soft Limiting
-    const wavBuffer = this.encodeWAV([leftChannel, rightChannel], this.sampleRate);
-    fs.writeFileSync(outputPath, wavBuffer);
-    return outputPath;
+    return duckingEnvelope;
   }
 
   renderClick(left, right, startSample, freq, volume, leftGain, rightGain, duckingEnvelope = null) {
@@ -124,7 +142,7 @@ class AudioSynthesizer {
     }
   }
 
-  renderMultiplication(left, right, startSample, count, leftGain, rightGain) {
+  renderMultiplication(left, right, startSample, count, leftGain, rightGain, duckingEnvelope = null) {
     const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6 crystalline shimmer chord
     const noteSpacing = 0.035;
     notes.forEach((freq, idx) => {
@@ -133,16 +151,18 @@ class AudioSynthesizer {
       const duration = 0.38;
       const numSamples = Math.min(Math.floor(duration * this.sampleRate), left.length - noteStart);
       for (let i = 0; i < numSamples; i++) {
+        const sIdx = noteStart + i;
+        const duck = duckingEnvelope ? duckingEnvelope[sIdx] : 1.0;
         const t = i / this.sampleRate;
         const env = Math.exp(-t * 8.5);
-        const val = Math.sin(2 * Math.PI * freq * t) * env * 0.16;
-        left[noteStart + i] += val * leftGain;
-        right[noteStart + i] += val * rightGain;
+        const val = Math.sin(2 * Math.PI * freq * t) * env * 0.16 * duck;
+        left[sIdx] += val * leftGain;
+        right[sIdx] += val * rightGain;
       }
     });
   }
 
-  renderChime(left, right, startSample, baseFreq, volume, leftGain, rightGain, isFinalTier = false) {
+  renderChime(left, right, startSample, baseFreq, volume, leftGain, rightGain, isFinalTier = false, duckingEnvelope = null) {
     const duration = isFinalTier ? 0.95 : 0.65;
     const numSamples = Math.min(Math.floor(duration * this.sampleRate), left.length - startSample);
     const harmonics = [
@@ -153,6 +173,8 @@ class AudioSynthesizer {
     ];
 
     for (let i = 0; i < numSamples; i++) {
+      const sIdx = startSample + i;
+      const duck = duckingEnvelope ? duckingEnvelope[sIdx] : 1.0;
       const t = i / this.sampleRate;
 
       // Deterministic fracture snap noise
@@ -173,9 +195,9 @@ class AudioSynthesizer {
       for (const h of harmonics) {
         sample += Math.sin(2 * Math.PI * h.f * t) * h.g;
       }
-      const val = (sample * env * volume) + crackNoise + subThump;
-      left[startSample + i] += val * leftGain;
-      right[startSample + i] += val * rightGain;
+      const val = ((sample * env * volume) + crackNoise + subThump) * duck;
+      left[sIdx] += val * leftGain;
+      right[sIdx] += val * rightGain;
     }
   }
 

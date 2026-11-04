@@ -1,6 +1,6 @@
 {
   "vaultVersion": "1.0.0",
-  "lastUpdated": "2026-11-04T15:55:29.117Z",
+  "lastUpdated": "2026-11-04T16:58:01.139Z",
   "totalVideos": 5,
   "videos": [
     {
@@ -50,6 +50,18 @@
         },
         "leadChanges": 1,
         "finishMargin": null,
+        "maxEarlyLeftDeficit": 18,
+        "maxEarlyRightDeficit": 0,
+        "populationProgression": {
+          "leftStart": 3,
+          "rightStart": 12,
+          "totalStart": 15,
+          "leftFinal": 192,
+          "rightFinal": 42,
+          "totalFinal": 234,
+          "totalMultiplier": 15.6,
+          "totalGrowth": 219
+        },
         "escapedMarblesCount": 0,
         "timelineEvents": [
           {
@@ -183,7 +195,7 @@
           "existing": null
         }
       },
-      "archivedAt": "2026-11-04T15:55:29.062Z",
+      "archivedAt": "2026-11-04T16:58:00.121Z",
       "tags": [],
       "scenarioId": "flagship_scenario_01",
       "configurationHash": "40dd6ea114978182",
@@ -194,7 +206,7 @@
         "quality": 0.82
       },
       "hookText": "Can 3 multiplying balls beat 12 balls? 😱",
-      "perceptualHash": "8bf1de0ee62fcf3d",
+      "perceptualHash": "2b23234d28054d00",
       "qualityReport": {
         "simulationValidity": {
           "valid": "PASS",
@@ -268,14 +280,13 @@
       "publishingReceipt": null,
       "platformVideoId": null,
       "publicationTimestamp": null,
-      "updatedAt": "2026-11-04T15:55:29.063Z",
+      "updatedAt": "2026-11-04T16:58:00.122Z",
       "approvalRecord": {
-        "approver": "Principal Creative Auditor",
-        "approverRole": "Human QA Architect & Release Auditor",
-        "timestamp": "2026-11-04T15:38:06.924Z",
-        "policyVersion": "BURSTPOINT_HUMAN_CREATIVE_POLICY_V1",
+        "approver": "AUTOMATED_UNATTENDED_POLICY",
+        "timestamp": "2026-11-04T16:57:10.786Z",
+        "policyVersion": "1.0.0",
         "creativeVerdict": "APPROVED_FOR_PUBLISHING",
-        "notes": "Verified 20.0s narrative arc, hook readability, high-contrast typography, and audio loudness for flagship_scenario_01_flagship."
+        "notes": "Automated unattended policy explicitly enabled via configuration."
       }
     },
     {
@@ -325,6 +336,18 @@
         },
         "leadChanges": 5,
         "finishMargin": 0.1,
+        "maxEarlyLeftDeficit": 30,
+        "maxEarlyRightDeficit": 0,
+        "populationProgression": {
+          "leftStart": 4,
+          "rightStart": 14,
+          "totalStart": 18,
+          "leftFinal": 256,
+          "rightFinal": 62,
+          "totalFinal": 318,
+          "totalMultiplier": 17.67,
+          "totalGrowth": 300
+        },
         "escapedMarblesCount": 0,
         "timelineEvents": [
           {
@@ -482,7 +505,7 @@
           "existing": null
         }
       },
-      "archivedAt": "2026-11-04T15:55:29.082Z",
+      "archivedAt": "2026-11-04T16:58:00.371Z",
       "tags": [],
       "scenarioId": "flagship_scenario_02",
       "configurationHash": "bd39818b2e16ede1",
@@ -493,7 +516,7 @@
         "quality": 0.82
       },
       "hookText": "Look at how close this finish is! 😱",
-      "perceptualHash": "a31bf23c04f2c743",
+      "perceptualHash": "2b33472504454500",
       "qualityReport": {
         "simulationValidity": {
           "valid": "PASS",
@@ -567,14 +590,13 @@
       "publishingReceipt": null,
       "platformVideoId": null,
       "publicationTimestamp": null,
-      "updatedAt": "2026-11-04T15:55:29.082Z",
+      "updatedAt": "2026-11-04T16:58:00.371Z",
       "approvalRecord": {
-        "approver": "Principal Creative Auditor",
-        "approverRole": "Human QA Architect & Release Auditor",
-        "timestamp": "2026-11-04T15:38:06.946Z",
-        "policyVersion": "BURSTPOINT_HUMAN_CREATIVE_POLICY_V1",
+        "approver": "AUTOMATED_UNATTENDED_POLICY",
+        "timestamp": "2026-11-04T16:57:10.791Z",
+        "policyVersion": "1.0.0",
         "creativeVerdict": "APPROVED_FOR_PUBLISHING",
-        "notes": "Verified 20.0s narrative arc, hook readability, high-contrast typography, and audio loudness for flagship_scenario_02_flagship."
+        "notes": "Automated unattended policy explicitly enabled via configuration."
       }
     },
     {
@@ -624,6 +646,18 @@
         },
         "leadChanges": 1,
         "finishMargin": 0.27,
+        "maxEarlyLeftDeficit": 26,
+        "maxEarlyRightDeficit": 0,
+        "populationProgression": {
+          "leftStart": 2,
+          "rightStart": 16,
+          "totalStart": 18,
+          "leftFinal": 128,
+          "rightFinal": 52,
+          "totalFinal": 180,
+          "totalMultiplier": 10,
+          "totalGrowth": 162
+        },
         "escapedMarblesCount": 0,
         "timelineEvents": [
           {
@@ -757,7 +791,7 @@
           "existing": null
         }
       },
-      "archivedAt": "2026-11-04T15:55:29.096Z",
+      "archivedAt": "2026-11-04T16:58:00.627Z",
       "tags": [],
       "scenarioId": "flagship_scenario_03",
       "configurationHash": "e077af27d6d003f2",
@@ -768,7 +802,7 @@
         "quality": 0.82
       },
       "hookText": "Watch the insane final tier comeback! 🤯",
-      "perceptualHash": "9e2ef0020539c15d",
+      "perceptualHash": "2b23333524454500",
       "qualityReport": {
         "simulationValidity": {
           "valid": "PASS",
@@ -842,14 +876,13 @@
       "publishingReceipt": null,
       "platformVideoId": null,
       "publicationTimestamp": null,
-      "updatedAt": "2026-11-04T15:55:29.096Z",
+      "updatedAt": "2026-11-04T16:58:00.627Z",
       "approvalRecord": {
-        "approver": "Principal Creative Auditor",
-        "approverRole": "Human QA Architect & Release Auditor",
-        "timestamp": "2026-11-04T15:38:06.968Z",
-        "policyVersion": "BURSTPOINT_HUMAN_CREATIVE_POLICY_V1",
+        "approver": "AUTOMATED_UNATTENDED_POLICY",
+        "timestamp": "2026-11-04T16:57:10.794Z",
+        "policyVersion": "1.0.0",
         "creativeVerdict": "APPROVED_FOR_PUBLISHING",
-        "notes": "Verified 20.0s narrative arc, hook readability, high-contrast typography, and audio loudness for flagship_scenario_03_flagship."
+        "notes": "Automated unattended policy explicitly enabled via configuration."
       }
     },
     {
@@ -899,6 +932,18 @@
         },
         "leadChanges": 0,
         "finishMargin": null,
+        "maxEarlyLeftDeficit": 54,
+        "maxEarlyRightDeficit": 0,
+        "populationProgression": {
+          "leftStart": 2,
+          "rightStart": 18,
+          "totalStart": 20,
+          "leftFinal": 162,
+          "rightFinal": 102,
+          "totalFinal": 264,
+          "totalMultiplier": 13.2,
+          "totalGrowth": 244
+        },
         "escapedMarblesCount": 0,
         "timelineEvents": [],
         "totalEvents": 1051,
@@ -1025,7 +1070,7 @@
           "existing": null
         }
       },
-      "archivedAt": "2026-11-04T15:55:29.109Z",
+      "archivedAt": "2026-11-04T16:58:00.879Z",
       "tags": [],
       "scenarioId": "flagship_scenario_04",
       "configurationHash": "996f6cc5c7ce5139",
@@ -1036,7 +1081,7 @@
         "quality": 0.82
       },
       "hookText": "Can high multipliers survive against the additive tank? 🤯",
-      "perceptualHash": "77f9ca2834b93b29",
+      "perceptualHash": "2b33552500414500",
       "qualityReport": {
         "simulationValidity": {
           "valid": "PASS",
@@ -1110,14 +1155,13 @@
       "publishingReceipt": null,
       "platformVideoId": null,
       "publicationTimestamp": null,
-      "updatedAt": "2026-11-04T15:55:29.109Z",
+      "updatedAt": "2026-11-04T16:58:00.879Z",
       "approvalRecord": {
-        "approver": "Principal Creative Auditor",
-        "approverRole": "Human QA Architect & Release Auditor",
-        "timestamp": "2026-11-04T15:38:06.989Z",
-        "policyVersion": "BURSTPOINT_HUMAN_CREATIVE_POLICY_V1",
+        "approver": "AUTOMATED_UNATTENDED_POLICY",
+        "timestamp": "2026-11-04T16:57:10.798Z",
+        "policyVersion": "1.0.0",
         "creativeVerdict": "APPROVED_FOR_PUBLISHING",
-        "notes": "Verified 20.0s narrative arc, hook readability, high-contrast typography, and audio loudness for flagship_scenario_04_flagship."
+        "notes": "Automated unattended policy explicitly enabled via configuration."
       }
     },
     {
@@ -1167,6 +1211,18 @@
         },
         "leadChanges": 3,
         "finishMargin": 0.07,
+        "maxEarlyLeftDeficit": 30,
+        "maxEarlyRightDeficit": 0,
+        "populationProgression": {
+          "leftStart": 3,
+          "rightStart": 18,
+          "totalStart": 21,
+          "leftFinal": 192,
+          "rightFinal": 66,
+          "totalFinal": 258,
+          "totalMultiplier": 12.29,
+          "totalGrowth": 237
+        },
         "escapedMarblesCount": 0,
         "timelineEvents": [
           {
@@ -1312,7 +1368,7 @@
           "existing": null
         }
       },
-      "archivedAt": "2026-11-04T15:55:29.117Z",
+      "archivedAt": "2026-11-04T16:58:01.139Z",
       "tags": [],
       "scenarioId": "flagship_scenario_05",
       "configurationHash": "724ff7e6b95b43ea",
@@ -1323,7 +1379,7 @@
         "quality": 0.82
       },
       "hookText": "Only 0.07 seconds apart at the finish! 😱",
-      "perceptualHash": "df293ba6420a78a5",
+      "perceptualHash": "2b33572504454500",
       "qualityReport": {
         "simulationValidity": {
           "valid": "PASS",
@@ -1397,14 +1453,13 @@
       "publishingReceipt": null,
       "platformVideoId": null,
       "publicationTimestamp": null,
-      "updatedAt": "2026-11-04T15:55:29.117Z",
+      "updatedAt": "2026-11-04T16:58:01.139Z",
       "approvalRecord": {
-        "approver": "Principal Creative Auditor",
-        "approverRole": "Human QA Architect & Release Auditor",
-        "timestamp": "2026-11-04T15:38:07.012Z",
-        "policyVersion": "BURSTPOINT_HUMAN_CREATIVE_POLICY_V1",
+        "approver": "AUTOMATED_UNATTENDED_POLICY",
+        "timestamp": "2026-11-04T16:57:10.802Z",
+        "policyVersion": "1.0.0",
         "creativeVerdict": "APPROVED_FOR_PUBLISHING",
-        "notes": "Verified 20.0s narrative arc, hook readability, high-contrast typography, and audio loudness for flagship_scenario_05_flagship."
+        "notes": "Automated unattended policy explicitly enabled via configuration."
       }
     }
   ]

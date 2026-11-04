@@ -7,6 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { spawnSync } = require('child_process');
 
 class VideoVault {
   constructor(options = {}) {
@@ -136,8 +137,44 @@ class VideoVault {
     return crypto.createHash('sha256').update(JSON.stringify(canonical)).digest('hex').substring(0, 16);
   }
 
-  // Generates perceptual video hash from file stats and cryptographic sample points
-  static computePerceptualHash(filePath) {
+  // Generates genuine visual perceptual hash (dHash) from decoded frame via FFmpeg
+  static computePerceptualHash(filePath, timestampSeconds = 2.0) {
+    if (!fs.existsSync(filePath)) return null;
+    try {
+      const res = spawnSync('ffmpeg', [
+        '-v', 'quiet',
+        '-ss', String(timestampSeconds),
+        '-i', filePath,
+        '-vf', 'scale=9:8,format=gray',
+        '-vframes', '1',
+        '-f', 'rawvideo',
+        '-'
+      ], { maxBuffer: 1024 * 1024 });
+
+      if (res.status === 0 && res.stdout && res.stdout.length >= 72) {
+        const pixels = res.stdout;
+        let bits = '';
+        for (let r = 0; r < 8; r++) {
+          for (let c = 0; c < 8; c++) {
+            const left = pixels[r * 9 + c];
+            const right = pixels[r * 9 + c + 1];
+            bits += (left > right ? '1' : '0');
+          }
+        }
+        let hex = '';
+        for (let i = 0; i < 64; i += 4) {
+          hex += parseInt(bits.substring(i, i + 4), 2).toString(16);
+        }
+        return hex;
+      }
+    } catch (e) {
+      // Fallback if FFmpeg is unavailable
+    }
+    return VideoVault.computeSampledByteHash(filePath);
+  }
+
+  // Byte-level file sample hash (accurate sampled checksum, distinct from visual perceptual hash)
+  static computeSampledByteHash(filePath) {
     if (!fs.existsSync(filePath)) return null;
     const stat = fs.statSync(filePath);
     const fd = fs.openSync(filePath, 'r');
@@ -153,6 +190,20 @@ class VideoVault {
     } finally {
       fs.closeSync(fd);
     }
+  }
+
+  // Computes bitwise Hamming distance between two 16-hex-character hashes
+  static hammingDistance(hashA, hashB) {
+    if (!hashA || !hashB || hashA.length !== hashB.length) return 64;
+    let dist = 0;
+    for (let i = 0; i < hashA.length; i++) {
+      let xor = parseInt(hashA[i], 16) ^ parseInt(hashB[i], 16);
+      while (xor > 0) {
+        dist += xor & 1;
+        xor >>= 1;
+      }
+    }
+    return dist;
   }
 
   // Sanitizes simulation outcome to exclude voluminous micro-physics events array while preserving metrics and outcomes
@@ -267,8 +318,9 @@ class VideoVault {
       }
     }
 
-    // Check title / hook exact duplication
     const index = this.getIndex();
+
+    // Check title / hook exact duplication
     if (candidate.title) {
       const cleanTitle = candidate.title.trim().toLowerCase();
       const existingTitle = index.videos.find(v => v.title && v.title.trim().toLowerCase() === cleanTitle);
@@ -278,6 +330,27 @@ class VideoVault {
           reason: `DUPLICATE_TITLE (matches existing clip "${existingTitle.clipId}")`,
           existing: existingTitle
         };
+      }
+    }
+
+    // Check visual perceptual hash (detects visual duplicates & re-encoded copies)
+    const pHash = candidate.perceptualHash || (candidate.videoPath && fs.existsSync(candidate.videoPath)
+      ? VideoVault.computePerceptualHash(candidate.videoPath)
+      : null);
+
+    if (pHash) {
+      for (const v of index.videos) {
+        if (v.clipId !== candidate.clipId && v.perceptualHash) {
+          const dist = VideoVault.hammingDistance(pHash, v.perceptualHash);
+          if (dist <= 4) {
+            return {
+              isUnique: false,
+              reason: `DUPLICATE_VISUAL_HASH (Perceptual hash matches existing clip "${v.clipId}" with Hamming distance ${dist} <= 4)`,
+              existing: v,
+              hammingDistance: dist
+            };
+          }
+        }
       }
     }
 

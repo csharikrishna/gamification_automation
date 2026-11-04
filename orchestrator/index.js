@@ -103,7 +103,12 @@ async function main() {
     }
 
     case 'production:proof': {
-      const pipeline = new ProductionPipeline({ renderClipCount: parseInt(options.count || '5', 10) });
+      const pipeline = new ProductionPipeline({
+        renderClipCount: parseInt(options.count || '5', 10),
+        unattendedApproval: options.unattended || false,
+        humanApprovalToken: options.token || null,
+        reviewer: options.reviewer ? { name: options.reviewer } : null
+      });
       await pipeline.execute();
       break;
     }

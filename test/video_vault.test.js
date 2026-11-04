@@ -52,12 +52,16 @@ try {
 
   // 3. Archiving and Retrieval
   console.log('▶ [3/7] Testing Video Archiving & Storage...');
+  const realMediaPath = path.resolve('output/underdog_slow_composed.mp4');
+  const realPHash = fs.existsSync(realMediaPath) ? VideoVault.computePerceptualHash(realMediaPath, 2) : '0b33610520454500';
+
   const record1 = vault.archiveVideo({
     clipId: 'test_clip_01',
     gameType: 'multiplying-ball-race',
     seed: 40317,
     config: cfgA,
     sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+    perceptualHash: realPHash,
     videoPath: 'output/test_clip_01.mp4',
     durationSeconds: 20,
     exactFrameCount: 1200,
@@ -67,10 +71,10 @@ try {
   assert.strictEqual(vault.getIndex().totalVideos, 1);
   assert.strictEqual(vault.hasVideo({ clipId: 'test_clip_01' }), true);
   assert.strictEqual(vault.hasVideo({ sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855' }), true);
-  console.log('  ✓ Video successfully archived and queryable by clipId and SHA-256.\n');
+  console.log('  ✓ Video successfully archived and queryable by clipId, SHA-256, and perceptualHash.\n');
 
   // 4. Anti-Repetition Guardrails
-  console.log('▶ [4/7] Testing Anti-Repetition Protection...');
+  console.log('▶ [4/7] Testing Anti-Repetition & Visual Perceptual Hash Guardrails...');
   const duplicateSigCheck = vault.checkUniqueness({ config: cfgA });
   assert.strictEqual(duplicateSigCheck.isUnique, false);
   assert(duplicateSigCheck.reason.includes('DUPLICATE_SCENARIO_SIGNATURE'));
@@ -82,14 +86,31 @@ try {
   assert.strictEqual(duplicateHashCheck.isUnique, false);
   assert(duplicateHashCheck.reason.includes('DUPLICATE_MEDIA_HASH'));
 
-  const uniqueCheck = vault.checkUniqueness({
+  // Test re-encoded copy visual duplicate detection (differs by <= 2 bits out of 64 bits)
+  // Even with different SHA-256 and different scenario config, perceptual visual hash catches it!
+  const reencodedPHash = '0b33610504454500'; // 2 bits flipped from 0b33610520454500
+  const visualDuplicateCheck = vault.checkUniqueness({
+    clipId: 'test_reencoded_clip',
     config: cfgC,
-    sha256: '0000000000000000000000000000000000000000000000000000000000000000'
+    sha256: '1111111111111111111111111111111111111111111111111111111111111111',
+    perceptualHash: reencodedPHash
+  });
+  assert.strictEqual(visualDuplicateCheck.isUnique, false);
+  assert(visualDuplicateCheck.reason.includes('DUPLICATE_VISUAL_HASH'), 'Must catch re-encoded visual duplicate!');
+
+  // Test visually distinct clip (Hamming distance = 12 bits > 4)
+  const distinctPHash = '2b33472504454500';
+  const uniqueCheck = vault.checkUniqueness({
+    clipId: 'distinct_clip',
+    config: cfgC,
+    sha256: '0000000000000000000000000000000000000000000000000000000000000000',
+    perceptualHash: distinctPHash
   });
   assert.strictEqual(uniqueCheck.isUnique, true);
   console.log('  ✓ Duplicate scenario signatures rejected.');
   console.log('  ✓ Duplicate media hashes rejected.');
-  console.log('  ✓ Distinct scenario accepted as unique.\n');
+  console.log('  ✓ Re-encoded visual duplicate rejected via perceptual dHash.');
+  console.log('  ✓ Distinct visual scenario accepted as unique.\n');
 
   // 5. Statistics Reporting
   console.log('▶ [5/7] Testing Vault Statistics...');

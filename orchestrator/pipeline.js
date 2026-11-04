@@ -24,7 +24,9 @@ class ProductionOrchestrator {
     this.targetDuration = options.targetDuration || 20.0; // P0: Explicit 20.0s output contract
     this.fps = options.fps || 60;
     // P0: Explicit human creative review gate by default (Unattended requires explicit configuration)
-    this.unattendedApproval = options.unattendedApproval !== undefined ? options.unattendedApproval : false;
+    this.unattendedApproval = options.unattendedApproval !== undefined ? Boolean(options.unattendedApproval) : false;
+    this.humanApprovalToken = options.humanApprovalToken || options.token || process.env.HUMAN_APPROVAL_TOKEN || null;
+    this.reviewer = options.reviewer || (process.env.REVIEWER_NAME ? { name: process.env.REVIEWER_NAME } : null);
     this.timezone = options.timezone || 'Asia/Kolkata';
     this.forceRender = options.forceRender || false;
 
@@ -190,6 +192,8 @@ class ProductionOrchestrator {
       let leadChanges = 0;
       let lastLeader = null;
       let escapedMarblesCount = 0;
+      let maxEarlyLeftDeficit = 0;
+      let maxEarlyRightDeficit = 0;
       const timelineEvents = [];
 
       for (let f = 0; f < frames; f++) {
@@ -215,6 +219,14 @@ class ProductionOrchestrator {
         }
         if (currentLeader !== 'TIED') lastLeader = currentLeader;
 
+        // Track early score deficit before mid-game (early 6.0s)
+        if (obs.simTime <= 6.0) {
+          const leftDeficit = obs.rightScore - obs.leftScore;
+          const rightDeficit = obs.leftScore - obs.rightScore;
+          if (leftDeficit > maxEarlyLeftDeficit) maxEarlyLeftDeficit = leftDeficit;
+          if (rightDeficit > maxEarlyRightDeficit) maxEarlyRightDeficit = rightDeficit;
+        }
+
         // Boundary containment audit on all active physical marbles
         const leftBalls = game.engine?.lanes?.left?.balls || [];
         const rightBalls = game.engine?.lanes?.right?.balls || [];
@@ -234,6 +246,24 @@ class ProductionOrchestrator {
       const lFinish = game.engine?.lanes?.left?.finishedTime || null;
       const rFinish = game.engine?.lanes?.right?.finishedTime || null;
       const finishMargin = (lFinish && rFinish) ? Number(Math.abs(lFinish - rFinish).toFixed(2)) : null;
+
+      // Track population progression across tiers
+      const leftStart = cfg.lanes.left.startBalls;
+      const rightStart = cfg.lanes.right.startBalls;
+      const totalStart = leftStart + rightStart;
+      const totalFinal = obs.leftScore + obs.rightScore;
+      const totalMultiplier = Number((totalFinal / Math.max(1, totalStart)).toFixed(2));
+      const totalGrowth = totalFinal - totalStart;
+      const populationProgression = {
+        leftStart,
+        rightStart,
+        totalStart,
+        leftFinal: obs.leftScore,
+        rightFinal: obs.rightScore,
+        totalFinal,
+        totalMultiplier,
+        totalGrowth
+      };
 
       // Reconcile dynamic title with actual verified finish margin if applicable
       let finalTitle = cfg.title;
@@ -258,6 +288,9 @@ class ProductionOrchestrator {
         rightMetrics: obs.rightMetrics,
         leadChanges,
         finishMargin,
+        maxEarlyLeftDeficit,
+        maxEarlyRightDeficit,
+        populationProgression,
         escapedMarblesCount,
         timelineEvents,
         totalEvents: game.getEvents().length,
@@ -373,19 +406,43 @@ class ProductionOrchestrator {
         const rightStart = sim.config.lanes.right.startBalls;
         const winnerStart = sim.winner === 'MULTIPLY' ? leftStart : rightStart;
         const loserStart = sim.winner === 'MULTIPLY' ? rightStart : leftStart;
+        const winnerEarlyDeficit = sim.winner === 'MULTIPLY' ? sim.maxEarlyLeftDeficit : sim.maxEarlyRightDeficit;
+
         if (winnerStart >= loserStart) {
           narrativeRoleTruth = 'FAIL';
-          narrativeRoleReason = `Winner started with ${winnerStart} >= ${loserStart} (not an underdog)`;
+          narrativeRoleReason = `Winner started with ${winnerStart} >= ${loserStart} (no starting deficit)`;
+        } else if (winnerEarlyDeficit <= 0) {
+          narrativeRoleTruth = 'FAIL';
+          narrativeRoleReason = `Underdog was never trailing early (deficit: ${winnerEarlyDeficit}); requires early trailing deficit before overtake`;
+        } else if (sim.leadChanges < 1) {
+          narrativeRoleTruth = 'FAIL';
+          narrativeRoleReason = 'Underdog did not demonstrate an overtake lead change';
+        }
+      } else if (sim.narrativeRole === 'COMEBACK_REVERSAL') {
+        const winnerEarlyDeficit = sim.winner === 'MULTIPLY' ? sim.maxEarlyLeftDeficit : sim.maxEarlyRightDeficit;
+
+        if (winnerEarlyDeficit <= 0) {
+          narrativeRoleTruth = 'FAIL';
+          narrativeRoleReason = `Winner was never trailing early (deficit: ${winnerEarlyDeficit}); comeback reversal requires early trailing deficit`;
+        } else if (sim.leadChanges < 1) {
+          narrativeRoleTruth = 'FAIL';
+          narrativeRoleReason = 'Zero lead changes observed; comeback reversal requires at least 1 lead change';
+        }
+      } else if (sim.narrativeRole === 'HEAVY_SWARM_ESCALATION') {
+        const pop = sim.populationProgression;
+        const winnerStart = sim.winner === 'MULTIPLY' ? sim.config.lanes.left.startBalls : sim.config.lanes.right.startBalls;
+        const winnerFinal = sim.winner === 'MULTIPLY' ? sim.leftScore : sim.rightScore;
+        const winnerMultiplier = winnerFinal / Math.max(1, winnerStart);
+        const winnerGrowth = winnerFinal - winnerStart;
+
+        if (winnerMultiplier < 2.5 || winnerGrowth < 30 || pop.totalMultiplier < 2.5) {
+          narrativeRoleTruth = 'FAIL';
+          narrativeRoleReason = `Insufficient swarm escalation (winner multiplier: ${winnerMultiplier.toFixed(1)}x / +${winnerGrowth} balls, total multiplier: ${pop.totalMultiplier.toFixed(1)}x)`;
         }
       } else if (sim.narrativeRole === 'PHOTO_FINISH_CLASH') {
         if (sim.finishMargin === null || sim.finishMargin > 0.25) {
           narrativeRoleTruth = 'FAIL';
           narrativeRoleReason = `Finish margin ${sim.finishMargin}s exceeds photo-finish threshold of 0.25s`;
-        }
-      } else if (sim.narrativeRole === 'COMEBACK_REVERSAL') {
-        if (sim.leadChanges < 1) {
-          narrativeRoleTruth = 'FAIL';
-          narrativeRoleReason = 'Zero lead changes observed; comeback reversal requires at least 1 lead change';
         }
       } else if (sim.narrativeRole === 'RAZOR_THIN_UPSET') {
         if (sim.finishMargin === null || sim.finishMargin > 0.20) {
@@ -629,29 +686,47 @@ class ProductionOrchestrator {
     return archived;
   }
 
-  // Stage 8: HUMAN REVIEW & CREATIVE APPROVAL
-  reviewAndApproveClips(archivedClips, reviewer = { name: 'Principal Creative Auditor', role: 'Human Lead' }) {
+  // Stage 8: HUMAN REVIEW & CREATIVE APPROVAL GATE
+  reviewAndApproveClips(archivedClips, reviewer = this.reviewer, approvalToken = this.humanApprovalToken) {
     const approved = [];
+    const hasExplicitHumanApproval = Boolean(
+      (approvalToken && String(approvalToken).trim().length > 0) ||
+      (reviewer && (reviewer.token || reviewer.signature || reviewer.signedApproval))
+    );
+
     for (const clip of archivedClips) {
       if (this.unattendedApproval) {
+        const approvalRecord = {
+          approver: 'AUTOMATED_UNATTENDED_POLICY',
+          timestamp: new Date().toISOString(),
+          policyVersion: '1.0.0',
+          creativeVerdict: 'APPROVED_FOR_PUBLISHING',
+          notes: 'Automated unattended policy explicitly enabled via configuration.'
+        };
+        this.vault.updateVideo(clip.clipId, {
+          reviewStatus: 'APPROVED_FOR_PUBLISHING',
+          approvalStatus: 'APPROVED',
+          approvalRecord
+        });
         approved.push({
           ...clip,
-          approvalRecord: {
-            approver: 'AUTOMATED_UNATTENDED_POLICY',
-            timestamp: new Date().toISOString(),
-            policyVersion: '1.0.0',
-            creativeVerdict: 'APPROVED'
-          },
-          approvalStatus: 'APPROVED'
+          approvalRecord,
+          reviewStatus: 'APPROVED_FOR_PUBLISHING',
+          approvalStatus: 'APPROVED',
+          lifecycleState: LIFECYCLE_STATES.APPROVED
         });
-      } else {
+      } else if (hasExplicitHumanApproval) {
+        const approverName = reviewer?.name || 'Human Creative Director';
+        const approverRole = reviewer?.role || 'Human QA Architect & Release Auditor';
+        const token = approvalToken || reviewer?.token || reviewer?.signature || 'EXPLICIT_SIGN_OFF_TOKEN';
         const approvalRecord = {
-          approver: reviewer.name || 'Principal Creative Auditor',
-          approverRole: reviewer.role || 'Human Creative Director',
+          approver: approverName,
+          approverRole,
+          approvalToken: token,
           timestamp: new Date().toISOString(),
           policyVersion: 'BURSTPOINT_HUMAN_CREATIVE_POLICY_V1',
           creativeVerdict: 'APPROVED_FOR_PUBLISHING',
-          notes: `Verified 20.0s narrative arc, hook readability, high-contrast typography, and audio loudness for ${clip.clipId}.`
+          notes: reviewer?.notes || `Explicit human creative sign-off verified with token for ${clip.clipId}.`
         };
 
         this.vault.updateVideo(clip.clipId, {
@@ -666,6 +741,22 @@ class ProductionOrchestrator {
           reviewStatus: 'APPROVED_FOR_PUBLISHING',
           approvalStatus: 'APPROVED',
           lifecycleState: LIFECYCLE_STATES.APPROVED
+        });
+      } else {
+        // Unattended is false and NO explicit human approval action/token given!
+        // Do NOT fabricate approval records. Retain HUMAN_REVIEW_PENDING.
+        this.vault.updateVideo(clip.clipId, {
+          reviewStatus: 'HUMAN_REVIEW_PENDING',
+          approvalStatus: 'PENDING_HUMAN_REVIEW',
+          approvalRecord: null
+        });
+
+        approved.push({
+          ...clip,
+          approvalRecord: null,
+          reviewStatus: 'HUMAN_REVIEW_PENDING',
+          approvalStatus: 'PENDING_HUMAN_REVIEW',
+          lifecycleState: LIFECYCLE_STATES.VALIDATED
         });
       }
     }
@@ -683,7 +774,7 @@ class ProductionOrchestrator {
 
       // Security Invariant: Never queue unapproved clips
       if (clip.approvalStatus !== 'APPROVED') {
-        console.warn(`[Pipeline] Security Invariant: Skipping unapproved clip "${clip.clipId}" from entering publishing queue.`);
+        console.warn(`[Pipeline] Security Invariant: Skipping unapproved clip "${clip.clipId}" (status: ${clip.approvalStatus}) from entering publishing queue.`);
         continue;
       }
 
@@ -793,11 +884,19 @@ class ProductionOrchestrator {
 
     // 7. HUMAN CREATIVE REVIEW & APPROVAL
     console.log('\n[Stage 7/10] 👤 Conducting explicit human creative review & approval gate...');
-    const approvedClips = this.reviewAndApproveClips(archivedClips, {
-      name: 'Principal Creative Auditor',
-      role: 'Human QA Architect & Release Auditor'
-    });
-    console.log(`  ✓ Human creative review completed: ${approvedClips.length} clips certified for publishing.`);
+    const approvedClips = this.reviewAndApproveClips(archivedClips, this.reviewer, this.humanApprovalToken);
+    const hasExplicitApproval = Boolean(
+      (this.humanApprovalToken && String(this.humanApprovalToken).trim().length > 0) ||
+      (this.reviewer && (this.reviewer.token || this.reviewer.signature || this.reviewer.signedApproval))
+    );
+    const isOfficiallyApproved = this.unattendedApproval || hasExplicitApproval;
+    const humanApprovedCount = approvedClips.filter(c => c.approvalStatus === 'APPROVED').length;
+
+    if (isOfficiallyApproved) {
+      console.log(`  ✓ Human creative review verified: ${humanApprovedCount} clips certified for publishing.`);
+    } else {
+      console.log(`  ℹ️ Review gate: ${approvedClips.length} clips awaiting human review (HUMAN_REVIEW_PENDING).`);
+    }
 
     // 8. SCHEDULED
     console.log('\n[Stage 8/10] 📅 Inserting approved media into authoritative publishing queue...');
@@ -818,11 +917,12 @@ class ProductionOrchestrator {
       version: '4.0.0',
       executedAt: new Date().toISOString(),
       gameCertified: 'multiplying-ball-race',
-      productionStatus: 'CERTIFIED_FLAGSHIP_PRODUCTION_READY',
+      productionStatus: isOfficiallyApproved ? 'CERTIFIED_FLAGSHIP_PRODUCTION_READY' : 'HUMAN_REVIEW_PENDING',
       approvalGovernance: {
         approvalPolicy: this.unattendedApproval ? 'UNATTENDED_AUTOMATED_POLICY' : 'HUMAN_REVIEW_BY_DEFAULT',
-        humanReviewStatus: 'APPROVED_FOR_PUBLISHING',
-        approver: 'Principal Creative Auditor',
+        humanReviewStatus: isOfficiallyApproved ? 'APPROVED_FOR_PUBLISHING' : 'HUMAN_REVIEW_PENDING',
+        approver: hasExplicitApproval ? (this.reviewer?.name || 'Human Creative Director') : (this.unattendedApproval ? 'AUTOMATED_UNATTENDED_POLICY' : null),
+        approvalToken: hasExplicitApproval ? (this.humanApprovalToken || this.reviewer?.token || 'SIGNED_APPROVAL') : null,
         unattendedApprovalConfigured: this.unattendedApproval
       },
       outputDurationContract: {
@@ -838,7 +938,7 @@ class ProductionOrchestrator {
         approvedCandidates: approvedCandidates.length,
         renderedClipsOnDisk: renderedClips.length,
         archivedInVault: archivedClips.length,
-        humanApprovedClips: approvedClips.length,
+        humanApprovedClips: humanApprovedCount,
         queuedClips: queuedClips.length,
         dryRunReceiptsCount: dryRunReceipts.length,
         totalProcessingSeconds: totalDurationSeconds
@@ -887,7 +987,9 @@ class ProductionOrchestrator {
     console.log(`  ✓ Report saved to: ${this.reportPath}`);
 
     console.log('\n' + '='.repeat(70));
-    console.log('🎉 FLAGSHIP MULTIPLYING BALL RACE CERTIFICATION COMPLETE!');
+    console.log(isOfficiallyApproved
+      ? '🎉 FLAGSHIP MULTIPLYING BALL RACE CERTIFICATION COMPLETE (APPROVED FOR PUBLISHING)!'
+      : 'ℹ️ PRODUCTION RUN COMPLETE — AWAITING EXPLICIT HUMAN CREATIVE SIGN-OFF');
     console.log('='.repeat(70));
 
     return report;
@@ -900,7 +1002,17 @@ class ProductionOrchestrator {
 }
 
 if (require.main === module) {
-  const orchestrator = new ProductionOrchestrator();
+  const args = process.argv.slice(2);
+  const unattended = args.includes('--unattended');
+  const tokenIdx = args.indexOf('--token');
+  const token = tokenIdx !== -1 ? args[tokenIdx + 1] : process.env.HUMAN_APPROVAL_TOKEN;
+  const reviewerIdx = args.indexOf('--reviewer');
+  const reviewerName = reviewerIdx !== -1 ? args[reviewerIdx + 1] : process.env.REVIEWER_NAME;
+  const orchestrator = new ProductionOrchestrator({
+    unattendedApproval: unattended,
+    humanApprovalToken: token,
+    reviewer: reviewerName ? { name: reviewerName } : null
+  });
   orchestrator.runProductionProof().catch(err => {
     console.error('Production pipeline error:', err);
     process.exit(1);

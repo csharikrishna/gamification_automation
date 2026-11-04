@@ -1,13 +1,14 @@
 {
   "orchestratorName": "Burstpoint Canonical Production Orchestrator",
   "version": "4.0.0",
-  "executedAt": "2026-11-04T15:55:36.395Z",
+  "executedAt": "2026-11-04T16:58:01.169Z",
   "gameCertified": "multiplying-ball-race",
-  "productionStatus": "CERTIFIED_FLAGSHIP_PRODUCTION_READY",
+  "productionStatus": "HUMAN_REVIEW_PENDING",
   "approvalGovernance": {
     "approvalPolicy": "HUMAN_REVIEW_BY_DEFAULT",
-    "humanReviewStatus": "APPROVED_FOR_PUBLISHING",
-    "approver": "Principal Creative Auditor",
+    "humanReviewStatus": "HUMAN_REVIEW_PENDING",
+    "approver": null,
+    "approvalToken": null,
     "unattendedApprovalConfigured": false
   },
   "outputDurationContract": {
@@ -23,7 +24,7 @@
     ],
     "totalFramesRendered": 6000,
     "totalStorageMb": 60.38,
-    "lastUpdated": "2026-11-04T15:55:36.392Z",
+    "lastUpdated": "2026-11-04T16:58:01.165Z",
     "videosSummary": [
       {
         "clipId": "flagship_scenario_01_flagship",
@@ -78,10 +79,10 @@
     "approvedCandidates": 5,
     "renderedClipsOnDisk": 5,
     "archivedInVault": 5,
-    "humanApprovedClips": 5,
-    "queuedClips": 5,
-    "dryRunReceiptsCount": 5,
-    "totalProcessingSeconds": 33.96
+    "humanApprovedClips": 0,
+    "queuedClips": 0,
+    "dryRunReceiptsCount": 0,
+    "totalProcessingSeconds": 27.96
   },
   "renderedClips": [
     {
@@ -105,14 +106,7 @@
       "loudnessLufs": -21.2,
       "loudnessStatus": "MEASURED",
       "bitstreamVerified": true,
-      "approvalRecord": {
-        "approver": "Principal Creative Auditor",
-        "approverRole": "Human QA Architect & Release Auditor",
-        "timestamp": "2026-11-04T15:55:29.121Z",
-        "policyVersion": "BURSTPOINT_HUMAN_CREATIVE_POLICY_V1",
-        "creativeVerdict": "APPROVED_FOR_PUBLISHING",
-        "notes": "Verified 20.0s narrative arc, hook readability, high-contrast typography, and audio loudness for flagship_scenario_01_flagship."
-      },
+      "approvalRecord": null,
       "evaluation": {
         "simulationValidity": {
           "valid": "PASS",
@@ -202,14 +196,7 @@
       "loudnessLufs": -21.5,
       "loudnessStatus": "MEASURED",
       "bitstreamVerified": true,
-      "approvalRecord": {
-        "approver": "Principal Creative Auditor",
-        "approverRole": "Human QA Architect & Release Auditor",
-        "timestamp": "2026-11-04T15:55:29.125Z",
-        "policyVersion": "BURSTPOINT_HUMAN_CREATIVE_POLICY_V1",
-        "creativeVerdict": "APPROVED_FOR_PUBLISHING",
-        "notes": "Verified 20.0s narrative arc, hook readability, high-contrast typography, and audio loudness for flagship_scenario_02_flagship."
-      },
+      "approvalRecord": null,
       "evaluation": {
         "simulationValidity": {
           "valid": "PASS",
@@ -299,14 +286,7 @@
       "loudnessLufs": -20.9,
       "loudnessStatus": "MEASURED",
       "bitstreamVerified": true,
-      "approvalRecord": {
-        "approver": "Principal Creative Auditor",
-        "approverRole": "Human QA Architect & Release Auditor",
-        "timestamp": "2026-11-04T15:55:29.129Z",
-        "policyVersion": "BURSTPOINT_HUMAN_CREATIVE_POLICY_V1",
-        "creativeVerdict": "APPROVED_FOR_PUBLISHING",
-        "notes": "Verified 20.0s narrative arc, hook readability, high-contrast typography, and audio loudness for flagship_scenario_03_flagship."
-      },
+      "approvalRecord": null,
       "evaluation": {
         "simulationValidity": {
           "valid": "PASS",
@@ -396,14 +376,7 @@
       "loudnessLufs": -22.9,
       "loudnessStatus": "MEASURED",
       "bitstreamVerified": true,
-      "approvalRecord": {
-        "approver": "Principal Creative Auditor",
-        "approverRole": "Human QA Architect & Release Auditor",
-        "timestamp": "2026-11-04T15:55:29.134Z",
-        "policyVersion": "BURSTPOINT_HUMAN_CREATIVE_POLICY_V1",
-        "creativeVerdict": "APPROVED_FOR_PUBLISHING",
-        "notes": "Verified 20.0s narrative arc, hook readability, high-contrast typography, and audio loudness for flagship_scenario_04_flagship."
-      },
+      "approvalRecord": null,
       "evaluation": {
         "simulationValidity": {
           "valid": "PASS",
@@ -493,14 +466,7 @@
       "loudnessLufs": -21.6,
       "loudnessStatus": "MEASURED",
       "bitstreamVerified": true,
-      "approvalRecord": {
-        "approver": "Principal Creative Auditor",
-        "approverRole": "Human QA Architect & Release Auditor",
-        "timestamp": "2026-11-04T15:55:29.138Z",
-        "policyVersion": "BURSTPOINT_HUMAN_CREATIVE_POLICY_V1",
-        "creativeVerdict": "APPROVED_FOR_PUBLISHING",
-        "notes": "Verified 20.0s narrative arc, hook readability, high-contrast typography, and audio loudness for flagship_scenario_05_flagship."
-      },
+      "approvalRecord": null,
       "evaluation": {
         "simulationValidity": {
           "valid": "PASS",
