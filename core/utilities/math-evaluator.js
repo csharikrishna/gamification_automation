@@ -128,36 +128,195 @@ class MathEvaluator {
     return b;
   }
 
-  // Safe expression evaluator for user-defined formulas (MATH-02..MATH-09)
+  // Safe expression evaluator for user-defined formulas without new Function() (MATH-02..MATH-09)
   static evalFormula(expr, n = 1) {
     if (typeof expr === 'function') return expr(n);
     if (typeof expr === 'number') return expr;
+    if (typeof expr !== 'string') throw new Error('Expression must be a string or number');
 
-    let cleaned = String(expr).trim().toLowerCase();
-    cleaned = cleaned.replace(/fib(?:onacci)?\s*\(\s*n\s*\)/g, `${MathEvaluator.fibonacci(n)}`);
-    cleaned = cleaned.replace(/n!/g, `${MathEvaluator.factorial(n)}`);
-    cleaned = cleaned.replace(/\^/g, '**');
-    cleaned = cleaned.replace(/\bn\b/g, `(${n})`);
+    const src = String(expr).trim();
+    if (src.length === 0) throw new Error('Empty mathematical expression');
+    if (src.length > 250) throw new Error(`Mathematical expression exceeds maximum allowable length (250 chars): "${expr}"`);
 
-    // Whitelist check: numbers, basic math operators, parentheses
-    if (!/^[0-9\s\+\-\*\/\(\)\.\,]+$/.test(cleaned.replace(/\*\*/g, ''))) {
-      throw new Error(`Invalid mathematical characters in formula: "${expr}"`);
+    // Tokenize
+    const tokens = [];
+    let i = 0;
+    while (i < src.length) {
+      const ch = src[i];
+      if (/\s/.test(ch)) {
+        i++;
+        continue;
+      }
+      if (ch === '+' || ch === '-' || ch === '/' || ch === '(' || ch === ')' || ch === '!' || ch === ',') {
+        tokens.push(ch);
+        i++;
+      } else if (ch === '*') {
+        if (src[i + 1] === '*') {
+          tokens.push('^');
+          i += 2;
+        } else {
+          tokens.push('*');
+          i++;
+        }
+      } else if (ch === '^') {
+        tokens.push('^');
+        i++;
+      } else if (/\d/.test(ch) || (ch === '.' && i + 1 < src.length && /\d/.test(src[i + 1]))) {
+        let numStr = '';
+        let dotCount = 0;
+        while (i < src.length && (/[\d\.]/.test(src[i]))) {
+          if (src[i] === '.') {
+            dotCount++;
+            if (dotCount > 1) throw new Error(`Invalid mathematical characters in formula: malformed number in "${expr}"`);
+          }
+          numStr += src[i];
+          i++;
+        }
+        const parsedNum = parseFloat(numStr);
+        if (isNaN(parsedNum)) throw new Error(`Invalid mathematical characters in formula: "${numStr}" in "${expr}"`);
+        tokens.push(parsedNum);
+      } else if (/[a-zA-Z]/.test(ch)) {
+        let word = '';
+        while (i < src.length && /[a-zA-Z0-9_]/.test(src[i])) {
+          word += src[i];
+          i++;
+        }
+        const lower = word.toLowerCase();
+        if (lower === 'n') {
+          tokens.push(n);
+        } else if (lower === 'fib' || lower === 'fibonacci') {
+          tokens.push('fib');
+        } else if (lower === 'factorial') {
+          tokens.push('factorial');
+        } else {
+          throw new Error(`Invalid mathematical characters in formula: unsupported identifier "${word}" in "${expr}"`);
+        }
+      } else {
+        throw new Error(`Invalid mathematical characters in formula: "${ch}" in "${expr}"`);
+      }
     }
 
-    try {
-      const val = new Function(`return (${cleaned})`)();
-      const num = Number(val);
-      if (isNaN(num)) {
-        throw new Error(`Formula "${expr}" at n=${n} evaluated to NaN`);
-      }
-      if (!isFinite(num)) {
-        return num > 0 ? Number.MAX_SAFE_INTEGER : -Number.MAX_SAFE_INTEGER;
-      }
-      return num;
-    } catch (err) {
-      console.error('Error evaluating formula:', expr, err);
-      throw err;
+    if (tokens.length === 0) throw new Error('Empty mathematical expression');
+    if (tokens.length > 100) throw new Error(`Expression exceeds maximum complexity (100 tokens): "${expr}"`);
+
+    // Recursive descent parser
+    let pos = 0;
+    let depth = 0;
+
+    function peek() {
+      return tokens[pos];
     }
+
+    function consume(expected) {
+      const t = tokens[pos];
+      if (expected !== undefined && t !== expected) {
+        throw new Error(`Invalid mathematical syntax: expected "${expected}" but found "${t}" in "${expr}"`);
+      }
+      pos++;
+      return t;
+    }
+
+    function parseExpression() {
+      depth++;
+      if (depth > 25) throw new Error(`Expression exceeds maximum nesting depth in "${expr}"`);
+      let result = parseTerm();
+      while (pos < tokens.length && (tokens[pos] === '+' || tokens[pos] === '-')) {
+        const op = consume();
+        const next = parseTerm();
+        result = op === '+' ? result + next : result - next;
+      }
+      depth--;
+      return result;
+    }
+
+    function parseTerm() {
+      let result = parsePower();
+      while (pos < tokens.length && (tokens[pos] === '*' || tokens[pos] === '/')) {
+        const op = consume();
+        const next = parsePower();
+        if (op === '*') {
+          result = result * next;
+        } else {
+          if (Math.abs(next) < 1e-12) {
+            throw new Error(`Division by zero in mathematical formula "${expr}" at n=${n}`);
+          }
+          result = result / next;
+        }
+      }
+      return result;
+    }
+
+    function parsePower() {
+      let result = parseUnary();
+      if (pos < tokens.length && tokens[pos] === '^') {
+        consume('^');
+        const exp = parsePower(); // right-associative
+        result = Math.pow(result, exp);
+      }
+      return result;
+    }
+
+    function parseUnary() {
+      if (pos < tokens.length && tokens[pos] === '+') {
+        consume('+');
+        return parseUnary();
+      }
+      if (pos < tokens.length && tokens[pos] === '-') {
+        consume('-');
+        return -parseUnary();
+      }
+      return parsePostfix();
+    }
+
+    function parsePostfix() {
+      let val = parseFactor();
+      while (pos < tokens.length && tokens[pos] === '!') {
+        consume('!');
+        val = MathEvaluator.factorial(Math.round(val));
+      }
+      return val;
+    }
+
+    function parseFactor() {
+      if (pos >= tokens.length) throw new Error(`Unexpected end of expression in "${expr}"`);
+      const token = peek();
+
+      if (typeof token === 'number') {
+        consume();
+        return token;
+      }
+
+      if (token === '(') {
+        consume('(');
+        const val = parseExpression();
+        consume(')');
+        return val;
+      }
+
+      if (token === 'fib' || token === 'factorial') {
+        const fnName = consume();
+        consume('(');
+        const arg = parseExpression();
+        consume(')');
+        if (fnName === 'fib') return MathEvaluator.fibonacci(Math.round(arg));
+        if (fnName === 'factorial') return MathEvaluator.factorial(Math.round(arg));
+      }
+
+      throw new Error(`Unexpected token "${token}" in formula "${expr}"`);
+    }
+
+    const value = parseExpression();
+    if (pos < tokens.length) {
+      throw new Error(`Unexpected extra tokens "${tokens.slice(pos).join(' ')}" in formula "${expr}"`);
+    }
+
+    if (isNaN(value)) {
+      throw new Error(`Formula "${expr}" at n=${n} evaluated to NaN`);
+    }
+    if (!isFinite(value)) {
+      return value > 0 ? Number.MAX_SAFE_INTEGER : -Number.MAX_SAFE_INTEGER;
+    }
+    return value;
   }
 
   // Compile a math matchup into simulator tier configurations

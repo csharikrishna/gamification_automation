@@ -46,46 +46,120 @@ class MediaValidator {
       throw new Error(`Cannot inspect non-existent media: ${filePath}`);
     }
 
-    // 1. Stream & container metadata inspection
-    const res = spawnSync('ffmpeg', ['-i', filePath], { encoding: 'utf8' });
-    const text = (res.stderr || '') + (res.stdout || '');
+    let ffprobeJson = null;
+    try {
+      const probeRes = spawnSync('ffprobe', [
+        '-v', 'quiet',
+        '-print_format', 'json',
+        '-show_format',
+        '-show_streams',
+        filePath
+      ], { encoding: 'utf8' });
+      if (probeRes.status === 0 && probeRes.stdout) {
+        ffprobeJson = JSON.parse(probeRes.stdout);
+      }
+    } catch (e) {
+      // ffprobe unavailable; fallback to ffmpeg banner inspection
+    }
 
-    const durMatch = text.match(/Duration:\s*(\d+):(\d+):(\d+(?:\.\d+)?)/);
-    const durationSeconds = durMatch
-      ? Number((parseInt(durMatch[1], 10) * 3600 + parseInt(durMatch[2], 10) * 60 + parseFloat(durMatch[3])).toFixed(2))
-      : null;
+    let durationSeconds = null;
+    let videoCodec = null;
+    let width = null;
+    let height = null;
+    let fps = null;
+    let audioCodec = null;
+    let audioRate = null;
+    let audioChannels = null;
+    let hasAudio = false;
+    let containerFormat = null;
+    let timeBase = null;
+    let streamStartTime = 0.0;
 
-    // Video stream match: Video: <codec> ... <width>x<height> ... <fps> fps
-    const vidMatch = text.match(/Stream\s+#\d+:\d+(?:\[0x\w+\])?(?:\([^)]*\))?:\s*Video:\s*([a-zA-Z0-9_-]+)[^,]*,\s*[^,]+,\s*(\d{3,4})x(\d{3,4})[^,]*,\s*[^,]*\s*(\d+(?:\.\d+)?)\s*fps/i)
-      || text.match(/Video:\s*([a-zA-Z0-9_-]+).*?(\d{3,4})x(\d{3,4}).*?(\d+(?:\.\d+)?)\s*fps/i);
+    if (ffprobeJson) {
+      const format = ffprobeJson.format || {};
+      containerFormat = format.format_name || 'mp4';
+      durationSeconds = format.duration ? parseFloat(format.duration) : null;
+      streamStartTime = format.start_time ? parseFloat(format.start_time) : 0.0;
 
-    const videoCodec = vidMatch ? vidMatch[1].toLowerCase() : null;
-    const width = vidMatch ? parseInt(vidMatch[2], 10) : null;
-    const height = vidMatch ? parseInt(vidMatch[3], 10) : null;
-    // Strict fps extraction: NEVER default missing fps to 60
-    const fps = vidMatch ? parseFloat(vidMatch[4]) : null;
+      const videoStream = (ffprobeJson.streams || []).find(s => s.codec_type === 'video');
+      if (videoStream) {
+        videoCodec = videoStream.codec_name;
+        width = videoStream.width;
+        height = videoStream.height;
+        timeBase = videoStream.time_base;
+        if (videoStream.avg_frame_rate && videoStream.avg_frame_rate !== '0/0') {
+          const [num, den] = videoStream.avg_frame_rate.split('/').map(Number);
+          if (den) fps = num / den;
+        } else if (videoStream.r_frame_rate && videoStream.r_frame_rate !== '0/0') {
+          const [num, den] = videoStream.r_frame_rate.split('/').map(Number);
+          if (den) fps = num / den;
+        }
+      }
 
-    // Audio stream match: Audio: <codec> ... <rate> Hz, <channels>
-    const audMatch = text.match(/Stream\s+#\d+:\d+(?:\[0x\w+\])?(?:\([^)]*\))?:\s*Audio:\s*([a-zA-Z0-9_-]+)[^,]*,\s*(\d+)\s*Hz,\s*([a-zA-Z0-9_]+)/i)
-      || text.match(/Audio:\s*([a-zA-Z0-9_-]+).*?(\d+)\s*Hz,\s*([a-zA-Z0-9_]+)/i);
+      const audioStream = (ffprobeJson.streams || []).find(s => s.codec_type === 'audio');
+      if (audioStream) {
+        hasAudio = true;
+        audioCodec = audioStream.codec_name;
+        audioRate = audioStream.sample_rate ? parseInt(audioStream.sample_rate, 10) : null;
+        audioChannels = audioStream.channels === 2 ? 'stereo' : (audioStream.channels === 1 ? 'mono' : `${audioStream.channels}ch`);
+      }
+    } else {
+      // 1. Stream & container metadata inspection via FFmpeg
+      const res = spawnSync('ffmpeg', ['-i', filePath], { encoding: 'utf8' });
+      const text = (res.stderr || '') + (res.stdout || '');
 
-    const audioCodec = audMatch ? audMatch[1].toLowerCase() : null;
-    const audioRate = audMatch ? parseInt(audMatch[2], 10) : null;
-    const audioChannels = audMatch ? audMatch[3] : null;
-    const hasAudio = !!audMatch;
+      const durMatch = text.match(/Duration:\s*(\d+):(\d+):(\d+(?:\.\d+)?)/);
+      durationSeconds = durMatch
+        ? Number((parseInt(durMatch[1], 10) * 3600 + parseInt(durMatch[2], 10) * 60 + parseFloat(durMatch[3])).toFixed(2))
+        : null;
 
-    // 2. Exact decoded frame count via copy to null sink
+      // Video stream match: Video: <codec> ... <width>x<height> ... <fps> fps
+      const vidMatch = text.match(/Stream\s+#\d+:\d+(?:\[0x\w+\])?(?:\([^)]*\))?:\s*Video:\s*([a-zA-Z0-9_-]+)[^,]*,\s*[^,]+,\s*(\d{3,4})x(\d{3,4})[^,]*,\s*[^,]*\s*(\d+(?:\.\d+)?)\s*fps/i)
+        || text.match(/Video:\s*([a-zA-Z0-9_-]+).*?(\d{3,4})x(\d{3,4}).*?(\d+(?:\.\d+)?)\s*fps/i);
+
+      videoCodec = vidMatch ? vidMatch[1].toLowerCase() : null;
+      width = vidMatch ? parseInt(vidMatch[2], 10) : null;
+      height = vidMatch ? parseInt(vidMatch[3], 10) : null;
+      // Strict fps extraction: NEVER default missing fps to 60
+      fps = vidMatch ? parseFloat(vidMatch[4]) : null;
+
+      // Audio stream match: Audio: <codec> ... <rate> Hz, <channels>
+      const audMatch = text.match(/Stream\s+#\d+:\d+(?:\[0x\w+\])?(?:\([^)]*\))?:\s*Audio:\s*([a-zA-Z0-9_-]+)[^,]*,\s*(\d+)\s*Hz,\s*([a-zA-Z0-9_]+)/i)
+        || text.match(/Audio:\s*([a-zA-Z0-9_-]+).*?(\d+)\s*Hz,\s*([a-zA-Z0-9_]+)/i);
+
+      audioCodec = audMatch ? audMatch[1].toLowerCase() : null;
+      audioRate = audMatch ? parseInt(audMatch[2], 10) : null;
+      audioChannels = audMatch ? audMatch[3] : null;
+      hasAudio = !!audMatch;
+
+      // Extract time base, stream start time, container format from ffmpeg text
+      const tbnMatch = text.match(/(\d+(?:\.\d+)?)\s*tbn/i);
+      timeBase = tbnMatch ? `1/${tbnMatch[1]}` : null;
+
+      const startMatch = text.match(/start:\s*([0-9.]+)/i);
+      streamStartTime = startMatch ? parseFloat(startMatch[1]) : 0.0;
+
+      const formatMatch = text.match(/Input #\d+,\s*([^,]+)/i);
+      containerFormat = formatMatch ? formatMatch[1].trim() : 'mp4';
+    }
+
+    // 2. Exact decoded frame count via FULL DECODE to null sink (NO STREAM-COPY)
+    // Full decoding guarantees every frame packet is decompressed and verified against bitstream corruption
     let exactFrameCount = null;
+    let fullDecodeVerified = false;
     try {
       const frameCountRes = spawnSync(
         'ffmpeg',
-        ['-i', filePath, '-map', '0:v:0', '-c', 'copy', '-f', 'null', '-'],
+        ['-i', filePath, '-map', '0:v:0', '-f', 'null', '-'],
         { encoding: 'utf8' }
       );
+      if (frameCountRes.status === 0) {
+        fullDecodeVerified = true;
+      }
       const frameText = (frameCountRes.stderr || '') + (frameCountRes.stdout || '');
-      const frameMatch = frameText.match(/frame=\s*(\d+)/i);
-      if (frameMatch) {
-        exactFrameCount = parseInt(frameMatch[1], 10);
+      const allMatches = [...frameText.matchAll(/frame=\s*(\d+)/gi)];
+      if (allMatches.length > 0) {
+        exactFrameCount = parseInt(allMatches[allMatches.length - 1][1], 10);
       }
     } catch (e) {}
 
@@ -112,6 +186,10 @@ class MediaValidator {
       height,
       fps,
       exactFrameCount,
+      fullDecodeVerified,
+      containerFormat,
+      timeBase,
+      streamStartTime,
       hasAudio,
       audioCodec,
       audioRate,
@@ -225,6 +303,9 @@ class MediaValidator {
       height: info.height,
       fps: info.fps,
       exactFrameCount: info.exactFrameCount,
+      containerFormat: info.containerFormat,
+      timeBase: info.timeBase,
+      streamStartTime: info.streamStartTime,
       hasAudio: info.hasAudio,
       audioCodec: info.audioCodec,
       audioRate: info.audioRate,

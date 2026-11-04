@@ -13,6 +13,7 @@ class QueueRepository {
     this.outputDir = options.outputDir || path.resolve('output');
     this.queuePath = options.queuePath || path.join(this.outputDir, 'publishing_queue.json');
     this.historyPath = options.historyPath || path.join(this.outputDir, 'publishing_history.json');
+    this.journalPath = options.journalPath || path.join(this.outputDir, 'publishing_journal.json');
     this.lockPath = `${this.queuePath}.lock`;
     this.timezone = options.timezone || 'UTC';
     this.maxRetries = options.maxRetries || 3;
@@ -25,7 +26,7 @@ class QueueRepository {
     this._initializeStorage();
   }
 
-  // Ensures storage files exist
+  // Ensures storage files exist and reconciles pending write-ahead journal transactions
   _initializeStorage() {
     if (!fs.existsSync(this.queuePath)) {
       const legacyPath = path.join(this.outputDir, 'production_publishing_queue.json');
@@ -42,6 +43,35 @@ class QueueRepository {
     if (!fs.existsSync(this.historyPath)) {
       this._writeAtomic(this.historyPath, []);
     }
+
+    this._reconcileJournal();
+  }
+
+  // Recovers incomplete multi-file transactions after sudden process crashes
+  _reconcileJournal() {
+    if (!fs.existsSync(this.journalPath)) return;
+    try {
+      const journal = JSON.parse(fs.readFileSync(this.journalPath, 'utf8'));
+      if (journal.operation === 'COMPLETE_PUBLISH' && journal.queueId) {
+        const queue = this.getAll();
+        const history = this.getHistory();
+        const isHistoryPresent = history.some(h => h.queueId === journal.queueId);
+        if (isHistoryPresent) {
+          // If already in history, ensure item is removed or updated in queue
+          const qIdx = queue.findIndex(q => q.queueId === journal.queueId);
+          if (qIdx !== -1) {
+            if (journal.receipt?.mode !== 'DRY_RUN') {
+              queue.splice(qIdx, 1);
+            } else {
+              queue[qIdx].status = 'DRY_RUN_PASSED';
+              queue[qIdx].lifecycleState = LIFECYCLE_STATES.UPLOAD_PREFLIGHT_PASSED;
+            }
+            this._writeAtomic(this.queuePath, queue);
+          }
+        }
+      }
+      fs.unlinkSync(this.journalPath);
+    } catch (e) {}
   }
 
   // Helper to check if a process ID is currently alive on the host
@@ -170,6 +200,9 @@ class QueueRepository {
           queue[existingIdx] = {
             ...queue[existingIdx],
             ...entry,
+            attempts: entry.attempts !== undefined ? entry.attempts : 0,
+            lastError: null,
+            failedAt: null,
             updatedAt: new Date().toISOString()
           };
           this._writeAtomic(this.queuePath, queue);
@@ -305,11 +338,25 @@ class QueueRepository {
         }
       }
 
+      receipt.idempotencyKey = receipt.idempotencyKey || `idemp_${crypto.randomUUID()}`;
+
+      // Write-ahead journal before modifying history & queue
+      this._writeAtomic(this.journalPath, {
+        operation: 'COMPLETE_PUBLISH',
+        idempotencyKey: receipt.idempotencyKey,
+        queueId,
+        receipt,
+        timestamp: new Date().toISOString()
+      });
+
       const completedRecord = {
         ...item,
         ...receipt,
         lifecycleState: isDryRun ? LIFECYCLE_STATES.UPLOAD_PREFLIGHT_PASSED : LIFECYCLE_STATES.PUBLISHED,
         status: isDryRun ? 'DRY_RUN_PASSED' : 'PUBLISHED',
+        attempts: 0,
+        lastError: null,
+        failedAt: null,
         completedAt: new Date().toISOString()
       };
 
@@ -330,6 +377,12 @@ class QueueRepository {
       }
 
       this._writeAtomic(this.queuePath, queue);
+
+      // Clean up journal after successful write boundary
+      try {
+        if (fs.existsSync(this.journalPath)) fs.unlinkSync(this.journalPath);
+      } catch (e) {}
+
       return completedRecord;
     } finally {
       this._releaseLock();

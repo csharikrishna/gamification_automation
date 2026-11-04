@@ -245,12 +245,28 @@ console.log('▶ TEST 8: MATH-01 Fibonacci Indexing & Math Evaluator Precision')
   // MATH-02..MATH-05: Handle 0, negative, decimals, and reject malicious strings
   assert.strictEqual(MathEvaluator.evalFormula('n - 1', 1), 0, 'Must allow 0 result');
   assert.strictEqual(MathEvaluator.evalFormula('n * 0.5', 4), 2, 'Must allow decimals');
+  assert.strictEqual(MathEvaluator.evalFormula('2 ^ 3', 1), 8, 'Exponentiation must work');
 
+  // Division by zero security test
+  assert.throws(() => {
+    MathEvaluator.evalFormula('10 / 0', 1);
+  }, /Division by zero/);
+
+  // Malformed expression test
+  assert.throws(() => {
+    MathEvaluator.evalFormula('2 + * 3', 1);
+  }, /Unexpected token/);
+
+  // Malicious string & code injection rejection
   assert.throws(() => {
     MathEvaluator.evalFormula('process.exit()', 1);
   }, /Invalid mathematical characters/);
 
-  console.log('  ✓ PASSED: Fibonacci indexing and math evaluator precision verified.\n');
+  assert.throws(() => {
+    MathEvaluator.evalFormula('require("fs")', 1);
+  }, /Invalid mathematical characters/);
+
+  console.log('  ✓ PASSED: Fibonacci indexing, safe AST evaluator, division-by-zero, and security boundaries verified.\n');
 }
 
 // =========================================================================

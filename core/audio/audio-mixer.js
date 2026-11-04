@@ -15,27 +15,52 @@ class AudioSynthesizer {
     const leftChannel = new Float32Array(totalSamples);
     const rightChannel = new Float32Array(totalSamples);
 
-    // 1. Identify high-priority time intervals (gate breakthroughs & finish fanfare) for dynamic ducking
+    // 1. Compute continuous sample-level time-dependent ducking envelope
+    // High-priority intervals (gate breakthroughs, finish fanfare, multiplication)
+    const duckingEnvelope = new Float32Array(totalSamples);
+    duckingEnvelope.fill(1.0);
+
     const highPriorityIntervals = [];
     for (const ev of events) {
       if (ev.type === 'gate' || ev.type === 'finish' || ev.type === 'multiplication') {
-        const startSec = ev.time;
-        const durSec = ev.type === 'finish' ? 2.5 : (ev.type === 'gate' ? 0.65 : 0.4);
-        highPriorityIntervals.push({ start: startSec, end: startSec + durSec });
+        const startSec = Math.max(0, ev.time);
+        const durSec = ev.type === 'finish' ? 2.8 : (ev.type === 'gate' ? 0.75 : 0.45);
+        const duckGain = ev.type === 'finish' ? 0.20 : 0.35; // -14dB during finish, -9dB during gate
+        highPriorityIntervals.push({ start: startSec, end: startSec + durSec, gain: duckGain });
       }
     }
 
-    // Helper: calculate ducking multiplier for background events
-    const getDuckingGain = (tSec) => {
-      for (const interval of highPriorityIntervals) {
-        if (tSec >= interval.start && tSec <= interval.end) {
-          return 0.45; // Duck background clicks by ~7dB during major events
-        }
-      }
-      return 1.0;
-    };
+    const attackSamples = Math.floor(0.020 * this.sampleRate); // 20ms attack
+    const releaseSamples = Math.floor(0.060 * this.sampleRate); // 60ms release
 
-    // 2. Synthesize events with priority and velocity sensitivity
+    for (const interval of highPriorityIntervals) {
+      const startIdx = Math.floor(interval.start * this.sampleRate);
+      const endIdx = Math.min(totalSamples, Math.floor(interval.end * this.sampleRate));
+      const targetGain = interval.gain;
+
+      // Attack phase with cosine smoothing
+      const attStart = Math.max(0, startIdx - attackSamples);
+      for (let s = attStart; s < startIdx && s < totalSamples; s++) {
+        const progress = (s - attStart) / attackSamples;
+        const g = 1.0 - (1.0 - targetGain) * (0.5 - 0.5 * Math.cos(Math.PI * progress));
+        if (g < duckingEnvelope[s]) duckingEnvelope[s] = g;
+      }
+
+      // Sustained ducking phase
+      for (let s = startIdx; s < endIdx && s < totalSamples; s++) {
+        if (targetGain < duckingEnvelope[s]) duckingEnvelope[s] = targetGain;
+      }
+
+      // Release phase with cosine smoothing
+      const relEnd = Math.min(totalSamples, endIdx + releaseSamples);
+      for (let s = endIdx; s < relEnd && s < totalSamples; s++) {
+        const progress = (s - endIdx) / releaseSamples;
+        const g = targetGain + (1.0 - targetGain) * (0.5 - 0.5 * Math.cos(Math.PI * progress));
+        if (g < duckingEnvelope[s]) duckingEnvelope[s] = g;
+      }
+    }
+
+    // 2. Synthesize events with priority, velocity sensitivity, and sample-level dynamic ducking
     for (const ev of events) {
       const startSample = Math.floor(ev.time * this.sampleRate);
       if (startSample >= totalSamples) continue;
@@ -43,14 +68,13 @@ class AudioSynthesizer {
       const pan = ev.lane === 'left' ? -0.45 : ev.lane === 'right' ? 0.45 : 0;
       const leftGain = Math.cos((pan + 1) * Math.PI / 4);
       const rightGain = Math.sin((pan + 1) * Math.PI / 4);
-      const duck = getDuckingGain(ev.time);
 
       if (ev.type === 'bounce') {
         // Velocity-sensitive collision intensity
         const force = ev.impactForce || ev.force || 1.0;
         const basePitch = ev.pitch || (force > 1.4 ? 480 : 640);
-        const baseVol = (ev.volume || (force > 1.4 ? 0.14 : 0.08)) * duck;
-        this.renderClick(leftChannel, rightChannel, startSample, basePitch, baseVol, leftGain, rightGain);
+        const baseVol = ev.volume || (force > 1.4 ? 0.14 : 0.08);
+        this.renderClick(leftChannel, rightChannel, startSample, basePitch, baseVol, leftGain, rightGain, duckingEnvelope);
       } else if (ev.type === 'gate') {
         // High-priority barrier breakthrough with sub-harmonic thump & resonant chime
         const tier = ev.tier || 0;
@@ -60,7 +84,7 @@ class AudioSynthesizer {
       } else if (ev.type === 'multiplication') {
         this.renderMultiplication(leftChannel, rightChannel, startSample, ev.count || 6, leftGain, rightGain);
       } else if (ev.type === 'tally') {
-        this.renderBlip(leftChannel, rightChannel, startSample, 880 + (ev.count || 0) % 200, 0.08 * duck, leftGain, rightGain);
+        this.renderBlip(leftChannel, rightChannel, startSample, 880 + (ev.count || 0) % 200, 0.08, leftGain, rightGain, duckingEnvelope);
       } else if (ev.type === 'finish') {
         this.renderFanfare(leftChannel, rightChannel, startSample);
       }
@@ -72,27 +96,31 @@ class AudioSynthesizer {
     return outputPath;
   }
 
-  renderClick(left, right, startSample, freq, volume, leftGain, rightGain) {
+  renderClick(left, right, startSample, freq, volume, leftGain, rightGain, duckingEnvelope = null) {
     const duration = 0.035; // 35ms
     const numSamples = Math.min(Math.floor(duration * this.sampleRate), left.length - startSample);
     for (let i = 0; i < numSamples; i++) {
+      const idx = startSample + i;
+      const duck = duckingEnvelope ? duckingEnvelope[idx] : 1.0;
       const t = i / this.sampleRate;
       const env = Math.exp(-t * 90);
-      const val = Math.sin(2 * Math.PI * freq * t) * env * volume;
-      left[startSample + i] += val * leftGain;
-      right[startSample + i] += val * rightGain;
+      const val = Math.sin(2 * Math.PI * freq * t) * env * volume * duck;
+      left[idx] += val * leftGain;
+      right[idx] += val * rightGain;
     }
   }
 
-  renderBlip(left, right, startSample, freq, volume, leftGain, rightGain) {
+  renderBlip(left, right, startSample, freq, volume, leftGain, rightGain, duckingEnvelope = null) {
     const duration = 0.04;
     const numSamples = Math.min(Math.floor(duration * this.sampleRate), left.length - startSample);
     for (let i = 0; i < numSamples; i++) {
+      const idx = startSample + i;
+      const duck = duckingEnvelope ? duckingEnvelope[idx] : 1.0;
       const t = i / this.sampleRate;
       const env = Math.exp(-t * 60);
-      const val = Math.sin(2 * Math.PI * freq * t) * env * volume;
-      left[startSample + i] += val * leftGain;
-      right[startSample + i] += val * rightGain;
+      const val = Math.sin(2 * Math.PI * freq * t) * env * volume * duck;
+      left[idx] += val * leftGain;
+      right[idx] += val * rightGain;
     }
   }
 

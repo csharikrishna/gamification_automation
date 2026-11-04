@@ -191,8 +191,17 @@ Following independent architectural audit of commit `00a95e1`, the following cri
    - Prevented duplicate live uploads after process crashes via lookup against `publishing_history.json`.
    - Added `options.upsert` to allow re-runs of production proof rendering without dropping queue state.
 4. **Cinematic Sound Design & Soft Limiter:**
-   - Upgraded procedural synthesizer with dynamic ducking (-7dB on background audio during breakthrough fanfares).
+   - Upgraded procedural synthesizer with dynamic continuous time-dependent ducking envelope (-7dB on background audio during breakthrough fanfares).
    - Velocity-sensitive collision frequencies, 75Hz sub-bass thump on tier shatters, master bus headroom scan, and `Math.tanh()` soft-knee peak limiting with zero clipping.
+5. **Safe AST Math Evaluator (Elimination of `new Function`):**
+   - In `core/utilities/math-evaluator.js` and `src/math_evaluator.js`, replaced unsafe `new Function()` with a deterministic recursive descent AST parser.
+   - Strictly enforces allowed tokens (`n`, numbers, `+`, `-`, `*`, `/`, `^`, `!`, `fib`, `factorial`), depth limits (<= 25), division-by-zero detection, and complete code injection rejection.
+6. **Publishing Queue Retry Reset & 5/5 Dry-Run Receipts:**
+   - In `core/publishing/queue-repository.js`, fixed retry count accumulation so re-queuing with `upsert: true` and successful publish cycles reset `attempts: 0` and clear `lastError`.
+   - Verified that all 5 flagship videos achieve `DRY_RUN_PASSED` status with 0 items quarantined.
+7. **VideoVault Index Sanitization:**
+   - Added `VideoVault.sanitizeSimOutcome()` to prevent recording millions of micro-physics collision events in the JSON catalog, reducing `storage/video_vault/vault_index.json` from 38,000 lines to ~1,500 lines while retaining full determinism and score verification metrics.
+   - Master tracking documented in [REMEDIATION_TRACKER.md](file:///c:/Users/cshar/Downloads/Gamification/docs/REMEDIATION_TRACKER.md).
 
 ---
 

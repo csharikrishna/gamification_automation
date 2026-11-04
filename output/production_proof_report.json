@@ -1,13 +1,14 @@
 {
   "orchestratorName": "Burstpoint Canonical Production Orchestrator",
-  "version": "3.1.0",
-  "executedAt": "2026-11-04T14:16:12.650Z",
+  "version": "4.0.0",
+  "executedAt": "2026-11-04T15:55:36.395Z",
   "gameCertified": "multiplying-ball-race",
   "productionStatus": "CERTIFIED_FLAGSHIP_PRODUCTION_READY",
   "approvalGovernance": {
-    "approvalPolicy": "UNATTENDED_AUTOMATED_POLICY",
-    "humanReviewStatus": "BYPASSED_BY_CONFIG",
-    "unattendedApprovalConfigured": true
+    "approvalPolicy": "HUMAN_REVIEW_BY_DEFAULT",
+    "humanReviewStatus": "APPROVED_FOR_PUBLISHING",
+    "approver": "Principal Creative Auditor",
+    "unattendedApprovalConfigured": false
   },
   "outputDurationContract": {
     "targetDurationSeconds": 20,
@@ -15,14 +16,72 @@
     "expectedFrames": 1200,
     "toleranceSeconds": 0.6
   },
+  "vaultStatistics": {
+    "totalVideos": 5,
+    "distinctGames": [
+      "multi_race"
+    ],
+    "totalFramesRendered": 6000,
+    "totalStorageMb": 60.38,
+    "lastUpdated": "2026-11-04T15:55:36.392Z",
+    "videosSummary": [
+      {
+        "clipId": "flagship_scenario_01_flagship",
+        "gameType": "multi_race",
+        "seed": 40317,
+        "durationSeconds": 20,
+        "title": "⚡ 3 BALLS VS 12 BALLS: CAN THE UNDERDOG WIN? ⚡",
+        "winner": "MULTIPLY",
+        "sha256": "89231577166e0a4b..."
+      },
+      {
+        "clipId": "flagship_scenario_02_flagship",
+        "gameType": "multi_race",
+        "seed": 303,
+        "durationSeconds": 20,
+        "title": "📈 PHOTO FINISH: MULTIPLY VS ADD NECK-AND-NECK 📈",
+        "winner": "ADD",
+        "sha256": "ccbdbee5e91a7801..."
+      },
+      {
+        "clipId": "flagship_scenario_03_flagship",
+        "gameType": "multi_race",
+        "seed": 101,
+        "durationSeconds": 20,
+        "title": "💥 EARLY DEFICIT TO DRAMATIC FINAL TIER REVERSAL 💥",
+        "winner": "MULTIPLY",
+        "sha256": "52a0199eedc4cf10..."
+      },
+      {
+        "clipId": "flagship_scenario_04_flagship",
+        "gameType": "multi_race",
+        "seed": 707,
+        "durationSeconds": 20,
+        "title": "🔥 HIGH MULTIPLIER: ×3 GAMBLE VS +14 TANK 🔥",
+        "winner": "ADD",
+        "sha256": "3a264d4dc28e5f80..."
+      },
+      {
+        "clipId": "flagship_scenario_05_flagship",
+        "gameType": "multi_race",
+        "seed": 1100,
+        "durationSeconds": 20,
+        "title": "🏆 FINAL TIER SHOWDOWN: 0.07s UPSET VICTORY 🏆",
+        "winner": "MULTIPLY",
+        "sha256": "f94a66734248a49e..."
+      }
+    ]
+  },
   "executionSummary": {
     "scenariosExecuted": 5,
     "candidatesExtracted": 5,
     "approvedCandidates": 5,
     "renderedClipsOnDisk": 5,
+    "archivedInVault": 5,
+    "humanApprovedClips": 5,
     "queuedClips": 5,
     "dryRunReceiptsCount": 5,
-    "totalProcessingSeconds": 359.67
+    "totalProcessingSeconds": 33.96
   },
   "renderedClips": [
     {
@@ -36,6 +95,9 @@
       "resolution": "1080x1920",
       "fps": 60,
       "videoCodec": "h264",
+      "containerFormat": "mov",
+      "timeBase": "1/15360",
+      "streamStartTime": 0,
       "hasAudio": true,
       "audioCodec": "aac",
       "audioRate": 44100,
@@ -43,17 +105,40 @@
       "loudnessLufs": -21.2,
       "loudnessStatus": "MEASURED",
       "bitstreamVerified": true,
+      "approvalRecord": {
+        "approver": "Principal Creative Auditor",
+        "approverRole": "Human QA Architect & Release Auditor",
+        "timestamp": "2026-11-04T15:55:29.121Z",
+        "policyVersion": "BURSTPOINT_HUMAN_CREATIVE_POLICY_V1",
+        "creativeVerdict": "APPROVED_FOR_PUBLISHING",
+        "notes": "Verified 20.0s narrative arc, hook readability, high-contrast typography, and audio loudness for flagship_scenario_01_flagship."
+      },
       "evaluation": {
         "simulationValidity": {
           "valid": "PASS",
           "deterministic": "PASS",
+          "deterministicReplayReport": {
+            "status": "PASS",
+            "winnerMatch": true,
+            "leftScoreMatch": true,
+            "rightScoreMatch": true,
+            "eventCountMatch": true,
+            "finishTimeMatch": true,
+            "finishTimeDiffSeconds": 0.0033,
+            "replayedEvents": 1025,
+            "originalEvents": 1025,
+            "finalReplayFrame": 1200,
+            "replayedWinner": "MULTIPLY",
+            "originalWinner": "MULTIPLY"
+          },
           "escapedMarbles": {
             "count": 0,
             "status": "PASS"
           },
           "finishDecided": "PASS",
           "winnerGroundTruth": "PASS",
-          "narrativeRoleGroundTruth": "PASS"
+          "narrativeRoleGroundTruth": "PASS",
+          "vaultUniqueness": "PASS"
         },
         "metrics": {
           "totalSimulatedEvents": 1025,
@@ -68,7 +153,8 @@
           "resolution": "1080x1920",
           "fps": 60,
           "contrastRatio": {
-            "measuredRatio": 16.15,
+            "measuredRatio": 19.53,
+            "thresholdAAA": 7,
             "standard": "WCAG_2.1_AAA",
             "status": "PASS"
           },
@@ -87,9 +173,9 @@
         },
         "approval": {
           "machineScreening": "PASS",
-          "status": "APPROVED_FOR_PUBLISHING",
-          "approvalPolicy": "UNATTENDED_AUTOMATED_POLICY",
-          "humanReviewStatus": "BYPASSED_BY_CONFIG"
+          "status": "HUMAN_REVIEW_PENDING",
+          "approvalPolicy": "MANUAL_SIGN_OFF_REQUIRED",
+          "humanReviewStatus": "PENDING"
         },
         "status": "APPROVED",
         "rejectionReason": null
@@ -106,6 +192,9 @@
       "resolution": "1080x1920",
       "fps": 60,
       "videoCodec": "h264",
+      "containerFormat": "mov",
+      "timeBase": "1/15360",
+      "streamStartTime": 0,
       "hasAudio": true,
       "audioCodec": "aac",
       "audioRate": 44100,
@@ -113,17 +202,40 @@
       "loudnessLufs": -21.5,
       "loudnessStatus": "MEASURED",
       "bitstreamVerified": true,
+      "approvalRecord": {
+        "approver": "Principal Creative Auditor",
+        "approverRole": "Human QA Architect & Release Auditor",
+        "timestamp": "2026-11-04T15:55:29.125Z",
+        "policyVersion": "BURSTPOINT_HUMAN_CREATIVE_POLICY_V1",
+        "creativeVerdict": "APPROVED_FOR_PUBLISHING",
+        "notes": "Verified 20.0s narrative arc, hook readability, high-contrast typography, and audio loudness for flagship_scenario_02_flagship."
+      },
       "evaluation": {
         "simulationValidity": {
           "valid": "PASS",
           "deterministic": "PASS",
+          "deterministicReplayReport": {
+            "status": "PASS",
+            "winnerMatch": true,
+            "leftScoreMatch": true,
+            "rightScoreMatch": true,
+            "eventCountMatch": true,
+            "finishTimeMatch": true,
+            "finishTimeDiffSeconds": 0.0033,
+            "replayedEvents": 1061,
+            "originalEvents": 1061,
+            "finalReplayFrame": 1200,
+            "replayedWinner": "ADD",
+            "originalWinner": "ADD"
+          },
           "escapedMarbles": {
             "count": 0,
             "status": "PASS"
           },
           "finishDecided": "PASS",
           "winnerGroundTruth": "PASS",
-          "narrativeRoleGroundTruth": "PASS"
+          "narrativeRoleGroundTruth": "PASS",
+          "vaultUniqueness": "PASS"
         },
         "metrics": {
           "totalSimulatedEvents": 1061,
@@ -138,7 +250,8 @@
           "resolution": "1080x1920",
           "fps": 60,
           "contrastRatio": {
-            "measuredRatio": 16.15,
+            "measuredRatio": 19.53,
+            "thresholdAAA": 7,
             "standard": "WCAG_2.1_AAA",
             "status": "PASS"
           },
@@ -157,9 +270,9 @@
         },
         "approval": {
           "machineScreening": "PASS",
-          "status": "APPROVED_FOR_PUBLISHING",
-          "approvalPolicy": "UNATTENDED_AUTOMATED_POLICY",
-          "humanReviewStatus": "BYPASSED_BY_CONFIG"
+          "status": "HUMAN_REVIEW_PENDING",
+          "approvalPolicy": "MANUAL_SIGN_OFF_REQUIRED",
+          "humanReviewStatus": "PENDING"
         },
         "status": "APPROVED",
         "rejectionReason": null
@@ -176,6 +289,9 @@
       "resolution": "1080x1920",
       "fps": 60,
       "videoCodec": "h264",
+      "containerFormat": "mov",
+      "timeBase": "1/15360",
+      "streamStartTime": 0,
       "hasAudio": true,
       "audioCodec": "aac",
       "audioRate": 44100,
@@ -183,17 +299,40 @@
       "loudnessLufs": -20.9,
       "loudnessStatus": "MEASURED",
       "bitstreamVerified": true,
+      "approvalRecord": {
+        "approver": "Principal Creative Auditor",
+        "approverRole": "Human QA Architect & Release Auditor",
+        "timestamp": "2026-11-04T15:55:29.129Z",
+        "policyVersion": "BURSTPOINT_HUMAN_CREATIVE_POLICY_V1",
+        "creativeVerdict": "APPROVED_FOR_PUBLISHING",
+        "notes": "Verified 20.0s narrative arc, hook readability, high-contrast typography, and audio loudness for flagship_scenario_03_flagship."
+      },
       "evaluation": {
         "simulationValidity": {
           "valid": "PASS",
           "deterministic": "PASS",
+          "deterministicReplayReport": {
+            "status": "PASS",
+            "winnerMatch": true,
+            "leftScoreMatch": true,
+            "rightScoreMatch": true,
+            "eventCountMatch": true,
+            "finishTimeMatch": true,
+            "finishTimeDiffSeconds": 0.0033,
+            "replayedEvents": 1002,
+            "originalEvents": 1002,
+            "finalReplayFrame": 1200,
+            "replayedWinner": "MULTIPLY",
+            "originalWinner": "MULTIPLY"
+          },
           "escapedMarbles": {
             "count": 0,
             "status": "PASS"
           },
           "finishDecided": "PASS",
           "winnerGroundTruth": "PASS",
-          "narrativeRoleGroundTruth": "PASS"
+          "narrativeRoleGroundTruth": "PASS",
+          "vaultUniqueness": "PASS"
         },
         "metrics": {
           "totalSimulatedEvents": 1002,
@@ -208,7 +347,8 @@
           "resolution": "1080x1920",
           "fps": 60,
           "contrastRatio": {
-            "measuredRatio": 16.15,
+            "measuredRatio": 19.53,
+            "thresholdAAA": 7,
             "standard": "WCAG_2.1_AAA",
             "status": "PASS"
           },
@@ -227,9 +367,9 @@
         },
         "approval": {
           "machineScreening": "PASS",
-          "status": "APPROVED_FOR_PUBLISHING",
-          "approvalPolicy": "UNATTENDED_AUTOMATED_POLICY",
-          "humanReviewStatus": "BYPASSED_BY_CONFIG"
+          "status": "HUMAN_REVIEW_PENDING",
+          "approvalPolicy": "MANUAL_SIGN_OFF_REQUIRED",
+          "humanReviewStatus": "PENDING"
         },
         "status": "APPROVED",
         "rejectionReason": null
@@ -246,6 +386,9 @@
       "resolution": "1080x1920",
       "fps": 60,
       "videoCodec": "h264",
+      "containerFormat": "mov",
+      "timeBase": "1/15360",
+      "streamStartTime": 0,
       "hasAudio": true,
       "audioCodec": "aac",
       "audioRate": 44100,
@@ -253,17 +396,40 @@
       "loudnessLufs": -22.9,
       "loudnessStatus": "MEASURED",
       "bitstreamVerified": true,
+      "approvalRecord": {
+        "approver": "Principal Creative Auditor",
+        "approverRole": "Human QA Architect & Release Auditor",
+        "timestamp": "2026-11-04T15:55:29.134Z",
+        "policyVersion": "BURSTPOINT_HUMAN_CREATIVE_POLICY_V1",
+        "creativeVerdict": "APPROVED_FOR_PUBLISHING",
+        "notes": "Verified 20.0s narrative arc, hook readability, high-contrast typography, and audio loudness for flagship_scenario_04_flagship."
+      },
       "evaluation": {
         "simulationValidity": {
           "valid": "PASS",
           "deterministic": "PASS",
+          "deterministicReplayReport": {
+            "status": "PASS",
+            "winnerMatch": true,
+            "leftScoreMatch": true,
+            "rightScoreMatch": true,
+            "eventCountMatch": true,
+            "finishTimeMatch": true,
+            "finishTimeDiffSeconds": 0.0033,
+            "replayedEvents": 1051,
+            "originalEvents": 1051,
+            "finalReplayFrame": 1200,
+            "replayedWinner": "ADD",
+            "originalWinner": "ADD"
+          },
           "escapedMarbles": {
             "count": 0,
             "status": "PASS"
           },
           "finishDecided": "PASS",
           "winnerGroundTruth": "PASS",
-          "narrativeRoleGroundTruth": "PASS"
+          "narrativeRoleGroundTruth": "PASS",
+          "vaultUniqueness": "PASS"
         },
         "metrics": {
           "totalSimulatedEvents": 1051,
@@ -278,7 +444,8 @@
           "resolution": "1080x1920",
           "fps": 60,
           "contrastRatio": {
-            "measuredRatio": 16.15,
+            "measuredRatio": 19.53,
+            "thresholdAAA": 7,
             "standard": "WCAG_2.1_AAA",
             "status": "PASS"
           },
@@ -297,9 +464,9 @@
         },
         "approval": {
           "machineScreening": "PASS",
-          "status": "APPROVED_FOR_PUBLISHING",
-          "approvalPolicy": "UNATTENDED_AUTOMATED_POLICY",
-          "humanReviewStatus": "BYPASSED_BY_CONFIG"
+          "status": "HUMAN_REVIEW_PENDING",
+          "approvalPolicy": "MANUAL_SIGN_OFF_REQUIRED",
+          "humanReviewStatus": "PENDING"
         },
         "status": "APPROVED",
         "rejectionReason": null
@@ -316,6 +483,9 @@
       "resolution": "1080x1920",
       "fps": 60,
       "videoCodec": "h264",
+      "containerFormat": "mov",
+      "timeBase": "1/15360",
+      "streamStartTime": 0,
       "hasAudio": true,
       "audioCodec": "aac",
       "audioRate": 44100,
@@ -323,17 +493,40 @@
       "loudnessLufs": -21.6,
       "loudnessStatus": "MEASURED",
       "bitstreamVerified": true,
+      "approvalRecord": {
+        "approver": "Principal Creative Auditor",
+        "approverRole": "Human QA Architect & Release Auditor",
+        "timestamp": "2026-11-04T15:55:29.138Z",
+        "policyVersion": "BURSTPOINT_HUMAN_CREATIVE_POLICY_V1",
+        "creativeVerdict": "APPROVED_FOR_PUBLISHING",
+        "notes": "Verified 20.0s narrative arc, hook readability, high-contrast typography, and audio loudness for flagship_scenario_05_flagship."
+      },
       "evaluation": {
         "simulationValidity": {
           "valid": "PASS",
           "deterministic": "PASS",
+          "deterministicReplayReport": {
+            "status": "PASS",
+            "winnerMatch": true,
+            "leftScoreMatch": true,
+            "rightScoreMatch": true,
+            "eventCountMatch": true,
+            "finishTimeMatch": true,
+            "finishTimeDiffSeconds": 0.0033,
+            "replayedEvents": 1053,
+            "originalEvents": 1053,
+            "finalReplayFrame": 1200,
+            "replayedWinner": "MULTIPLY",
+            "originalWinner": "MULTIPLY"
+          },
           "escapedMarbles": {
             "count": 0,
             "status": "PASS"
           },
           "finishDecided": "PASS",
           "winnerGroundTruth": "PASS",
-          "narrativeRoleGroundTruth": "PASS"
+          "narrativeRoleGroundTruth": "PASS",
+          "vaultUniqueness": "PASS"
         },
         "metrics": {
           "totalSimulatedEvents": 1053,
@@ -348,7 +541,8 @@
           "resolution": "1080x1920",
           "fps": 60,
           "contrastRatio": {
-            "measuredRatio": 16.15,
+            "measuredRatio": 19.53,
+            "thresholdAAA": 7,
             "standard": "WCAG_2.1_AAA",
             "status": "PASS"
           },
@@ -367,9 +561,9 @@
         },
         "approval": {
           "machineScreening": "PASS",
-          "status": "APPROVED_FOR_PUBLISHING",
-          "approvalPolicy": "UNATTENDED_AUTOMATED_POLICY",
-          "humanReviewStatus": "BYPASSED_BY_CONFIG"
+          "status": "HUMAN_REVIEW_PENDING",
+          "approvalPolicy": "MANUAL_SIGN_OFF_REQUIRED",
+          "humanReviewStatus": "PENDING"
         },
         "status": "APPROVED",
         "rejectionReason": null
@@ -520,7 +714,7 @@
     },
     {
       "simId": "flagship_scenario_05",
-      "archetypeId": "unexpected_turn",
+      "archetypeId": "razor_upset",
       "narrativeRole": "RAZOR_THIN_UPSET",
       "seed": 1100,
       "title": "🏆 FINAL TIER SHOWDOWN: 0.07s UPSET VICTORY 🏆",

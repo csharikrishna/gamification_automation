@@ -19,7 +19,7 @@ try {
   const vault = new VideoVault({ storageDir: testStorageDir });
 
   // 1. Initial State
-  console.log('▶ [1/5] Verifying Vault Initialization & Schema...');
+  console.log('▶ [1/7] Verifying Vault Initialization & Schema...');
   const initialIndex = vault.getIndex();
   assert.strictEqual(initialIndex.vaultVersion, '1.0.0');
   assert.strictEqual(initialIndex.totalVideos, 0);
@@ -27,7 +27,7 @@ try {
   console.log('  ✓ Initial empty index properly formed.\n');
 
   // 2. Scenario Signature Determinism
-  console.log('▶ [2/5] Verifying Deterministic Scenario Hashing...');
+  console.log('▶ [2/7] Verifying Deterministic Scenario Hashing...');
   const cfgA = {
     gameType: 'multi_race',
     seed: 40317,
@@ -51,7 +51,7 @@ try {
   console.log(`  ✓ Signature C (seed diff): ${sigC} !== ${sigA}\n`);
 
   // 3. Archiving and Retrieval
-  console.log('▶ [3/5] Testing Video Archiving & Storage...');
+  console.log('▶ [3/7] Testing Video Archiving & Storage...');
   const record1 = vault.archiveVideo({
     clipId: 'test_clip_01',
     gameType: 'multiplying-ball-race',
@@ -70,7 +70,7 @@ try {
   console.log('  ✓ Video successfully archived and queryable by clipId and SHA-256.\n');
 
   // 4. Anti-Repetition Guardrails
-  console.log('▶ [4/5] Testing Anti-Repetition Protection...');
+  console.log('▶ [4/7] Testing Anti-Repetition Protection...');
   const duplicateSigCheck = vault.checkUniqueness({ config: cfgA });
   assert.strictEqual(duplicateSigCheck.isUnique, false);
   assert(duplicateSigCheck.reason.includes('DUPLICATE_SCENARIO_SIGNATURE'));
@@ -92,12 +92,33 @@ try {
   console.log('  ✓ Distinct scenario accepted as unique.\n');
 
   // 5. Statistics Reporting
-  console.log('▶ [5/5] Testing Vault Statistics...');
+  console.log('▶ [5/7] Testing Vault Statistics...');
   const stats = vault.getStats();
   assert.strictEqual(stats.totalVideos, 1);
   assert.strictEqual(stats.totalFramesRendered, 1200);
   assert.strictEqual(stats.totalStorageMb, 12.5);
   console.log('  ✓ Stats match index contents accurately.\n');
+
+  // 6. Corruption Defense & Quarantine Test
+  console.log('▶ [6/7] Testing Catalog Corruption Defense & Quarantine...');
+  // Force invalid JSON into index file
+  fs.writeFileSync(vault.indexPath, '{ invalid_corrupt_json: true, missing_closing_bracket: ');
+  // Vault must quarantine the corrupt file and recover from backup
+  const recoveredIndex = vault.getIndex();
+  assert.strictEqual(recoveredIndex.totalVideos, 1, 'Vault must recover catalog from backup on corruption');
+  const corruptFiles = fs.readdirSync(testStorageDir).filter(f => f.includes('vault_index.corrupt'));
+  assert(corruptFiles.length >= 1, 'Corrupted index must be quarantined to a timestamped file');
+  console.log(`  ✓ Corrupt index quarantined to ${corruptFiles[0]} and catalog restored from backup.\n`);
+
+  // 7. Reconstruction from Storage
+  console.log('▶ [7/7] Testing Index Reconstruction from On-Disk Media...');
+  const mockMediaDir = path.join(testStorageDir, 'mock_clips');
+  fs.mkdirSync(mockMediaDir, { recursive: true });
+  fs.writeFileSync(path.join(mockMediaDir, 'recovered_clip_02.mp4'), Buffer.alloc(1024 * 1024 * 2)); // 2MB
+  const reconResult = vault.reconstructIndexFromVault(mockMediaDir);
+  assert.strictEqual(reconResult.reconstructed, 1, 'Must reconstruct missing clip from media disk');
+  assert.strictEqual(vault.hasVideo({ clipId: 'recovered_clip_02' }), true);
+  console.log('  ✓ Missing disk assets successfully reconstructed into catalog.\n');
 
   console.log('======================================================================');
   console.log('🎉 ALL VIDEO VAULT & REPETITION PREVENTION TESTS PASSED (100%)!');

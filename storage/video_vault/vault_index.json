@@ -1,16 +1,16 @@
 {
   "vaultVersion": "1.0.0",
-  "lastUpdated": "2026-11-04T14:17:49.375Z",
+  "lastUpdated": "2026-11-04T15:55:36.392Z",
   "totalVideos": 5,
   "videos": [
     {
       "clipId": "flagship_scenario_01_flagship",
-      "gameType": "multiplying-ball-race",
+      "gameType": "multi_race",
       "seed": 40317,
-      "scenarioSignature": "d8f0f9a777102b1c",
+      "scenarioSignature": "40dd6ea114978182",
       "title": "⚡ 3 BALLS VS 12 BALLS: CAN THE UNDERDOG WIN? ⚡",
       "narrativeRole": "UNDERDOG_EXPONENTIAL_WIN",
-      "videoPath": "output\\proof_clips\\flagship_scenario_01_flagship.mp4",
+      "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\flagship_scenario_01_flagship.mp4",
       "sha256": "89231577166e0a4b129073ea596e2f83f5f48184c823223c8f1d39e6dd7e8c7d",
       "durationSeconds": 20,
       "exactFrameCount": 1200,
@@ -29,10 +29,13 @@
         "narrativeRole": "UNDERDOG_EXPONENTIAL_WIN",
         "seed": 40317,
         "title": "⚡ 3 BALLS VS 12 BALLS: CAN THE UNDERDOG WIN? ⚡",
-        "winner": "MULTIPLY",
+        "status": "COMPLETED",
         "finishTime": 12.57,
-        "finishMargin": null,
-        "leadChanges": 1,
+        "winner": "MULTIPLY",
+        "winningScore": 192,
+        "losingScore": 42,
+        "leftScore": 192,
+        "rightScore": 42,
         "leftMetrics": {
           "actualBallCount": 192,
           "totalGeneratedBalls": 192,
@@ -45,6 +48,9 @@
           "mathematicalPopulation": 42,
           "score": 42
         },
+        "leadChanges": 1,
+        "finishMargin": null,
+        "escapedMarblesCount": 0,
         "timelineEvents": [
           {
             "time": 9.15,
@@ -52,19 +58,260 @@
             "previousLeader": "ADD",
             "newLeader": "MULTIPLY"
           }
-        ]
+        ],
+        "totalEvents": 1025,
+        "config": {
+          "id": "flagship_scenario_01",
+          "archetypeId": "underdog_classic",
+          "gameType": "multi_race",
+          "seed": 40317,
+          "title": "⚡ 3 BALLS VS 12 BALLS: CAN THE UNDERDOG WIN? ⚡",
+          "subtitle": "Calibrated Flagship Showcase #1 · Seed 40317",
+          "durationSeconds": 20,
+          "fps": 60,
+          "maxSimulatedBalls": 200,
+          "hpTiers": [
+            8,
+            18,
+            38,
+            75,
+            140,
+            220
+          ],
+          "expectedWinner": "MULTIPLY",
+          "narrativeRole": "UNDERDOG_EXPONENTIAL_WIN",
+          "lanes": {
+            "left": {
+              "name": "MULTIPLY",
+              "startBalls": 3,
+              "stages": [
+                {
+                  "type": "multiply",
+                  "value": 2,
+                  "label": "×2",
+                  "maxHP": 8
+                },
+                {
+                  "type": "multiply",
+                  "value": 2,
+                  "label": "×2",
+                  "maxHP": 18
+                },
+                {
+                  "type": "multiply",
+                  "value": 2,
+                  "label": "×2",
+                  "maxHP": 38
+                },
+                {
+                  "type": "multiply",
+                  "value": 2,
+                  "label": "×2",
+                  "maxHP": 75
+                },
+                {
+                  "type": "multiply",
+                  "value": 2,
+                  "label": "×2",
+                  "maxHP": 140
+                },
+                {
+                  "type": "multiply",
+                  "value": 2,
+                  "label": "×2",
+                  "maxHP": 220
+                }
+              ]
+            },
+            "right": {
+              "name": "ADD",
+              "startBalls": 12,
+              "stages": [
+                {
+                  "type": "add",
+                  "value": 6,
+                  "label": "+6",
+                  "maxHP": 24
+                },
+                {
+                  "type": "add",
+                  "value": 6,
+                  "label": "+6",
+                  "maxHP": 50
+                },
+                {
+                  "type": "add",
+                  "value": 6,
+                  "label": "+6",
+                  "maxHP": 95
+                },
+                {
+                  "type": "add",
+                  "value": 6,
+                  "label": "+6",
+                  "maxHP": 160
+                },
+                {
+                  "type": "add",
+                  "value": 6,
+                  "label": "+6",
+                  "maxHP": 240
+                },
+                {
+                  "type": "add",
+                  "value": 6,
+                  "label": "+6",
+                  "maxHP": 320
+                }
+              ]
+            }
+          },
+          "hookText": "Can 3 multiplying balls beat 12 balls? 😱",
+          "tags": [
+            "#shorts",
+            "#physics",
+            "#gaming",
+            "#marblerun",
+            "#satisfying"
+          ],
+          "lifecycleState": "GENERATED"
+        },
+        "lifecycleState": "SIMULATED",
+        "vaultUniqueness": {
+          "isUnique": true,
+          "reason": null,
+          "existing": null
+        }
       },
-      "archivedAt": "2026-11-04T14:17:49.366Z",
-      "tags": []
+      "archivedAt": "2026-11-04T15:55:29.062Z",
+      "tags": [],
+      "scenarioId": "flagship_scenario_01",
+      "configurationHash": "40dd6ea114978182",
+      "replayRef": "replay_flagship_scenario_01_flagship",
+      "renderSettings": {
+        "resolution": "1080x1920",
+        "fps": 60,
+        "quality": 0.82
+      },
+      "hookText": "Can 3 multiplying balls beat 12 balls? 😱",
+      "perceptualHash": "8bf1de0ee62fcf3d",
+      "qualityReport": {
+        "simulationValidity": {
+          "valid": "PASS",
+          "deterministic": "PASS",
+          "deterministicReplayReport": {
+            "status": "PASS",
+            "winnerMatch": true,
+            "leftScoreMatch": true,
+            "rightScoreMatch": true,
+            "eventCountMatch": true,
+            "finishTimeMatch": true,
+            "finishTimeDiffSeconds": 0.0033,
+            "replayedEvents": 1025,
+            "originalEvents": 1025,
+            "finalReplayFrame": 1200,
+            "replayedWinner": "MULTIPLY",
+            "originalWinner": "MULTIPLY"
+          },
+          "escapedMarbles": {
+            "count": 0,
+            "status": "PASS"
+          },
+          "finishDecided": "PASS",
+          "winnerGroundTruth": "PASS",
+          "narrativeRoleGroundTruth": "PASS",
+          "vaultUniqueness": "PASS"
+        },
+        "metrics": {
+          "totalSimulatedEvents": 1025,
+          "eventDensityEventsPerSec": 51.25,
+          "scoreProgressionRatio": 4.57,
+          "leadChangeCount": 1,
+          "finishMarginSeconds": null,
+          "leftScore": 192,
+          "rightScore": 42
+        },
+        "visualReadability": {
+          "resolution": "1080x1920",
+          "fps": 60,
+          "contrastRatio": {
+            "measuredRatio": 19.53,
+            "thresholdAAA": 7,
+            "standard": "WCAG_2.1_AAA",
+            "status": "PASS"
+          },
+          "fontLegibility": {
+            "status": "NOT_CHECKED",
+            "note": "Requires human visual evaluation / OCR rather than automated Boolean assumption"
+          }
+        },
+        "narrativeStructure": {
+          "format": "FULL_MATCH",
+          "openingHookDurationSeconds": 1.5,
+          "gameplayProgressionDurationSeconds": 11.07,
+          "celebrationDurationSeconds": 7.43,
+          "totalDurationSeconds": 20,
+          "reconciled": "PASS"
+        },
+        "approval": {
+          "machineScreening": "PASS",
+          "status": "HUMAN_REVIEW_PENDING",
+          "approvalPolicy": "MANUAL_SIGN_OFF_REQUIRED",
+          "humanReviewStatus": "PENDING"
+        },
+        "status": "APPROVED",
+        "rejectionReason": null
+      },
+      "reviewStatus": "APPROVED_FOR_PUBLISHING",
+      "approvalStatus": "APPROVED",
+      "queueId": "queue_flagship_scenario_01_flagship",
+      "publishingReceipt": {
+        "success": true,
+        "mode": "DRY_RUN",
+        "platform": "youtube",
+        "platformVideoId": null,
+        "url": null,
+        "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\flagship_scenario_01_flagship.mp4",
+        "fileSize": 12552274,
+        "sha256": "89231577166e0a4b129073ea596e2f83f5f48184c823223c8f1d39e6dd7e8c7d",
+        "bitstreamVerified": true,
+        "status": "validated_ready_for_upload",
+        "metadata": {
+          "title": "⚡ 3 BALLS VS 12 BALLS: CAN THE UNDERDOG WIN? ⚡",
+          "description": "⚡ 3 BALLS VS 12 BALLS: CAN THE UNDERDOG WIN? ⚡\n\nCan 3 multiplying balls beat 12 balls? 😱\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
+          "tags": [
+            "shorts",
+            "physics",
+            "marblerun",
+            "gaming",
+            "satisfying"
+          ],
+          "categoryId": "20"
+        },
+        "metrics": null,
+        "timestamp": "2026-11-04T15:55:30.606Z",
+        "idempotencyKey": "idemp_e9dd862d-a398-4f99-b761-76f6e343317e"
+      },
+      "platformVideoId": null,
+      "publicationTimestamp": null,
+      "updatedAt": "2026-11-04T15:55:30.619Z",
+      "approvalRecord": {
+        "approver": "Principal Creative Auditor",
+        "approverRole": "Human QA Architect & Release Auditor",
+        "timestamp": "2026-11-04T15:55:29.121Z",
+        "policyVersion": "BURSTPOINT_HUMAN_CREATIVE_POLICY_V1",
+        "creativeVerdict": "APPROVED_FOR_PUBLISHING",
+        "notes": "Verified 20.0s narrative arc, hook readability, high-contrast typography, and audio loudness for flagship_scenario_01_flagship."
+      }
     },
     {
       "clipId": "flagship_scenario_02_flagship",
-      "gameType": "multiplying-ball-race",
+      "gameType": "multi_race",
       "seed": 303,
-      "scenarioSignature": "3b11cdc40ecb903e",
+      "scenarioSignature": "bd39818b2e16ede1",
       "title": "📈 PHOTO FINISH: MULTIPLY VS ADD NECK-AND-NECK 📈",
       "narrativeRole": "PHOTO_FINISH_CLASH",
-      "videoPath": "output\\proof_clips\\flagship_scenario_02_flagship.mp4",
+      "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\flagship_scenario_02_flagship.mp4",
       "sha256": "ccbdbee5e91a780119171c1112ad0a445b3c7249ac39f119b3aa9a5f6359ca77",
       "durationSeconds": 20,
       "exactFrameCount": 1200,
@@ -83,10 +330,13 @@
         "narrativeRole": "PHOTO_FINISH_CLASH",
         "seed": 303,
         "title": "📈 PHOTO FINISH: MULTIPLY VS ADD NECK-AND-NECK 📈",
-        "winner": "ADD",
+        "status": "COMPLETED",
         "finishTime": 12.42,
-        "finishMargin": 0.1,
-        "leadChanges": 5,
+        "winner": "ADD",
+        "winningScore": 62,
+        "losingScore": 256,
+        "leftScore": 256,
+        "rightScore": 62,
         "leftMetrics": {
           "actualBallCount": 200,
           "totalGeneratedBalls": 200,
@@ -99,6 +349,9 @@
           "mathematicalPopulation": 62,
           "score": 62
         },
+        "leadChanges": 5,
+        "finishMargin": 0.1,
+        "escapedMarblesCount": 0,
         "timelineEvents": [
           {
             "time": 9.37,
@@ -130,19 +383,260 @@
             "previousLeader": "ADD",
             "newLeader": "MULTIPLY"
           }
-        ]
+        ],
+        "totalEvents": 1061,
+        "config": {
+          "id": "flagship_scenario_02",
+          "archetypeId": "close_clash",
+          "gameType": "multi_race",
+          "seed": 303,
+          "title": "📈 PHOTO FINISH: MULTIPLY VS ADD NECK-AND-NECK 📈",
+          "subtitle": "Calibrated Flagship Showcase #2 · Seed 303",
+          "durationSeconds": 20,
+          "fps": 60,
+          "maxSimulatedBalls": 200,
+          "hpTiers": [
+            14,
+            28,
+            56,
+            110,
+            190,
+            260
+          ],
+          "expectedWinner": "ADD",
+          "narrativeRole": "PHOTO_FINISH_CLASH",
+          "lanes": {
+            "left": {
+              "name": "MULTIPLY",
+              "startBalls": 4,
+              "stages": [
+                {
+                  "type": "multiply",
+                  "value": 2,
+                  "label": "×2",
+                  "maxHP": 14
+                },
+                {
+                  "type": "multiply",
+                  "value": 2,
+                  "label": "×2",
+                  "maxHP": 28
+                },
+                {
+                  "type": "multiply",
+                  "value": 2,
+                  "label": "×2",
+                  "maxHP": 56
+                },
+                {
+                  "type": "multiply",
+                  "value": 2,
+                  "label": "×2",
+                  "maxHP": 110
+                },
+                {
+                  "type": "multiply",
+                  "value": 2,
+                  "label": "×2",
+                  "maxHP": 190
+                },
+                {
+                  "type": "multiply",
+                  "value": 2,
+                  "label": "×2",
+                  "maxHP": 260
+                }
+              ]
+            },
+            "right": {
+              "name": "ADD",
+              "startBalls": 14,
+              "stages": [
+                {
+                  "type": "add",
+                  "value": 8,
+                  "label": "+8",
+                  "maxHP": 22
+                },
+                {
+                  "type": "add",
+                  "value": 8,
+                  "label": "+8",
+                  "maxHP": 44
+                },
+                {
+                  "type": "add",
+                  "value": 8,
+                  "label": "+8",
+                  "maxHP": 82
+                },
+                {
+                  "type": "add",
+                  "value": 8,
+                  "label": "+8",
+                  "maxHP": 140
+                },
+                {
+                  "type": "add",
+                  "value": 8,
+                  "label": "+8",
+                  "maxHP": 210
+                },
+                {
+                  "type": "add",
+                  "value": 8,
+                  "label": "+8",
+                  "maxHP": 275
+                }
+              ]
+            }
+          },
+          "hookText": "Look at how close this finish is! 😱",
+          "tags": [
+            "#shorts",
+            "#physics",
+            "#gaming",
+            "#marblerun",
+            "#satisfying"
+          ],
+          "lifecycleState": "GENERATED"
+        },
+        "lifecycleState": "SIMULATED",
+        "vaultUniqueness": {
+          "isUnique": true,
+          "reason": null,
+          "existing": null
+        }
       },
-      "archivedAt": "2026-11-04T14:17:49.368Z",
-      "tags": []
+      "archivedAt": "2026-11-04T15:55:29.082Z",
+      "tags": [],
+      "scenarioId": "flagship_scenario_02",
+      "configurationHash": "bd39818b2e16ede1",
+      "replayRef": "replay_flagship_scenario_02_flagship",
+      "renderSettings": {
+        "resolution": "1080x1920",
+        "fps": 60,
+        "quality": 0.82
+      },
+      "hookText": "Look at how close this finish is! 😱",
+      "perceptualHash": "a31bf23c04f2c743",
+      "qualityReport": {
+        "simulationValidity": {
+          "valid": "PASS",
+          "deterministic": "PASS",
+          "deterministicReplayReport": {
+            "status": "PASS",
+            "winnerMatch": true,
+            "leftScoreMatch": true,
+            "rightScoreMatch": true,
+            "eventCountMatch": true,
+            "finishTimeMatch": true,
+            "finishTimeDiffSeconds": 0.0033,
+            "replayedEvents": 1061,
+            "originalEvents": 1061,
+            "finalReplayFrame": 1200,
+            "replayedWinner": "ADD",
+            "originalWinner": "ADD"
+          },
+          "escapedMarbles": {
+            "count": 0,
+            "status": "PASS"
+          },
+          "finishDecided": "PASS",
+          "winnerGroundTruth": "PASS",
+          "narrativeRoleGroundTruth": "PASS",
+          "vaultUniqueness": "PASS"
+        },
+        "metrics": {
+          "totalSimulatedEvents": 1061,
+          "eventDensityEventsPerSec": 53.05,
+          "scoreProgressionRatio": 4.13,
+          "leadChangeCount": 5,
+          "finishMarginSeconds": 0.1,
+          "leftScore": 256,
+          "rightScore": 62
+        },
+        "visualReadability": {
+          "resolution": "1080x1920",
+          "fps": 60,
+          "contrastRatio": {
+            "measuredRatio": 19.53,
+            "thresholdAAA": 7,
+            "standard": "WCAG_2.1_AAA",
+            "status": "PASS"
+          },
+          "fontLegibility": {
+            "status": "NOT_CHECKED",
+            "note": "Requires human visual evaluation / OCR rather than automated Boolean assumption"
+          }
+        },
+        "narrativeStructure": {
+          "format": "FULL_MATCH",
+          "openingHookDurationSeconds": 1.5,
+          "gameplayProgressionDurationSeconds": 10.92,
+          "celebrationDurationSeconds": 7.58,
+          "totalDurationSeconds": 20,
+          "reconciled": "PASS"
+        },
+        "approval": {
+          "machineScreening": "PASS",
+          "status": "HUMAN_REVIEW_PENDING",
+          "approvalPolicy": "MANUAL_SIGN_OFF_REQUIRED",
+          "humanReviewStatus": "PENDING"
+        },
+        "status": "APPROVED",
+        "rejectionReason": null
+      },
+      "reviewStatus": "APPROVED_FOR_PUBLISHING",
+      "approvalStatus": "APPROVED",
+      "queueId": "queue_flagship_scenario_02_flagship",
+      "publishingReceipt": {
+        "success": true,
+        "mode": "DRY_RUN",
+        "platform": "youtube",
+        "platformVideoId": null,
+        "url": null,
+        "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\flagship_scenario_02_flagship.mp4",
+        "fileSize": 13127795,
+        "sha256": "ccbdbee5e91a780119171c1112ad0a445b3c7249ac39f119b3aa9a5f6359ca77",
+        "bitstreamVerified": true,
+        "status": "validated_ready_for_upload",
+        "metadata": {
+          "title": "📈 PHOTO FINISH: MULTIPLY VS ADD NECK-AND-NECK 📈",
+          "description": "📈 PHOTO FINISH: MULTIPLY VS ADD NECK-AND-NECK 📈\n\nLook at how close this finish is! 😱\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
+          "tags": [
+            "shorts",
+            "physics",
+            "marblerun",
+            "gaming",
+            "satisfying"
+          ],
+          "categoryId": "20"
+        },
+        "metrics": null,
+        "timestamp": "2026-11-04T15:55:32.008Z",
+        "idempotencyKey": "idemp_178d95a5-1912-4bb6-acb2-a83e5c419a44"
+      },
+      "platformVideoId": null,
+      "publicationTimestamp": null,
+      "updatedAt": "2026-11-04T15:55:32.019Z",
+      "approvalRecord": {
+        "approver": "Principal Creative Auditor",
+        "approverRole": "Human QA Architect & Release Auditor",
+        "timestamp": "2026-11-04T15:55:29.125Z",
+        "policyVersion": "BURSTPOINT_HUMAN_CREATIVE_POLICY_V1",
+        "creativeVerdict": "APPROVED_FOR_PUBLISHING",
+        "notes": "Verified 20.0s narrative arc, hook readability, high-contrast typography, and audio loudness for flagship_scenario_02_flagship."
+      }
     },
     {
       "clipId": "flagship_scenario_03_flagship",
-      "gameType": "multiplying-ball-race",
+      "gameType": "multi_race",
       "seed": 101,
-      "scenarioSignature": "e8bb8f4ea1413e7c",
+      "scenarioSignature": "e077af27d6d003f2",
       "title": "💥 EARLY DEFICIT TO DRAMATIC FINAL TIER REVERSAL 💥",
       "narrativeRole": "COMEBACK_REVERSAL",
-      "videoPath": "output\\proof_clips\\flagship_scenario_03_flagship.mp4",
+      "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\flagship_scenario_03_flagship.mp4",
       "sha256": "52a0199eedc4cf1056c1f4cbbb75a88d0db257188edb6e6ed7019fc3235950ad",
       "durationSeconds": 20,
       "exactFrameCount": 1200,
@@ -161,10 +655,13 @@
         "narrativeRole": "COMEBACK_REVERSAL",
         "seed": 101,
         "title": "💥 EARLY DEFICIT TO DRAMATIC FINAL TIER REVERSAL 💥",
-        "winner": "MULTIPLY",
+        "status": "COMPLETED",
         "finishTime": 13.88,
-        "finishMargin": 0.27,
-        "leadChanges": 1,
+        "winner": "MULTIPLY",
+        "winningScore": 128,
+        "losingScore": 52,
+        "leftScore": 128,
+        "rightScore": 52,
         "leftMetrics": {
           "actualBallCount": 128,
           "totalGeneratedBalls": 128,
@@ -177,6 +674,9 @@
           "mathematicalPopulation": 52,
           "score": 52
         },
+        "leadChanges": 1,
+        "finishMargin": 0.27,
+        "escapedMarblesCount": 0,
         "timelineEvents": [
           {
             "time": 11.75,
@@ -184,19 +684,260 @@
             "previousLeader": "ADD",
             "newLeader": "MULTIPLY"
           }
-        ]
+        ],
+        "totalEvents": 1002,
+        "config": {
+          "id": "flagship_scenario_03",
+          "archetypeId": "lead_reversal",
+          "gameType": "multi_race",
+          "seed": 101,
+          "title": "💥 EARLY DEFICIT TO DRAMATIC FINAL TIER REVERSAL 💥",
+          "subtitle": "Calibrated Flagship Showcase #3 · Seed 101",
+          "durationSeconds": 20,
+          "fps": 60,
+          "maxSimulatedBalls": 200,
+          "hpTiers": [
+            6,
+            14,
+            32,
+            70,
+            150,
+            230
+          ],
+          "expectedWinner": "MULTIPLY",
+          "narrativeRole": "COMEBACK_REVERSAL",
+          "lanes": {
+            "left": {
+              "name": "MULTIPLY",
+              "startBalls": 2,
+              "stages": [
+                {
+                  "type": "multiply",
+                  "value": 2,
+                  "label": "×2",
+                  "maxHP": 6
+                },
+                {
+                  "type": "multiply",
+                  "value": 2,
+                  "label": "×2",
+                  "maxHP": 14
+                },
+                {
+                  "type": "multiply",
+                  "value": 2,
+                  "label": "×2",
+                  "maxHP": 32
+                },
+                {
+                  "type": "multiply",
+                  "value": 2,
+                  "label": "×2",
+                  "maxHP": 70
+                },
+                {
+                  "type": "multiply",
+                  "value": 2,
+                  "label": "×2",
+                  "maxHP": 150
+                },
+                {
+                  "type": "multiply",
+                  "value": 2,
+                  "label": "×2",
+                  "maxHP": 230
+                }
+              ]
+            },
+            "right": {
+              "name": "ADD",
+              "startBalls": 16,
+              "stages": [
+                {
+                  "type": "add",
+                  "value": 6,
+                  "label": "+6",
+                  "maxHP": 26
+                },
+                {
+                  "type": "add",
+                  "value": 6,
+                  "label": "+6",
+                  "maxHP": 48
+                },
+                {
+                  "type": "add",
+                  "value": 6,
+                  "label": "+6",
+                  "maxHP": 85
+                },
+                {
+                  "type": "add",
+                  "value": 6,
+                  "label": "+6",
+                  "maxHP": 145
+                },
+                {
+                  "type": "add",
+                  "value": 6,
+                  "label": "+6",
+                  "maxHP": 230
+                },
+                {
+                  "type": "add",
+                  "value": 6,
+                  "label": "+6",
+                  "maxHP": 310
+                }
+              ]
+            }
+          },
+          "hookText": "Watch the insane final tier comeback! 🤯",
+          "tags": [
+            "#shorts",
+            "#physics",
+            "#gaming",
+            "#marblerun",
+            "#satisfying"
+          ],
+          "lifecycleState": "GENERATED"
+        },
+        "lifecycleState": "SIMULATED",
+        "vaultUniqueness": {
+          "isUnique": true,
+          "reason": null,
+          "existing": null
+        }
       },
-      "archivedAt": "2026-11-04T14:17:49.370Z",
-      "tags": []
+      "archivedAt": "2026-11-04T15:55:29.096Z",
+      "tags": [],
+      "scenarioId": "flagship_scenario_03",
+      "configurationHash": "e077af27d6d003f2",
+      "replayRef": "replay_flagship_scenario_03_flagship",
+      "renderSettings": {
+        "resolution": "1080x1920",
+        "fps": 60,
+        "quality": 0.82
+      },
+      "hookText": "Watch the insane final tier comeback! 🤯",
+      "perceptualHash": "9e2ef0020539c15d",
+      "qualityReport": {
+        "simulationValidity": {
+          "valid": "PASS",
+          "deterministic": "PASS",
+          "deterministicReplayReport": {
+            "status": "PASS",
+            "winnerMatch": true,
+            "leftScoreMatch": true,
+            "rightScoreMatch": true,
+            "eventCountMatch": true,
+            "finishTimeMatch": true,
+            "finishTimeDiffSeconds": 0.0033,
+            "replayedEvents": 1002,
+            "originalEvents": 1002,
+            "finalReplayFrame": 1200,
+            "replayedWinner": "MULTIPLY",
+            "originalWinner": "MULTIPLY"
+          },
+          "escapedMarbles": {
+            "count": 0,
+            "status": "PASS"
+          },
+          "finishDecided": "PASS",
+          "winnerGroundTruth": "PASS",
+          "narrativeRoleGroundTruth": "PASS",
+          "vaultUniqueness": "PASS"
+        },
+        "metrics": {
+          "totalSimulatedEvents": 1002,
+          "eventDensityEventsPerSec": 50.1,
+          "scoreProgressionRatio": 2.46,
+          "leadChangeCount": 1,
+          "finishMarginSeconds": 0.27,
+          "leftScore": 128,
+          "rightScore": 52
+        },
+        "visualReadability": {
+          "resolution": "1080x1920",
+          "fps": 60,
+          "contrastRatio": {
+            "measuredRatio": 19.53,
+            "thresholdAAA": 7,
+            "standard": "WCAG_2.1_AAA",
+            "status": "PASS"
+          },
+          "fontLegibility": {
+            "status": "NOT_CHECKED",
+            "note": "Requires human visual evaluation / OCR rather than automated Boolean assumption"
+          }
+        },
+        "narrativeStructure": {
+          "format": "FULL_MATCH",
+          "openingHookDurationSeconds": 1.5,
+          "gameplayProgressionDurationSeconds": 12.38,
+          "celebrationDurationSeconds": 6.12,
+          "totalDurationSeconds": 20,
+          "reconciled": "PASS"
+        },
+        "approval": {
+          "machineScreening": "PASS",
+          "status": "HUMAN_REVIEW_PENDING",
+          "approvalPolicy": "MANUAL_SIGN_OFF_REQUIRED",
+          "humanReviewStatus": "PENDING"
+        },
+        "status": "APPROVED",
+        "rejectionReason": null
+      },
+      "reviewStatus": "APPROVED_FOR_PUBLISHING",
+      "approvalStatus": "APPROVED",
+      "queueId": "queue_flagship_scenario_03_flagship",
+      "publishingReceipt": {
+        "success": true,
+        "mode": "DRY_RUN",
+        "platform": "youtube",
+        "platformVideoId": null,
+        "url": null,
+        "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\flagship_scenario_03_flagship.mp4",
+        "fileSize": 13114916,
+        "sha256": "52a0199eedc4cf1056c1f4cbbb75a88d0db257188edb6e6ed7019fc3235950ad",
+        "bitstreamVerified": true,
+        "status": "validated_ready_for_upload",
+        "metadata": {
+          "title": "💥 EARLY DEFICIT TO DRAMATIC FINAL TIER REVERSAL 💥",
+          "description": "💥 EARLY DEFICIT TO DRAMATIC FINAL TIER REVERSAL 💥\n\nWatch the insane final tier comeback! 🤯\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
+          "tags": [
+            "shorts",
+            "physics",
+            "marblerun",
+            "gaming",
+            "satisfying"
+          ],
+          "categoryId": "20"
+        },
+        "metrics": null,
+        "timestamp": "2026-11-04T15:55:33.481Z",
+        "idempotencyKey": "idemp_9da1dc8a-456b-42af-a7a0-5301b72adc1e"
+      },
+      "platformVideoId": null,
+      "publicationTimestamp": null,
+      "updatedAt": "2026-11-04T15:55:33.492Z",
+      "approvalRecord": {
+        "approver": "Principal Creative Auditor",
+        "approverRole": "Human QA Architect & Release Auditor",
+        "timestamp": "2026-11-04T15:55:29.129Z",
+        "policyVersion": "BURSTPOINT_HUMAN_CREATIVE_POLICY_V1",
+        "creativeVerdict": "APPROVED_FOR_PUBLISHING",
+        "notes": "Verified 20.0s narrative arc, hook readability, high-contrast typography, and audio loudness for flagship_scenario_03_flagship."
+      }
     },
     {
       "clipId": "flagship_scenario_04_flagship",
-      "gameType": "multiplying-ball-race",
+      "gameType": "multi_race",
       "seed": 707,
-      "scenarioSignature": "3a3306a5a88fef79",
+      "scenarioSignature": "996f6cc5c7ce5139",
       "title": "🔥 HIGH MULTIPLIER: ×3 GAMBLE VS +14 TANK 🔥",
       "narrativeRole": "HEAVY_SWARM_ESCALATION",
-      "videoPath": "output\\proof_clips\\flagship_scenario_04_flagship.mp4",
+      "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\flagship_scenario_04_flagship.mp4",
       "sha256": "3a264d4dc28e5f8022e67e5482b68b5b4e65cbbb8f1d8375120e84356bbe07e1",
       "durationSeconds": 20,
       "exactFrameCount": 1200,
@@ -215,10 +956,13 @@
         "narrativeRole": "HEAVY_SWARM_ESCALATION",
         "seed": 707,
         "title": "🔥 HIGH MULTIPLIER: ×3 GAMBLE VS +14 TANK 🔥",
-        "winner": "ADD",
+        "status": "COMPLETED",
         "finishTime": 10.67,
-        "finishMargin": null,
-        "leadChanges": 0,
+        "winner": "ADD",
+        "winningScore": 102,
+        "losingScore": 162,
+        "leftScore": 162,
+        "rightScore": 102,
         "leftMetrics": {
           "actualBallCount": 162,
           "totalGeneratedBalls": 162,
@@ -231,19 +975,263 @@
           "mathematicalPopulation": 102,
           "score": 102
         },
-        "timelineEvents": []
+        "leadChanges": 0,
+        "finishMargin": null,
+        "escapedMarblesCount": 0,
+        "timelineEvents": [],
+        "totalEvents": 1051,
+        "config": {
+          "id": "flagship_scenario_04",
+          "archetypeId": "high_escalation",
+          "gameType": "multi_race",
+          "seed": 707,
+          "title": "🔥 HIGH MULTIPLIER: ×3 GAMBLE VS +14 TANK 🔥",
+          "subtitle": "Calibrated Flagship Showcase #4 · Seed 707",
+          "durationSeconds": 20,
+          "fps": 60,
+          "maxSimulatedBalls": 200,
+          "hpTiers": [
+            12,
+            30,
+            75,
+            160,
+            300,
+            450
+          ],
+          "expectedWinner": "ADD",
+          "narrativeRole": "HEAVY_SWARM_ESCALATION",
+          "lanes": {
+            "left": {
+              "name": "MULTIPLY",
+              "startBalls": 2,
+              "stages": [
+                {
+                  "type": "multiply",
+                  "value": 3,
+                  "label": "×3",
+                  "maxHP": 12
+                },
+                {
+                  "type": "multiply",
+                  "value": 3,
+                  "label": "×3",
+                  "maxHP": 30
+                },
+                {
+                  "type": "multiply",
+                  "value": 3,
+                  "label": "×3",
+                  "maxHP": 75
+                },
+                {
+                  "type": "multiply",
+                  "value": 3,
+                  "label": "×3",
+                  "maxHP": 160
+                },
+                {
+                  "type": "multiply",
+                  "value": 3,
+                  "label": "×3",
+                  "maxHP": 300
+                },
+                {
+                  "type": "multiply",
+                  "value": 3,
+                  "label": "×3",
+                  "maxHP": 450
+                }
+              ]
+            },
+            "right": {
+              "name": "ADD",
+              "startBalls": 18,
+              "stages": [
+                {
+                  "type": "add",
+                  "value": 14,
+                  "label": "+14",
+                  "maxHP": 28
+                },
+                {
+                  "type": "add",
+                  "value": 14,
+                  "label": "+14",
+                  "maxHP": 55
+                },
+                {
+                  "type": "add",
+                  "value": 14,
+                  "label": "+14",
+                  "maxHP": 100
+                },
+                {
+                  "type": "add",
+                  "value": 14,
+                  "label": "+14",
+                  "maxHP": 175
+                },
+                {
+                  "type": "add",
+                  "value": 14,
+                  "label": "+14",
+                  "maxHP": 270
+                },
+                {
+                  "type": "add",
+                  "value": 14,
+                  "label": "+14",
+                  "maxHP": 360
+                }
+              ]
+            }
+          },
+          "hookText": "Can high multipliers survive against the additive tank? 🤯",
+          "tags": [
+            "#shorts",
+            "#physics",
+            "#gaming",
+            "#marblerun",
+            "#satisfying"
+          ],
+          "lifecycleState": "GENERATED"
+        },
+        "lifecycleState": "SIMULATED",
+        "vaultUniqueness": {
+          "isUnique": true,
+          "reason": null,
+          "existing": null
+        }
       },
-      "archivedAt": "2026-11-04T14:17:49.373Z",
-      "tags": []
+      "archivedAt": "2026-11-04T15:55:29.109Z",
+      "tags": [],
+      "scenarioId": "flagship_scenario_04",
+      "configurationHash": "996f6cc5c7ce5139",
+      "replayRef": "replay_flagship_scenario_04_flagship",
+      "renderSettings": {
+        "resolution": "1080x1920",
+        "fps": 60,
+        "quality": 0.82
+      },
+      "hookText": "Can high multipliers survive against the additive tank? 🤯",
+      "perceptualHash": "77f9ca2834b93b29",
+      "qualityReport": {
+        "simulationValidity": {
+          "valid": "PASS",
+          "deterministic": "PASS",
+          "deterministicReplayReport": {
+            "status": "PASS",
+            "winnerMatch": true,
+            "leftScoreMatch": true,
+            "rightScoreMatch": true,
+            "eventCountMatch": true,
+            "finishTimeMatch": true,
+            "finishTimeDiffSeconds": 0.0033,
+            "replayedEvents": 1051,
+            "originalEvents": 1051,
+            "finalReplayFrame": 1200,
+            "replayedWinner": "ADD",
+            "originalWinner": "ADD"
+          },
+          "escapedMarbles": {
+            "count": 0,
+            "status": "PASS"
+          },
+          "finishDecided": "PASS",
+          "winnerGroundTruth": "PASS",
+          "narrativeRoleGroundTruth": "PASS",
+          "vaultUniqueness": "PASS"
+        },
+        "metrics": {
+          "totalSimulatedEvents": 1051,
+          "eventDensityEventsPerSec": 52.55,
+          "scoreProgressionRatio": 1.59,
+          "leadChangeCount": 0,
+          "finishMarginSeconds": null,
+          "leftScore": 162,
+          "rightScore": 102
+        },
+        "visualReadability": {
+          "resolution": "1080x1920",
+          "fps": 60,
+          "contrastRatio": {
+            "measuredRatio": 19.53,
+            "thresholdAAA": 7,
+            "standard": "WCAG_2.1_AAA",
+            "status": "PASS"
+          },
+          "fontLegibility": {
+            "status": "NOT_CHECKED",
+            "note": "Requires human visual evaluation / OCR rather than automated Boolean assumption"
+          }
+        },
+        "narrativeStructure": {
+          "format": "FULL_MATCH",
+          "openingHookDurationSeconds": 1.5,
+          "gameplayProgressionDurationSeconds": 9.17,
+          "celebrationDurationSeconds": 9.33,
+          "totalDurationSeconds": 20,
+          "reconciled": "PASS"
+        },
+        "approval": {
+          "machineScreening": "PASS",
+          "status": "HUMAN_REVIEW_PENDING",
+          "approvalPolicy": "MANUAL_SIGN_OFF_REQUIRED",
+          "humanReviewStatus": "PENDING"
+        },
+        "status": "APPROVED",
+        "rejectionReason": null
+      },
+      "reviewStatus": "APPROVED_FOR_PUBLISHING",
+      "approvalStatus": "APPROVED",
+      "queueId": "queue_flagship_scenario_04_flagship",
+      "publishingReceipt": {
+        "success": true,
+        "mode": "DRY_RUN",
+        "platform": "youtube",
+        "platformVideoId": null,
+        "url": null,
+        "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\flagship_scenario_04_flagship.mp4",
+        "fileSize": 11513485,
+        "sha256": "3a264d4dc28e5f8022e67e5482b68b5b4e65cbbb8f1d8375120e84356bbe07e1",
+        "bitstreamVerified": true,
+        "status": "validated_ready_for_upload",
+        "metadata": {
+          "title": "🔥 HIGH MULTIPLIER: ×3 GAMBLE VS +14 TANK 🔥",
+          "description": "🔥 HIGH MULTIPLIER: ×3 GAMBLE VS +14 TANK 🔥\n\nCan high multipliers survive against the additive tank? 🤯\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
+          "tags": [
+            "shorts",
+            "physics",
+            "marblerun",
+            "gaming",
+            "satisfying"
+          ],
+          "categoryId": "20"
+        },
+        "metrics": null,
+        "timestamp": "2026-11-04T15:55:34.896Z",
+        "idempotencyKey": "idemp_3e652759-1f82-4f54-80dc-65a656d6ca93"
+      },
+      "platformVideoId": null,
+      "publicationTimestamp": null,
+      "updatedAt": "2026-11-04T15:55:34.903Z",
+      "approvalRecord": {
+        "approver": "Principal Creative Auditor",
+        "approverRole": "Human QA Architect & Release Auditor",
+        "timestamp": "2026-11-04T15:55:29.134Z",
+        "policyVersion": "BURSTPOINT_HUMAN_CREATIVE_POLICY_V1",
+        "creativeVerdict": "APPROVED_FOR_PUBLISHING",
+        "notes": "Verified 20.0s narrative arc, hook readability, high-contrast typography, and audio loudness for flagship_scenario_04_flagship."
+      }
     },
     {
       "clipId": "flagship_scenario_05_flagship",
-      "gameType": "multiplying-ball-race",
+      "gameType": "multi_race",
       "seed": 1100,
-      "scenarioSignature": "8ad5f666695e41d5",
+      "scenarioSignature": "724ff7e6b95b43ea",
       "title": "🏆 FINAL TIER SHOWDOWN: 0.07s UPSET VICTORY 🏆",
       "narrativeRole": "RAZOR_THIN_UPSET",
-      "videoPath": "output\\proof_clips\\flagship_scenario_05_flagship.mp4",
+      "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\flagship_scenario_05_flagship.mp4",
       "sha256": "f94a66734248a49e022de98157266e6377f1ceee940c1b05cff80b58154ea051",
       "durationSeconds": 20,
       "exactFrameCount": 1200,
@@ -258,14 +1246,17 @@
       "loudnessLufs": -21.6,
       "simOutcome": {
         "simId": "flagship_scenario_05",
-        "archetypeId": "unexpected_turn",
+        "archetypeId": "razor_upset",
         "narrativeRole": "RAZOR_THIN_UPSET",
         "seed": 1100,
         "title": "🏆 FINAL TIER SHOWDOWN: 0.07s UPSET VICTORY 🏆",
-        "winner": "MULTIPLY",
+        "status": "COMPLETED",
         "finishTime": 12.52,
-        "finishMargin": 0.07,
-        "leadChanges": 3,
+        "winner": "MULTIPLY",
+        "winningScore": 192,
+        "losingScore": 66,
+        "leftScore": 192,
+        "rightScore": 66,
         "leftMetrics": {
           "actualBallCount": 192,
           "totalGeneratedBalls": 192,
@@ -278,6 +1269,9 @@
           "mathematicalPopulation": 66,
           "score": 66
         },
+        "leadChanges": 3,
+        "finishMargin": 0.07,
+        "escapedMarblesCount": 0,
         "timelineEvents": [
           {
             "time": 10.87,
@@ -297,10 +1291,251 @@
             "previousLeader": "ADD",
             "newLeader": "MULTIPLY"
           }
-        ]
+        ],
+        "totalEvents": 1053,
+        "config": {
+          "id": "flagship_scenario_05",
+          "archetypeId": "razor_upset",
+          "gameType": "multi_race",
+          "seed": 1100,
+          "title": "🏆 FINAL TIER SHOWDOWN: 0.07s UPSET VICTORY 🏆",
+          "subtitle": "Calibrated Flagship Showcase #5 · Seed 1100",
+          "durationSeconds": 20,
+          "fps": 60,
+          "maxSimulatedBalls": 200,
+          "hpTiers": [
+            8,
+            16,
+            35,
+            75,
+            145,
+            230
+          ],
+          "expectedWinner": "MULTIPLY",
+          "narrativeRole": "RAZOR_THIN_UPSET",
+          "lanes": {
+            "left": {
+              "name": "MULTIPLY",
+              "startBalls": 3,
+              "stages": [
+                {
+                  "type": "multiply",
+                  "value": 2,
+                  "label": "×2",
+                  "maxHP": 8
+                },
+                {
+                  "type": "multiply",
+                  "value": 2,
+                  "label": "×2",
+                  "maxHP": 16
+                },
+                {
+                  "type": "multiply",
+                  "value": 2,
+                  "label": "×2",
+                  "maxHP": 35
+                },
+                {
+                  "type": "multiply",
+                  "value": 2,
+                  "label": "×2",
+                  "maxHP": 75
+                },
+                {
+                  "type": "multiply",
+                  "value": 2,
+                  "label": "×2",
+                  "maxHP": 145
+                },
+                {
+                  "type": "multiply",
+                  "value": 2,
+                  "label": "×2",
+                  "maxHP": 230
+                }
+              ]
+            },
+            "right": {
+              "name": "ADD",
+              "startBalls": 18,
+              "stages": [
+                {
+                  "type": "add",
+                  "value": 8,
+                  "label": "+8",
+                  "maxHP": 28
+                },
+                {
+                  "type": "add",
+                  "value": 8,
+                  "label": "+8",
+                  "maxHP": 52
+                },
+                {
+                  "type": "add",
+                  "value": 8,
+                  "label": "+8",
+                  "maxHP": 90
+                },
+                {
+                  "type": "add",
+                  "value": 8,
+                  "label": "+8",
+                  "maxHP": 150
+                },
+                {
+                  "type": "add",
+                  "value": 8,
+                  "label": "+8",
+                  "maxHP": 230
+                },
+                {
+                  "type": "add",
+                  "value": 8,
+                  "label": "+8",
+                  "maxHP": 320
+                }
+              ]
+            }
+          },
+          "hookText": "Only 0.07 seconds apart at the finish! 😱",
+          "tags": [
+            "#shorts",
+            "#physics",
+            "#gaming",
+            "#marblerun",
+            "#satisfying"
+          ],
+          "lifecycleState": "GENERATED"
+        },
+        "lifecycleState": "SIMULATED",
+        "vaultUniqueness": {
+          "isUnique": true,
+          "reason": null,
+          "existing": null
+        }
       },
-      "archivedAt": "2026-11-04T14:17:49.375Z",
-      "tags": []
+      "archivedAt": "2026-11-04T15:55:29.117Z",
+      "tags": [],
+      "scenarioId": "flagship_scenario_05",
+      "configurationHash": "724ff7e6b95b43ea",
+      "replayRef": "replay_flagship_scenario_05_flagship",
+      "renderSettings": {
+        "resolution": "1080x1920",
+        "fps": 60,
+        "quality": 0.82
+      },
+      "hookText": "Only 0.07 seconds apart at the finish! 😱",
+      "perceptualHash": "df293ba6420a78a5",
+      "qualityReport": {
+        "simulationValidity": {
+          "valid": "PASS",
+          "deterministic": "PASS",
+          "deterministicReplayReport": {
+            "status": "PASS",
+            "winnerMatch": true,
+            "leftScoreMatch": true,
+            "rightScoreMatch": true,
+            "eventCountMatch": true,
+            "finishTimeMatch": true,
+            "finishTimeDiffSeconds": 0.0033,
+            "replayedEvents": 1053,
+            "originalEvents": 1053,
+            "finalReplayFrame": 1200,
+            "replayedWinner": "MULTIPLY",
+            "originalWinner": "MULTIPLY"
+          },
+          "escapedMarbles": {
+            "count": 0,
+            "status": "PASS"
+          },
+          "finishDecided": "PASS",
+          "winnerGroundTruth": "PASS",
+          "narrativeRoleGroundTruth": "PASS",
+          "vaultUniqueness": "PASS"
+        },
+        "metrics": {
+          "totalSimulatedEvents": 1053,
+          "eventDensityEventsPerSec": 52.65,
+          "scoreProgressionRatio": 2.91,
+          "leadChangeCount": 3,
+          "finishMarginSeconds": 0.07,
+          "leftScore": 192,
+          "rightScore": 66
+        },
+        "visualReadability": {
+          "resolution": "1080x1920",
+          "fps": 60,
+          "contrastRatio": {
+            "measuredRatio": 19.53,
+            "thresholdAAA": 7,
+            "standard": "WCAG_2.1_AAA",
+            "status": "PASS"
+          },
+          "fontLegibility": {
+            "status": "NOT_CHECKED",
+            "note": "Requires human visual evaluation / OCR rather than automated Boolean assumption"
+          }
+        },
+        "narrativeStructure": {
+          "format": "FULL_MATCH",
+          "openingHookDurationSeconds": 1.5,
+          "gameplayProgressionDurationSeconds": 11.02,
+          "celebrationDurationSeconds": 7.48,
+          "totalDurationSeconds": 20,
+          "reconciled": "PASS"
+        },
+        "approval": {
+          "machineScreening": "PASS",
+          "status": "HUMAN_REVIEW_PENDING",
+          "approvalPolicy": "MANUAL_SIGN_OFF_REQUIRED",
+          "humanReviewStatus": "PENDING"
+        },
+        "status": "APPROVED",
+        "rejectionReason": null
+      },
+      "reviewStatus": "APPROVED_FOR_PUBLISHING",
+      "approvalStatus": "APPROVED",
+      "queueId": "queue_flagship_scenario_05_flagship",
+      "publishingReceipt": {
+        "success": true,
+        "mode": "DRY_RUN",
+        "platform": "youtube",
+        "platformVideoId": null,
+        "url": null,
+        "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\flagship_scenario_05_flagship.mp4",
+        "fileSize": 13001477,
+        "sha256": "f94a66734248a49e022de98157266e6377f1ceee940c1b05cff80b58154ea051",
+        "bitstreamVerified": true,
+        "status": "validated_ready_for_upload",
+        "metadata": {
+          "title": "🏆 FINAL TIER SHOWDOWN: 0.07s UPSET VICTORY 🏆",
+          "description": "🏆 FINAL TIER SHOWDOWN: 0.07s UPSET VICTORY 🏆\n\nOnly 0.07 seconds apart at the finish! 😱\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
+          "tags": [
+            "shorts",
+            "physics",
+            "marblerun",
+            "gaming",
+            "satisfying"
+          ],
+          "categoryId": "20"
+        },
+        "metrics": null,
+        "timestamp": "2026-11-04T15:55:36.382Z",
+        "idempotencyKey": "idemp_cf1b63c6-75d2-48fb-8c05-35561c3ded84"
+      },
+      "platformVideoId": null,
+      "publicationTimestamp": null,
+      "updatedAt": "2026-11-04T15:55:36.392Z",
+      "approvalRecord": {
+        "approver": "Principal Creative Auditor",
+        "approverRole": "Human QA Architect & Release Auditor",
+        "timestamp": "2026-11-04T15:55:29.138Z",
+        "policyVersion": "BURSTPOINT_HUMAN_CREATIVE_POLICY_V1",
+        "creativeVerdict": "APPROVED_FOR_PUBLISHING",
+        "notes": "Verified 20.0s narrative arc, hook readability, high-contrast typography, and audio loudness for flagship_scenario_05_flagship."
+      }
     }
   ]
 }
