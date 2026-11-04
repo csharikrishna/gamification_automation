@@ -12,5 +12,6 @@ temp/
 output/*.mp4
 output/proof_clips/*.mp4
 output/temp_*
+output/verify_*
 daily_queue/**/*.mp4
 share_server.py

@@ -149,15 +149,20 @@ class CanvasRenderer {
     // Bottom Reservoir & Finish Line
     this.drawFinishLineAndProgress(engine);
 
+    // Arena-Integrated Victory Spotlight & Reservoir Glow (World space)
+    if (engine.winnerBannerAlpha > 0.01) {
+      this.drawArenaCelebrationGlow(engine);
+    }
+
     this.director.restoreCamera(ctx);
     ctx.restore();
 
-    // 3. Screen-Space UI Overlays (Fixed broadcast header, scoreboard, winner banner)
+    // 3. Screen-Space UI Overlays (Fixed broadcast header, scoreboard)
     this.drawHeader(engine);
 
-    // 4. Winner Celebration Overlay (if completed)
+    // 4. Winner Celebration Presentation (Broadcast lower-third banner)
     if (engine.winnerBannerAlpha > 0.01) {
-      this.drawWinnerBanner(engine);
+      this.drawCelebration(engine);
     }
 
     // 5. Brand watermark
@@ -1264,6 +1269,31 @@ class CanvasRenderer {
         ctx.arc(p.x, p.y, p.radius || 3, 0, Math.PI * 2);
         ctx.fill();
 
+      } else if (p.type === 'ember' || p.color === '#00f0ff' || p.color === '#ff007f') {
+        // Subtle, elegant atmospheric golden ember / luminous light mote
+        ctx.save();
+        ctx.globalCompositeOperation = 'lighter';
+        const pulse = 0.82 + 0.18 * Math.sin((p.maxLife - p.life) * 5.2 + p.x);
+        const r = (p.radius || 2.4) * pulse;
+
+        // Radiant soft aura
+        const moteGrad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r * 3.5);
+        moteGrad.addColorStop(0, '#ffd700');
+        moteGrad.addColorStop(0.4, 'rgba(255, 215, 0, 0.35)');
+        moteGrad.addColorStop(1, 'rgba(255, 215, 0, 0)');
+        ctx.fillStyle = moteGrad;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, r * 3.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // White-hot luminous center core
+        ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.95})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, r * 0.65, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.restore();
+
       } else {
         // High-luminance spark / crystal ember particle
         ctx.save();
@@ -1353,11 +1383,9 @@ class CanvasRenderer {
     ctx.restore();
   }
 
-  // Arena-Integrated Victory Presentation (Non-obstructive, emerges from the arena itself)
-  drawWinnerBanner(engine) {
+  // World-space Arena Celebration Lighting (Tracks with camera, spotlighting resting marbles in reservoir)
+  drawArenaCelebrationGlow(engine) {
     const ctx = this.ctx;
-    const w = this.width;
-    const h = this.height;
     const winner = engine.winner;
     if (!winner) return;
 
@@ -1368,86 +1396,276 @@ class CanvasRenderer {
     const otherSide = winner.side === 'left' ? 'right' : 'left';
     const loseLane = engine.lanes[otherSide];
 
-    // 1. Subtle dimming veil only over losing lane (preserving complete gameplay visibility)
+    // 1. Subtle, elegant dimming veil over losing lane to direct focal attention
     if (loseLane) {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.40)';
-      ctx.fillRect(loseLane.minX - 10, engine.topY, loseLane.width + 20, engine.trackHeight + 80);
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
+      ctx.fillRect(loseLane.minX - 6, engine.topY, loseLane.width + 12, engine.trackHeight + 70);
     }
 
-    // 2. Winning Arena Radiant Illumination
+    // 2. Spotlight the Winning Action & Reservoir
     if (winLane) {
-      // Golden victory aura radiating from winner's reservoir
+      const reservoirCenterX = winLane.minX + winLane.width / 2;
+      const reservoirFloorY = engine.bottomY - 25;
+
+      // Radiant golden victory illumination emanating directly from winner's marble reservoir
       const winAura = ctx.createRadialGradient(
-        winLane.minX + winLane.width / 2,
-        engine.bottomY - 50,
-        30,
-        winLane.minX + winLane.width / 2,
-        engine.bottomY - 50,
+        reservoirCenterX,
+        reservoirFloorY,
+        20,
+        reservoirCenterX,
+        reservoirFloorY,
         420
       );
-      winAura.addColorStop(0, 'rgba(255, 215, 0, 0.38)');
-      winAura.addColorStop(0.5, winner.color === '#cb72ff' ? 'rgba(203, 114, 255, 0.22)' : 'rgba(121, 239, 67, 0.22)');
+      winAura.addColorStop(0, 'rgba(255, 215, 0, 0.35)');
+      winAura.addColorStop(0.35, winner.color === '#cb72ff' ? 'rgba(203, 114, 255, 0.22)' : 'rgba(121, 239, 67, 0.22)');
+      winAura.addColorStop(0.75, 'rgba(255, 215, 0, 0.06)');
       winAura.addColorStop(1, 'rgba(0, 0, 0, 0)');
       ctx.fillStyle = winAura;
-      ctx.fillRect(winLane.minX - 40, engine.topY, winLane.width + 80, engine.trackHeight + 140);
+      ctx.fillRect(winLane.minX - 40, engine.topY, winLane.width + 80, engine.trackHeight + 120);
 
-      // Glowing golden championship outline around the winning lane chassis
+      // Clean metallic golden championship outline around the winning lane chassis
       ctx.strokeStyle = '#ffd700';
-      ctx.lineWidth = 4.0;
+      ctx.lineWidth = 3.2;
       ctx.shadowColor = '#ffd700';
-      ctx.shadowBlur = 22;
+      ctx.shadowBlur = 18;
       ctx.beginPath();
       ctx.roundRect(winLane.minX, engine.topY, winLane.width, engine.trackHeight, 20);
       ctx.stroke();
       ctx.shadowBlur = 0;
+
+      // Golden accent trim spotlighting the winner's reservoir collector tray
+      ctx.strokeStyle = 'rgba(255, 215, 0, 0.70)';
+      ctx.lineWidth = 2.0;
+      ctx.beginPath();
+      ctx.roundRect(winLane.minX + 8, engine.bottomY - 55, winLane.width - 16, 60, 12);
+      ctx.stroke();
     }
 
-    // 3. Compact Arena-Level Result Banner (Positioned cleanly below reservoir in bottom margin)
-    const cardW = 740;
-    const cardH = 82;
-    const cardX = (w - cardW) / 2;
-    const cardY = 1740;
+    ctx.restore();
+  }
 
+  // Broadcast-Grade Victory Presentation (Sleek minimalist esports lower-third banner)
+  drawCelebration(engine) {
+    const ctx = this.ctx;
+    const w = this.width;
+    const winner = engine.winner;
+    if (!winner) return;
+
+    ctx.save();
+    ctx.globalAlpha = engine.winnerBannerAlpha;
+
+    const leftLane = engine.lanes.left;
+    const rightLane = engine.lanes.right;
+    const winLane = engine.lanes[winner.side];
+    const otherSide = winner.side === 'left' ? 'right' : 'left';
+    const loseLane = engine.lanes[otherSide];
+
+    const isLeftWin = winner.side === 'left';
+    const winBalls = winLane?.balls ? winLane.balls.length : (winner.winningScore || 0);
+    const loseBalls = loseLane?.balls ? loseLane.balls.length : (winner.losingScore || 0);
+    const leftBalls = isLeftWin ? winBalls : loseBalls;
+    const rightBalls = isLeftWin ? loseBalls : winBalls;
+
+    const winnerTeamName = winner.side === 'left' ? 'PURPLE' : (winner.side === 'right' ? 'GREEN' : 'DRAW');
+
+    // 1. Frosted Dark-Glass Lower-Third Container
+    const cardW = 960;
+    const cardH = 142;
+    const cardX = (w - cardW) / 2;
+    const cardY = 1680;
+
+    // Ambient drop shadow
+    ctx.save();
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.75)';
+    ctx.shadowBlur = 24;
+    ctx.shadowOffsetY = 8;
     ctx.beginPath();
-    ctx.roundRect(cardX, cardY, cardW, cardH, 20);
-    ctx.fillStyle = 'rgba(12, 16, 28, 0.94)';
+    ctx.roundRect(cardX, cardY, cardW, cardH, 18);
+    ctx.fillStyle = 'rgba(10, 14, 24, 0.75)';
+    ctx.fill();
+    ctx.restore();
+
+    // Subtle dark-glass vertical gradient fill
+    const glassGrad = ctx.createLinearGradient(cardX, cardY, cardX, cardY + cardH);
+    glassGrad.addColorStop(0, 'rgba(12, 17, 30, 0.88)');
+    glassGrad.addColorStop(1, 'rgba(8, 12, 22, 0.82)');
+    ctx.fillStyle = glassGrad;
+    ctx.beginPath();
+    ctx.roundRect(cardX, cardY, cardW, cardH, 18);
     ctx.fill();
 
-    ctx.strokeStyle = '#ffd700';
-    ctx.lineWidth = 2.4;
-    ctx.shadowColor = '#ffd700';
-    ctx.shadowBlur = 14;
+    // 1px Refined Metallic/Neon Border
+    const borderGrad = ctx.createLinearGradient(cardX, cardY, cardX + cardW, cardY + cardH);
+    borderGrad.addColorStop(0, 'rgba(255, 215, 0, 0.55)');
+    borderGrad.addColorStop(0.25, 'rgba(255, 255, 255, 0.22)');
+    borderGrad.addColorStop(0.5, winner.color === '#cb72ff' ? 'rgba(203, 114, 255, 0.45)' : 'rgba(121, 239, 67, 0.45)');
+    borderGrad.addColorStop(0.75, 'rgba(255, 255, 255, 0.22)');
+    borderGrad.addColorStop(1, 'rgba(255, 215, 0, 0.55)');
+    ctx.strokeStyle = borderGrad;
+    ctx.lineWidth = 1.2;
     ctx.stroke();
-    ctx.shadowBlur = 0;
+
+    // 1px Specular Top Rim Highlight
+    ctx.beginPath();
+    ctx.moveTo(cardX + 24, cardY + 1.2);
+    ctx.lineTo(cardX + cardW - 24, cardY + 1.2);
+    const specGrad = ctx.createLinearGradient(cardX, cardY, cardX + cardW, cardY);
+    specGrad.addColorStop(0, 'rgba(255, 255, 255, 0)');
+    specGrad.addColorStop(0.5, 'rgba(255, 255, 255, 0.38)');
+    specGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    ctx.strokeStyle = specGrad;
+    ctx.lineWidth = 1.0;
+    ctx.stroke();
+
+    // -------------------------------------------------------------
+    // Tier 1: Top Broadcast Badge & Motion Replay Cue (cardY + 13)
+    // -------------------------------------------------------------
+    // Championship Winner Broadcast Badge
+    const badgeX = cardX + 22;
+    const badgeY = cardY + 13;
+    const badgeW = 270;
+    const badgeH = 26;
+
+    ctx.beginPath();
+    ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 6);
+    ctx.fillStyle = 'rgba(255, 215, 0, 0.12)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255, 215, 0, 0.55)';
+    ctx.lineWidth = 1.0;
+    ctx.stroke();
 
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
+    ctx.font = '800 12px "Inter", "Segoe UI", sans-serif';
+    ctx.fillStyle = '#ffd700';
+    ctx.fillText(`👑 VICTORY · ${winnerTeamName} TEAM`, badgeX + badgeW / 2, badgeY + badgeH / 2);
 
-    const winnerTeamName = winner.side === 'left' ? 'PURPLE' : 'GREEN';
+    // Center Headline Context
+    ctx.font = '700 12px "Inter", "Segoe UI", sans-serif';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.65)';
+    const headline = engine.config.title?.includes('UNDERDOG') || engine.config.title?.includes('3 BALLS')
+      ? 'UNDERDOG MULTIPLIER TAKES THE RACE'
+      : (winner.name ? `${winner.name} SECURES THE RACE` : 'CHAMPIONSHIP FINISH');
+    ctx.fillText(headline, w / 2, badgeY + badgeH / 2);
 
-    // Primary Victory Headline
-    ctx.font = '950 26px "Inter", "Segoe UI", sans-serif';
+    // Replay Cue: Sleek Minimalist Loop Cue
+    const replayW = 118;
+    const replayH = 26;
+    const replayX = cardX + cardW - 22 - replayW;
+    const replayY = cardY + 13;
+
+    ctx.beginPath();
+    ctx.roundRect(replayX, replayY, replayW, replayH, 6);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.06)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.20)';
+    ctx.lineWidth = 1.0;
+    ctx.stroke();
+
+    ctx.font = '800 12px "Inter", "Segoe UI", sans-serif';
     ctx.fillStyle = '#ffffff';
-    ctx.shadowColor = winner.color;
-    ctx.shadowBlur = 10;
-    const winBalls = winLane.balls ? winLane.balls.length : winner.winningScore;
-    const loseBalls = loseLane.balls ? loseLane.balls.length : winner.losingScore;
-    const label = (winner.winningScore === winBalls && winner.losingScore === loseBalls)
-      ? `${winner.winningScore.toLocaleString()} vs ${winner.losingScore.toLocaleString()} MARBLES`
-      : `${winner.winningScore.toLocaleString()} vs ${winner.losingScore.toLocaleString()} SCORE (${winBalls} vs ${loseBalls} BALLS)`;
-    ctx.fillText(
-      `🏆 ${winnerTeamName} TEAM WINS · ${label} 🏆`,
-      w / 2,
-      cardY + 30
-    );
+    ctx.fillText('REPLAY ↻', replayX + replayW / 2, replayY + replayH / 2);
+
+    // Clean Horizontal Hairline Divider
+    ctx.beginPath();
+    ctx.moveTo(cardX + 20, cardY + 47);
+    ctx.lineTo(cardX + cardW - 20, cardY + 47);
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+    ctx.lineWidth = 1.0;
+    ctx.stroke();
+
+    // -------------------------------------------------------------
+    // Tier 2: Physical Marble Scoreboard Comparison (cardY + 50 to cardY + 135)
+    // -------------------------------------------------------------
+    // Left Team Presentation Block
+    const leftIsWinner = isLeftWin;
+    ctx.save();
+    // Team accent vertical bar
+    ctx.beginPath();
+    ctx.roundRect(cardX + 24, cardY + 58, 4, 66, 2);
+    ctx.fillStyle = leftIsWinner ? '#ffd700' : 'rgba(203, 114, 255, 0.40)';
+    ctx.fill();
+
+    // Large Numeric Score
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.font = '950 44px "Inter", "Segoe UI", sans-serif';
+    ctx.fillStyle = leftIsWinner ? '#ffffff' : 'rgba(255, 255, 255, 0.70)';
+    if (leftIsWinner) {
+      ctx.shadowColor = leftLane.color;
+      ctx.shadowBlur = 12;
+    }
+    ctx.fillText(leftBalls.toLocaleString(), cardX + 38, cardY + 91);
     ctx.shadowBlur = 0;
 
-    // Subtitle & Replay Cue
-    ctx.font = '800 16px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = '#ffd700';
-    ctx.fillText('⚡ UNDERDOG MULTIPLIER TAKES THE RACE! · REPLAY 🔄 ⚡', w / 2, cardY + 60);
+    // Team Identity & Physical Marbles Label
+    ctx.font = '800 14px "Inter", "Segoe UI", sans-serif';
+    ctx.fillStyle = leftLane.color;
+    ctx.fillText('PURPLE TEAM', cardX + 135, cardY + 80);
+
+    ctx.font = '700 11px "Inter", "Segoe UI", sans-serif';
+    ctx.fillStyle = leftIsWinner ? '#ffd700' : 'rgba(255, 255, 255, 0.50)';
+    ctx.fillText(`${leftBalls} PHYSICAL MARBLES ${leftIsWinner ? '· CHAMPION' : '· RUNNER-UP'}`, cardX + 135, cardY + 102);
+    ctx.restore();
+
+    // Center VS / Match Verdict Divider
+    ctx.save();
+    const midPillW = 100;
+    const midPillH = 26;
+    const midPillX = w / 2 - midPillW / 2;
+    const midPillY = cardY + 78;
+
+    ctx.beginPath();
+    ctx.roundRect(midPillX, midPillY, midPillW, midPillH, 13);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+    ctx.lineWidth = 1.0;
+    ctx.stroke();
+
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = '800 11px "Inter", "Segoe UI", sans-serif';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.50)';
+    ctx.fillText('VS', w / 2, midPillY + midPillH / 2);
+    ctx.restore();
+
+    // Right Team Presentation Block
+    const rightIsWinner = !isLeftWin && winner.side === 'right';
+    ctx.save();
+    // Team accent vertical bar
+    ctx.beginPath();
+    ctx.roundRect(cardX + cardW - 28, cardY + 58, 4, 66, 2);
+    ctx.fillStyle = rightIsWinner ? '#ffd700' : 'rgba(121, 239, 67, 0.40)';
+    ctx.fill();
+
+    // Large Numeric Score (Right-aligned)
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    ctx.font = '950 44px "Inter", "Segoe UI", sans-serif';
+    ctx.fillStyle = rightIsWinner ? '#ffffff' : 'rgba(255, 255, 255, 0.70)';
+    if (rightIsWinner) {
+      ctx.shadowColor = rightLane.color;
+      ctx.shadowBlur = 12;
+    }
+    ctx.fillText(rightBalls.toLocaleString(), cardX + cardW - 38, cardY + 91);
+    ctx.shadowBlur = 0;
+
+    // Team Identity & Physical Marbles Label (Right-aligned)
+    ctx.font = '800 14px "Inter", "Segoe UI", sans-serif';
+    ctx.fillStyle = rightLane.color;
+    ctx.fillText('GREEN TEAM', cardX + cardW - 135, cardY + 80);
+
+    ctx.font = '700 11px "Inter", "Segoe UI", sans-serif';
+    ctx.fillStyle = rightIsWinner ? '#ffd700' : 'rgba(255, 255, 255, 0.50)';
+    ctx.fillText(`${rightBalls} PHYSICAL MARBLES ${rightIsWinner ? '· CHAMPION' : '· RUNNER-UP'}`, cardX + cardW - 135, cardY + 102);
+    ctx.restore();
 
     ctx.restore();
+  }
+
+  drawWinnerBanner(engine) {
+    this.drawCelebration(engine);
   }
 
   drawWatermark() {

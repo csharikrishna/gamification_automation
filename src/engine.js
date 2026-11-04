@@ -171,6 +171,10 @@ class SimulationEngine {
       reachedBottom: false,
       finishedTime: null,
       exactScore: initialCount,
+      mathematicalPopulation: initialCount,
+      totalGeneratedBalls: 0,
+      actualBallCount: 0,
+      score: initialCount,
       displayScore: initialCount,
       scoreScale: 1.0,
       initialBalls: initialCount,
@@ -201,6 +205,7 @@ class SimulationEngine {
 
   addBall(lane, props) {
     const id = lane.nextBallId++;
+    lane.totalGeneratedBalls++;
     lane.balls.push({
       id,
       x: props.x,
@@ -213,6 +218,7 @@ class SimulationEngine {
       sourceX: props.sourceX !== undefined ? props.sourceX : props.x,
       sourceY: props.sourceY !== undefined ? props.sourceY : props.y
     });
+    lane.actualBallCount = lane.balls.filter(b => !b._dead).length;
   }
 
   update(dt = 1 / 60) {
@@ -223,9 +229,13 @@ class SimulationEngine {
       this.spawnInitialBalls();
     }
 
-    // P0-08, RACE-09: Proper bidirectional score interpolation
+    // Explicit population metrics update & bidirectional score interpolation
     for (const side of ['left', 'right']) {
       const lane = this.lanes[side];
+      lane.actualBallCount = lane.balls.filter(b => !b._dead).length;
+      lane.mathematicalPopulation = lane.exactScore;
+      lane.score = Math.round(lane.exactScore);
+
       const scoreDiff = lane.exactScore - lane.displayScore;
       if (Math.abs(scoreDiff) > 0.05) {
         if (scoreDiff > 0) {
@@ -260,7 +270,7 @@ class SimulationEngine {
       const p = this.particles[i];
       p.x += p.vx * dt;
       p.y += p.vy * dt;
-      p.vy += (p.gravity || 480) * dt;
+      p.vy += (p.gravity !== undefined ? p.gravity : 480) * dt;
       if (p.angle !== undefined) p.angle += (p.rotVel || 2) * dt;
       p.life -= dt;
       if (p.life <= 0) this.particles.splice(i, 1);
@@ -761,6 +771,9 @@ class SimulationEngine {
         lane.balls = lane.balls.filter(b => !b._dead);
       }
     }
+    lane.actualBallCount = lane.balls.filter(b => !b._dead).length;
+    lane.mathematicalPopulation = lane.exactScore;
+    lane.score = Math.round(lane.exactScore);
   }
 
   // P0-06, P0-07, RACE-04, RACE-10: Deterministic & Unbiased Race Resolution
@@ -903,21 +916,48 @@ class SimulationEngine {
   }
 
   spawnConfetti() {
-    const color = this.winner?.color || '#ffd700';
-    const colors = [color, '#ffffff', '#ffd700', '#00f0ff', '#ff007f'];
-    for (let i = 0; i < 8; i++) {
+    // Subtle, elegant atmospheric golden embers / luminous light motes
+    const colors = ['#ffd700', '#ffe680', '#fff3b0', '#ffffff', 'rgba(255, 215, 0, 0.9)'];
+    for (let i = 0; i < 4; i++) {
       this.particles.push({
-        x: this.rng.range(0, this.width),
-        y: this.topY + this.rng.range(0, 400),
-        vx: this.rng.range(-175, 175),
-        vy: this.rng.range(-250, -50),
-        radius: this.rng.range(3, 8),
+        type: 'ember',
+        x: this.rng.range(80, this.width - 80),
+        y: this.rng.range(this.topY + 250, this.bottomY),
+        vx: this.rng.range(-15, 15),
+        vy: this.rng.range(-40, -10),
+        radius: this.rng.range(1.5, 3.2),
         color: colors[Math.floor(this.rng.range(0, colors.length))],
-        life: 1.8,
-        maxLife: 1.8,
-        gravity: 480
+        life: 2.4,
+        maxLife: 2.4,
+        gravity: -10
       });
     }
+  }
+
+  // Audited Metric Exposure: Returns distinct physical, cumulative, and mathematical metrics
+  getMetrics() {
+    const leftActual = this.lanes.left.balls.filter(b => !b._dead).length;
+    const rightActual = this.lanes.right.balls.filter(b => !b._dead).length;
+    this.lanes.left.actualBallCount = leftActual;
+    this.lanes.right.actualBallCount = rightActual;
+
+    return {
+      simTime: Number(this.simTime.toFixed(3)),
+      frameIndex: this.frameIndex,
+      winner: this.winner ? this.winner.name : null,
+      left: {
+        actualBallCount: leftActual,
+        totalGeneratedBalls: this.lanes.left.totalGeneratedBalls,
+        mathematicalPopulation: this.lanes.left.exactScore,
+        score: Math.round(this.lanes.left.exactScore)
+      },
+      right: {
+        actualBallCount: rightActual,
+        totalGeneratedBalls: this.lanes.right.totalGeneratedBalls,
+        mathematicalPopulation: this.lanes.right.exactScore,
+        score: Math.round(this.lanes.right.exactScore)
+      }
+    };
   }
 }
 

@@ -177,22 +177,30 @@ class PublishingScheduler {
           metrics: pubResult.metrics // zero fake metrics (null)
         };
       } else {
-        // Fallback for metadata-only test schedules
+        // Enforce P0 Invariant: A missing video must NEVER be represented as PUBLISHED.
+        if (!options.allowMetadataSimulation) {
+          pendingItem.status = 'FAILED';
+          pendingItem.error = `Publishing halted: Media file does not exist on disk (${pendingItem.videoPath || 'no videoPath'}). Videos must be rendered before publishing.`;
+          fs.writeFileSync(this.queuePath, JSON.stringify(queue, null, 2));
+          return {
+            success: false,
+            error: pendingItem.error,
+            post: pendingItem
+          };
+        }
+
+        // Explicit testing-only metadata inspection mode (NEVER claiming 'PUBLISHED')
         publishRecord = {
-          publishId: `pub_${Date.now()}`,
+          publishId: `test_sim_${Date.now()}`,
           queueId: pendingItem.queueId,
           candidateId: pendingItem.candidateId,
           gameType: pendingItem.gameType,
           title: pendingItem.title,
-          publishedAt: new Date().toISOString(),
+          publishedAt: null, // Not published
           scheduledFor: pendingItem.scheduledTime,
-          status: 'PUBLISHED',
-          mode: 'SIMULATION',
-          metrics: options.includeSimulatedMetrics ? {
-            views: 0,
-            likes: 0,
-            comments: 0
-          } : null
+          status: 'METADATA_SIMULATION_TEST',
+          mode: 'TEST_ONLY',
+          metrics: null // zero fake metrics
         };
       }
 

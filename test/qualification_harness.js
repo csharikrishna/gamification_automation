@@ -90,8 +90,21 @@ async function runQualification() {
     assert.strictEqual(engine.lanes.right.exactScore, 15);
     assert.strictEqual(engine.lanes.right.balls.length, 15);
 
+    // Explicit population metrics exposure verification
+    const metrics = engine.getMetrics();
+    assert.strictEqual(metrics.left.actualBallCount, 180, 'Actual ball count must match physical simulated balls');
+    assert.strictEqual(metrics.left.mathematicalPopulation, 500, 'Mathematical population must reflect exact score');
+    assert.strictEqual(metrics.left.score, 500, 'Score must match integer mathematical power');
+    assert(metrics.left.totalGeneratedBalls >= 180, 'Total generated balls must track lifetime spawns');
+
+    assert.strictEqual(metrics.right.actualBallCount, 15, 'Actual ball count must match physical simulated balls');
+    assert.strictEqual(metrics.right.mathematicalPopulation, 15, 'Mathematical population must reflect exact score');
+    assert.strictEqual(metrics.right.score, 15, 'Score must match integer mathematical power');
+    assert.strictEqual(metrics.right.totalGeneratedBalls, 40, 'Total generated balls tracks lifetime spawns');
+
     results.checklist['2. Population Accounting Invariants'] = 'PASSED';
     console.log('  ✓ PASSED: Exact 1:1 below 180; representative scaling (w = N_math / N_sim) above 180.');
+    console.log('  ✓ PASSED: Exposes actualBallCount, totalGeneratedBalls, and mathematicalPopulation distinctly.');
   } catch (err) {
     results.checklist['2. Population Accounting Invariants'] = `FAILED: ${err.message}`;
     console.error('  ❌ FAILED:', err.message);

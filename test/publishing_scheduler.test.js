@@ -59,24 +59,54 @@ console.log(`  ✓ Sample Hook:  "${day1.hookText}"`);
 console.log(`  ✓ Tags:         ${day1.tags.join(' ')}`);
 
 (async () => {
-  // Test 3: Publishing Dispatch & History Recording
-  console.log('\n▶ [3/4] Executing Publishing Dispatch & Performance Recording...');
-  const publishRes = await scheduler.publishNext();
-  assert(publishRes.success, 'Publish dispatch must succeed');
-  assert.strictEqual(publishRes.post.status, 'PUBLISHED');
+  // Test 3: Publishing Dispatch & Real Media Verification
+  console.log('\n▶ [3/4] Executing Publishing Dispatch with Real Media on Disk...');
+  const testMedia = path.resolve('output/underdog_slow_composed.mp4');
+  assert(fs.existsSync(testMedia), `Test media file must exist at ${testMedia}`);
+
+  const queue = scheduler.getQueue();
+  const firstScheduled = queue.find(q => q.status === 'SCHEDULED');
+  firstScheduled.videoPath = testMedia;
+  fs.writeFileSync(scheduler.queuePath, JSON.stringify(queue, null, 2));
+
+  const publishRes = await scheduler.publishNext({ dryRun: true });
+  assert(publishRes.success, 'Publish dispatch must succeed with verified media');
+  assert.strictEqual(publishRes.post.status, 'DRY_RUN_VERIFIED', 'Status must be DRY_RUN_VERIFIED');
 
   const history = scheduler.getHistory();
-  assert(history.length >= 1, 'History must record published video');
+  assert(history.length >= 1, 'History must record verified video');
   const latest = history[history.length - 1];
   assert.strictEqual(latest.gameType, 'multi_race');
-  assert(latest.status === 'PUBLISHED' || latest.status === 'DRY_RUN_VERIFIED', 'Status must be verified');
-  console.log(`  ✓ Post "${publishRes.post.title}" dispatched successfully (status: ${latest.status}).`);
+  assert.strictEqual(latest.status, 'DRY_RUN_VERIFIED');
+  assert(latest.sha256 && latest.sha256.length === 64, 'SHA-256 hash must be recorded');
+  assert(latest.fileSize > 100000, 'File size must be accurately recorded');
+  console.log(`  ✓ Post "${publishRes.post.title}" verified successfully (${(latest.fileSize / 1024 / 1024).toFixed(2)} MB, SHA-256: ${latest.sha256.substring(0, 16)}...).`);
+
+  // Test 3b: Missing Media Guardrail (P0 Invariant: Never claim PUBLISHED on missing files)
+  console.log('\n▶ [3b/4] Auditing Missing-Media Invariant (Zero Fake-Published Records)...');
+  const q2 = scheduler.getQueue();
+  const secondScheduled = q2.find(q => q.status === 'SCHEDULED');
+  if (secondScheduled) {
+    secondScheduled.videoPath = 'output/non_existent_clip_xyz.mp4';
+    fs.writeFileSync(scheduler.queuePath, JSON.stringify(q2, null, 2));
+
+    const failRes = await scheduler.publishNext();
+    assert.strictEqual(failRes.success, false, 'Publish without valid media must be rejected');
+    assert.strictEqual(failRes.post.status, 'FAILED', 'Status must be FAILED');
+    assert(failRes.error.includes('Media file does not exist on disk'));
+    console.log('  ✓ Missing media file strictly rejected; never marked as published.');
+  }
 
   // Test 4: Duplicate Protection
   console.log('\n▶ [4/4] Verifying Duplicate Protection Guardrails...');
-  const duplicateAttempt = await scheduler.publishNext();
-  // If the next pending item is not a duplicate, it should publish cleanly
-  assert(duplicateAttempt.success, 'Subsequent unique post must publish cleanly');
+  const q3 = scheduler.getQueue();
+  const thirdScheduled = q3.find(q => q.status === 'SCHEDULED');
+  if (thirdScheduled) {
+    thirdScheduled.videoPath = testMedia;
+    fs.writeFileSync(scheduler.queuePath, JSON.stringify(q3, null, 2));
+    const dupRes = await scheduler.publishNext({ dryRun: true });
+    assert(dupRes.success, 'Subsequent unique post with valid media must publish cleanly');
+  }
 
   // Cleanup isolated test directory
   if (fs.existsSync(testDir)) {
