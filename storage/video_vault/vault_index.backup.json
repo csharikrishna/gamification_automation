@@ -1,6 +1,6 @@
 {
   "vaultVersion": "1.0.0",
-  "lastUpdated": "2026-11-04T16:58:01.139Z",
+  "lastUpdated": "2026-11-04T17:29:05.582Z",
   "totalVideos": 5,
   "videos": [
     {
@@ -195,7 +195,7 @@
           "existing": null
         }
       },
-      "archivedAt": "2026-11-04T16:58:00.121Z",
+      "archivedAt": "2026-11-04T17:29:04.818Z",
       "tags": [],
       "scenarioId": "flagship_scenario_01",
       "configurationHash": "40dd6ea114978182",
@@ -280,14 +280,8 @@
       "publishingReceipt": null,
       "platformVideoId": null,
       "publicationTimestamp": null,
-      "updatedAt": "2026-11-04T16:58:00.122Z",
-      "approvalRecord": {
-        "approver": "AUTOMATED_UNATTENDED_POLICY",
-        "timestamp": "2026-11-04T16:57:10.786Z",
-        "policyVersion": "1.0.0",
-        "creativeVerdict": "APPROVED_FOR_PUBLISHING",
-        "notes": "Automated unattended policy explicitly enabled via configuration."
-      }
+      "updatedAt": "2026-11-04T17:29:04.819Z",
+      "approvalRecord": null
     },
     {
       "clipId": "flagship_scenario_02_flagship",
@@ -505,7 +499,7 @@
           "existing": null
         }
       },
-      "archivedAt": "2026-11-04T16:58:00.371Z",
+      "archivedAt": "2026-11-04T17:29:05.016Z",
       "tags": [],
       "scenarioId": "flagship_scenario_02",
       "configurationHash": "bd39818b2e16ede1",
@@ -590,14 +584,8 @@
       "publishingReceipt": null,
       "platformVideoId": null,
       "publicationTimestamp": null,
-      "updatedAt": "2026-11-04T16:58:00.371Z",
-      "approvalRecord": {
-        "approver": "AUTOMATED_UNATTENDED_POLICY",
-        "timestamp": "2026-11-04T16:57:10.791Z",
-        "policyVersion": "1.0.0",
-        "creativeVerdict": "APPROVED_FOR_PUBLISHING",
-        "notes": "Automated unattended policy explicitly enabled via configuration."
-      }
+      "updatedAt": "2026-11-04T17:29:05.016Z",
+      "approvalRecord": null
     },
     {
       "clipId": "flagship_scenario_03_flagship",
@@ -791,7 +779,7 @@
           "existing": null
         }
       },
-      "archivedAt": "2026-11-04T16:58:00.627Z",
+      "archivedAt": "2026-11-04T17:29:05.205Z",
       "tags": [],
       "scenarioId": "flagship_scenario_03",
       "configurationHash": "e077af27d6d003f2",
@@ -876,14 +864,8 @@
       "publishingReceipt": null,
       "platformVideoId": null,
       "publicationTimestamp": null,
-      "updatedAt": "2026-11-04T16:58:00.627Z",
-      "approvalRecord": {
-        "approver": "AUTOMATED_UNATTENDED_POLICY",
-        "timestamp": "2026-11-04T16:57:10.794Z",
-        "policyVersion": "1.0.0",
-        "creativeVerdict": "APPROVED_FOR_PUBLISHING",
-        "notes": "Automated unattended policy explicitly enabled via configuration."
-      }
+      "updatedAt": "2026-11-04T17:29:05.205Z",
+      "approvalRecord": null
     },
     {
       "clipId": "flagship_scenario_04_flagship",
@@ -1070,7 +1052,7 @@
           "existing": null
         }
       },
-      "archivedAt": "2026-11-04T16:58:00.879Z",
+      "archivedAt": "2026-11-04T17:29:05.397Z",
       "tags": [],
       "scenarioId": "flagship_scenario_04",
       "configurationHash": "996f6cc5c7ce5139",
@@ -1155,14 +1137,8 @@
       "publishingReceipt": null,
       "platformVideoId": null,
       "publicationTimestamp": null,
-      "updatedAt": "2026-11-04T16:58:00.879Z",
-      "approvalRecord": {
-        "approver": "AUTOMATED_UNATTENDED_POLICY",
-        "timestamp": "2026-11-04T16:57:10.798Z",
-        "policyVersion": "1.0.0",
-        "creativeVerdict": "APPROVED_FOR_PUBLISHING",
-        "notes": "Automated unattended policy explicitly enabled via configuration."
-      }
+      "updatedAt": "2026-11-04T17:29:05.397Z",
+      "approvalRecord": null
     },
     {
       "clipId": "flagship_scenario_05_flagship",
@@ -1368,7 +1344,7 @@
           "existing": null
         }
       },
-      "archivedAt": "2026-11-04T16:58:01.139Z",
+      "archivedAt": "2026-11-04T17:29:05.582Z",
       "tags": [],
       "scenarioId": "flagship_scenario_05",
       "configurationHash": "724ff7e6b95b43ea",
@@ -1453,14 +1429,8 @@
       "publishingReceipt": null,
       "platformVideoId": null,
       "publicationTimestamp": null,
-      "updatedAt": "2026-11-04T16:58:01.139Z",
-      "approvalRecord": {
-        "approver": "AUTOMATED_UNATTENDED_POLICY",
-        "timestamp": "2026-11-04T16:57:10.802Z",
-        "policyVersion": "1.0.0",
-        "creativeVerdict": "APPROVED_FOR_PUBLISHING",
-        "notes": "Automated unattended policy explicitly enabled via configuration."
-      }
+      "updatedAt": "2026-11-04T17:29:05.582Z",
+      "approvalRecord": null
     }
   ]
 }

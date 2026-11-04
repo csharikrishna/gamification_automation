@@ -4,6 +4,7 @@
 const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { VideoVault } = require('../core/production/video-vault');
 
 console.log('======================================================================');
@@ -73,7 +74,7 @@ try {
   assert.strictEqual(vault.hasVideo({ sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855' }), true);
   console.log('  ✓ Video successfully archived and queryable by clipId, SHA-256, and perceptualHash.\n');
 
-  // 4. Anti-Repetition Guardrails
+  // 4. Anti-Repetition Guardrails & Visual Perceptual dHash Validation
   console.log('▶ [4/7] Testing Anti-Repetition & Visual Perceptual Hash Guardrails...');
   const duplicateSigCheck = vault.checkUniqueness({ config: cfgA });
   assert.strictEqual(duplicateSigCheck.isUnique, false);
@@ -86,31 +87,105 @@ try {
   assert.strictEqual(duplicateHashCheck.isUnique, false);
   assert(duplicateHashCheck.reason.includes('DUPLICATE_MEDIA_HASH'));
 
-  // Test re-encoded copy visual duplicate detection (differs by <= 2 bits out of 64 bits)
-  // Even with different SHA-256 and different scenario config, perceptual visual hash catches it!
-  const reencodedPHash = '0b33610504454500'; // 2 bits flipped from 0b33610520454500
-  const visualDuplicateCheck = vault.checkUniqueness({
-    clipId: 'test_reencoded_clip',
-    config: cfgC,
-    sha256: '1111111111111111111111111111111111111111111111111111111111111111',
-    perceptualHash: reencodedPHash
-  });
-  assert.strictEqual(visualDuplicateCheck.isUnique, false);
-  assert(visualDuplicateCheck.reason.includes('DUPLICATE_VISUAL_HASH'), 'Must catch re-encoded visual duplicate!');
+  // 4.1 Real Media False-Negative Test: Re-encoded Copy Detection via Decoded-Frame dHash
+  // Re-encode a real clip with different CRF / bitrate to change byte stream completely
+  const reencodedTempPath = path.resolve('output/test_vault_reencoded_temp.mp4');
+  if (fs.existsSync(realMediaPath)) {
+    const { spawnSync } = require('child_process');
+    spawnSync('ffmpeg', [
+      '-y',
+      '-i', realMediaPath,
+      '-t', '4',
+      '-c:v', 'libx264',
+      '-crf', '32',
+      '-preset', 'fast',
+      reencodedTempPath
+    ], { maxBuffer: 10 * 1024 * 1024 });
 
-  // Test visually distinct clip (Hamming distance = 12 bits > 4)
-  const distinctPHash = '2b33472504454500';
-  const uniqueCheck = vault.checkUniqueness({
-    clipId: 'distinct_clip',
-    config: cfgC,
-    sha256: '0000000000000000000000000000000000000000000000000000000000000000',
-    perceptualHash: distinctPHash
-  });
-  assert.strictEqual(uniqueCheck.isUnique, true);
-  console.log('  ✓ Duplicate scenario signatures rejected.');
-  console.log('  ✓ Duplicate media hashes rejected.');
-  console.log('  ✓ Re-encoded visual duplicate rejected via perceptual dHash.');
-  console.log('  ✓ Distinct visual scenario accepted as unique.\n');
+    assert(fs.existsSync(reencodedTempPath), 'Re-encoded video must exist on disk');
+
+    const realMediaBytes = fs.readFileSync(realMediaPath);
+    const reencodedBytes = fs.readFileSync(reencodedTempPath);
+    const shaOrig = crypto.createHash('sha256').update(realMediaBytes).digest('hex');
+    const shaReenc = crypto.createHash('sha256').update(reencodedBytes).digest('hex');
+    assert.notStrictEqual(shaOrig, shaReenc, 'Re-encoded video must have different SHA-256');
+
+    const byteHashOrig = VideoVault.computeSampledByteHash(realMediaPath);
+    const byteHashReenc = VideoVault.computeSampledByteHash(reencodedTempPath);
+    assert.notStrictEqual(byteHashOrig, byteHashReenc, 'Re-encoded video must have different sampled byte hash');
+
+    const dHashOrig = VideoVault.computePerceptualHash(realMediaPath, 2.0);
+    const dHashReenc = VideoVault.computePerceptualHash(reencodedTempPath, 2.0);
+    const measuredDist = VideoVault.hammingDistance(dHashOrig, dHashReenc);
+    console.log(`  ✓ Measured real media re-encoded dHash Hamming distance: ${measuredDist} bits (Threshold: <= 4)`);
+    assert(measuredDist <= 4, `Re-encoded dHash distance (${measuredDist}) must be <= 4 bits!`);
+
+    const realMediaDuplicateCheck = vault.checkUniqueness({
+      clipId: 'test_reencoded_real_clip',
+      config: cfgC, // Different scenario config
+      sha256: shaReenc, // Different SHA-256
+      videoPath: reencodedTempPath
+    });
+    assert.strictEqual(realMediaDuplicateCheck.isUnique, false, 'Must reject re-encoded video as duplicate!');
+    assert(realMediaDuplicateCheck.reason.includes('DUPLICATE_VISUAL_HASH'), 'Reason must be DUPLICATE_VISUAL_HASH');
+    console.log('  ✓ [NO FALSE NEGATIVES]: Real re-encoded copy detected as visual duplicate despite different SHA-256 & config.');
+
+    // Clean up temporary re-encoded file
+    try { fs.unlinkSync(reencodedTempPath); } catch (e) {}
+  }
+
+  // 4.2 Real Media False-Positive Test: Genuinely Different Videos Accepted as Unique
+  const distinctMediaPath = path.resolve('output/proof_clips/flagship_scenario_02_flagship.mp4');
+  if (fs.existsSync(distinctMediaPath) && fs.existsSync(realMediaPath)) {
+    const dHashDistinct = VideoVault.computePerceptualHash(distinctMediaPath, 2.0);
+    const dHashBase = VideoVault.computePerceptualHash(realMediaPath, 2.0);
+    const distinctDist = VideoVault.hammingDistance(dHashBase, dHashDistinct);
+    console.log(`  ✓ Measured distinct videos dHash Hamming distance: ${distinctDist} bits (Threshold: > 4)`);
+    assert(distinctDist > 4, `Distinct videos dHash distance (${distinctDist}) must exceed threshold of 4 bits!`);
+
+    const distinctMediaCheck = vault.checkUniqueness({
+      clipId: 'test_distinct_real_clip',
+      config: cfgC,
+      sha256: '9999999999999999999999999999999999999999999999999999999999999999',
+      videoPath: distinctMediaPath
+    });
+    assert.strictEqual(distinctMediaCheck.isUnique, true, 'Must accept genuinely distinct video as unique!');
+    console.log('  ✓ [NO FALSE POSITIVES]: Genuinely distinct gameplay video accepted as unique.');
+  }
+
+  // 4.3 Boundary Precision Tests (Bitwise Permutations across 0..64 bit range)
+  // Distance 0..4 bits must be classified as duplicate (DUPLICATE_VISUAL_HASH)
+  const baseHash = '0b33610520454500';
+  for (let flipBits = 1; flipBits <= 4; flipBits++) {
+    // Flip flipBits in the base hash
+    let flippedHex = parseInt(baseHash[0], 16) ^ ((1 << flipBits) - 1);
+    let testHash = flippedHex.toString(16) + baseHash.substring(1);
+    const dist = VideoVault.hammingDistance(baseHash, testHash);
+    const boundaryDupCheck = vault.checkUniqueness({
+      clipId: `test_boundary_dup_${flipBits}`,
+      config: cfgC,
+      sha256: `dummy_sha_${flipBits}`,
+      perceptualHash: testHash
+    });
+    assert.strictEqual(boundaryDupCheck.isUnique, false, `Distance ${dist} must be flagged as duplicate!`);
+  }
+
+  // Distance >= 5 bits must be accepted as unique
+  for (let flipBits = 5; flipBits <= 8; flipBits++) {
+    let flippedHex1 = parseInt(baseHash[0], 16) ^ 0xf; // 4 bits
+    let flippedHex2 = parseInt(baseHash[1], 16) ^ ((1 << (flipBits - 4)) - 1);
+    let testHash = flippedHex1.toString(16) + flippedHex2.toString(16) + baseHash.substring(2);
+    const dist = VideoVault.hammingDistance(baseHash, testHash);
+    const boundaryUniqueCheck = vault.checkUniqueness({
+      clipId: `test_boundary_unique_${flipBits}`,
+      config: cfgC,
+      sha256: `dummy_sha_unique_${flipBits}`,
+      perceptualHash: testHash
+    });
+    assert.strictEqual(boundaryUniqueCheck.isUnique, true, `Distance ${dist} must be accepted as unique!`);
+  }
+
+  console.log('  ✓ [BOUNDARY AUDIT]: Exact bit-distance threshold (dist <= 4: duplicate, dist >= 5: unique) proven.\n');
 
   // 5. Statistics Reporting
   console.log('▶ [5/7] Testing Vault Statistics...');

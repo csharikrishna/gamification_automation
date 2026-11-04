@@ -1,14 +1,16 @@
 {
   "orchestratorName": "Burstpoint Canonical Production Orchestrator",
   "version": "4.0.0",
-  "executedAt": "2026-11-04T16:58:01.169Z",
+  "executedAt": "2026-11-04T17:29:05.604Z",
   "gameCertified": "multiplying-ball-race",
   "productionStatus": "HUMAN_REVIEW_PENDING",
   "approvalGovernance": {
     "approvalPolicy": "HUMAN_REVIEW_BY_DEFAULT",
     "humanReviewStatus": "HUMAN_REVIEW_PENDING",
     "approver": null,
+    "approvalMode": null,
     "approvalToken": null,
+    "rejectionReason": "MISSING_APPROVAL_CREDENTIALS",
     "unattendedApprovalConfigured": false
   },
   "outputDurationContract": {
@@ -24,7 +26,7 @@
     ],
     "totalFramesRendered": 6000,
     "totalStorageMb": 60.38,
-    "lastUpdated": "2026-11-04T16:58:01.165Z",
+    "lastUpdated": "2026-11-04T17:29:05.600Z",
     "videosSummary": [
       {
         "clipId": "flagship_scenario_01_flagship",
@@ -73,6 +75,48 @@
       }
     ]
   },
+  "qualificationEvidence": {
+    "generatedAt": "2026-11-04T17:28:27.705Z",
+    "verdict": "100% CERTIFIED FOR PRODUCTION",
+    "passedChecks": 12,
+    "totalChecks": 12,
+    "profiling": {
+      "maxFrameTimeMs": "3.67",
+      "avgFrameTimeMs": "0.82",
+      "peakMemoryMb": "11.75",
+      "growthPerFrameBytes": 53.03,
+      "continuous3000PeakHeapMb": 11.75,
+      "multiCycleRepeatedRunsCount": 10,
+      "multiCycleStartHeapMb": 11.78,
+      "multiCycleEndHeapMb": 11.83,
+      "multiCycleHeapGrowthMb": 0.05
+    },
+    "visualInspection": {
+      "contentProof": "PASSED",
+      "arenaPaletteVerified": "PASS",
+      "hudContrastRatio": "18.85:1 (WCAG_AAA_PASS)",
+      "frameProgression": "PASS",
+      "unmeasuredAestheticAttributes": {
+        "subjectiveVisualAppeal": "NOT_CHECKED (Requires human visual review)",
+        "viewerEngagementPacing": "NOT_CHECKED (Requires audience retention metrics)",
+        "typographicAesthetics": "NOT_CHECKED (Requires human creative sign-off)"
+      }
+    },
+    "checklist": {
+      "1. Configuration Validation": "PASSED",
+      "2. Population Accounting Invariants": "PASSED",
+      "3. Seeded Deterministic Replay": "PASSED",
+      "4. Physics Stress Tests (O(N) Spatial Grid)": "PASSED",
+      "5. Simultaneous Finish & Timeout": "PASSED",
+      "6. Batch Permutation Suite (30 Runs)": "PASSED",
+      "7. Audio Synchronization & Streams": "PASSED",
+      "8. FFmpeg Stream & Quality Inspection": "PASSED",
+      "9. Memory and Resource Profiling": "PASSED",
+      "10. Failure Recovery and Cleanup": "PASSED",
+      "11. Visual Regression Inspection": "PASSED",
+      "12. Browser vs Offline Parity": "PASSED"
+    }
+  },
   "executionSummary": {
     "scenariosExecuted": 5,
     "candidatesExtracted": 5,
@@ -82,7 +126,7 @@
     "humanApprovedClips": 0,
     "queuedClips": 0,
     "dryRunReceiptsCount": 0,
-    "totalProcessingSeconds": 27.96
+    "totalProcessingSeconds": 23.43
   },
   "renderedClips": [
     {

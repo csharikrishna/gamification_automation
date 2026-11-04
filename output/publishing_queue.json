@@ -1734,5 +1734,57 @@
     "idempotencyKey": "idemp_4f3b9b1d-9246-4401-80be-41d4a2bc1ead",
     "lastError": null,
     "failedAt": null
+  },
+  {
+    "queueId": "queue_test_clip_01_approval_check",
+    "clipId": "test_clip_01_approval_check",
+    "scheduledDate": "2026-11-04",
+    "scheduledTime": "2026-11-04T17:00:00.000Z",
+    "status": "READY_TO_PUBLISH",
+    "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\underdog_slow_composed.mp4",
+    "durationSeconds": 20,
+    "title": "Test Scenario 1",
+    "hookText": "Hook 1",
+    "description": "Test Scenario 1\n\nHook 1\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
+    "tags": [
+      "shorts",
+      "physics",
+      "marblerun",
+      "gaming",
+      "satisfying"
+    ],
+    "timezone": "Asia/Kolkata",
+    "lifecycleState": "SCHEDULED",
+    "enqueuedAt": "2026-11-04T17:24:17.474Z",
+    "attempts": 0,
+    "lastError": null,
+    "failedAt": null,
+    "updatedAt": "2026-11-04T17:29:31.523Z"
+  },
+  {
+    "queueId": "queue_test_clip_02_approval_check",
+    "clipId": "test_clip_02_approval_check",
+    "scheduledDate": "2026-11-06",
+    "scheduledTime": "2026-11-06T17:00:00.000Z",
+    "status": "READY_TO_PUBLISH",
+    "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\underdog_slow_composed.mp4",
+    "durationSeconds": 20,
+    "title": "Test Scenario 2",
+    "hookText": "Hook 2",
+    "description": "Test Scenario 2\n\nHook 2\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
+    "tags": [
+      "shorts",
+      "physics",
+      "marblerun",
+      "gaming",
+      "satisfying"
+    ],
+    "timezone": "Asia/Kolkata",
+    "lifecycleState": "SCHEDULED",
+    "enqueuedAt": "2026-11-04T17:24:17.479Z",
+    "attempts": 0,
+    "lastError": null,
+    "failedAt": null,
+    "updatedAt": "2026-11-04T17:29:31.532Z"
   }
 ]

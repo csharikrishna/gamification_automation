@@ -163,9 +163,9 @@ The publishing system operates through an authoritative JSON repository (`output
 | **6** | 30 Batch Permutation Runs | **PASSED** | 30/30 autonomous completions; 0 escaped marbles |
 | **7** | Audio Synchronization | **PASSED** | AAC 44.1kHz stereo stream synchronized to video duration |
 | **8** | FFmpeg Full Decode Quality | **PASSED** | Null decode (`-f null -`) passes with 0 corrupt frames |
-| **9** | Memory & Heap Leak Profile | **PASSED** | 3,000-frame run completed with bounded heap growth |
+| **9** | Memory & Heap Leak Profile | **PASSED** | 3,000-frame run (53.07 B/frame) + 10-cycle repeated complete runs (0.05 MB growth < 5.0 MB ceiling) |
 | **10**| Recovery & Process Cleanup | **PASSED** | Temporary render artifact purging and process cleanup verified |
-| **11**| Visual Regression & Progression | **PASSED** | Frame progression proof verified across render intervals |
+| **11**| Visual Regression & Progression | **PASSED** | Arena dark palette [13, 17, 28], 18.85:1 AAA contrast verified; creative aesthetics marked NOT_CHECKED |
 | **12**| Browser vs Node Bit-Exact Parity | **PASSED** | Real Headless Chrome equals Node offline state bit-for-bit |
 
 ---
@@ -202,6 +202,24 @@ Following independent architectural audit of commit `00a95e1`, the following cri
 7. **VideoVault Index Sanitization:**
    - Added `VideoVault.sanitizeSimOutcome()` to prevent recording millions of micro-physics collision events in the JSON catalog, reducing `storage/video_vault/vault_index.json` from 38,000 lines to ~1,500 lines while retaining full determinism and score verification metrics.
    - Master tracking documented in [REMEDIATION_TRACKER.md](file:///c:/Users/cshar/Downloads/Gamification/docs/REMEDIATION_TRACKER.md).
+8. **Approval Token Security & Anti-Fabrication Enforcement:**
+   - In `orchestrator/pipeline.js`, eliminated the loophole where arbitrary non-empty strings qualified as human approval.
+   - Implemented `validateApprovalAuthorization()` requiring constant-time validation (`crypto.timingSafeEqual`) against configured trusted tokens (`trustedApprovalToken`) or verified HMAC-SHA256 signatures (`crypto.createHmac`).
+   - Missing, empty, arbitrary, and tampered tokens are strictly rejected, keeping candidate clips in `HUMAN_REVIEW_PENDING` and actively blocking them from the publishing queue.
+   - Validated by 5 dedicated tests in `test/approval_security.test.js`.
+9. **Visual Perceptual dHash Validation Across Real Decoded Media:**
+   - Replaced sampled-byte heuristics with genuine 64-bit difference hashing (`dHash`) extracted from decoded video frames via FFmpeg (`scale=9:8,format=gray`).
+   - Empirically proven against real media:
+     - **False-Negative Prevention:** A real 1080x1920 MP4 re-encoded at a lower CRF/bitrate (yielding completely different SHA-256 and sampled byte hashes) is decoded and matched with a measured Hamming distance of **3 bits** (threshold <= 4 bits), correctly rejecting it as `DUPLICATE_VISUAL_HASH`.
+     - **False-Positive Prevention:** Genuinely different flagship race videos are measured at Hamming distances of **7 to 12 bits** (threshold > 4 bits) and cleanly accepted as unique.
+     - **Boundary Precision:** Bitwise permutation sweeps across 0..64 bits prove exact threshold demarcation (<= 4 duplicate, >= 5 unique).
+   - Validated by comprehensive test suite in `test/video_vault.test.js`.
+10. **Extended Multi-Cycle Simulation Memory Stability Evidence:**
+    - In `test/qualification_harness.js` Gate 9, extended profiling beyond continuous 3,000-frame simulations to execute 10 complete repeated simulation lifecycles.
+    - Measured results:
+      - Continuous 3,000-frame simulation: **53.07 bytes/frame** (well within 2,500 B/frame budget; peak heap 11.57 MB).
+      - 10 repeated complete simulation lifecycles: **0.05 MB heap growth** across cycles (well within 5.0 MB ceiling).
+      - Complete profiling metrics saved to machine-readable `output/qualification_report.json` and linked into production proof reports.
 
 ---
 

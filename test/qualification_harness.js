@@ -449,6 +449,8 @@ async function runQualification() {
 
     const peakHeapMb = (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2);
     results.profiling.peakMemoryMb = peakHeapMb;
+    results.profiling.growthPerFrameBytes = Number(growthPerFrame.toFixed(2));
+    results.profiling.continuous3000PeakHeapMb = Number(peakHeapMb);
 
     console.log(`  ✓ Peak Heap: ${peakHeapMb} MB | Memory Growth: ${growthPerFrame.toFixed(2)} bytes/frame`);
     assert(growthPerFrame < 2500, `Memory growth (${growthPerFrame.toFixed(2)} B/frame) exceeds 2.5KB budget! Unbounded leak detected!`);
@@ -488,6 +490,11 @@ async function runQualification() {
     const heapGrowthAcrossCyclesMb = (cycleEndHeap - cycleStartHeap) / 1024 / 1024;
     console.log(`  ✓ Multi-cycle heap growth across 10 complete runs: ${heapGrowthAcrossCyclesMb.toFixed(2)} MB`);
     assert(heapGrowthAcrossCyclesMb < 5.0, `Multi-cycle heap growth (${heapGrowthAcrossCyclesMb.toFixed(2)} MB) exceeded 5MB threshold! Unbounded leak across lifecycles!`);
+
+    results.profiling.multiCycleRepeatedRunsCount = 10;
+    results.profiling.multiCycleStartHeapMb = Number((cycleStartHeap / 1024 / 1024).toFixed(2));
+    results.profiling.multiCycleEndHeapMb = Number((cycleEndHeap / 1024 / 1024).toFixed(2));
+    results.profiling.multiCycleHeapGrowthMb = Number(heapGrowthAcrossCyclesMb.toFixed(2));
 
     results.checklist['9. Memory and Resource Profiling'] = 'PASSED';
     console.log('  ✓ PASSED: Extended 3,000-frame simulation & 10 repeated lifecycles verified with zero unbounded memory growth.');
@@ -699,6 +706,24 @@ async function runQualification() {
 
   for (const [item, status] of checklistEntries) {
     console.log(`  ${status === 'PASSED' ? '✅' : '❌'} ${item}: ${status}`);
+  }
+
+  // Write machine-readable qualification report to disk
+  try {
+    const reportPath = path.resolve('output/qualification_report.json');
+    if (!fs.existsSync(path.dirname(reportPath))) fs.mkdirSync(path.dirname(reportPath), { recursive: true });
+    fs.writeFileSync(reportPath, JSON.stringify({
+      generatedAt: new Date().toISOString(),
+      verdict: hasFailures ? 'FAILED' : '100% CERTIFIED FOR PRODUCTION',
+      passedChecks,
+      totalChecks,
+      profiling: results.profiling,
+      visualInspection: results.visualInspection,
+      checklist: results.checklist
+    }, null, 2));
+    console.log(`\n  ✓ Saved machine-readable qualification report to: ${reportPath}`);
+  } catch (e) {
+    console.warn(`  ⚠️ Could not write qualification_report.json: ${e.message}`);
   }
 
   console.log('='.repeat(70));
