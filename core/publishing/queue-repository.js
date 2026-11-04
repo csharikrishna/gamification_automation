@@ -1,9 +1,11 @@
 // Core Publishing Queue Repository
-// Authoritative, consolidated queue store with atomic persistence, safe concurrency locking,
-// corruption defense, scheduled-time enforcement, and duplicate prevention.
+// Authoritative, consolidated queue store with ownership-aware atomic locking, PID validation,
+// crash-recovery duplicate protection, failure classification (transient retry vs permanent fail),
+// corruption defense, scheduled-time enforcement, and bounded backoff.
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { LIFECYCLE_STATES } = require('../contracts/lifecycle-schema');
 
 class QueueRepository {
@@ -14,6 +16,7 @@ class QueueRepository {
     this.lockPath = `${this.queuePath}.lock`;
     this.timezone = options.timezone || 'UTC';
     this.maxRetries = options.maxRetries || 3;
+    this._activeLockToken = null;
 
     if (!fs.existsSync(this.outputDir)) {
       fs.mkdirSync(this.outputDir, { recursive: true });
@@ -41,40 +44,71 @@ class QueueRepository {
     }
   }
 
-  // File-based concurrency lock to protect read-modify-write transactions
+  // Helper to check if a process ID is currently alive on the host
+  static _isProcessAlive(pid) {
+    if (!pid || isNaN(pid)) return false;
+    try {
+      process.kill(pid, 0);
+      return true;
+    } catch (err) {
+      return err.code === 'EPERM'; // Process exists but belongs to another user
+    }
+  }
+
+  // Ownership-aware concurrency lock with token verification and dead-PID detection
   _acquireLock(maxWaitMs = 5000) {
     const start = Date.now();
+    const token = crypto.randomBytes(16).toString('hex');
+
     while (Date.now() - start < maxWaitMs) {
       try {
         // wx flag creates file exclusively, failing if it already exists
-        fs.writeFileSync(this.lockPath, `${process.pid}\n${Date.now()}`, { flag: 'wx' });
+        const lockContent = `${process.pid}\n${Date.now()}\n${token}`;
+        fs.writeFileSync(this.lockPath, lockContent, { flag: 'wx' });
+        this._activeLockToken = token;
         return true;
       } catch (err) {
-        // If stale lock (older than 10s), force remove
+        // Inspect existing lock
         try {
           if (fs.existsSync(this.lockPath)) {
-            const content = fs.readFileSync(this.lockPath, 'utf8').split('\n');
-            const lockTime = parseInt(content[1], 10);
-            if (Date.now() - lockTime > 10000) {
-              fs.unlinkSync(this.lockPath);
+            const lines = fs.readFileSync(this.lockPath, 'utf8').split('\n');
+            const lockPid = parseInt(lines[0], 10);
+            const lockTime = parseInt(lines[1], 10);
+
+            const isAlive = QueueRepository._isProcessAlive(lockPid);
+            const isStale = (Date.now() - lockTime > 30000); // 30 seconds threshold
+
+            // Only remove lock if owning process is dead OR lock is severely stale (>30s) and confirmed dead
+            if (!isAlive || (isStale && !isAlive)) {
+              try { fs.unlinkSync(this.lockPath); } catch (e) {}
               continue;
             }
           }
         } catch (e) {}
-        // Short spin sleep
-        const waitTill = Date.now() + 50;
+
+        // Spin wait
+        const waitTill = Date.now() + 40;
         while (Date.now() < waitTill) {}
       }
     }
     throw new Error(`QueueRepository: Timed out waiting for file lock (${this.lockPath})`);
   }
 
+  // Ownership-verified lock release: only releases if current worker holds the active token
   _releaseLock() {
     try {
       if (fs.existsSync(this.lockPath)) {
-        fs.unlinkSync(this.lockPath);
+        const content = fs.readFileSync(this.lockPath, 'utf8');
+        const lines = content.split('\n');
+        const lockToken = lines[2];
+        if (this._activeLockToken && lockToken === this._activeLockToken) {
+          fs.unlinkSync(this.lockPath);
+        }
       }
-    } catch (e) {}
+    } catch (e) {
+    } finally {
+      this._activeLockToken = null;
+    }
   }
 
   // Atomic file write using temporary file rename
@@ -119,7 +153,8 @@ class QueueRepository {
   }
 
   // Enqueues an approved media artifact with duplicate checking under transactional lock
-  enqueue(entry) {
+  // Supports options.upsert to update existing un-published items with fresh media signatures
+  enqueue(entry, options = {}) {
     if (!entry.queueId) throw new Error('Queue entry must have a unique "queueId".');
     if (!entry.videoPath || !fs.existsSync(entry.videoPath)) {
       throw new Error(`Cannot enqueue item with missing on-disk media: ${entry.videoPath}`);
@@ -128,8 +163,18 @@ class QueueRepository {
     this._acquireLock();
     try {
       const queue = this.getAll();
-      const existing = queue.find(q => q.queueId === entry.queueId);
-      if (existing) {
+      const existingIdx = queue.findIndex(q => q.queueId === entry.queueId);
+      if (existingIdx !== -1) {
+        if (options.upsert && queue[existingIdx].status !== 'PUBLISHED') {
+          // Cleanly update existing un-published item with fresh media attributes
+          queue[existingIdx] = {
+            ...queue[existingIdx],
+            ...entry,
+            updatedAt: new Date().toISOString()
+          };
+          this._writeAtomic(this.queuePath, queue);
+          return queue[existingIdx];
+        }
         throw new Error(`Queue entry "${entry.queueId}" already exists (Duplicate Protection).`);
       }
 
@@ -160,20 +205,35 @@ class QueueRepository {
   }
 
   // Atomically claims next eligible item for upload
-  // Enforces: scheduledTime <= now, bounded retries, exponential backoff, worker isolation
+  // Enforces: scheduledTime <= now, bounded retries, exponential backoff, crash recovery duplicate defense, worker isolation
   claimNext(workerId = 'worker-1', options = {}) {
     this._acquireLock();
     try {
       const queue = this.getAll();
+      const history = this.getHistory();
       const now = Date.now();
 
       let targetIdx = -1;
 
       for (let i = 0; i < queue.length; i++) {
         const item = queue[i];
-        const isEligibleState = item.status === 'READY_TO_PUBLISH' || item.lifecycleState === LIFECYCLE_STATES.SCHEDULED;
+        const isEligibleState = item.status === 'READY_TO_PUBLISH'
+          || item.status === 'RETRY_PENDING'
+          || item.lifecycleState === LIFECYCLE_STATES.SCHEDULED
+          || item.lifecycleState === LIFECYCLE_STATES.RETRY_PENDING;
 
         if (!isEligibleState) continue;
+
+        // Crash-recovery duplicate protection: Never re-publish an item already live on platform
+        const alreadyPublished = history.find(h =>
+          (h.queueId === item.queueId || (h.sha256 && item.sha256 && h.sha256 === item.sha256))
+          && h.status === 'PUBLISHED'
+        );
+        if (alreadyPublished) {
+          item.status = 'PUBLISHED';
+          item.lifecycleState = LIFECYCLE_STATES.PUBLISHED;
+          continue;
+        }
 
         // 1. Invariant: Never claim an item before its scheduled time (unless explicitly requested for pre-flight)
         if (!options.ignoreScheduleTime && item.scheduledTime) {
@@ -253,9 +313,14 @@ class QueueRepository {
         completedAt: new Date().toISOString()
       };
 
-      // Update history
+      // Update history idempotently (avoid duplicate entries if re-invoked)
       const history = this.getHistory();
-      history.push(completedRecord);
+      const histIdx = history.findIndex(h => h.queueId === queueId);
+      if (histIdx >= 0) {
+        history[histIdx] = completedRecord;
+      } else {
+        history.push(completedRecord);
+      }
       this._writeAtomic(this.historyPath, history);
 
       if (!isDryRun) {
@@ -272,20 +337,32 @@ class QueueRepository {
   }
 
   // Records an upload failure with error diagnostics under lock
-  recordFailure(queueId, errorMessage) {
+  // Classifies transient errors into RETRY_PENDING with exponential backoff
+  recordFailure(queueId, errorMessage, options = {}) {
     this._acquireLock();
     try {
       const queue = this.getAll();
       const idx = queue.findIndex(q => q.queueId === queueId);
       if (idx === -1) return false;
 
-      queue[idx].status = 'FAILED';
-      queue[idx].lifecycleState = LIFECYCLE_STATES.FAILED;
-      queue[idx].lastError = errorMessage;
-      queue[idx].failedAt = new Date().toISOString();
+      const item = queue[idx];
+      const isTransient = options.isTransient !== undefined
+        ? options.isTransient
+        : /timeout|econnreset|etimedout|rate_limit|429|503|network|temporar|try again|socket/i.test(errorMessage);
+
+      item.lastError = errorMessage;
+      item.failedAt = new Date().toISOString();
+
+      if (isTransient && (item.attempts || 0) < this.maxRetries) {
+        item.status = 'RETRY_PENDING';
+        item.lifecycleState = LIFECYCLE_STATES.RETRY_PENDING;
+      } else {
+        item.status = 'FAILED';
+        item.lifecycleState = LIFECYCLE_STATES.FAILED;
+      }
 
       this._writeAtomic(this.queuePath, queue);
-      return queue[idx];
+      return item;
     } finally {
       this._releaseLock();
     }

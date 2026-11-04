@@ -172,6 +172,75 @@ console.log(`  ✓ Tags:         ${day1.tags.join(' ')}`);
   assert(quarantinedFiles.length >= 1, 'Corrupt file must be preserved in quarantine');
   console.log(`  ✓ Corruption defense verified: corrupted file isolated to ${quarantinedFiles[0]} without data loss.`);
 
+  // Reset queue file for subsequent tests
+  fs.writeFileSync(coreRepo.queuePath, '[]', 'utf8');
+
+  // 5e. Ownership Token Verified Lock Release
+  const repoA = new QueueRepository({ outputDir: coreTestDir });
+  const repoB = new QueueRepository({ outputDir: coreTestDir });
+  repoA._acquireLock();
+  assert(fs.existsSync(repoA.lockPath), 'Lock file must exist');
+  // Attempting release from repoB (different token) must NOT release repoA's lock
+  repoB._releaseLock();
+  assert(fs.existsSync(repoA.lockPath), 'Foreign worker must not be able to release active lock');
+  repoA._releaseLock();
+  assert(!fs.existsSync(repoA.lockPath), 'Lock owner must release lock cleanly');
+  console.log('  ✓ Ownership-verified lock release verified: worker isolation strictly maintained.');
+
+  // 5f. Dead PID Stale Lock Recovery
+  const deadPid = 999999;
+  fs.writeFileSync(repoA.lockPath, `${deadPid}\n${Date.now() - 5000}\nfake-dead-token`, 'utf8');
+  assert(fs.existsSync(repoA.lockPath));
+  repoA._acquireLock(); // Should detect PID is dead and claim lock
+  assert(repoA._activeLockToken, 'Lock must be acquired after recovering dead PID lock');
+  repoA._releaseLock();
+  console.log('  ✓ Dead PID lock recovery verified: dead-worker locks safely cleaned without blocking.');
+
+  // 5g. Failure Classification: Transient (RETRY_PENDING) vs Permanent (FAILED)
+  const transientItem = {
+    queueId: 'transient_test_01',
+    videoPath: testMedia,
+    scheduledTime: new Date(Date.now() - 1000).toISOString(),
+    status: 'READY_TO_PUBLISH'
+  };
+  repoA.enqueue(transientItem);
+  const claimedTrans = repoA.claimNext('worker-trans');
+  assert(claimedTrans);
+  repoA.recordFailure(claimedTrans.queueId, 'ETIMEDOUT: Connection timeout to YouTube API');
+  const queueAfterTrans = repoA.getAll();
+  const transRecorded = queueAfterTrans.find(q => q.queueId === 'transient_test_01');
+  assert.strictEqual(transRecorded.status, 'RETRY_PENDING', 'Transient network error must transition to RETRY_PENDING');
+  console.log('  ✓ Transient error classification verified: network timeout placed in RETRY_PENDING.');
+
+  repoA.recordFailure(claimedTrans.queueId, 'INVALID_MEDIA: Corrupted bitstream header', { isTransient: false });
+  const queueAfterPerm = repoA.getAll();
+  const permRecorded = queueAfterPerm.find(q => q.queueId === 'transient_test_01');
+  assert.strictEqual(permRecorded.status, 'FAILED', 'Permanent failure must transition directly to FAILED');
+  console.log('  ✓ Permanent error classification verified: invalid media permanently marked FAILED.');
+
+  // 5h. Crash-Recovery Duplicate Protection
+  const dupItem = {
+    queueId: 'dup_crash_test_01',
+    videoPath: testMedia,
+    sha256: 'deadbeefcafe0000111122223333444455556666777788889999aaaabbbbcccc',
+    scheduledTime: new Date(Date.now() - 1000).toISOString(),
+    status: 'READY_TO_PUBLISH'
+  };
+  repoA.enqueue(dupItem);
+  // Simulate item already recorded as PUBLISHED in history prior to process crash
+  const hist = repoA.getHistory();
+  hist.push({
+    queueId: dupItem.queueId,
+    sha256: dupItem.sha256,
+    status: 'PUBLISHED',
+    platformVideoId: 'yt_real_12345'
+  });
+  repoA._writeAtomic(repoA.historyPath, hist);
+
+  const claimedDup = repoA.claimNext('worker-dup');
+  assert.strictEqual(claimedDup, null, 'Already published item must never be re-claimed after restart');
+  console.log('  ✓ Crash-recovery duplicate protection verified: re-publishing prevented.');
+
   // Cleanup isolated test directories
   if (fs.existsSync(coreTestDir)) fs.rmSync(coreTestDir, { recursive: true, force: true });
   if (fs.existsSync(testDir)) fs.rmSync(testDir, { recursive: true, force: true });

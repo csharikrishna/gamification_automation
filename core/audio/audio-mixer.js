@@ -1,5 +1,7 @@
 // Audio Synthesizer for Automated Simulation Videos
 // Generates crisp, synchronized 44.1kHz 16-bit stereo WAV audio from simulation events
+// Features event-priority mixing, dynamic ducking, velocity-sensitive collisions,
+// master-bus headroom management, and soft-knee peak saturation.
 
 const fs = require('fs');
 
@@ -13,6 +15,27 @@ class AudioSynthesizer {
     const leftChannel = new Float32Array(totalSamples);
     const rightChannel = new Float32Array(totalSamples);
 
+    // 1. Identify high-priority time intervals (gate breakthroughs & finish fanfare) for dynamic ducking
+    const highPriorityIntervals = [];
+    for (const ev of events) {
+      if (ev.type === 'gate' || ev.type === 'finish' || ev.type === 'multiplication') {
+        const startSec = ev.time;
+        const durSec = ev.type === 'finish' ? 2.5 : (ev.type === 'gate' ? 0.65 : 0.4);
+        highPriorityIntervals.push({ start: startSec, end: startSec + durSec });
+      }
+    }
+
+    // Helper: calculate ducking multiplier for background events
+    const getDuckingGain = (tSec) => {
+      for (const interval of highPriorityIntervals) {
+        if (tSec >= interval.start && tSec <= interval.end) {
+          return 0.45; // Duck background clicks by ~7dB during major events
+        }
+      }
+      return 1.0;
+    };
+
+    // 2. Synthesize events with priority and velocity sensitivity
     for (const ev of events) {
       const startSample = Math.floor(ev.time * this.sampleRate);
       if (startSample >= totalSamples) continue;
@@ -20,21 +43,30 @@ class AudioSynthesizer {
       const pan = ev.lane === 'left' ? -0.45 : ev.lane === 'right' ? 0.45 : 0;
       const leftGain = Math.cos((pan + 1) * Math.PI / 4);
       const rightGain = Math.sin((pan + 1) * Math.PI / 4);
+      const duck = getDuckingGain(ev.time);
 
       if (ev.type === 'bounce') {
-        this.renderClick(leftChannel, rightChannel, startSample, ev.pitch || 600, ev.volume || 0.12, leftGain, rightGain);
+        // Velocity-sensitive collision intensity
+        const force = ev.impactForce || ev.force || 1.0;
+        const basePitch = ev.pitch || (force > 1.4 ? 480 : 640);
+        const baseVol = (ev.volume || (force > 1.4 ? 0.14 : 0.08)) * duck;
+        this.renderClick(leftChannel, rightChannel, startSample, basePitch, baseVol, leftGain, rightGain);
       } else if (ev.type === 'gate') {
-        const baseFreq = 320 * Math.pow(1.18, ev.tier || 0);
-        this.renderChime(leftChannel, rightChannel, startSample, baseFreq, ev.multiplier ? 0.45 : 0.35, leftGain, rightGain);
+        // High-priority barrier breakthrough with sub-harmonic thump & resonant chime
+        const tier = ev.tier || 0;
+        const baseFreq = 300 * Math.pow(1.15, tier);
+        const isFinalTier = (tier >= 5);
+        this.renderChime(leftChannel, rightChannel, startSample, baseFreq, isFinalTier ? 0.55 : 0.42, leftGain, rightGain, isFinalTier);
       } else if (ev.type === 'multiplication') {
         this.renderMultiplication(leftChannel, rightChannel, startSample, ev.count || 6, leftGain, rightGain);
       } else if (ev.type === 'tally') {
-        this.renderBlip(leftChannel, rightChannel, startSample, 880 + (ev.count || 0) % 200, 0.08, leftGain, rightGain);
+        this.renderBlip(leftChannel, rightChannel, startSample, 880 + (ev.count || 0) % 200, 0.08 * duck, leftGain, rightGain);
       } else if (ev.type === 'finish') {
         this.renderFanfare(leftChannel, rightChannel, startSample);
       }
     }
 
+    // 3. Master Bus Headroom Management & Peak Soft Limiting
     const wavBuffer = this.encodeWAV([leftChannel, rightChannel], this.sampleRate);
     fs.writeFileSync(outputPath, wavBuffer);
     return outputPath;
@@ -82,32 +114,38 @@ class AudioSynthesizer {
     });
   }
 
-  renderChime(left, right, startSample, baseFreq, volume, leftGain, rightGain) {
-    const duration = 0.65; // 650ms glass break + resonant chime
+  renderChime(left, right, startSample, baseFreq, volume, leftGain, rightGain, isFinalTier = false) {
+    const duration = isFinalTier ? 0.95 : 0.65;
     const numSamples = Math.min(Math.floor(duration * this.sampleRate), left.length - startSample);
     const harmonics = [
-      { f: baseFreq, g: 0.60 },
-      { f: baseFreq * 1.5, g: 0.35 },
-      { f: baseFreq * 2.0, g: 0.25 },
-      { f: baseFreq * 2.75, g: 0.15 }
+      { f: baseFreq, g: 0.55 },
+      { f: baseFreq * 1.5, g: 0.30 },
+      { f: baseFreq * 2.0, g: 0.22 },
+      { f: baseFreq * 2.75, g: 0.14 }
     ];
 
     for (let i = 0; i < numSamples; i++) {
       const t = i / this.sampleRate;
 
-      // AUD-01: Deterministic noise function replaces Math.random() for 100% reproducible audio
+      // Deterministic fracture snap noise
       let crackNoise = 0;
-      if (t < 0.045) {
+      if (t < 0.05) {
         const pseudoNoise = (Math.sin(i * 127.1 + t * 43758.54) * 43758.54) % 1;
-        crackNoise = (pseudoNoise * 2 - 1) * Math.exp(-t * 120) * 0.45;
+        crackNoise = (pseudoNoise * 2 - 1) * Math.exp(-t * 110) * 0.38;
       }
 
-      const env = Math.exp(-t * 6.5);
+      // Sub-harmonic resonant impact thump for final-tier breakthrough
+      let subThump = 0;
+      if (isFinalTier && t < 0.25) {
+        subThump = Math.sin(2 * Math.PI * 75 * t) * Math.exp(-t * 18) * 0.35;
+      }
+
+      const env = Math.exp(-t * (isFinalTier ? 4.5 : 6.5));
       let sample = 0;
       for (const h of harmonics) {
         sample += Math.sin(2 * Math.PI * h.f * t) * h.g;
       }
-      const val = (sample * env * volume) + crackNoise;
+      const val = (sample * env * volume) + crackNoise + subThump;
       left[startSample + i] += val * leftGain;
       right[startSample + i] += val * rightGain;
     }
@@ -119,12 +157,12 @@ class AudioSynthesizer {
 
     notes.forEach((noteFreq, idx) => {
       const noteStart = startSample + Math.floor(idx * noteSpacing * this.sampleRate);
-      const duration = 1.2;
+      const duration = 1.4;
       const numSamples = Math.min(Math.floor(duration * this.sampleRate), left.length - noteStart);
       for (let i = 0; i < numSamples; i++) {
         const t = i / this.sampleRate;
-        const env = Math.exp(-t * 3.5);
-        const val = Math.sin(2 * Math.PI * noteFreq * t) * env * 0.28;
+        const env = Math.exp(-t * 3.2);
+        const val = Math.sin(2 * Math.PI * noteFreq * t) * env * 0.24;
         left[noteStart + i] += val * 0.7;
         right[noteStart + i] += val * 0.7;
       }
@@ -139,6 +177,19 @@ class AudioSynthesizer {
     const byteRate = sampleRate * blockAlign;
     const dataSize = length * blockAlign;
     const buffer = Buffer.alloc(44 + dataSize);
+
+    // 1. Master Bus Headroom Scan: Measure peak sample across all channels
+    let maxPeak = 0;
+    for (let ch = 0; ch < numChannels; ch++) {
+      for (let i = 0; i < length; i++) {
+        const absVal = Math.abs(channels[ch][i]);
+        if (absVal > maxPeak) maxPeak = absVal;
+      }
+    }
+
+    // Dynamic normalization with 1.2dB headroom margin if peak exceeds safe threshold
+    const targetPeak = 0.88;
+    const normalizer = maxPeak > targetPeak ? (targetPeak / maxPeak) : 1.0;
 
     // RIFF header
     buffer.write('RIFF', 0);
@@ -162,10 +213,12 @@ class AudioSynthesizer {
     let offset = 44;
     for (let i = 0; i < length; i++) {
       for (let ch = 0; ch < numChannels; ch++) {
-        // Soft clipping / limiting
-        let sample = channels[ch][i];
-        if (sample > 0.95) sample = 0.95;
-        if (sample < -0.95) sample = -0.95;
+        // Apply normalizer and smooth hyperbolic tangent soft-limiting (zero clipping)
+        let sample = channels[ch][i] * normalizer;
+        sample = Math.tanh(sample * 1.05); // Smooth saturation curve
+        if (sample > 0.96) sample = 0.96;
+        if (sample < -0.96) sample = -0.96;
+
         const intSample = Math.floor(sample * 32767);
         buffer.writeInt16LE(intSample, offset);
         offset += 2;

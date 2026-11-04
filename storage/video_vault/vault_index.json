@@ -1,0 +1,306 @@
+{
+  "vaultVersion": "1.0.0",
+  "lastUpdated": "2026-11-04T14:17:49.375Z",
+  "totalVideos": 5,
+  "videos": [
+    {
+      "clipId": "flagship_scenario_01_flagship",
+      "gameType": "multiplying-ball-race",
+      "seed": 40317,
+      "scenarioSignature": "d8f0f9a777102b1c",
+      "title": "⚡ 3 BALLS VS 12 BALLS: CAN THE UNDERDOG WIN? ⚡",
+      "narrativeRole": "UNDERDOG_EXPONENTIAL_WIN",
+      "videoPath": "output\\proof_clips\\flagship_scenario_01_flagship.mp4",
+      "sha256": "89231577166e0a4b129073ea596e2f83f5f48184c823223c8f1d39e6dd7e8c7d",
+      "durationSeconds": 20,
+      "exactFrameCount": 1200,
+      "fileSizeMb": 11.97,
+      "fileSizeBytes": 12552274,
+      "resolution": "1080x1920",
+      "fps": 60,
+      "videoCodec": "h264",
+      "audioCodec": "aac",
+      "audioRate": 44100,
+      "audioChannels": "stereo",
+      "loudnessLufs": -21.2,
+      "simOutcome": {
+        "simId": "flagship_scenario_01",
+        "archetypeId": "underdog_classic",
+        "narrativeRole": "UNDERDOG_EXPONENTIAL_WIN",
+        "seed": 40317,
+        "title": "⚡ 3 BALLS VS 12 BALLS: CAN THE UNDERDOG WIN? ⚡",
+        "winner": "MULTIPLY",
+        "finishTime": 12.57,
+        "finishMargin": null,
+        "leadChanges": 1,
+        "leftMetrics": {
+          "actualBallCount": 192,
+          "totalGeneratedBalls": 192,
+          "mathematicalPopulation": 192,
+          "score": 192
+        },
+        "rightMetrics": {
+          "actualBallCount": 42,
+          "totalGeneratedBalls": 42,
+          "mathematicalPopulation": 42,
+          "score": 42
+        },
+        "timelineEvents": [
+          {
+            "time": 9.15,
+            "event": "LEAD_CHANGE",
+            "previousLeader": "ADD",
+            "newLeader": "MULTIPLY"
+          }
+        ]
+      },
+      "archivedAt": "2026-11-04T14:17:49.366Z",
+      "tags": []
+    },
+    {
+      "clipId": "flagship_scenario_02_flagship",
+      "gameType": "multiplying-ball-race",
+      "seed": 303,
+      "scenarioSignature": "3b11cdc40ecb903e",
+      "title": "📈 PHOTO FINISH: MULTIPLY VS ADD NECK-AND-NECK 📈",
+      "narrativeRole": "PHOTO_FINISH_CLASH",
+      "videoPath": "output\\proof_clips\\flagship_scenario_02_flagship.mp4",
+      "sha256": "ccbdbee5e91a780119171c1112ad0a445b3c7249ac39f119b3aa9a5f6359ca77",
+      "durationSeconds": 20,
+      "exactFrameCount": 1200,
+      "fileSizeMb": 12.52,
+      "fileSizeBytes": 13127795,
+      "resolution": "1080x1920",
+      "fps": 60,
+      "videoCodec": "h264",
+      "audioCodec": "aac",
+      "audioRate": 44100,
+      "audioChannels": "stereo",
+      "loudnessLufs": -21.5,
+      "simOutcome": {
+        "simId": "flagship_scenario_02",
+        "archetypeId": "close_clash",
+        "narrativeRole": "PHOTO_FINISH_CLASH",
+        "seed": 303,
+        "title": "📈 PHOTO FINISH: MULTIPLY VS ADD NECK-AND-NECK 📈",
+        "winner": "ADD",
+        "finishTime": 12.42,
+        "finishMargin": 0.1,
+        "leadChanges": 5,
+        "leftMetrics": {
+          "actualBallCount": 200,
+          "totalGeneratedBalls": 200,
+          "mathematicalPopulation": 256,
+          "score": 256
+        },
+        "rightMetrics": {
+          "actualBallCount": 62,
+          "totalGeneratedBalls": 62,
+          "mathematicalPopulation": 62,
+          "score": 62
+        },
+        "timelineEvents": [
+          {
+            "time": 9.37,
+            "event": "LEAD_CHANGE",
+            "previousLeader": "ADD",
+            "newLeader": "MULTIPLY"
+          },
+          {
+            "time": 9.6,
+            "event": "LEAD_CHANGE",
+            "previousLeader": "MULTIPLY",
+            "newLeader": "ADD"
+          },
+          {
+            "time": 10.95,
+            "event": "LEAD_CHANGE",
+            "previousLeader": "ADD",
+            "newLeader": "MULTIPLY"
+          },
+          {
+            "time": 12.07,
+            "event": "LEAD_CHANGE",
+            "previousLeader": "MULTIPLY",
+            "newLeader": "ADD"
+          },
+          {
+            "time": 12.27,
+            "event": "LEAD_CHANGE",
+            "previousLeader": "ADD",
+            "newLeader": "MULTIPLY"
+          }
+        ]
+      },
+      "archivedAt": "2026-11-04T14:17:49.368Z",
+      "tags": []
+    },
+    {
+      "clipId": "flagship_scenario_03_flagship",
+      "gameType": "multiplying-ball-race",
+      "seed": 101,
+      "scenarioSignature": "e8bb8f4ea1413e7c",
+      "title": "💥 EARLY DEFICIT TO DRAMATIC FINAL TIER REVERSAL 💥",
+      "narrativeRole": "COMEBACK_REVERSAL",
+      "videoPath": "output\\proof_clips\\flagship_scenario_03_flagship.mp4",
+      "sha256": "52a0199eedc4cf1056c1f4cbbb75a88d0db257188edb6e6ed7019fc3235950ad",
+      "durationSeconds": 20,
+      "exactFrameCount": 1200,
+      "fileSizeMb": 12.51,
+      "fileSizeBytes": 13114916,
+      "resolution": "1080x1920",
+      "fps": 60,
+      "videoCodec": "h264",
+      "audioCodec": "aac",
+      "audioRate": 44100,
+      "audioChannels": "stereo",
+      "loudnessLufs": -20.9,
+      "simOutcome": {
+        "simId": "flagship_scenario_03",
+        "archetypeId": "lead_reversal",
+        "narrativeRole": "COMEBACK_REVERSAL",
+        "seed": 101,
+        "title": "💥 EARLY DEFICIT TO DRAMATIC FINAL TIER REVERSAL 💥",
+        "winner": "MULTIPLY",
+        "finishTime": 13.88,
+        "finishMargin": 0.27,
+        "leadChanges": 1,
+        "leftMetrics": {
+          "actualBallCount": 128,
+          "totalGeneratedBalls": 128,
+          "mathematicalPopulation": 128,
+          "score": 128
+        },
+        "rightMetrics": {
+          "actualBallCount": 52,
+          "totalGeneratedBalls": 52,
+          "mathematicalPopulation": 52,
+          "score": 52
+        },
+        "timelineEvents": [
+          {
+            "time": 11.75,
+            "event": "LEAD_CHANGE",
+            "previousLeader": "ADD",
+            "newLeader": "MULTIPLY"
+          }
+        ]
+      },
+      "archivedAt": "2026-11-04T14:17:49.370Z",
+      "tags": []
+    },
+    {
+      "clipId": "flagship_scenario_04_flagship",
+      "gameType": "multiplying-ball-race",
+      "seed": 707,
+      "scenarioSignature": "3a3306a5a88fef79",
+      "title": "🔥 HIGH MULTIPLIER: ×3 GAMBLE VS +14 TANK 🔥",
+      "narrativeRole": "HEAVY_SWARM_ESCALATION",
+      "videoPath": "output\\proof_clips\\flagship_scenario_04_flagship.mp4",
+      "sha256": "3a264d4dc28e5f8022e67e5482b68b5b4e65cbbb8f1d8375120e84356bbe07e1",
+      "durationSeconds": 20,
+      "exactFrameCount": 1200,
+      "fileSizeMb": 10.98,
+      "fileSizeBytes": 11513485,
+      "resolution": "1080x1920",
+      "fps": 60,
+      "videoCodec": "h264",
+      "audioCodec": "aac",
+      "audioRate": 44100,
+      "audioChannels": "stereo",
+      "loudnessLufs": -22.9,
+      "simOutcome": {
+        "simId": "flagship_scenario_04",
+        "archetypeId": "high_escalation",
+        "narrativeRole": "HEAVY_SWARM_ESCALATION",
+        "seed": 707,
+        "title": "🔥 HIGH MULTIPLIER: ×3 GAMBLE VS +14 TANK 🔥",
+        "winner": "ADD",
+        "finishTime": 10.67,
+        "finishMargin": null,
+        "leadChanges": 0,
+        "leftMetrics": {
+          "actualBallCount": 162,
+          "totalGeneratedBalls": 162,
+          "mathematicalPopulation": 162,
+          "score": 162
+        },
+        "rightMetrics": {
+          "actualBallCount": 102,
+          "totalGeneratedBalls": 102,
+          "mathematicalPopulation": 102,
+          "score": 102
+        },
+        "timelineEvents": []
+      },
+      "archivedAt": "2026-11-04T14:17:49.373Z",
+      "tags": []
+    },
+    {
+      "clipId": "flagship_scenario_05_flagship",
+      "gameType": "multiplying-ball-race",
+      "seed": 1100,
+      "scenarioSignature": "8ad5f666695e41d5",
+      "title": "🏆 FINAL TIER SHOWDOWN: 0.07s UPSET VICTORY 🏆",
+      "narrativeRole": "RAZOR_THIN_UPSET",
+      "videoPath": "output\\proof_clips\\flagship_scenario_05_flagship.mp4",
+      "sha256": "f94a66734248a49e022de98157266e6377f1ceee940c1b05cff80b58154ea051",
+      "durationSeconds": 20,
+      "exactFrameCount": 1200,
+      "fileSizeMb": 12.4,
+      "fileSizeBytes": 13001477,
+      "resolution": "1080x1920",
+      "fps": 60,
+      "videoCodec": "h264",
+      "audioCodec": "aac",
+      "audioRate": 44100,
+      "audioChannels": "stereo",
+      "loudnessLufs": -21.6,
+      "simOutcome": {
+        "simId": "flagship_scenario_05",
+        "archetypeId": "unexpected_turn",
+        "narrativeRole": "RAZOR_THIN_UPSET",
+        "seed": 1100,
+        "title": "🏆 FINAL TIER SHOWDOWN: 0.07s UPSET VICTORY 🏆",
+        "winner": "MULTIPLY",
+        "finishTime": 12.52,
+        "finishMargin": 0.07,
+        "leadChanges": 3,
+        "leftMetrics": {
+          "actualBallCount": 192,
+          "totalGeneratedBalls": 192,
+          "mathematicalPopulation": 192,
+          "score": 192
+        },
+        "rightMetrics": {
+          "actualBallCount": 66,
+          "totalGeneratedBalls": 66,
+          "mathematicalPopulation": 66,
+          "score": 66
+        },
+        "timelineEvents": [
+          {
+            "time": 10.87,
+            "event": "LEAD_CHANGE",
+            "previousLeader": "ADD",
+            "newLeader": "MULTIPLY"
+          },
+          {
+            "time": 12.22,
+            "event": "LEAD_CHANGE",
+            "previousLeader": "MULTIPLY",
+            "newLeader": "ADD"
+          },
+          {
+            "time": 12.3,
+            "event": "LEAD_CHANGE",
+            "previousLeader": "ADD",
+            "newLeader": "MULTIPLY"
+          }
+        ]
+      },
+      "archivedAt": "2026-11-04T14:17:49.375Z",
+      "tags": []
+    }
+  ]
+}

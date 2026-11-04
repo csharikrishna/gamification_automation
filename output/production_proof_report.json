@@ -1,9 +1,14 @@
 {
   "orchestratorName": "Burstpoint Canonical Production Orchestrator",
   "version": "3.1.0",
-  "executedAt": "2026-11-04T13:15:19.622Z",
+  "executedAt": "2026-11-04T14:16:12.650Z",
   "gameCertified": "multiplying-ball-race",
   "productionStatus": "CERTIFIED_FLAGSHIP_PRODUCTION_READY",
+  "approvalGovernance": {
+    "approvalPolicy": "UNATTENDED_AUTOMATED_POLICY",
+    "humanReviewStatus": "BYPASSED_BY_CONFIG",
+    "unattendedApprovalConfigured": true
+  },
   "outputDurationContract": {
     "targetDurationSeconds": 20,
     "fps": 60,
@@ -17,29 +22,38 @@
     "renderedClipsOnDisk": 5,
     "queuedClips": 5,
     "dryRunReceiptsCount": 5,
-    "totalProcessingSeconds": 442.37
+    "totalProcessingSeconds": 359.67
   },
   "renderedClips": [
     {
       "clipId": "flagship_scenario_01_flagship",
       "videoPath": "output\\proof_clips\\flagship_scenario_01_flagship.mp4",
       "fileSizeMb": 11.97,
-      "fileSizeBytes": 12553299,
-      "sha256": "cdef0f2191070e7731c8b0a2c8aa94e64e4b696c9ca5ff157841d3dc037afdff",
+      "fileSizeBytes": 12552274,
+      "sha256": "89231577166e0a4b129073ea596e2f83f5f48184c823223c8f1d39e6dd7e8c7d",
       "durationSeconds": 20,
       "exactFrameCount": 1200,
       "resolution": "1080x1920",
       "fps": 60,
+      "videoCodec": "h264",
+      "hasAudio": true,
+      "audioCodec": "aac",
       "audioRate": 44100,
       "audioChannels": "stereo",
-      "loudnessLufs": -19.6,
+      "loudnessLufs": -21.2,
+      "loudnessStatus": "MEASURED",
       "bitstreamVerified": true,
       "evaluation": {
         "simulationValidity": {
-          "valid": true,
-          "deterministic": true,
-          "escapedMarbles": 0,
-          "finishDecided": true
+          "valid": "PASS",
+          "deterministic": "PASS",
+          "escapedMarbles": {
+            "count": 0,
+            "status": "PASS"
+          },
+          "finishDecided": "PASS",
+          "winnerGroundTruth": "PASS",
+          "narrativeRoleGroundTruth": "PASS"
         },
         "metrics": {
           "totalSimulatedEvents": 1025,
@@ -53,15 +67,29 @@
         "visualReadability": {
           "resolution": "1080x1920",
           "fps": 60,
-          "contrastRatioVerified": true,
-          "fontLegibilityVerified": true
+          "contrastRatio": {
+            "measuredRatio": 16.15,
+            "standard": "WCAG_2.1_AAA",
+            "status": "PASS"
+          },
+          "fontLegibility": {
+            "status": "NOT_CHECKED",
+            "note": "Requires human visual evaluation / OCR rather than automated Boolean assumption"
+          }
         },
         "narrativeStructure": {
           "format": "FULL_MATCH",
           "openingHookDurationSeconds": 1.5,
-          "gameplayProgressionDurationSeconds": 12.57,
+          "gameplayProgressionDurationSeconds": 11.07,
           "celebrationDurationSeconds": 7.43,
-          "totalDurationSeconds": 20
+          "totalDurationSeconds": 20,
+          "reconciled": "PASS"
+        },
+        "approval": {
+          "machineScreening": "PASS",
+          "status": "APPROVED_FOR_PUBLISHING",
+          "approvalPolicy": "UNATTENDED_AUTOMATED_POLICY",
+          "humanReviewStatus": "BYPASSED_BY_CONFIG"
         },
         "status": "APPROVED",
         "rejectionReason": null
@@ -71,22 +99,31 @@
       "clipId": "flagship_scenario_02_flagship",
       "videoPath": "output\\proof_clips\\flagship_scenario_02_flagship.mp4",
       "fileSizeMb": 12.52,
-      "fileSizeBytes": 13132063,
-      "sha256": "e6702a1bf22c34d2e1637e52b4991a566949ad4149250637cbe7994292acbc81",
+      "fileSizeBytes": 13127795,
+      "sha256": "ccbdbee5e91a780119171c1112ad0a445b3c7249ac39f119b3aa9a5f6359ca77",
       "durationSeconds": 20,
       "exactFrameCount": 1200,
       "resolution": "1080x1920",
       "fps": 60,
+      "videoCodec": "h264",
+      "hasAudio": true,
+      "audioCodec": "aac",
       "audioRate": 44100,
       "audioChannels": "stereo",
-      "loudnessLufs": -19.3,
+      "loudnessLufs": -21.5,
+      "loudnessStatus": "MEASURED",
       "bitstreamVerified": true,
       "evaluation": {
         "simulationValidity": {
-          "valid": true,
-          "deterministic": true,
-          "escapedMarbles": 0,
-          "finishDecided": true
+          "valid": "PASS",
+          "deterministic": "PASS",
+          "escapedMarbles": {
+            "count": 0,
+            "status": "PASS"
+          },
+          "finishDecided": "PASS",
+          "winnerGroundTruth": "PASS",
+          "narrativeRoleGroundTruth": "PASS"
         },
         "metrics": {
           "totalSimulatedEvents": 1061,
@@ -100,15 +137,29 @@
         "visualReadability": {
           "resolution": "1080x1920",
           "fps": 60,
-          "contrastRatioVerified": true,
-          "fontLegibilityVerified": true
+          "contrastRatio": {
+            "measuredRatio": 16.15,
+            "standard": "WCAG_2.1_AAA",
+            "status": "PASS"
+          },
+          "fontLegibility": {
+            "status": "NOT_CHECKED",
+            "note": "Requires human visual evaluation / OCR rather than automated Boolean assumption"
+          }
         },
         "narrativeStructure": {
           "format": "FULL_MATCH",
           "openingHookDurationSeconds": 1.5,
-          "gameplayProgressionDurationSeconds": 12.42,
+          "gameplayProgressionDurationSeconds": 10.92,
           "celebrationDurationSeconds": 7.58,
-          "totalDurationSeconds": 20
+          "totalDurationSeconds": 20,
+          "reconciled": "PASS"
+        },
+        "approval": {
+          "machineScreening": "PASS",
+          "status": "APPROVED_FOR_PUBLISHING",
+          "approvalPolicy": "UNATTENDED_AUTOMATED_POLICY",
+          "humanReviewStatus": "BYPASSED_BY_CONFIG"
         },
         "status": "APPROVED",
         "rejectionReason": null
@@ -117,23 +168,32 @@
     {
       "clipId": "flagship_scenario_03_flagship",
       "videoPath": "output\\proof_clips\\flagship_scenario_03_flagship.mp4",
-      "fileSizeMb": 12.52,
-      "fileSizeBytes": 13125910,
-      "sha256": "19bec9dd66eef920047b60edff9502aef9ebc19c7f8aee425d2796e7f901286f",
+      "fileSizeMb": 12.51,
+      "fileSizeBytes": 13114916,
+      "sha256": "52a0199eedc4cf1056c1f4cbbb75a88d0db257188edb6e6ed7019fc3235950ad",
       "durationSeconds": 20,
       "exactFrameCount": 1200,
       "resolution": "1080x1920",
       "fps": 60,
+      "videoCodec": "h264",
+      "hasAudio": true,
+      "audioCodec": "aac",
       "audioRate": 44100,
       "audioChannels": "stereo",
-      "loudnessLufs": -19.9,
+      "loudnessLufs": -20.9,
+      "loudnessStatus": "MEASURED",
       "bitstreamVerified": true,
       "evaluation": {
         "simulationValidity": {
-          "valid": true,
-          "deterministic": true,
-          "escapedMarbles": 0,
-          "finishDecided": true
+          "valid": "PASS",
+          "deterministic": "PASS",
+          "escapedMarbles": {
+            "count": 0,
+            "status": "PASS"
+          },
+          "finishDecided": "PASS",
+          "winnerGroundTruth": "PASS",
+          "narrativeRoleGroundTruth": "PASS"
         },
         "metrics": {
           "totalSimulatedEvents": 1002,
@@ -147,15 +207,29 @@
         "visualReadability": {
           "resolution": "1080x1920",
           "fps": 60,
-          "contrastRatioVerified": true,
-          "fontLegibilityVerified": true
+          "contrastRatio": {
+            "measuredRatio": 16.15,
+            "standard": "WCAG_2.1_AAA",
+            "status": "PASS"
+          },
+          "fontLegibility": {
+            "status": "NOT_CHECKED",
+            "note": "Requires human visual evaluation / OCR rather than automated Boolean assumption"
+          }
         },
         "narrativeStructure": {
           "format": "FULL_MATCH",
           "openingHookDurationSeconds": 1.5,
-          "gameplayProgressionDurationSeconds": 13.88,
+          "gameplayProgressionDurationSeconds": 12.38,
           "celebrationDurationSeconds": 6.12,
-          "totalDurationSeconds": 20
+          "totalDurationSeconds": 20,
+          "reconciled": "PASS"
+        },
+        "approval": {
+          "machineScreening": "PASS",
+          "status": "APPROVED_FOR_PUBLISHING",
+          "approvalPolicy": "UNATTENDED_AUTOMATED_POLICY",
+          "humanReviewStatus": "BYPASSED_BY_CONFIG"
         },
         "status": "APPROVED",
         "rejectionReason": null
@@ -164,27 +238,36 @@
     {
       "clipId": "flagship_scenario_04_flagship",
       "videoPath": "output\\proof_clips\\flagship_scenario_04_flagship.mp4",
-      "fileSizeMb": 11.8,
-      "fileSizeBytes": 12369040,
-      "sha256": "f12fb96877a73aabc3b86722e57caa727ef738a59d04e4581634faefeb8827e9",
+      "fileSizeMb": 10.98,
+      "fileSizeBytes": 11513485,
+      "sha256": "3a264d4dc28e5f8022e67e5482b68b5b4e65cbbb8f1d8375120e84356bbe07e1",
       "durationSeconds": 20,
       "exactFrameCount": 1200,
       "resolution": "1080x1920",
       "fps": 60,
+      "videoCodec": "h264",
+      "hasAudio": true,
+      "audioCodec": "aac",
       "audioRate": 44100,
       "audioChannels": "stereo",
-      "loudnessLufs": -19.7,
+      "loudnessLufs": -22.9,
+      "loudnessStatus": "MEASURED",
       "bitstreamVerified": true,
       "evaluation": {
         "simulationValidity": {
-          "valid": true,
-          "deterministic": true,
-          "escapedMarbles": 0,
-          "finishDecided": true
+          "valid": "PASS",
+          "deterministic": "PASS",
+          "escapedMarbles": {
+            "count": 0,
+            "status": "PASS"
+          },
+          "finishDecided": "PASS",
+          "winnerGroundTruth": "PASS",
+          "narrativeRoleGroundTruth": "PASS"
         },
         "metrics": {
-          "totalSimulatedEvents": 1075,
-          "eventDensityEventsPerSec": 53.75,
+          "totalSimulatedEvents": 1051,
+          "eventDensityEventsPerSec": 52.55,
           "scoreProgressionRatio": 1.59,
           "leadChangeCount": 0,
           "finishMarginSeconds": null,
@@ -194,15 +277,29 @@
         "visualReadability": {
           "resolution": "1080x1920",
           "fps": 60,
-          "contrastRatioVerified": true,
-          "fontLegibilityVerified": true
+          "contrastRatio": {
+            "measuredRatio": 16.15,
+            "standard": "WCAG_2.1_AAA",
+            "status": "PASS"
+          },
+          "fontLegibility": {
+            "status": "NOT_CHECKED",
+            "note": "Requires human visual evaluation / OCR rather than automated Boolean assumption"
+          }
         },
         "narrativeStructure": {
           "format": "FULL_MATCH",
           "openingHookDurationSeconds": 1.5,
-          "gameplayProgressionDurationSeconds": 10.65,
-          "celebrationDurationSeconds": 9.35,
-          "totalDurationSeconds": 20
+          "gameplayProgressionDurationSeconds": 9.17,
+          "celebrationDurationSeconds": 9.33,
+          "totalDurationSeconds": 20,
+          "reconciled": "PASS"
+        },
+        "approval": {
+          "machineScreening": "PASS",
+          "status": "APPROVED_FOR_PUBLISHING",
+          "approvalPolicy": "UNATTENDED_AUTOMATED_POLICY",
+          "humanReviewStatus": "BYPASSED_BY_CONFIG"
         },
         "status": "APPROVED",
         "rejectionReason": null
@@ -212,22 +309,31 @@
       "clipId": "flagship_scenario_05_flagship",
       "videoPath": "output\\proof_clips\\flagship_scenario_05_flagship.mp4",
       "fileSizeMb": 12.4,
-      "fileSizeBytes": 13005518,
-      "sha256": "9c892887b5342ee1aa0e5687b6ca4788e7246f3a80f7a2a9c316447f3caf187f",
+      "fileSizeBytes": 13001477,
+      "sha256": "f94a66734248a49e022de98157266e6377f1ceee940c1b05cff80b58154ea051",
       "durationSeconds": 20,
       "exactFrameCount": 1200,
       "resolution": "1080x1920",
       "fps": 60,
+      "videoCodec": "h264",
+      "hasAudio": true,
+      "audioCodec": "aac",
       "audioRate": 44100,
       "audioChannels": "stereo",
-      "loudnessLufs": -19.7,
+      "loudnessLufs": -21.6,
+      "loudnessStatus": "MEASURED",
       "bitstreamVerified": true,
       "evaluation": {
         "simulationValidity": {
-          "valid": true,
-          "deterministic": true,
-          "escapedMarbles": 0,
-          "finishDecided": true
+          "valid": "PASS",
+          "deterministic": "PASS",
+          "escapedMarbles": {
+            "count": 0,
+            "status": "PASS"
+          },
+          "finishDecided": "PASS",
+          "winnerGroundTruth": "PASS",
+          "narrativeRoleGroundTruth": "PASS"
         },
         "metrics": {
           "totalSimulatedEvents": 1053,
@@ -241,15 +347,29 @@
         "visualReadability": {
           "resolution": "1080x1920",
           "fps": 60,
-          "contrastRatioVerified": true,
-          "fontLegibilityVerified": true
+          "contrastRatio": {
+            "measuredRatio": 16.15,
+            "standard": "WCAG_2.1_AAA",
+            "status": "PASS"
+          },
+          "fontLegibility": {
+            "status": "NOT_CHECKED",
+            "note": "Requires human visual evaluation / OCR rather than automated Boolean assumption"
+          }
         },
         "narrativeStructure": {
           "format": "FULL_MATCH",
           "openingHookDurationSeconds": 1.5,
-          "gameplayProgressionDurationSeconds": 12.52,
+          "gameplayProgressionDurationSeconds": 11.02,
           "celebrationDurationSeconds": 7.48,
-          "totalDurationSeconds": 20
+          "totalDurationSeconds": 20,
+          "reconciled": "PASS"
+        },
+        "approval": {
+          "machineScreening": "PASS",
+          "status": "APPROVED_FOR_PUBLISHING",
+          "approvalPolicy": "UNATTENDED_AUTOMATED_POLICY",
+          "humanReviewStatus": "BYPASSED_BY_CONFIG"
         },
         "status": "APPROVED",
         "rejectionReason": null
@@ -378,10 +498,10 @@
       "simId": "flagship_scenario_04",
       "archetypeId": "high_escalation",
       "narrativeRole": "HEAVY_SWARM_ESCALATION",
-      "seed": 101,
+      "seed": 707,
       "title": "🔥 HIGH MULTIPLIER: ×3 GAMBLE VS +14 TANK 🔥",
       "winner": "ADD",
-      "finishTime": 10.65,
+      "finishTime": 10.67,
       "finishMargin": null,
       "leadChanges": 0,
       "leftMetrics": {
@@ -403,7 +523,7 @@
       "archetypeId": "unexpected_turn",
       "narrativeRole": "RAZOR_THIN_UPSET",
       "seed": 1100,
-      "title": "🏆 FINAL TIER SHOWDOWN: 0.06s UPSET VICTORY 🏆",
+      "title": "🏆 FINAL TIER SHOWDOWN: 0.07s UPSET VICTORY 🏆",
       "winner": "MULTIPLY",
       "finishTime": 12.52,
       "finishMargin": 0.07,
