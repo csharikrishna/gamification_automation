@@ -15,7 +15,44 @@
       --accent-gold: #ffd700;
       --text: #f0f2f8;
       --text-muted: #8c93a8;
+      --header-bg: rgba(17, 22, 37, 0.85);
+      --phone-bg: #000;
+      --phone-border: #1a2030;
+      --tab-bg: #171d2d;
+      --tab-hover: #232b40;
+      --btn-bg: #1e2538;
+      --btn-hover: #28324a;
+      --meta-bg: #0b0e18;
+      --meta-text: #c9d1d9;
+      --pill-bg: #151a2d;
+      --pill-hover: #1f2742;
+      --input-bg: #0e121d;
     }
+
+    [data-theme="light"] {
+      --bg: #f4f6fb;
+      --card-bg: #ffffff;
+      --border: rgba(15, 23, 42, 0.12);
+      --accent: #9333ea;
+      --accent-green: #16a34a;
+      --accent-cyan: #0284c7;
+      --accent-gold: #d97706;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --header-bg: rgba(255, 255, 255, 0.92);
+      --phone-bg: #f8fafc;
+      --phone-border: #cbd5e1;
+      --tab-bg: #f1f5f9;
+      --tab-hover: #e2e8f0;
+      --btn-bg: #f1f5f9;
+      --btn-hover: #e2e8f0;
+      --meta-bg: #f8fafc;
+      --meta-text: #334155;
+      --pill-bg: #f1f5f9;
+      --pill-hover: #e2e8f0;
+      --input-bg: #ffffff;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: var(--bg);
@@ -24,6 +61,7 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      transition: background-color 0.2s ease, color 0.2s ease;
     }
     header {
       padding: 14px 28px;
@@ -31,7 +69,7 @@
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid var(--border);
-      background: rgba(17, 22, 37, 0.85);
+      background: var(--header-bg);
       backdrop-filter: blur(12px);
     }
     .logo {
@@ -82,10 +120,11 @@
       width: 100%;
       max-width: 430px;
       aspect-ratio: 9 / 16;
-      background: #000;
+      background: var(--phone-bg);
       border-radius: 36px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 0 8px #1a2030, 0 0 35px rgba(203, 114, 255, 0.15);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), 0 0 0 8px var(--phone-border), 0 0 35px rgba(203, 114, 255, 0.15);
       overflow: hidden;
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
     }
     canvas#simCanvas {
       width: 100%;
@@ -114,6 +153,7 @@
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 18px;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
     }
     .card-title {
       font-size: 14px;
@@ -133,7 +173,8 @@
       margin-bottom: 14px;
     }
     .mode-tab {
-      background: #171d2d;
+      background: var(--tab-bg);
+      color: var(--text);
       border: 1px solid var(--border);
       padding: 9px 6px;
       border-radius: 10px;
@@ -143,11 +184,11 @@
       cursor: pointer;
       transition: all 0.15s ease;
     }
-    .mode-tab:hover { background: #232b40; }
+    .mode-tab:hover { background: var(--tab-hover); }
     .mode-tab.active {
       background: linear-gradient(135deg, rgba(203,114,255,0.2), rgba(0,240,255,0.2));
       border-color: var(--accent-cyan);
-      color: #fff;
+      color: var(--text);
     }
     .btn-row {
       display: flex;
@@ -156,8 +197,8 @@
     }
     button {
       appearance: none;
-      background: #1e2538;
-      color: #fff;
+      background: var(--btn-bg);
+      color: var(--text);
       border: 1px solid var(--border);
       border-radius: 10px;
       padding: 9px 16px;
@@ -169,7 +210,7 @@
       transition: all 0.15s ease;
     }
     button:hover {
-      background: #28324a;
+      background: var(--btn-hover);
       border-color: rgba(255, 255, 255, 0.25);
       transform: translateY(-1px);
     }
@@ -184,13 +225,13 @@
       color: #0c1806;
     }
     .meta-box {
-      background: #0b0e18;
+      background: var(--meta-bg);
       border: 1px solid var(--border);
       border-radius: 10px;
       padding: 14px;
       font-family: monospace;
       font-size: 12px;
-      color: #c9d1d9;
+      color: var(--meta-text);
       line-height: 1.6;
       white-space: pre-wrap;
       position: relative;
@@ -203,7 +244,7 @@
       font-size: 11px;
     }
     .pill-btn {
-      background: #151a2d;
+      background: var(--pill-bg);
       border: 1px solid var(--border);
       color: var(--text-muted);
       border-radius: 20px;
@@ -214,13 +255,24 @@
       transition: all 0.2s;
     }
     .pill-btn:hover {
-      background: #1f2742;
-      color: #fff;
+      background: var(--pill-hover);
+      color: var(--text);
     }
     .pill-btn.active {
       background: rgba(203, 114, 255, 0.2);
       border-color: #cb72ff;
-      color: #fff;
+      color: var(--text);
+    }
+    [data-theme="light"] #mathCard {
+      background: #ffffff !important;
+      border-color: rgba(147, 51, 234, 0.3) !important;
+    }
+    [data-theme="light"] #speedSelect,
+    [data-theme="light"] #leftMathExpr,
+    [data-theme="light"] #rightMathExpr {
+      background: #ffffff !important;
+      color: #0f172a !important;
+      border-color: #cbd5e1 !important;
     }
     @media (max-width: 990px) {
       .main-layout { grid-template-columns: 1fr; }
@@ -235,6 +287,7 @@
       <span class="logo-badge">AI MULTI-SIM ENGINE</span>
     </div>
     <div style="display: flex; gap: 12px; align-items: center;">
+      <button id="themeToggleBtn" style="padding: 8px 14px; font-size: 12px; font-weight: 700; border-radius: 8px;">☀️ Light Mode</button>
       <button class="ai-btn" id="aiDirectorBtn">🤖 AI Director: Formulate New Game</button>
     </div>
   </header>
@@ -442,6 +495,28 @@
     let activeConfig = JSON.parse(JSON.stringify(PRESETS.multi_race));
     let game = GameManager.createGame(activeConfig);
 
+    let currentTheme = localStorage.getItem('burstpoint_theme') || 'dark';
+
+    function applyTheme(theme) {
+      currentTheme = theme;
+      localStorage.setItem('burstpoint_theme', theme);
+      document.documentElement.setAttribute('data-theme', theme);
+      const btn = document.getElementById('themeToggleBtn');
+      if (btn) {
+        btn.innerHTML = theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+      }
+      if (game && typeof game.setTheme === 'function') {
+        game.setTheme(theme);
+      }
+      if (!isRunning && game) {
+        game.render(ctx, { theme });
+      }
+    }
+
+    document.getElementById('themeToggleBtn').addEventListener('click', () => {
+      applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    });
+
     let isRunning = false;
     let playbackSpeed = 1.0;
     let lastTime = 0;
@@ -479,7 +554,7 @@
         }
       }
 
-      game.render(ctx);
+      game.render(ctx, { theme: currentTheme });
 
       if (isRunning) {
         animId = requestAnimationFrame(loop);
@@ -502,9 +577,13 @@
 
     function reset() {
       pause();
-      game = GameManager.createGame(activeConfig);
+      const configWithTheme = { ...activeConfig, theme: currentTheme };
+      game = GameManager.createGame(configWithTheme);
+      if (typeof game.setTheme === 'function') {
+        game.setTheme(currentTheme);
+      }
       processedEventCount = 0;
-      game.render(ctx);
+      game.render(ctx, { theme: currentTheme });
     }
 
     function updateUI() {
@@ -617,7 +696,7 @@ ${(meta.tags || []).join(', ')}`;
       pause();
       game.update(1 / 60);
       syncLiveAudio();
-      game.render(ctx);
+      game.render(ctx, { theme: currentTheme });
     });
 
     document.getElementById('soundBtn').addEventListener('click', (e) => {
@@ -687,6 +766,7 @@ ${(meta.tags || []).join(', ')}`;
       }, 250);
     });
 
+    applyTheme(currentTheme);
     updateUI();
     reset();
     play();

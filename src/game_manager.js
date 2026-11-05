@@ -97,11 +97,21 @@ class GameManager {
             result: this.getResult()
           };
         },
-        render(ctx) {
+        render(ctx, options = {}) {
           if (!this.renderer || this.renderer.ctx !== ctx) {
             this.renderer = new _CanvasRenderer(ctx.canvas);
           }
+          const theme = options.theme || this.theme || config.theme;
+          if (theme && typeof this.renderer.setTheme === 'function') {
+            this.renderer.setTheme(theme);
+          }
           this.renderer.render(engine);
+        },
+        setTheme(theme) {
+          this.theme = theme;
+          if (this.renderer && typeof this.renderer.setTheme === 'function') {
+            this.renderer.setTheme(theme);
+          }
         }
       };
     } else {

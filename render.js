@@ -12,7 +12,8 @@ function parseArgs() {
     startTime: 0,
     duration: null,
     noAudio: false,
-    quality: 0.82
+    quality: 0.82,
+    theme: 'dark'
   };
 
   for (let i = 0; i < args.length; i++) {
@@ -23,6 +24,7 @@ function parseArgs() {
     else if (arg === '--start' && args[i + 1]) options.startTime = parseFloat(args[++i]);
     else if (arg === '--duration' && args[i + 1]) options.duration = parseFloat(args[++i]);
     else if (arg === '--quality' && args[i + 1]) options.quality = parseFloat(args[++i]);
+    else if (arg === '--theme' && args[i + 1]) options.theme = args[++i];
     else if (arg === '--no-audio') options.noAudio = true;
   }
 

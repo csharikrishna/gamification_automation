@@ -203,14 +203,18 @@ async function renderVideo(options = {}) {
     await page.goto(`http://127.0.0.1:${serverPort}/index.html`, { waitUntil: 'domcontentloaded' });
 
     // Run deterministic frame generation in browser via GameManager
-    await page.evaluate(async (simConfig, jpegQuality, clipStartSec, clipDurationSec) => {
+    await page.evaluate(async (simConfig, jpegQuality, clipStartSec, clipDurationSec, renderTheme) => {
       const canvas = document.createElement('canvas');
       canvas.width = 1080;
       canvas.height = 1920;
       const ctx = canvas.getContext('2d');
       document.body.appendChild(canvas);
 
-      const game = GameManager.createGame(simConfig);
+      const simConfigWithTheme = { ...simConfig, theme: renderTheme || simConfig.theme || 'dark' };
+      const game = GameManager.createGame(simConfigWithTheme);
+      if (typeof game.setTheme === 'function') {
+        game.setTheme(simConfigWithTheme.theme);
+      }
 
       const fps = simConfig.fps || 60;
       const dt = 1 / fps;
@@ -220,7 +224,7 @@ async function renderVideo(options = {}) {
       for (let f = 0; f < endFrame; f++) {
         game.update(dt);
         if (f >= startFrame) {
-          game.render(ctx);
+          game.render(ctx, { theme: simConfigWithTheme.theme });
 
           const blob = await new Promise(resolve => {
             canvas.toBlob(resolve, 'image/jpeg', jpegQuality || 0.82);
@@ -238,7 +242,7 @@ async function renderVideo(options = {}) {
           winner: game.winner || (typeof game.getResult === 'function' ? game.getResult()?.winner : null)
         })
       });
-    }, config, options.quality || 0.82, clipStartTime, clipDuration);
+    }, config, options.quality || 0.82, clipStartTime, clipDuration, options.theme || config.theme || 'dark');
 
     await finishPromise;
     await ffmpegVideoClosed;

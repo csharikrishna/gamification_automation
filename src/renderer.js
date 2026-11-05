@@ -104,6 +104,217 @@ class VideoDirector {
   }
 }
 
+const THEMES = {
+  dark: {
+    name: 'dark',
+    bg: {
+      gradStops: ['#070a13', '#0a0e1a', '#080c16', '#04060c'],
+      grid: 'rgba(255, 255, 255, 0.022)',
+      ambientLeft: 'rgba(192, 132, 252, 0.08)',
+      ambientRight: 'rgba(74, 222, 128, 0.08)'
+    },
+    header: {
+      gradStops: ['#060810', '#0a0e1a', '#0d1322'],
+      border: 'rgba(255, 255, 255, 0.10)',
+      barBg: 'rgba(14, 19, 32, 0.94)',
+      barBorder: 'rgba(255, 255, 255, 0.14)',
+      titleColor: '#ffffff',
+      subtitleColor: '#ffd700',
+      badgeBg: 'rgba(16, 22, 38, 0.92)',
+      badgeBorder: 'rgba(255, 255, 255, 0.18)',
+      pipActive: '#ffd700',
+      pipInactive: 'rgba(255, 255, 255, 0.20)'
+    },
+    text: {
+      primary: '#ffffff',
+      secondary: 'rgba(255, 255, 255, 0.70)',
+      muted: 'rgba(255, 255, 255, 0.45)',
+      gold: '#ffd700'
+    },
+    scoreboard: {
+      cardBg: 'rgba(14, 19, 32, 0.92)',
+      cardBgWinner: 'rgba(255, 215, 0, 0.12)',
+      cardBorder: 'rgba(255, 255, 255, 0.12)',
+      numberColor: '#ffffff',
+      labelColor: 'rgba(255, 255, 255, 0.72)',
+      metaPillBg: 'rgba(255, 255, 255, 0.06)',
+      metaPillText: 'rgba(255, 255, 255, 0.65)',
+      statusActive: '#38bdf8',
+      crownBg: '#ffd700',
+      crownText: '#0a0e1a'
+    },
+    lanes: {
+      left: {
+        name: 'PURPLE',
+        color: '#c084fc',
+        accentColor: '#e879f9',
+        darkBase: '#3b0764',
+        trackBg: 'rgba(11, 14, 24, 0.85)',
+        trackBgLeader: 'rgba(16, 21, 36, 0.94)',
+        borderColor: 'rgba(192, 132, 252, 0.35)',
+        glowColor: 'rgba(192, 132, 252, 0.20)'
+      },
+      right: {
+        name: 'GREEN',
+        color: '#4ade80',
+        accentColor: '#86efac',
+        darkBase: '#052e16',
+        trackBg: 'rgba(11, 14, 24, 0.85)',
+        trackBgLeader: 'rgba(16, 21, 36, 0.94)',
+        borderColor: 'rgba(74, 222, 128, 0.35)',
+        glowColor: 'rgba(74, 222, 128, 0.20)'
+      }
+    },
+    pegs: {
+      fillLight: '#ffffff',
+      fillMid: '#94a3b8',
+      fillDark: '#475569',
+      shadow: 'rgba(0, 0, 0, 0.45)',
+      rim: 'rgba(255, 255, 255, 0.40)'
+    },
+    tiles: {
+      pylonBg: '#151b2b',
+      pylonBorder: 'rgba(255, 255, 255, 0.20)',
+      bodyGrad: ['#0b101c', '#121828', '#090d16'],
+      gaugeTrack: 'rgba(4, 7, 14, 0.85)',
+      gaugeBorder: 'rgba(255, 255, 255, 0.12)',
+      labelColor: '#ffffff',
+      labelShadow: 'rgba(0, 0, 0, 0.95)',
+      borderDefault: 'rgba(255, 255, 255, 0.25)'
+    },
+    balls: {
+      shadow: 'rgba(0, 0, 0, 0.45)',
+      contour: '#05070e',
+      specular: 'rgba(255, 255, 255, 0.92)',
+      fresnel: 'rgba(255, 255, 255, 0.25)'
+    },
+    reservoir: {
+      trayBg: 'rgba(255, 255, 255, 0.03)',
+      trayBorder: 'rgba(255, 255, 255, 0.16)',
+      finishLine: 'rgba(255, 255, 255, 0.35)',
+      progressBg: 'rgba(255, 255, 255, 0.08)'
+    },
+    celebration: {
+      cardBg: 'rgba(11, 16, 28, 0.94)',
+      cardBorder: 'rgba(255, 255, 255, 0.16)',
+      cardShadow: 'rgba(0, 0, 0, 0.75)',
+      headline: 'rgba(255, 255, 255, 0.70)',
+      divider: 'rgba(255, 255, 255, 0.08)',
+      statNumber: '#ffffff',
+      statLabel: 'rgba(255, 255, 255, 0.55)',
+      vsBg: 'rgba(255, 255, 255, 0.04)',
+      vsBorder: 'rgba(255, 255, 255, 0.12)',
+      vsText: 'rgba(255, 255, 255, 0.50)',
+      gold: '#ffd700'
+    },
+    watermark: 'rgba(255, 255, 255, 0.22)'
+  },
+  light: {
+    name: 'light',
+    bg: {
+      gradStops: ['#f8fafc', '#f1f5f9', '#e2e8f0', '#f1f5f9'],
+      grid: 'rgba(0, 0, 0, 0.035)',
+      ambientLeft: 'rgba(147, 51, 234, 0.04)',
+      ambientRight: 'rgba(22, 163, 74, 0.04)'
+    },
+    header: {
+      gradStops: ['#ffffff', '#f8fafc', '#edf2f7'],
+      border: 'rgba(0, 0, 0, 0.10)',
+      barBg: 'rgba(255, 255, 255, 0.95)',
+      barBorder: 'rgba(0, 0, 0, 0.12)',
+      titleColor: '#0f172a',
+      subtitleColor: '#b45309',
+      badgeBg: 'rgba(241, 245, 249, 0.95)',
+      badgeBorder: 'rgba(0, 0, 0, 0.15)',
+      pipActive: '#d97706',
+      pipInactive: 'rgba(0, 0, 0, 0.16)'
+    },
+    text: {
+      primary: '#0f172a',
+      secondary: 'rgba(51, 65, 85, 0.80)',
+      muted: 'rgba(100, 116, 139, 0.60)',
+      gold: '#d97706'
+    },
+    scoreboard: {
+      cardBg: 'rgba(255, 255, 255, 0.95)',
+      cardBgWinner: 'rgba(254, 243, 199, 0.85)',
+      cardBorder: 'rgba(0, 0, 0, 0.12)',
+      numberColor: '#0f172a',
+      labelColor: 'rgba(51, 65, 85, 0.85)',
+      metaPillBg: 'rgba(0, 0, 0, 0.05)',
+      metaPillText: 'rgba(71, 85, 105, 0.85)',
+      statusActive: '#0284c7',
+      crownBg: '#d97706',
+      crownText: '#ffffff'
+    },
+    lanes: {
+      left: {
+        name: 'PURPLE',
+        color: '#7e22ce', // Deep violet for AAA contrast on light
+        accentColor: '#9333ea',
+        darkBase: '#581c87',
+        trackBg: 'rgba(255, 255, 255, 0.90)',
+        trackBgLeader: 'rgba(250, 245, 255, 0.98)',
+        borderColor: 'rgba(126, 34, 206, 0.40)',
+        glowColor: 'rgba(126, 34, 206, 0.15)'
+      },
+      right: {
+        name: 'GREEN',
+        color: '#15803d', // Deep emerald green for AAA contrast on light
+        accentColor: '#16a34a',
+        darkBase: '#14532d',
+        trackBg: 'rgba(255, 255, 255, 0.90)',
+        trackBgLeader: 'rgba(240, 253, 244, 0.98)',
+        borderColor: 'rgba(21, 128, 61, 0.40)',
+        glowColor: 'rgba(21, 128, 61, 0.15)'
+      }
+    },
+    pegs: {
+      fillLight: '#64748b',
+      fillMid: '#475569',
+      fillDark: '#1e293b',
+      shadow: 'rgba(0, 0, 0, 0.15)',
+      rim: 'rgba(0, 0, 0, 0.25)'
+    },
+    tiles: {
+      pylonBg: '#e2e8f0',
+      pylonBorder: 'rgba(0, 0, 0, 0.15)',
+      bodyGrad: ['#ffffff', '#f8fafc', '#edf2f7'],
+      gaugeTrack: 'rgba(226, 232, 240, 0.95)',
+      gaugeBorder: 'rgba(0, 0, 0, 0.15)',
+      labelColor: '#0f172a',
+      labelShadow: 'rgba(255, 255, 255, 0.90)',
+      borderDefault: 'rgba(0, 0, 0, 0.20)'
+    },
+    balls: {
+      shadow: 'rgba(0, 0, 0, 0.25)',
+      contour: 'rgba(15, 23, 42, 0.35)',
+      specular: 'rgba(255, 255, 255, 0.95)',
+      fresnel: 'rgba(255, 255, 255, 0.35)'
+    },
+    reservoir: {
+      trayBg: 'rgba(0, 0, 0, 0.03)',
+      trayBorder: 'rgba(0, 0, 0, 0.18)',
+      finishLine: 'rgba(0, 0, 0, 0.35)',
+      progressBg: 'rgba(0, 0, 0, 0.08)'
+    },
+    celebration: {
+      cardBg: 'rgba(255, 255, 255, 0.96)',
+      cardBorder: 'rgba(0, 0, 0, 0.14)',
+      cardShadow: 'rgba(0, 0, 0, 0.25)',
+      headline: 'rgba(51, 65, 85, 0.85)',
+      divider: 'rgba(0, 0, 0, 0.08)',
+      statNumber: '#0f172a',
+      statLabel: 'rgba(71, 85, 105, 0.75)',
+      vsBg: 'rgba(0, 0, 0, 0.05)',
+      vsBorder: 'rgba(0, 0, 0, 0.12)',
+      vsText: 'rgba(71, 85, 105, 0.85)',
+      gold: '#b45309'
+    },
+    watermark: 'rgba(15, 23, 42, 0.35)'
+  }
+};
+
 class CanvasRenderer {
   constructor(canvas) {
     this.canvas = canvas;
@@ -111,12 +322,25 @@ class CanvasRenderer {
     this.width = canvas.width || 1080;
     this.height = canvas.height || 1920;
     this.director = new VideoDirector();
+    this.theme = 'dark';
+  }
+
+  setTheme(themeName) {
+    this.theme = (themeName === 'light') ? 'light' : 'dark';
+  }
+
+  getThemeTokens() {
+    return THEMES[this.theme] || THEMES.dark;
   }
 
   render(engine) {
     const ctx = this.ctx;
     const w = this.width;
     const h = this.height;
+
+    if (engine.config && engine.config.theme) {
+      this.setTheme(engine.config.theme);
+    }
 
     // Update director logic
     this.director.update(engine);
@@ -173,35 +397,33 @@ class CanvasRenderer {
     const ctx = this.ctx;
     const w = this.width;
     const h = this.height;
+    const tok = this.getThemeTokens();
 
-    // Rich dark tournament chassis background
+    // Rich tournament chassis background
     const bgGrad = ctx.createLinearGradient(0, 0, 0, h);
-    bgGrad.addColorStop(0, '#060810');
-    bgGrad.addColorStop(0.35, '#0a0d18');
-    bgGrad.addColorStop(0.7, '#070a14');
-    bgGrad.addColorStop(1, '#04060c');
+    bgGrad.addColorStop(0, tok.bg.gradStops[0]);
+    bgGrad.addColorStop(0.35, tok.bg.gradStops[1]);
+    bgGrad.addColorStop(0.7, tok.bg.gradStops[2]);
+    bgGrad.addColorStop(1, tok.bg.gradStops[3]);
     ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, w, h);
 
-    const left = engine.lanes.left;
-    const right = engine.lanes.right;
-
-    // Left ambient glow (restrained)
-    const leftGlow = ctx.createRadialGradient(285, 950, 60, 285, 950, 480);
-    leftGlow.addColorStop(0, left.glowColor || 'rgba(168,85,247,0.22)');
+    // Left ambient floor glow (restrained)
+    const leftGlow = ctx.createRadialGradient(285, 950, 40, 285, 950, 380);
+    leftGlow.addColorStop(0, tok.bg.ambientLeft);
     leftGlow.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = leftGlow;
     ctx.fillRect(0, 340, 540, 1200);
 
-    // Right ambient glow (restrained)
-    const rightGlow = ctx.createRadialGradient(795, 950, 60, 795, 950, 480);
-    rightGlow.addColorStop(0, right.glowColor || 'rgba(34,197,94,0.22)');
+    // Right ambient floor glow (restrained)
+    const rightGlow = ctx.createRadialGradient(795, 950, 40, 795, 950, 380);
+    rightGlow.addColorStop(0, tok.bg.ambientRight);
     rightGlow.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = rightGlow;
     ctx.fillRect(540, 340, 540, 1200);
 
     // Micro grid lines for tournament arena texture
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.018)';
+    ctx.strokeStyle = tok.bg.grid;
     ctx.lineWidth = 1;
     for (let x = 60; x < w; x += 60) {
       ctx.beginPath();
@@ -218,87 +440,78 @@ class CanvasRenderer {
   drawHeader(engine) {
     const ctx = this.ctx;
     const w = this.width;
+    const tok = this.getThemeTokens();
     const left = engine.lanes.left;
     const right = engine.lanes.right;
 
     // Fixed Broadcast Header Chassis Backing
     const headerGrad = ctx.createLinearGradient(0, 0, 0, 312);
-    headerGrad.addColorStop(0, '#060810');
-    headerGrad.addColorStop(0.85, '#090d18');
-    headerGrad.addColorStop(1, '#0c1120');
+    headerGrad.addColorStop(0, tok.header.gradStops[0]);
+    headerGrad.addColorStop(0.75, tok.header.gradStops[1]);
+    headerGrad.addColorStop(1, tok.header.gradStops[2]);
     ctx.fillStyle = headerGrad;
     ctx.fillRect(0, 0, w, 312);
 
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.10)';
+    ctx.strokeStyle = tok.header.border;
     ctx.lineWidth = 1.0;
     ctx.beginPath();
     ctx.moveTo(30, 312);
     ctx.lineTo(w - 30, 312);
     ctx.stroke();
 
-    // 1. Top Broadcast Hook Banner (High mobile contrast & large bold typography)
+    // 1. Top Broadcast Hook Banner
     const isUnderdogChallenge = engine.config.title?.includes('3 BALLS VS 12');
     const headerTitle = engine.config.title || '3 BALLS VS 12 — CAN THE UNDERDOG WIN?';
     const headerSubtitle = engine.config.subtitle || 'MULTIPLY (×3) VS ADD (+2) · RACE TO THE FINISH';
 
     ctx.save();
-
-    // Hook Container Bar
     const barW = w - 60;
-    const barH = 100;
+    const barH = 88;
     const barX = 30;
-    const barY = 24;
+    const barY = 20;
 
     ctx.beginPath();
-    ctx.roundRect(barX, barY, barW, barH, 22);
-    ctx.fillStyle = 'rgba(14, 18, 30, 0.94)';
+    ctx.roundRect(barX, barY, barW, barH, 20);
+    ctx.fillStyle = tok.header.barBg;
     ctx.fill();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.16)';
-    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = tok.header.barBorder;
+    ctx.lineWidth = 1.2;
     ctx.stroke();
 
     const textCenter = w / 2;
 
     if (isUnderdogChallenge) {
-      // High-impact multi-colored title (Symmetrically anchored around textCenter)
       ctx.textBaseline = 'middle';
-
-      // Center "VS"
-      ctx.font = '800 22px "Inter", "Segoe UI", sans-serif';
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.50)';
-      ctx.textAlign = 'center';
-      ctx.fillText('VS', textCenter, barY + 36);
-
-      // Left team "3 BALLS" (right-aligned to leave clean gap before VS)
-      ctx.font = '900 36px "Inter", "Segoe UI", sans-serif';
-      ctx.fillStyle = left.color;
-      ctx.textAlign = 'right';
-      ctx.fillText('3 BALLS', textCenter - 26, barY + 36);
-
-      // Right team "12 BALLS" (left-aligned to leave clean gap after VS)
-      ctx.font = '900 36px "Inter", "Segoe UI", sans-serif';
-      ctx.fillStyle = right.color;
-      ctx.textAlign = 'left';
-      ctx.fillText('12 BALLS', textCenter + 26, barY + 36);
-
-      // Subtitle
       ctx.font = '800 20px "Inter", "Segoe UI", sans-serif';
-      ctx.fillStyle = '#ffd700';
+      ctx.fillStyle = tok.text.secondary;
       ctx.textAlign = 'center';
-      ctx.fillText('CAN THE UNDERDOG WIN?', textCenter, barY + 74);
+      ctx.fillText('VS', textCenter, barY + 32);
+
+      ctx.font = '900 32px "Inter", "Segoe UI", sans-serif';
+      ctx.fillStyle = tok.lanes.left.color;
+      ctx.textAlign = 'right';
+      ctx.fillText('3 BALLS', textCenter - 28, barY + 32);
+
+      ctx.font = '900 32px "Inter", "Segoe UI", sans-serif';
+      ctx.fillStyle = tok.lanes.right.color;
+      ctx.textAlign = 'left';
+      ctx.fillText('12 BALLS', textCenter + 28, barY + 32);
+
+      ctx.font = '800 17px "Inter", "Segoe UI", sans-serif';
+      ctx.fillStyle = tok.header.subtitleColor;
+      ctx.textAlign = 'center';
+      ctx.fillText('CAN THE UNDERDOG WIN?', textCenter, barY + 65);
     } else {
-      // Dynamic fallback for custom titles
-      ctx.font = '900 30px "Inter", "Segoe UI", sans-serif';
-      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 28px "Inter", "Segoe UI", sans-serif';
+      ctx.fillStyle = tok.header.titleColor;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(headerTitle, textCenter, barY + 36);
+      ctx.fillText(headerTitle, textCenter, barY + 32);
 
-      ctx.font = '700 18px "Inter", "Segoe UI", sans-serif';
-      ctx.fillStyle = '#ffd700';
-      ctx.fillText(headerSubtitle, textCenter, barY + 74);
+      ctx.font = '700 16px "Inter", "Segoe UI", sans-serif';
+      ctx.fillStyle = tok.header.subtitleColor;
+      ctx.fillText(headerSubtitle, textCenter, barY + 65);
     }
-
     ctx.restore();
 
     // 2. Broadcast Team Scorecards
@@ -306,8 +519,9 @@ class CanvasRenderer {
     const isRightLeader = this.checkRaceLeader(right, left);
     const isLeftWinner = engine.winner && engine.winner.side === 'left';
     const isRightWinner = engine.winner && engine.winner.side === 'right';
-    this.drawScoreCard(left, 285, 210, isLeftLeader, isLeftWinner);
-    this.drawScoreCard(right, 795, 210, isRightLeader, isRightWinner);
+
+    this.drawScoreCard(left, 285, 216, isLeftLeader, isLeftWinner, engine);
+    this.drawScoreCard(right, 795, 216, isRightLeader, isRightWinner, engine);
 
     // 3. Central Stage Indicator Badge
     const leadingTier = Math.max(left.currentTier, right.currentTier);
@@ -315,105 +529,147 @@ class CanvasRenderer {
 
     ctx.save();
     ctx.beginPath();
-    ctx.roundRect(w / 2 - 75, 192, 150, 42, 21);
-    ctx.fillStyle = 'rgba(16, 22, 36, 0.90)';
+    ctx.roundRect(w / 2 - 70, 196, 140, 38, 19);
+    ctx.fillStyle = tok.header.badgeBg;
     ctx.fill();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
-    ctx.lineWidth = 1.4;
+    ctx.strokeStyle = tok.header.badgeBorder;
+    ctx.lineWidth = 1.2;
     ctx.stroke();
 
-    ctx.font = '900 16px "Inter", sans-serif';
+    ctx.font = '900 14px "Inter", sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillStyle = '#ffffff';
-    ctx.fillText(`TIER ${currentN} / 6`, w / 2, 213);
+    ctx.fillStyle = tok.header.titleColor;
+    ctx.fillText(`TIER ${currentN} / 6`, w / 2, 215);
 
     // Progress pips underneath badge
-    const pipY = 246;
+    const pipY = 248;
     const pipSpacing = 16;
     const startPipX = w / 2 - (5 * pipSpacing) / 2;
     for (let p = 0; p < 6; p++) {
       ctx.beginPath();
       ctx.arc(startPipX + p * pipSpacing, pipY, 4, 0, Math.PI * 2);
-      ctx.fillStyle = p < currentN ? '#ffd700' : 'rgba(255, 255, 255, 0.2)';
+      ctx.fillStyle = p < currentN ? tok.header.pipActive : tok.header.pipInactive;
       ctx.fill();
     }
-
     ctx.restore();
   }
 
-  drawScoreCard(lane, centerX, centerY, isLeader = false, isWinner = false) {
+  drawScoreCard(lane, centerX, centerY, isLeader = false, isWinner = false, engine = null) {
     const ctx = this.ctx;
+    const tok = this.getThemeTokens();
+    const laneTok = tok.lanes[lane.side] || tok.lanes.left;
     ctx.save();
 
-    // If race winner or leader, draw glowing crown badge cleanly above scorecard
-    if (isWinner) {
-      ctx.beginPath();
-      ctx.roundRect(centerX - 68, centerY - 72, 136, 22, 11);
-      ctx.fillStyle = '#ffd700';
-      ctx.shadowColor = '#ffd700';
-      ctx.shadowBlur = 12;
-      ctx.fill();
-      ctx.fillStyle = '#0b0e18';
-      ctx.font = '900 11px "Inter", "Segoe UI", sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('🏆 WINNER 🏆', centerX, centerY - 61);
-    } else if (isLeader) {
-      ctx.beginPath();
-      ctx.roundRect(centerX - 55, centerY - 72, 110, 22, 11);
-      ctx.fillStyle = '#ffd700';
-      ctx.shadowColor = '#ffd700';
-      ctx.shadowBlur = 8;
-      ctx.fill();
-      ctx.fillStyle = '#0b0e18';
-      ctx.font = '900 11px "Inter", "Segoe UI", sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('👑 LEADER', centerX, centerY - 61);
-    }
+    const cardW = 280;
+    const cardH = 160;
+    const cardX = centerX - cardW / 2;
+    const cardY = centerY - cardH / 2;
 
-    // Team Identity Tag (e.g. PURPLE · ×2 MULTIPLY or GREEN · +8 ADD)
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-
+    // Card background & subtle border
     ctx.beginPath();
-    ctx.roundRect(centerX - 130, centerY - 42, 260, 32, 16);
-    ctx.fillStyle = isWinner ? 'rgba(255, 215, 0, 0.12)' : 'rgba(255, 255, 255, 0.05)';
+    ctx.roundRect(cardX, cardY, cardW, cardH, 16);
+    ctx.fillStyle = isWinner ? tok.scoreboard.cardBgWinner : tok.scoreboard.cardBg;
     ctx.fill();
-    ctx.strokeStyle = isWinner ? '#ffd700' : lane.color;
-    ctx.lineWidth = isWinner ? 2.0 : 1.2;
+
+    ctx.strokeStyle = isWinner ? tok.celebration.gold : (isLeader ? laneTok.color : tok.scoreboard.cardBorder);
+    ctx.lineWidth = (isWinner || isLeader) ? 2.0 : 1.0;
+    if (isLeader || isWinner) {
+      ctx.shadowColor = isWinner ? tok.celebration.gold : laneTok.color;
+      ctx.shadowBlur = 10;
+    }
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // 1. Top row: Team Rule Pill (left) + Starting Baseline Headstart Pill (right)
+    const teamName = lane.side === 'left' ? 'PURPLE' : 'GREEN';
+    const ruleLabel = lane.ruleLabel || (lane.side === 'left' ? '×2' : '+8');
+    const startCount = lane.initialBalls || (lane.side === 'left' ? 3 : 12);
+
+    // Team Pill
+    ctx.beginPath();
+    ctx.roundRect(cardX + 12, cardY + 12, 140, 24, 12);
+    ctx.fillStyle = isWinner ? 'rgba(255, 215, 0, 0.15)' : (this.theme === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)');
+    ctx.fill();
+    ctx.strokeStyle = isWinner ? tok.celebration.gold : laneTok.color;
+    ctx.lineWidth = 1.0;
     ctx.stroke();
 
-    const teamIdentity = lane.side === 'left' ? 'PURPLE' : 'GREEN';
-    const cleanRule = lane.ruleLabel.includes(teamIdentity) ? lane.ruleLabel : `${teamIdentity} · ${lane.ruleLabel}`;
+    ctx.font = '800 12px "Inter", "Segoe UI", sans-serif';
+    ctx.fillStyle = laneTok.color;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(`${teamName} · ${ruleLabel}`, cardX + 12 + 70, cardY + 24);
 
-    ctx.font = '800 15px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = lane.color;
-    ctx.fillText(cleanRule, centerX, centerY - 26);
+    // Start Pill (distinguishes baseline starting balls from current swarm)
+    const startPillX = cardX + cardW - 12 - 96;
+    ctx.beginPath();
+    ctx.roundRect(startPillX, cardY + 12, 96, 24, 12);
+    ctx.fillStyle = tok.scoreboard.metaPillBg;
+    ctx.fill();
+    ctx.strokeStyle = tok.scoreboard.cardBorder;
+    ctx.lineWidth = 0.8;
+    ctx.stroke();
 
-    // Big Crisp Numeric Score with Spring-Scale Punch
+    ctx.font = '700 11px "Inter", "Segoe UI", sans-serif';
+    ctx.fillStyle = tok.scoreboard.metaPillText;
+    ctx.fillText(`START: ${startCount}`, startPillX + 48, cardY + 24);
+
+    // 2. Middle row: Big Crisp Numeric Current Score with punch scale
     const scoreVal = Math.round(lane.displayScore).toLocaleString();
     ctx.save();
-    ctx.translate(centerX, centerY + 36);
+    ctx.translate(centerX, cardY + 76);
     ctx.scale(lane.scoreScale, lane.scoreScale);
 
-    ctx.font = '950 62px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = '#ffffff';
-    ctx.shadowColor = lane.color;
-    ctx.shadowBlur = 16;
+    ctx.font = '950 50px "Inter", "Segoe UI", sans-serif';
+    ctx.fillStyle = tok.scoreboard.numberColor;
+    if (isWinner || isLeader) {
+      ctx.shadowColor = laneTok.color;
+      ctx.shadowBlur = 10;
+    }
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
     ctx.fillText(scoreVal, 0, 0);
     ctx.restore();
 
-    // Physical marble count badge: explicitly distinguishes actual balls in arena vs score
+    // 3. Bottom row: Active Marbles in Arena (left) + Race Placement / Progress (right)
     const activeMarbles = lane.balls ? lane.balls.length : 0;
-    ctx.font = '800 13px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
-    if (Math.round(lane.exactScore) !== activeMarbles) {
-      ctx.fillText(`${activeMarbles} MARBLES IN ARENA (×${(lane.exactScore / activeMarbles).toFixed(1)} PWR)`, centerX, centerY + 78);
+    const bottomPillY = cardY + cardH - 32;
+
+    // Active marbles tag
+    ctx.font = '700 12px "Inter", "Segoe UI", sans-serif';
+    ctx.fillStyle = tok.scoreboard.labelColor;
+    ctx.textAlign = 'left';
+    ctx.fillText(`${activeMarbles} IN ARENA`, cardX + 16, bottomPillY + 10);
+
+    // Race Placement / Tier Progress Tag (right aligned)
+    // NEVER allow score to contradict race winner!
+    let statusText = '';
+    let statusColor = tok.scoreboard.statusActive;
+
+    if (engine && engine.winner) {
+      if (isWinner) {
+        statusText = '🏆 1st PLACE';
+        statusColor = tok.celebration.gold;
+      } else {
+        statusText = '2nd PLACE';
+        statusColor = tok.scoreboard.metaPillText;
+      }
+    } else if (lane.reachedBottom) {
+      statusText = '🏁 FINISHED';
+      statusColor = tok.celebration.gold;
+    } else if (isLeader) {
+      statusText = `⚡ LEADER · T${lane.currentTier + 1}`;
+      statusColor = tok.celebration.gold;
     } else {
-      ctx.fillText(`${activeMarbles} MARBLES IN ARENA`, centerX, centerY + 78);
+      statusText = `TIER ${lane.currentTier + 1}/6`;
+      statusColor = tok.scoreboard.metaPillText;
     }
+
+    ctx.font = '800 12px "Inter", "Segoe UI", sans-serif';
+    ctx.fillStyle = statusColor;
+    ctx.textAlign = 'right';
+    ctx.fillText(statusText, cardX + cardW - 16, bottomPillY + 10);
 
     ctx.restore();
   }
@@ -423,11 +679,13 @@ class CanvasRenderer {
     const topY = engine.topY;
     const bottomY = engine.bottomY;
     const trackH = bottomY - topY;
+    const tok = this.getThemeTokens();
 
     for (const side of ['left', 'right']) {
       const lane = engine.lanes[side];
       const otherSide = side === 'left' ? 'right' : 'left';
       const otherLane = engine.lanes[otherSide];
+      const laneTok = tok.lanes[side] || tok.lanes.left;
       const isLeader = this.checkRaceLeader(lane, otherLane);
       const isWinner = engine.winner && engine.winner.side === side;
 
@@ -436,7 +694,7 @@ class CanvasRenderer {
       // Solid tournament arena chassis with dynamic leadership shading
       ctx.beginPath();
       ctx.roundRect(lane.minX, topY, lane.width, trackH, 20);
-      ctx.fillStyle = isLeader ? 'rgba(16, 21, 35, 0.94)' : 'rgba(11, 14, 24, 0.82)';
+      ctx.fillStyle = isLeader ? laneTok.trackBgLeader : laneTok.trackBg;
       ctx.fill();
 
       // Active Chamber Spotlight: guide visual attention directly to current breakthrough zone
@@ -447,26 +705,26 @@ class CanvasRenderer {
         const chamberY = activeTileY - stageHeight;
         const spotlightGrad = ctx.createLinearGradient(lane.minX, chamberY, lane.minX, activeTileY);
         spotlightGrad.addColorStop(0, 'rgba(0, 0, 0, 0)');
-        spotlightGrad.addColorStop(0.5, isLeader ? (lane.side === 'left' ? 'rgba(203,114,255,0.08)' : 'rgba(121,239,67,0.08)') : 'rgba(255, 255, 255, 0.02)');
-        spotlightGrad.addColorStop(1, isLeader ? (lane.side === 'left' ? 'rgba(203,114,255,0.15)' : 'rgba(121,239,67,0.15)') : 'rgba(255, 255, 255, 0.04)');
+        spotlightGrad.addColorStop(0.5, isLeader ? laneTok.glowColor : (this.theme === 'dark' ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 0, 0, 0.015)'));
+        spotlightGrad.addColorStop(1, isLeader ? laneTok.glowColor : (this.theme === 'dark' ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.03)'));
         ctx.fillStyle = spotlightGrad;
         ctx.fillRect(lane.minX + 4, chamberY, lane.width - 8, stageHeight);
       }
 
       // Active lane emphasis: illuminated border on active/leading lane
       if (isWinner) {
-        ctx.strokeStyle = '#ffd700';
-        ctx.lineWidth = 3.5;
-        ctx.shadowColor = '#ffd700';
-        ctx.shadowBlur = 16;
-      } else if (isLeader || lane.scoreScale > 1.08) {
-        ctx.strokeStyle = lane.color;
-        ctx.lineWidth = 2.4;
-        ctx.shadowColor = lane.color;
+        ctx.strokeStyle = tok.celebration.gold;
+        ctx.lineWidth = 3.0;
+        ctx.shadowColor = tok.celebration.gold;
         ctx.shadowBlur = 12;
+      } else if (isLeader || lane.scoreScale > 1.08) {
+        ctx.strokeStyle = laneTok.color;
+        ctx.lineWidth = 2.2;
+        ctx.shadowColor = laneTok.color;
+        ctx.shadowBlur = 8;
       } else {
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
-        ctx.lineWidth = 1.6;
+        ctx.strokeStyle = laneTok.borderColor;
+        ctx.lineWidth = 1.4;
         ctx.shadowBlur = 0;
       }
       ctx.stroke();
@@ -474,12 +732,12 @@ class CanvasRenderer {
 
       // Top accent line in team color
       ctx.beginPath();
-      ctx.roundRect(lane.minX + 2, topY + 2, lane.width - 4, 6, 3);
-      ctx.fillStyle = isWinner ? '#ffd700' : lane.color;
+      ctx.roundRect(lane.minX + 2, topY + 2, lane.width - 4, 5, 2.5);
+      ctx.fillStyle = isWinner ? tok.celebration.gold : laneTok.color;
       ctx.fill();
 
       // Subtle horizontal chamber guides
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.035)';
+      ctx.strokeStyle = this.theme === 'dark' ? 'rgba(255, 255, 255, 0.035)' : 'rgba(0, 0, 0, 0.04)';
       ctx.lineWidth = 1;
       for (let s = 1; s <= numStages; s++) {
         const lineY = topY + s * stageHeight;
@@ -972,9 +1230,11 @@ class CanvasRenderer {
   drawBalls(engine) {
     const ctx = this.ctx;
     const t = engine.simTime;
+    const tok = this.getThemeTokens();
 
     for (const side of ['left', 'right']) {
       const lane = engine.lanes[side];
+      const laneTok = tok.lanes[side] || tok.lanes.left;
 
       for (let i = 0; i < lane.balls.length; i++) {
         const b = lane.balls[i];
@@ -999,14 +1259,14 @@ class CanvasRenderer {
         // 1. Contact shadow under each ball
         ctx.beginPath();
         ctx.arc(b.x + 1.5, b.y + 2, r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
+        ctx.fillStyle = tok.balls.shadow;
         ctx.fill();
 
         // 2. High-Density Silhouette Contrast Rim
-        // Crisp 1.4px dark contour guarantees each individual marble remains sharply separated in dense swarms
+        // Guarantees each individual marble remains sharply separated in dense swarms
         ctx.beginPath();
         ctx.arc(b.x, b.y, r + 0.9, 0, Math.PI * 2);
-        ctx.fillStyle = '#05070e';
+        ctx.fillStyle = tok.balls.contour;
         ctx.fill();
 
         // 3. 3D Spherical Shading with Tactile Glass Depth
@@ -1025,18 +1285,18 @@ class CanvasRenderer {
           // Radiant energy gleam when newly multiplied by gate
           ballGrad.addColorStop(0, '#ffffff');
           ballGrad.addColorStop(0.35, '#ffffff');
-          ballGrad.addColorStop(0.80, lane.accentColor);
-          ballGrad.addColorStop(1, lane.color);
+          ballGrad.addColorStop(0.80, laneTok.accentColor);
+          ballGrad.addColorStop(1, laneTok.color);
         } else {
           ballGrad.addColorStop(0, '#ffffff');
-          ballGrad.addColorStop(0.24, lane.accentColor);
-          ballGrad.addColorStop(0.72, lane.color);
-          ballGrad.addColorStop(1, side === 'left' ? '#3b0764' : '#052e16');
+          ballGrad.addColorStop(0.24, laneTok.accentColor);
+          ballGrad.addColorStop(0.72, laneTok.color);
+          ballGrad.addColorStop(1, laneTok.darkBase);
         }
 
         ctx.fillStyle = ballGrad;
         if (emergenceFlash > 0.08) {
-          ctx.shadowColor = lane.accentColor;
+          ctx.shadowColor = laneTok.accentColor;
           ctx.shadowBlur = 10 * emergenceFlash;
         }
         ctx.fill();
@@ -1045,13 +1305,13 @@ class CanvasRenderer {
         // 4. Primary razor-sharp specular reflection
         ctx.beginPath();
         ctx.arc(b.x - r * 0.33, b.y - r * 0.33, Math.max(1, r * 0.24), 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.90)';
+        ctx.fillStyle = tok.balls.specular;
         ctx.fill();
 
-        // 5. Secondary soft Fresnel rim reflection (adds tactile spherical volume)
+        // 5. Secondary soft Fresnel rim reflection
         ctx.beginPath();
         ctx.arc(b.x + r * 0.28, b.y + r * 0.28, Math.max(0.8, r * 0.18), 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.28)';
+        ctx.fillStyle = tok.balls.fresnel;
         ctx.fill();
 
         ctx.restore();
@@ -1192,6 +1452,7 @@ class CanvasRenderer {
     const ctx = this.ctx;
     const w = this.width;
     const bottomY = engine.bottomY;
+    const tok = this.getThemeTokens();
 
     // Collector trays at bottom
     for (const side of ['left', 'right']) {
@@ -1199,18 +1460,18 @@ class CanvasRenderer {
       ctx.save();
       ctx.beginPath();
       ctx.roundRect(lane.minX + 8, bottomY - 55, lane.width - 16, 60, 12);
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
+      ctx.fillStyle = tok.reservoir.trayBg;
       ctx.fill();
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
-      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = tok.reservoir.trayBorder;
+      ctx.lineWidth = 1.4;
       ctx.stroke();
       ctx.restore();
     }
 
     // Dashed finish line
     ctx.save();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
-    ctx.lineWidth = 2.5;
+    ctx.strokeStyle = tok.reservoir.finishLine;
+    ctx.lineWidth = 2.0;
     ctx.setLineDash([10, 8]);
     ctx.beginPath();
     ctx.moveTo(50, bottomY - 60);
@@ -1226,13 +1487,13 @@ class CanvasRenderer {
     const barY = 1888;
     const barH = 6;
     ctx.save();
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+    ctx.fillStyle = tok.reservoir.progressBg;
     ctx.fillRect(60, barY, w - 120, barH);
 
-    const activeColor = engine.winner ? engine.winner.color : '#ffd700';
+    const activeColor = engine.winner ? tok.celebration.gold : tok.text.gold;
     ctx.fillStyle = activeColor;
     ctx.shadowColor = activeColor;
-    ctx.shadowBlur = 8;
+    ctx.shadowBlur = 6;
     ctx.fillRect(60, barY, (w - 120) * progress, barH);
     ctx.restore();
   }
@@ -1242,6 +1503,7 @@ class CanvasRenderer {
     const ctx = this.ctx;
     const winner = engine.winner;
     if (!winner) return;
+    const tok = this.getThemeTokens();
 
     ctx.save();
     ctx.globalAlpha = engine.winnerBannerAlpha;
@@ -1249,10 +1511,11 @@ class CanvasRenderer {
     const winLane = engine.lanes[winner.side];
     const otherSide = winner.side === 'left' ? 'right' : 'left';
     const loseLane = engine.lanes[otherSide];
+    const winTok = tok.lanes[winner.side] || tok.lanes.left;
 
     // 1. Subtle, elegant dimming veil over losing lane to direct focal attention
     if (loseLane) {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+      ctx.fillStyle = this.theme === 'dark' ? 'rgba(0, 0, 0, 0.35)' : 'rgba(0, 0, 0, 0.12)';
       ctx.fillRect(loseLane.minX - 6, engine.topY, loseLane.width + 12, engine.trackHeight + 70);
     }
 
@@ -1261,7 +1524,6 @@ class CanvasRenderer {
       const reservoirCenterX = winLane.minX + winLane.width / 2;
       const reservoirFloorY = engine.bottomY - 25;
 
-      // Soft team-accented radial illumination spotlighting resting winner marbles in the collection tray
       const winAura = ctx.createRadialGradient(
         reservoirCenterX,
         reservoirFloorY,
@@ -1270,24 +1532,24 @@ class CanvasRenderer {
         reservoirFloorY,
         220
       );
-      winAura.addColorStop(0, winner.color === '#cb72ff' ? 'rgba(203, 114, 255, 0.28)' : 'rgba(121, 239, 67, 0.28)');
-      winAura.addColorStop(0.5, winner.color === '#cb72ff' ? 'rgba(203, 114, 255, 0.08)' : 'rgba(121, 239, 67, 0.08)');
+      winAura.addColorStop(0, winTok.glowColor);
+      winAura.addColorStop(0.5, winTok.subtleBg || 'rgba(0,0,0,0)');
       winAura.addColorStop(1, 'rgba(0, 0, 0, 0)');
       ctx.fillStyle = winAura;
       ctx.fillRect(winLane.minX - 20, engine.bottomY - 100, winLane.width + 40, 140);
 
-      // Clean, refined team-accented outline around the winning lane chassis (No gaudy yellow borders)
-      ctx.strokeStyle = winner.color;
-      ctx.lineWidth = 1.6;
-      ctx.shadowColor = winner.color;
-      ctx.shadowBlur = 10;
+      // Clean, refined team-accented outline around the winning lane chassis
+      ctx.strokeStyle = tok.celebration.gold;
+      ctx.lineWidth = 2.0;
+      ctx.shadowColor = tok.celebration.gold;
+      ctx.shadowBlur = 8;
       ctx.beginPath();
       ctx.roundRect(winLane.minX, engine.topY, winLane.width, engine.trackHeight, 20);
       ctx.stroke();
       ctx.shadowBlur = 0;
 
       // Crisp metallic trim on reservoir collector tray
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+      ctx.strokeStyle = tok.reservoir.trayBorder;
       ctx.lineWidth = 1.2;
       ctx.beginPath();
       ctx.roundRect(winLane.minX + 8, engine.bottomY - 55, winLane.width - 16, 60, 12);
@@ -1306,22 +1568,18 @@ class CanvasRenderer {
 
     ctx.save();
     ctx.globalAlpha = engine.winnerBannerAlpha;
+    const tok = this.getThemeTokens();
 
     const leftLane = engine.lanes.left;
     const rightLane = engine.lanes.right;
-    const winLane = engine.lanes[winner.side];
-    const otherSide = winner.side === 'left' ? 'right' : 'left';
-    const loseLane = engine.lanes[otherSide];
-
     const isLeftWin = winner.side === 'left';
-    const winBalls = winLane?.balls ? winLane.balls.length : (winner.winningScore || 0);
-    const loseBalls = loseLane?.balls ? loseLane.balls.length : (winner.losingScore || 0);
-    const leftBalls = isLeftWin ? winBalls : loseBalls;
-    const rightBalls = isLeftWin ? loseBalls : winBalls;
+    const isDraw = !!winner.isDraw;
 
-    const winnerTeamName = winner.side === 'left' ? 'PURPLE' : (winner.side === 'right' ? 'GREEN' : 'DRAW');
+    const leftBalls = leftLane.balls ? leftLane.balls.length : (leftLane.exactScore || 0);
+    const rightBalls = rightLane.balls ? rightLane.balls.length : (rightLane.exactScore || 0);
+    const winnerTeamName = isDraw ? 'DRAW' : (isLeftWin ? 'PURPLE' : 'GREEN');
 
-    // 1. Frosted Dark-Glass Lower-Third Container
+    // 1. Frosted Esports Lower-Third Container
     const cardW = 960;
     const cardH = 142;
     const cardX = (w - cardW) / 2;
@@ -1329,45 +1587,24 @@ class CanvasRenderer {
 
     // Ambient drop shadow
     ctx.save();
-    ctx.shadowColor = 'rgba(0, 0, 0, 0.75)';
+    ctx.shadowColor = tok.celebration.cardShadow;
     ctx.shadowBlur = 24;
     ctx.shadowOffsetY = 8;
     ctx.beginPath();
     ctx.roundRect(cardX, cardY, cardW, cardH, 18);
-    ctx.fillStyle = 'rgba(10, 14, 24, 0.75)';
+    ctx.fillStyle = tok.celebration.cardBg;
     ctx.fill();
     ctx.restore();
 
-    // Subtle dark-glass vertical gradient fill
-    const glassGrad = ctx.createLinearGradient(cardX, cardY, cardX, cardY + cardH);
-    glassGrad.addColorStop(0, 'rgba(12, 17, 30, 0.88)');
-    glassGrad.addColorStop(1, 'rgba(8, 12, 22, 0.82)');
-    ctx.fillStyle = glassGrad;
+    // Subtle glass vertical gradient fill
     ctx.beginPath();
     ctx.roundRect(cardX, cardY, cardW, cardH, 18);
+    ctx.fillStyle = tok.celebration.cardBg;
     ctx.fill();
 
     // 1px Refined Metallic/Neon Border
-    const borderGrad = ctx.createLinearGradient(cardX, cardY, cardX + cardW, cardY + cardH);
-    borderGrad.addColorStop(0, 'rgba(255, 215, 0, 0.55)');
-    borderGrad.addColorStop(0.25, 'rgba(255, 255, 255, 0.22)');
-    borderGrad.addColorStop(0.5, winner.color === '#cb72ff' ? 'rgba(203, 114, 255, 0.45)' : 'rgba(121, 239, 67, 0.45)');
-    borderGrad.addColorStop(0.75, 'rgba(255, 255, 255, 0.22)');
-    borderGrad.addColorStop(1, 'rgba(255, 215, 0, 0.55)');
-    ctx.strokeStyle = borderGrad;
+    ctx.strokeStyle = tok.celebration.cardBorder;
     ctx.lineWidth = 1.2;
-    ctx.stroke();
-
-    // 1px Specular Top Rim Highlight
-    ctx.beginPath();
-    ctx.moveTo(cardX + 24, cardY + 1.2);
-    ctx.lineTo(cardX + cardW - 24, cardY + 1.2);
-    const specGrad = ctx.createLinearGradient(cardX, cardY, cardX + cardW, cardY);
-    specGrad.addColorStop(0, 'rgba(255, 255, 255, 0)');
-    specGrad.addColorStop(0.5, 'rgba(255, 255, 255, 0.38)');
-    specGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
-    ctx.strokeStyle = specGrad;
-    ctx.lineWidth = 1.0;
     ctx.stroke();
 
     // Specular entry sheen sweep across the glass card
@@ -1379,7 +1616,7 @@ class CanvasRenderer {
     ctx.clip();
     const sheenGrad = ctx.createLinearGradient(sheenX - 35, cardY, sheenX + 35, cardY + cardH);
     sheenGrad.addColorStop(0, 'rgba(255, 255, 255, 0)');
-    sheenGrad.addColorStop(0.5, 'rgba(255, 255, 255, 0.12)');
+    sheenGrad.addColorStop(0.5, this.theme === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.05)');
     sheenGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
     ctx.fillStyle = sheenGrad;
     ctx.fillRect(sheenX - 50, cardY, 100, cardH);
@@ -1391,30 +1628,36 @@ class CanvasRenderer {
     // Championship Winner Broadcast Badge
     const badgeX = cardX + 22;
     const badgeY = cardY + 13;
-    const badgeW = 270;
+    const badgeW = 260;
     const badgeH = 26;
 
     ctx.beginPath();
     ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 6);
-    ctx.fillStyle = 'rgba(255, 215, 0, 0.12)';
+    ctx.fillStyle = this.theme === 'dark' ? 'rgba(255, 215, 0, 0.14)' : 'rgba(217, 119, 6, 0.12)';
     ctx.fill();
-    ctx.strokeStyle = 'rgba(255, 215, 0, 0.55)';
+    ctx.strokeStyle = tok.celebration.gold;
     ctx.lineWidth = 1.0;
     ctx.stroke();
 
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.font = '800 12px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = '#ffd700';
+    ctx.fillStyle = tok.celebration.gold;
     ctx.fillText(`👑 VICTORY · ${winnerTeamName} TEAM`, badgeX + badgeW / 2, badgeY + badgeH / 2);
 
-    // Center Headline Context
+    // Center Headline: Clearly Explains the Actual Deciding Condition!
+    let decidingReason = 'CHAMPIONSHIP VICTORY';
+    if (isDraw) {
+      decidingReason = 'SIMULTANEOUS DRAW AT FINISH';
+    } else if (winner.finishTime && !winner.isTimeout) {
+      decidingReason = `FIRST TO CLEAR TIER 6 & REACH RESERVOIR (${winner.finishTime.toFixed(2)}s)`;
+    } else if (winner.isTimeout) {
+      decidingReason = `DECIDED ON TIER PROGRESS AT TIMEOUT`;
+    }
+
     ctx.font = '700 12px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.65)';
-    const headline = engine.config.title?.includes('UNDERDOG') || engine.config.title?.includes('3 BALLS')
-      ? 'UNDERDOG MULTIPLIER TAKES THE RACE'
-      : (winner.name ? `${winner.name} SECURES THE RACE` : 'CHAMPIONSHIP FINISH');
-    ctx.fillText(headline, w / 2, badgeY + badgeH / 2);
+    ctx.fillStyle = tok.celebration.headline;
+    ctx.fillText(decidingReason, w / 2, badgeY + badgeH / 2);
 
     // Replay Cue: Sleek Minimalist Loop Cue
     const replayW = 118;
@@ -1424,21 +1667,21 @@ class CanvasRenderer {
 
     ctx.beginPath();
     ctx.roundRect(replayX, replayY, replayW, replayH, 6);
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.06)';
+    ctx.fillStyle = this.theme === 'dark' ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.05)';
     ctx.fill();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.20)';
+    ctx.strokeStyle = tok.celebration.cardBorder;
     ctx.lineWidth = 1.0;
     ctx.stroke();
 
     ctx.font = '800 12px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = '#ffffff';
+    ctx.fillStyle = tok.celebration.statNumber;
     ctx.fillText('REPLAY ↻', replayX + replayW / 2, replayY + replayH / 2);
 
     // Clean Horizontal Hairline Divider
     ctx.beginPath();
     ctx.moveTo(cardX + 20, cardY + 47);
     ctx.lineTo(cardX + cardW - 20, cardY + 47);
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+    ctx.strokeStyle = tok.celebration.divider;
     ctx.lineWidth = 1.0;
     ctx.stroke();
 
@@ -1448,85 +1691,75 @@ class CanvasRenderer {
     // Left Team Presentation Block
     const leftIsWinner = isLeftWin;
     ctx.save();
-    // Team accent vertical bar
     ctx.beginPath();
     ctx.roundRect(cardX + 24, cardY + 58, 4, 66, 2);
-    ctx.fillStyle = leftIsWinner ? '#ffd700' : 'rgba(203, 114, 255, 0.40)';
+    ctx.fillStyle = leftIsWinner ? tok.celebration.gold : tok.lanes.left.color;
     ctx.fill();
 
     // Large Numeric Score
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
     ctx.font = '950 44px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = leftIsWinner ? '#ffffff' : 'rgba(255, 255, 255, 0.70)';
-    if (leftIsWinner) {
-      ctx.shadowColor = leftLane.color;
-      ctx.shadowBlur = 12;
-    }
+    ctx.fillStyle = leftIsWinner ? tok.celebration.statNumber : tok.celebration.statLabel;
     ctx.fillText(leftBalls.toLocaleString(), cardX + 38, cardY + 91);
-    ctx.shadowBlur = 0;
 
     // Team Identity & Physical Marbles Label
     ctx.font = '800 14px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = leftLane.color;
+    ctx.fillStyle = tok.lanes.left.color;
     ctx.fillText('PURPLE TEAM', cardX + 135, cardY + 80);
 
     ctx.font = '700 11px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = leftIsWinner ? '#ffd700' : 'rgba(255, 255, 255, 0.50)';
-    ctx.fillText(`${leftBalls} PHYSICAL MARBLES ${leftIsWinner ? '· CHAMPION' : '· RUNNER-UP'}`, cardX + 135, cardY + 102);
+    ctx.fillStyle = leftIsWinner ? tok.celebration.gold : tok.celebration.statLabel;
+    const leftStatus = leftIsWinner ? 'CHAMPION 🏆 (1st PLACE)' : `RUNNER-UP · TIER ${Math.min(6, leftLane.currentTier + 1)}/6`;
+    ctx.fillText(`${leftBalls} MARBLES · ${leftStatus}`, cardX + 135, cardY + 102);
     ctx.restore();
 
     // Center VS / Match Verdict Divider
     ctx.save();
-    const midPillW = 100;
+    const midPillW = 90;
     const midPillH = 26;
     const midPillX = w / 2 - midPillW / 2;
     const midPillY = cardY + 78;
 
     ctx.beginPath();
     ctx.roundRect(midPillX, midPillY, midPillW, midPillH, 13);
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
+    ctx.fillStyle = tok.celebration.vsBg;
     ctx.fill();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+    ctx.strokeStyle = tok.celebration.vsBorder;
     ctx.lineWidth = 1.0;
     ctx.stroke();
 
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.font = '800 11px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.50)';
+    ctx.fillStyle = tok.celebration.vsText;
     ctx.fillText('VS', w / 2, midPillY + midPillH / 2);
     ctx.restore();
 
     // Right Team Presentation Block
     const rightIsWinner = !isLeftWin && winner.side === 'right';
     ctx.save();
-    // Team accent vertical bar
     ctx.beginPath();
     ctx.roundRect(cardX + cardW - 28, cardY + 58, 4, 66, 2);
-    ctx.fillStyle = rightIsWinner ? '#ffd700' : 'rgba(121, 239, 67, 0.40)';
+    ctx.fillStyle = rightIsWinner ? tok.celebration.gold : tok.lanes.right.color;
     ctx.fill();
 
     // Large Numeric Score (Right-aligned)
     ctx.textAlign = 'right';
     ctx.textBaseline = 'middle';
     ctx.font = '950 44px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = rightIsWinner ? '#ffffff' : 'rgba(255, 255, 255, 0.70)';
-    if (rightIsWinner) {
-      ctx.shadowColor = rightLane.color;
-      ctx.shadowBlur = 12;
-    }
+    ctx.fillStyle = rightIsWinner ? tok.celebration.statNumber : tok.celebration.statLabel;
     ctx.fillText(rightBalls.toLocaleString(), cardX + cardW - 38, cardY + 91);
-    ctx.shadowBlur = 0;
 
     // Team Identity & Physical Marbles Label (Right-aligned)
     ctx.font = '800 14px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = rightLane.color;
+    ctx.fillStyle = tok.lanes.right.color;
     ctx.fillText('GREEN TEAM', cardX + cardW - 135, cardY + 80);
 
     ctx.font = '700 11px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = rightIsWinner ? '#ffd700' : 'rgba(255, 255, 255, 0.50)';
-    ctx.fillText(`${rightBalls} PHYSICAL MARBLES ${rightIsWinner ? '· CHAMPION' : '· RUNNER-UP'}`, cardX + cardW - 135, cardY + 102);
+    ctx.fillStyle = rightIsWinner ? tok.celebration.gold : tok.celebration.statLabel;
+    const rightStatus = rightIsWinner ? 'CHAMPION 🏆 (1st PLACE)' : `RUNNER-UP · TIER ${Math.min(6, rightLane.currentTier + 1)}/6`;
+    ctx.fillText(`${rightBalls} MARBLES · ${rightStatus}`, cardX + cardW - 135, cardY + 102);
     ctx.restore();
 
     ctx.restore();
@@ -1538,9 +1771,10 @@ class CanvasRenderer {
 
   drawWatermark() {
     const ctx = this.ctx;
+    const tok = this.getThemeTokens();
     ctx.save();
     ctx.font = '800 13px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.22)';
+    ctx.fillStyle = tok.watermark;
     ctx.textAlign = 'center';
     ctx.fillText('BURSTPOINT · ARCADE SIMULATION', this.width / 2, 1905);
     ctx.restore();
