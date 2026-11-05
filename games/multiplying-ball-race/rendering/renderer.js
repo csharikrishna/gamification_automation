@@ -323,10 +323,14 @@ class CanvasRenderer {
     this.height = canvas.height || 1920;
     this.director = new VideoDirector();
     this.theme = 'dark';
+    this.hasExplicitTheme = false;
   }
 
   setTheme(themeName) {
-    this.theme = (themeName === 'light') ? 'light' : 'dark';
+    if (themeName === 'light' || themeName === 'dark') {
+      this.theme = themeName;
+      this.hasExplicitTheme = true;
+    }
   }
 
   getThemeTokens() {
@@ -338,8 +342,9 @@ class CanvasRenderer {
     const w = this.width;
     const h = this.height;
 
-    if (engine.config && engine.config.theme) {
-      this.setTheme(engine.config.theme);
+    // Respect explicitly selected theme across all frames; only adopt engine.config.theme if unset
+    if (!this.hasExplicitTheme && engine && engine.config && engine.config.theme) {
+      this.theme = (engine.config.theme === 'light') ? 'light' : 'dark';
     }
 
     // Update director logic
@@ -517,8 +522,9 @@ class CanvasRenderer {
     // 2. Broadcast Team Scorecards
     const isLeftLeader = this.checkRaceLeader(left, right);
     const isRightLeader = this.checkRaceLeader(right, left);
-    const isLeftWinner = engine.winner && engine.winner.side === 'left';
-    const isRightWinner = engine.winner && engine.winner.side === 'right';
+    const isMatchDraw = engine.winner && (!!engine.winner.isDraw || engine.winner.side === 'draw');
+    const isLeftWinner = !isMatchDraw && engine.winner && engine.winner.side === 'left';
+    const isRightWinner = !isMatchDraw && engine.winner && engine.winner.side === 'right';
 
     this.drawScoreCard(left, 285, 216, isLeftLeader, isLeftWinner, engine);
     this.drawScoreCard(right, 795, 216, isRightLeader, isRightWinner, engine);
@@ -648,7 +654,10 @@ class CanvasRenderer {
     let statusColor = tok.scoreboard.statusActive;
 
     if (engine && engine.winner) {
-      if (isWinner) {
+      if (engine.winner.isDraw || engine.winner.side === 'draw') {
+        statusText = '🤝 TIED · DRAW';
+        statusColor = tok.scoreboard.statusActive;
+      } else if (isWinner) {
         statusText = '🏆 1st PLACE';
         statusColor = tok.celebration.gold;
       } else {
@@ -1508,6 +1517,24 @@ class CanvasRenderer {
     ctx.save();
     ctx.globalAlpha = engine.winnerBannerAlpha;
 
+    const isDraw = !!winner.isDraw || winner.side === 'draw';
+
+    if (isDraw) {
+      // Balanced highlight for both reservoir collector trays on draw
+      for (const side of ['left', 'right']) {
+        const lane = engine.lanes[side];
+        if (lane) {
+          ctx.strokeStyle = tok.scoreboard.statusActive;
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.roundRect(lane.minX + 8, engine.bottomY - 55, lane.width - 16, 60, 12);
+          ctx.stroke();
+        }
+      }
+      ctx.restore();
+      return;
+    }
+
     const winLane = engine.lanes[winner.side];
     const otherSide = winner.side === 'left' ? 'right' : 'left';
     const loseLane = engine.lanes[otherSide];
@@ -1572,8 +1599,9 @@ class CanvasRenderer {
 
     const leftLane = engine.lanes.left;
     const rightLane = engine.lanes.right;
-    const isLeftWin = winner.side === 'left';
-    const isDraw = !!winner.isDraw;
+    const isDraw = !!winner.isDraw || winner.side === 'draw';
+    const isLeftWin = !isDraw && winner.side === 'left';
+    const isRightWin = !isDraw && winner.side === 'right';
 
     const leftBalls = leftLane.balls ? leftLane.balls.length : (leftLane.exactScore || 0);
     const rightBalls = rightLane.balls ? rightLane.balls.length : (rightLane.exactScore || 0);
@@ -1623,47 +1651,53 @@ class CanvasRenderer {
     ctx.restore();
 
     // -------------------------------------------------------------
-    // Tier 1: Top Broadcast Badge & Motion Replay Cue (cardY + 13)
+    // Tier 1: Top Broadcast Badge & Motion Replay Cue (cardY + 12)
     // -------------------------------------------------------------
-    // Championship Winner Broadcast Badge
-    const badgeX = cardX + 22;
-    const badgeY = cardY + 13;
-    const badgeW = 260;
+    // Championship Winner / Draw Broadcast Badge
+    const badgeX = cardX + 20;
+    const badgeY = cardY + 12;
     const badgeH = 26;
+
+    let badgeText;
+    let badgeBorderColor;
+    let badgeBgColor;
+    let badgeTextColor;
+
+    if (isDraw) {
+      badgeText = '⚖️ MATCH TIED · OFFICIAL DRAW';
+      badgeBorderColor = tok.scoreboard.statusActive;
+      badgeBgColor = this.theme === 'dark' ? 'rgba(56, 189, 248, 0.14)' : 'rgba(2, 132, 199, 0.10)';
+      badgeTextColor = tok.scoreboard.statusActive;
+    } else {
+      badgeText = `👑 VICTORY · ${winnerTeamName} TEAM`;
+      badgeBorderColor = tok.celebration.gold;
+      badgeBgColor = this.theme === 'dark' ? 'rgba(255, 215, 0, 0.14)' : 'rgba(217, 119, 6, 0.12)';
+      badgeTextColor = tok.celebration.gold;
+    }
+
+    ctx.font = '800 12px "Inter", "Segoe UI", sans-serif';
+    const badgeTextW = ctx.measureText(badgeText).width;
+    const badgeW = Math.max(160, Math.min(270, Math.ceil(badgeTextW + 28)));
 
     ctx.beginPath();
     ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 6);
-    ctx.fillStyle = this.theme === 'dark' ? 'rgba(255, 215, 0, 0.14)' : 'rgba(217, 119, 6, 0.12)';
+    ctx.fillStyle = badgeBgColor;
     ctx.fill();
-    ctx.strokeStyle = tok.celebration.gold;
+    ctx.strokeStyle = badgeBorderColor;
     ctx.lineWidth = 1.0;
     ctx.stroke();
 
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.font = '800 12px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = tok.celebration.gold;
-    ctx.fillText(`👑 VICTORY · ${winnerTeamName} TEAM`, badgeX + badgeW / 2, badgeY + badgeH / 2);
-
-    // Center Headline: Clearly Explains the Actual Deciding Condition!
-    let decidingReason = 'CHAMPIONSHIP VICTORY';
-    if (isDraw) {
-      decidingReason = 'SIMULTANEOUS DRAW AT FINISH';
-    } else if (winner.finishTime && !winner.isTimeout) {
-      decidingReason = `FIRST TO CLEAR TIER 6 & REACH RESERVOIR (${winner.finishTime.toFixed(2)}s)`;
-    } else if (winner.isTimeout) {
-      decidingReason = `DECIDED ON TIER PROGRESS AT TIMEOUT`;
-    }
-
-    ctx.font = '700 12px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = tok.celebration.headline;
-    ctx.fillText(decidingReason, w / 2, badgeY + badgeH / 2);
+    ctx.fillStyle = badgeTextColor;
+    ctx.fillText(badgeText, badgeX + badgeW / 2, badgeY + badgeH / 2);
 
     // Replay Cue: Sleek Minimalist Loop Cue
-    const replayW = 118;
+    const replayW = 100;
     const replayH = 26;
-    const replayX = cardX + cardW - 22 - replayW;
-    const replayY = cardY + 13;
+    const replayX = cardX + cardW - 20 - replayW;
+    const replayY = cardY + 12;
 
     ctx.beginPath();
     ctx.roundRect(replayX, replayY, replayW, replayH, 6);
@@ -1673,9 +1707,91 @@ class CanvasRenderer {
     ctx.lineWidth = 1.0;
     ctx.stroke();
 
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
     ctx.font = '800 12px "Inter", "Segoe UI", sans-serif';
     ctx.fillStyle = tok.celebration.statNumber;
     ctx.fillText('REPLAY ↻', replayX + replayW / 2, replayY + replayH / 2);
+
+    // Center Headline: Clearly Explains the Actual Deciding Condition!
+    // Safety boundaries strictly separating headline from badge, replay button, and team scores
+    const headlineMinX = badgeX + badgeW + 14;
+    const headlineMaxX = replayX - 14;
+    const availableHeadlineW = Math.max(100, headlineMaxX - headlineMinX);
+    const headlineCenterX = (headlineMinX + headlineMaxX) / 2;
+    const headlineCenterY = badgeY + badgeH / 2;
+
+    // Use actual result metadata if provided, otherwise synthesize from authoritative match properties
+    let decidingReason = '';
+    if (winner.decidingReason && typeof winner.decidingReason === 'string') {
+      decidingReason = winner.decidingReason.trim();
+    } else if (winner.condition && typeof winner.condition === 'string') {
+      decidingReason = winner.condition.trim();
+    } else if (winner.narrative && typeof winner.narrative === 'string') {
+      decidingReason = winner.narrative.trim();
+    } else if (engine.result && engine.result.decidingReason) {
+      decidingReason = String(engine.result.decidingReason).trim();
+    } else if (engine.config && engine.config.decidingReason) {
+      decidingReason = String(engine.config.decidingReason).trim();
+    }
+
+    if (!decidingReason) {
+      const totalTiers = (leftLane.tiles && leftLane.tiles.length) || 6;
+      if (isDraw) {
+        if (winner.isTimeout) {
+          decidingReason = 'MATCH TIED · EQUAL PROGRESS AT TIMEOUT';
+        } else {
+          decidingReason = 'MATCH TIED · SIMULTANEOUS FINISH IN RESERVOIR';
+        }
+      } else if (typeof winner.finishTime === 'number' && !winner.isTimeout) {
+        decidingReason = `FIRST TO CLEAR TIER ${totalTiers} & REACH RESERVOIR (${winner.finishTime.toFixed(2)}s)`;
+      } else if (winner.isTimeout) {
+        const winLane = isLeftWin ? leftLane : rightLane;
+        const loseLane = isLeftWin ? rightLane : leftLane;
+        const winTier = Math.min(totalTiers, (winLane.currentTier || 0) + 1);
+        const loseTier = Math.min(totalTiers, (loseLane.currentTier || 0) + 1);
+        if (winTier > loseTier) {
+          decidingReason = `DECIDED ON TIER PROGRESS (TIER ${winTier} VS ${loseTier}) AT TIMEOUT`;
+        } else {
+          decidingReason = 'DECIDED ON TIEBREAKER HP & SCORE AT TIMEOUT';
+        }
+      } else {
+        decidingReason = 'CHAMPIONSHIP VICTORY';
+      }
+    }
+
+    // Dynamic measurement and font size adaptation (scale down font if text is long)
+    let headlineFontSize = 12;
+    ctx.font = `700 ${headlineFontSize}px "Inter", "Segoe UI", sans-serif`;
+    let measuredW = ctx.measureText(decidingReason).width;
+
+    while (measuredW > availableHeadlineW && headlineFontSize > 9.5) {
+      headlineFontSize -= 0.5;
+      ctx.font = `700 ${headlineFontSize}px "Inter", "Segoe UI", sans-serif`;
+      measuredW = ctx.measureText(decidingReason).width;
+    }
+
+    // Truncate with ellipsis if still wider than available space
+    let displayHeadline = decidingReason;
+    if (measuredW > availableHeadlineW) {
+      while (displayHeadline.length > 4 && ctx.measureText(displayHeadline + '…').width > availableHeadlineW) {
+        displayHeadline = displayHeadline.slice(0, -1).trim();
+      }
+      displayHeadline += '…';
+    }
+
+    // Strict clipping box: cannot bleed into badge on left, replay on right, or scores below
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(headlineMinX, badgeY - 2, availableHeadlineW, badgeH + 4);
+    ctx.clip();
+
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = `700 ${headlineFontSize}px "Inter", "Segoe UI", sans-serif`;
+    ctx.fillStyle = tok.celebration.headline;
+    ctx.fillText(displayHeadline, headlineCenterX, headlineCenterY);
+    ctx.restore();
 
     // Clean Horizontal Hairline Divider
     ctx.beginPath();
@@ -1700,7 +1816,7 @@ class CanvasRenderer {
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
     ctx.font = '950 44px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = leftIsWinner ? tok.celebration.statNumber : tok.celebration.statLabel;
+    ctx.fillStyle = (leftIsWinner || isDraw) ? tok.celebration.statNumber : tok.celebration.statLabel;
     ctx.fillText(leftBalls.toLocaleString(), cardX + 38, cardY + 91);
 
     // Team Identity & Physical Marbles Label
@@ -1709,8 +1825,17 @@ class CanvasRenderer {
     ctx.fillText('PURPLE TEAM', cardX + 135, cardY + 80);
 
     ctx.font = '700 11px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = leftIsWinner ? tok.celebration.gold : tok.celebration.statLabel;
-    const leftStatus = leftIsWinner ? 'CHAMPION 🏆 (1st PLACE)' : `RUNNER-UP · TIER ${Math.min(6, leftLane.currentTier + 1)}/6`;
+    let leftStatus;
+    if (isDraw) {
+      leftStatus = `TIED · TIER ${Math.min(6, leftLane.currentTier + 1)}/6`;
+      ctx.fillStyle = tok.celebration.statNumber;
+    } else if (leftIsWinner) {
+      leftStatus = 'CHAMPION 🏆 (1st PLACE)';
+      ctx.fillStyle = tok.celebration.gold;
+    } else {
+      leftStatus = `RUNNER-UP · TIER ${Math.min(6, leftLane.currentTier + 1)}/6`;
+      ctx.fillStyle = tok.celebration.statLabel;
+    }
     ctx.fillText(`${leftBalls} MARBLES · ${leftStatus}`, cardX + 135, cardY + 102);
     ctx.restore();
 
@@ -1723,21 +1848,21 @@ class CanvasRenderer {
 
     ctx.beginPath();
     ctx.roundRect(midPillX, midPillY, midPillW, midPillH, 13);
-    ctx.fillStyle = tok.celebration.vsBg;
+    ctx.fillStyle = isDraw ? (this.theme === 'dark' ? 'rgba(56, 189, 248, 0.12)' : 'rgba(2, 132, 199, 0.10)') : tok.celebration.vsBg;
     ctx.fill();
-    ctx.strokeStyle = tok.celebration.vsBorder;
+    ctx.strokeStyle = isDraw ? tok.scoreboard.statusActive : tok.celebration.vsBorder;
     ctx.lineWidth = 1.0;
     ctx.stroke();
 
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.font = '800 11px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = tok.celebration.vsText;
-    ctx.fillText('VS', w / 2, midPillY + midPillH / 2);
+    ctx.fillStyle = isDraw ? tok.scoreboard.statusActive : tok.celebration.vsText;
+    ctx.fillText(isDraw ? 'TIED' : 'VS', w / 2, midPillY + midPillH / 2);
     ctx.restore();
 
     // Right Team Presentation Block
-    const rightIsWinner = !isLeftWin && winner.side === 'right';
+    const rightIsWinner = isRightWin;
     ctx.save();
     ctx.beginPath();
     ctx.roundRect(cardX + cardW - 28, cardY + 58, 4, 66, 2);
@@ -1748,7 +1873,7 @@ class CanvasRenderer {
     ctx.textAlign = 'right';
     ctx.textBaseline = 'middle';
     ctx.font = '950 44px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = rightIsWinner ? tok.celebration.statNumber : tok.celebration.statLabel;
+    ctx.fillStyle = (rightIsWinner || isDraw) ? tok.celebration.statNumber : tok.celebration.statLabel;
     ctx.fillText(rightBalls.toLocaleString(), cardX + cardW - 38, cardY + 91);
 
     // Team Identity & Physical Marbles Label (Right-aligned)
@@ -1757,9 +1882,19 @@ class CanvasRenderer {
     ctx.fillText('GREEN TEAM', cardX + cardW - 135, cardY + 80);
 
     ctx.font = '700 11px "Inter", "Segoe UI", sans-serif';
-    ctx.fillStyle = rightIsWinner ? tok.celebration.gold : tok.celebration.statLabel;
-    const rightStatus = rightIsWinner ? 'CHAMPION 🏆 (1st PLACE)' : `RUNNER-UP · TIER ${Math.min(6, rightLane.currentTier + 1)}/6`;
+    let rightStatus;
+    if (isDraw) {
+      rightStatus = `TIED · TIER ${Math.min(6, rightLane.currentTier + 1)}/6`;
+      ctx.fillStyle = tok.celebration.statNumber;
+    } else if (rightIsWinner) {
+      rightStatus = 'CHAMPION 🏆 (1st PLACE)';
+      ctx.fillStyle = tok.celebration.gold;
+    } else {
+      rightStatus = `RUNNER-UP · TIER ${Math.min(6, rightLane.currentTier + 1)}/6`;
+      ctx.fillStyle = tok.celebration.statLabel;
+    }
     ctx.fillText(`${rightBalls} MARBLES · ${rightStatus}`, cardX + cardW - 135, cardY + 102);
+    ctx.restore();
     ctx.restore();
 
     ctx.restore();

@@ -109,6 +109,8 @@ class GameManager {
         },
         setTheme(theme) {
           this.theme = theme;
+          if (config) config.theme = theme;
+          if (engine && engine.config) engine.config.theme = theme;
           if (this.renderer && typeof this.renderer.setTheme === 'function') {
             this.renderer.setTheme(theme);
           }

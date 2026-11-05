@@ -85,6 +85,8 @@ class MultiRaceAdapter extends GameAdapter {
 
   setTheme(theme) {
     this.theme = theme;
+    if (this.config) this.config.theme = theme;
+    if (this.engine && this.engine.config) this.engine.config.theme = theme;
     if (this.renderer && typeof this.renderer.setTheme === 'function') {
       this.renderer.setTheme(theme);
     }
