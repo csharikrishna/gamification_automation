@@ -22,6 +22,18 @@ function findChrome() {
   throw new Error('Google Chrome executable not found. Please install Chrome or set CHROME_BIN.');
 }
 
+let _nvencAvailable = null;
+function detectNvenc() {
+  if (_nvencAvailable !== null) return _nvencAvailable;
+  try {
+    const res = execSync('ffmpeg -encoders', { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+    _nvencAvailable = res.includes('h264_nvenc');
+  } catch (e) {
+    _nvencAvailable = false;
+  }
+  return _nvencAvailable;
+}
+
 async function renderVideo(options = {}) {
   let config = null;
 
@@ -62,11 +74,17 @@ async function renderVideo(options = {}) {
   const clipDuration = options.duration || (config.durationSeconds - clipStartTime);
   const totalFrames = Math.ceil(clipDuration * (config.fps || 60));
 
+  const useNvenc = !options.noGpu && detectNvenc();
+  const encoderArgs = useNvenc
+    ? ['-c:v', 'h264_nvenc', '-preset', 'p4', '-cq', '19']
+    : ['-c:v', 'libx264', '-preset', 'fast', '-crf', '18'];
+
   console.log('='.repeat(65));
   console.log(`🎬 BURSTPOINT 1080x1920 UNIVERSAL VIDEO RENDERER`);
   console.log(`Game Mode: ${config.gameType || config.type || 'multi_race'}`);
   console.log(`Title:     ${config.title}`);
   console.log(`Duration:  ${clipDuration.toFixed(2)}s (${totalFrames} frames @ ${config.fps || 60} FPS, start: ${clipStartTime}s)`);
+  console.log(`Encoder:   ${useNvenc ? 'NVIDIA GPU Accelerated (h264_nvenc / GTX 1650)' : 'CPU Software (libx264)'}`);
   console.log(`Output:    ${finalMp4Path}`);
   console.log('='.repeat(65));
 
@@ -76,9 +94,7 @@ async function renderVideo(options = {}) {
     '-vcodec', 'mjpeg',
     '-r', String(config.fps || 60),
     '-i', 'pipe:0',
-    '-c:v', 'libx264',
-    '-preset', 'fast',
-    '-crf', '18',
+    ...encoderArgs,
     '-pix_fmt', 'yuv420p',
     tempVideoMp4
   ]);
@@ -171,6 +187,8 @@ async function renderVideo(options = {}) {
         '--disable-gpu-sandbox',
         '--use-gl=angle',
         '--use-angle=d3d11',
+        '--enable-gpu-rasterization',
+        '--enable-zero-copy',
         '--disable-background-timer-throttling',
         '--disable-backgrounding-occluded-windows',
         '--disable-renderer-backgrounding'

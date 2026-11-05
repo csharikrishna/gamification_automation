@@ -1126,8 +1126,14 @@ class CanvasRenderer {
         ctx.fill();
 
       } else if (p.type === 'ember') {
-        // Atmospheric motes skipped to maintain clean, professional broadcast aesthetic
-        continue;
+        // Atmospheric celebratory golden motes
+        ctx.fillStyle = p.color || '#ffd700';
+        ctx.shadowColor = p.color || '#ffd700';
+        ctx.shadowBlur = 6;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius || 2.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
 
       } else if (p.color === '#00f0ff' || p.color === '#ff007f') {
         // High-contrast arena kinetic spark
