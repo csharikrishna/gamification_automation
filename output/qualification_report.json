@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-11-05T04:19:56.962Z",
+  "generatedAt": "2026-11-05T06:31:59.780Z",
   "verdict": "100% CERTIFIED FOR PRODUCTION",
   "passedChecks": 12,
   "totalChecks": 12,
   "profiling": {
-    "maxFrameTimeMs": "4.66",
-    "avgFrameTimeMs": "1.02",
-    "peakMemoryMb": "11.75",
-    "growthPerFrameBytes": 53.03,
-    "continuous3000PeakHeapMb": 11.75,
+    "maxFrameTimeMs": "6.69",
+    "avgFrameTimeMs": "1.09",
+    "peakMemoryMb": "11.60",
+    "growthPerFrameBytes": 53.07,
+    "continuous3000PeakHeapMb": 11.6,
     "multiCycleRepeatedRunsCount": 10,
-    "multiCycleStartHeapMb": 11.78,
-    "multiCycleEndHeapMb": 11.83,
+    "multiCycleStartHeapMb": 11.63,
+    "multiCycleEndHeapMb": 11.67,
     "multiCycleHeapGrowthMb": 0.05
   },
   "visualInspection": {

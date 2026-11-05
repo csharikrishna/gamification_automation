@@ -33,7 +33,7 @@ class MegaPlinkoGame extends _GameAdapter {
     this.fps = config.fps || 60;
     this.simTime = 0;
     this.frameIndex = 0;
-    this.isFinished = false;
+    this.finished = false;
 
     this.events = [];
     this.balls = [];
@@ -270,7 +270,7 @@ class MegaPlinkoGame extends _GameAdapter {
     }
 
     if (this.simTime >= this.durationSeconds - 0.001) {
-      this.isFinished = true;
+      this.finished = true;
     }
   }
 
@@ -320,9 +320,13 @@ class MegaPlinkoGame extends _GameAdapter {
       displayScore: Math.round(this.displayScore),
       ballsActive: this.balls.filter(b => !b.collected).length,
       jackpotHits: this.jackpotHits,
-      isFinished: this.isFinished,
+      isFinished: this.isFinished(),
       winner: this.winner
     };
+  }
+
+  isFinished() {
+    return !!this.finished;
   }
 
   getEvents() {
@@ -339,7 +343,7 @@ class MegaPlinkoGame extends _GameAdapter {
       winningScore: Math.round(this.totalScore),
       jackpotHits: this.jackpotHits,
       finishTime: this.simTime,
-      isFinished: this.isFinished,
+      isFinished: this.isFinished(),
       stats: {
         totalBalls: this.balls.length,
         collectedBalls: this.balls.filter(b => b.collected).length,

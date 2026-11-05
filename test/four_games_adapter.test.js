@@ -52,6 +52,16 @@ const gamesToTest = [
       fps: 60,
       ballCount: 40
     }
+  },
+  {
+    type: 'marble_run',
+    name: 'Rube Goldberg Marble Run',
+    config: {
+      gameType: 'marble_run',
+      durationSeconds: 3,
+      fps: 60,
+      marbleCount: 6
+    }
   }
 ];
 
@@ -111,5 +121,5 @@ for (const gameMeta of gamesToTest) {
 }
 
 console.log('\n' + '='.repeat(70));
-console.log(`🎉 ALL ${totalPassed}/4 GAMES FULLY ADAPTED & VERIFIED UNDER GAMEADAPTER CONTRACT!`);
+console.log(`🎉 ALL ${totalPassed}/${gamesToTest.length} GAMES FULLY ADAPTED & VERIFIED UNDER GAMEADAPTER CONTRACT!`);
 console.log('='.repeat(70));

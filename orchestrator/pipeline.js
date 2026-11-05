@@ -5,10 +5,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const assert = require('assert');
-const crypto = require('crypto');
-const { GameRegistry } = require('./registry');
-const { ConfigValidator } = require('../core/contracts/scenario-schema');
 const { LIFECYCLE_STATES } = require('../core/contracts/lifecycle-schema');
 const { MediaValidator } = require('../core/production/media-validator');
 const { renderVideo } = require('../core/production/render-manager');
@@ -16,15 +12,19 @@ const { QueueRepository } = require('../core/publishing/queue-repository');
 const { PublishingScheduler } = require('../core/publishing/scheduler');
 const { VideoVault } = require('../core/production/video-vault');
 
+const { generateScenarios } = require('./stages/scenario-generator');
+const { simulateScenarios } = require('./stages/simulation-runner');
+const { scoreCandidates } = require('./stages/candidate-scorer');
+const { validateApprovalAuthorization, reviewAndApproveClips } = require('./stages/approval-authorizer');
+
 class ProductionOrchestrator {
   constructor(options = {}) {
     this.outputDir = options.outputDir || path.resolve('output');
     this.clipsDir = path.join(this.outputDir, 'proof_clips');
     this.reportPath = path.join(this.outputDir, 'production_proof_report.json');
     this.gameId = options.gameId || 'multi_race';
-    this.targetDuration = options.targetDuration || 20.0; // P0: Explicit 20.0s output contract
+    this.targetDuration = options.targetDuration || 20.0;
     this.fps = options.fps || 60;
-    // P0: Explicit human creative review gate by default (Unattended requires explicit configuration)
     this.unattendedApproval = options.unattendedApproval !== undefined ? Boolean(options.unattendedApproval) : false;
     this.humanApprovalToken = options.humanApprovalToken || options.token || process.env.HUMAN_APPROVAL_TOKEN || null;
     this.trustedApprovalToken = options.trustedApprovalToken || process.env.TRUSTED_APPROVAL_TOKEN || null;
@@ -54,268 +54,22 @@ class ProductionOrchestrator {
     this.vault = new VideoVault({ storageDir: options.vaultDir || path.resolve('storage/video_vault') });
   }
 
+  _getAuthConfig() {
+    return {
+      unattendedApproval: this.unattendedApproval,
+      trustedApprovalToken: this.trustedApprovalToken,
+      trustedApprovalTokens: this.trustedApprovalTokens
+    };
+  }
+
   // Stage 1: GENERATED - Scenario synthesis with strict schema validation & calibrated diversity
   generateScenarios(count = 5, gameType = this.gameId) {
-    const isFlagship = (gameType === 'multi_race' || gameType === 'multiplying-ball-race');
-    if (!isFlagship) {
-      console.warn(`[Orchestrator] Note: Game "${gameType}" is registered under GameAdapter contract, but only "multi_race" is currently certified for production.`);
-    }
-
-    // 5 Calibrated canonical archetypes verified for genuine outcome diversity & competition (Distinct Seeds)
-    const archetypes = [
-      {
-        id: 'underdog_classic',
-        seed: 40317,
-        title: '⚡ 3 BALLS VS 12 BALLS: CAN THE UNDERDOG WIN? ⚡',
-        hookText: 'Can 3 multiplying balls beat 12 balls? 😱',
-        leftStart: 3,
-        rightStart: 12,
-        lType: 'multiply',
-        lVal: 2,
-        rType: 'add',
-        rVal: 6,
-        lHp: [8, 18, 38, 75, 140, 220],
-        rHp: [24, 50, 95, 160, 240, 320],
-        expectedWinner: 'MULTIPLY',
-        narrativeRole: 'UNDERDOG_EXPONENTIAL_WIN'
-      },
-      {
-        id: 'close_clash',
-        seed: 303,
-        title: '📈 PHOTO FINISH: MULTIPLY VS ADD NECK-AND-NECK 📈',
-        hookText: 'Look at how close this finish is! 😱',
-        leftStart: 4,
-        rightStart: 14,
-        lType: 'multiply',
-        lVal: 2,
-        rType: 'add',
-        rVal: 8,
-        lHp: [14, 28, 56, 110, 190, 260],
-        rHp: [22, 44, 82, 140, 210, 275],
-        expectedWinner: 'ADD',
-        narrativeRole: 'PHOTO_FINISH_CLASH'
-      },
-      {
-        id: 'lead_reversal',
-        seed: 101,
-        title: '💥 EARLY DEFICIT TO DRAMATIC FINAL TIER REVERSAL 💥',
-        hookText: 'Watch the insane final tier comeback! 🤯',
-        leftStart: 2,
-        rightStart: 16,
-        lType: 'multiply',
-        lVal: 2,
-        rType: 'add',
-        rVal: 6,
-        lHp: [6, 14, 32, 70, 150, 230],
-        rHp: [26, 48, 85, 145, 230, 310],
-        expectedWinner: 'MULTIPLY',
-        narrativeRole: 'COMEBACK_REVERSAL'
-      },
-      {
-        id: 'high_escalation',
-        seed: 707,
-        title: '🔥 HIGH MULTIPLIER: ×3 GAMBLE VS +14 TANK 🔥',
-        hookText: 'Can high multipliers survive against the additive tank? 🤯',
-        leftStart: 2,
-        rightStart: 18,
-        lType: 'multiply',
-        lVal: 3,
-        rType: 'add',
-        rVal: 14,
-        lHp: [12, 30, 75, 160, 300, 450],
-        rHp: [28, 55, 100, 175, 270, 360],
-        expectedWinner: 'ADD',
-        narrativeRole: 'HEAVY_SWARM_ESCALATION'
-      },
-      {
-        id: 'razor_upset',
-        seed: 1100,
-        title: '🏆 FINAL TIER SHOWDOWN: 0.07s UPSET VICTORY 🏆',
-        hookText: 'Only 0.07 seconds apart at the finish! 😱',
-        leftStart: 3,
-        rightStart: 18,
-        lType: 'multiply',
-        lVal: 2,
-        rType: 'add',
-        rVal: 8,
-        lHp: [8, 16, 35, 75, 145, 230],
-        rHp: [28, 52, 90, 150, 230, 320],
-        expectedWinner: 'MULTIPLY',
-        narrativeRole: 'RAZOR_THIN_UPSET'
-      }
-    ];
-
-    const configs = [];
-    for (let i = 0; i < count; i++) {
-      const arch = archetypes[i % archetypes.length];
-      const seed = arch.seed;
-
-      const cfg = {
-        id: `flagship_scenario_${String(i + 1).padStart(2, '0')}`,
-        archetypeId: arch.id,
-        gameType: gameType,
-        seed,
-        title: arch.title,
-        subtitle: `Calibrated Flagship Showcase #${i + 1} · Seed ${seed}`,
-        durationSeconds: this.targetDuration, // P0: Configured 20.0s duration
-        fps: this.fps,
-        maxSimulatedBalls: 200,
-        hpTiers: arch.lHp,
-        expectedWinner: arch.expectedWinner,
-        narrativeRole: arch.narrativeRole,
-        lanes: {
-          left: {
-            name: 'MULTIPLY',
-            startBalls: arch.leftStart,
-            stages: arch.lHp.map((hp, s) => ({
-              type: arch.lType,
-              value: arch.lVal,
-              label: arch.lType === 'multiply' ? `×${arch.lVal}` : `+${arch.lVal}`,
-              maxHP: hp
-            }))
-          },
-          right: {
-            name: 'ADD',
-            startBalls: arch.rightStart,
-            stages: arch.rHp.map((hp, s) => ({
-              type: arch.rType,
-              value: arch.rVal,
-              label: arch.rType === 'multiply' ? `×${arch.rVal}` : `+${arch.rVal}`,
-              maxHP: hp
-            }))
-          }
-        },
-        hookText: arch.hookText,
-        tags: ['#shorts', '#physics', '#gaming', '#marblerun', '#satisfying'],
-        lifecycleState: LIFECYCLE_STATES.GENERATED
-      };
-
-      ConfigValidator.validate(cfg);
-      configs.push(cfg);
-    }
-
-    return configs;
+    return generateScenarios(count, gameType, this.targetDuration, this.fps);
   }
 
   // Stage 2: SIMULATED - Seeded deterministic match simulation with verifiable ground-truth evidence
   simulateScenarios(configs) {
-    const results = [];
-    for (const cfg of configs) {
-      const game = GameRegistry.createGame(cfg);
-      const frames = cfg.durationSeconds * (cfg.fps || 60);
-      const dt = 1 / (cfg.fps || 60);
-
-      let leadChanges = 0;
-      let lastLeader = null;
-      let escapedMarblesCount = 0;
-      let maxEarlyLeftDeficit = 0;
-      let maxEarlyRightDeficit = 0;
-      const timelineEvents = [];
-
-      for (let f = 0; f < frames; f++) {
-        game.step(dt);
-
-        const obs = game.observe();
-        const lTier = obs.leftTier;
-        const rTier = obs.rightTier;
-        let currentLeader = lTier > rTier ? 'MULTIPLY' : (rTier > lTier ? 'ADD' : 'TIED');
-        if (currentLeader === 'TIED') {
-          currentLeader = obs.leftScore > obs.rightScore ? 'MULTIPLY'
-            : (obs.rightScore > obs.leftScore ? 'ADD' : 'TIED');
-        }
-
-        if (currentLeader !== 'TIED' && currentLeader !== lastLeader && lastLeader !== null) {
-          leadChanges++;
-          timelineEvents.push({
-            time: Number(obs.simTime.toFixed(2)),
-            event: 'LEAD_CHANGE',
-            previousLeader: lastLeader,
-            newLeader: currentLeader
-          });
-        }
-        if (currentLeader !== 'TIED') lastLeader = currentLeader;
-
-        // Track early score deficit before mid-game (early 6.0s)
-        if (obs.simTime <= 6.0) {
-          const leftDeficit = obs.rightScore - obs.leftScore;
-          const rightDeficit = obs.leftScore - obs.rightScore;
-          if (leftDeficit > maxEarlyLeftDeficit) maxEarlyLeftDeficit = leftDeficit;
-          if (rightDeficit > maxEarlyRightDeficit) maxEarlyRightDeficit = rightDeficit;
-        }
-
-        // Boundary containment audit on all active physical marbles
-        const leftBalls = game.engine?.lanes?.left?.balls || [];
-        const rightBalls = game.engine?.lanes?.right?.balls || [];
-        for (let b = 0; b < leftBalls.length; b++) {
-          const ball = leftBalls[b];
-          if (ball.x < -10 || ball.x > 1090 || ball.y < -100 || ball.y > 2000) escapedMarblesCount++;
-        }
-        for (let b = 0; b < rightBalls.length; b++) {
-          const ball = rightBalls[b];
-          if (ball.x < -10 || ball.x > 1090 || ball.y < -100 || ball.y > 2000) escapedMarblesCount++;
-        }
-      }
-
-      assert(game.isFinished() || game.simTime >= cfg.durationSeconds, `Scenario ${cfg.id} must conclude.`);
-      const obs = game.observe();
-
-      const lFinish = game.engine?.lanes?.left?.finishedTime || null;
-      const rFinish = game.engine?.lanes?.right?.finishedTime || null;
-      const finishMargin = (lFinish && rFinish) ? Number(Math.abs(lFinish - rFinish).toFixed(2)) : null;
-
-      // Track population progression across tiers
-      const leftStart = cfg.lanes.left.startBalls;
-      const rightStart = cfg.lanes.right.startBalls;
-      const totalStart = leftStart + rightStart;
-      const totalFinal = obs.leftScore + obs.rightScore;
-      const totalMultiplier = Number((totalFinal / Math.max(1, totalStart)).toFixed(2));
-      const totalGrowth = totalFinal - totalStart;
-      const populationProgression = {
-        leftStart,
-        rightStart,
-        totalStart,
-        leftFinal: obs.leftScore,
-        rightFinal: obs.rightScore,
-        totalFinal,
-        totalMultiplier,
-        totalGrowth
-      };
-
-      // Reconcile dynamic title with actual verified finish margin if applicable
-      let finalTitle = cfg.title;
-      if (finishMargin !== null && finalTitle.includes('UPSET VICTORY')) {
-        finalTitle = `🏆 FINAL TIER SHOWDOWN: ${finishMargin.toFixed(2)}s UPSET VICTORY 🏆`;
-      }
-
-      results.push({
-        simId: cfg.id,
-        archetypeId: cfg.archetypeId,
-        narrativeRole: cfg.narrativeRole,
-        seed: cfg.seed,
-        title: finalTitle,
-        status: 'COMPLETED',
-        finishTime: Number((obs.winner?.finishTime || cfg.durationSeconds).toFixed(2)),
-        winner: obs.winner?.name || 'DRAW',
-        winningScore: obs.winner?.winningScore || 0,
-        losingScore: obs.winner?.losingScore || 0,
-        leftScore: obs.leftScore,
-        rightScore: obs.rightScore,
-        leftMetrics: obs.leftMetrics,
-        rightMetrics: obs.rightMetrics,
-        leadChanges,
-        finishMargin,
-        maxEarlyLeftDeficit,
-        maxEarlyRightDeficit,
-        populationProgression,
-        escapedMarblesCount,
-        timelineEvents,
-        totalEvents: game.getEvents().length,
-        events: game.getEvents(),
-        config: cfg,
-        lifecycleState: LIFECYCLE_STATES.SIMULATED
-      });
-    }
-    return results;
+    return simulateScenarios(configs);
   }
 
   // Stage 3: CHECK UNIQUENESS - VideoVault pre-render repetition inspection
@@ -338,250 +92,11 @@ class ProductionOrchestrator {
 
   // Stage 4: SCORED - Evidence-based quantitative evaluation with full-duration replay & calculated WCAG contrast
   scoreCandidates(simulations) {
-    const scored = [];
-
-    // Helper: Exact WCAG 2.1 relative luminance calculation
-    const calcLuminance = (r, g, b) => {
-      const a = [r, g, b].map(v => {
-        v /= 255;
-        return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
-      });
-      return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
-    };
-
-    const lumBg = calcLuminance(9, 12, 21); // #090c15 arena background
-    const lumText = calcLuminance(255, 255, 255); // #ffffff primary text
-    const measuredRatio = Number(((lumText + 0.05) / (lumBg + 0.05)).toFixed(2));
-    const contrastPass = measuredRatio >= 7.0; // WCAG AAA requirement
-
-    for (const sim of simulations) {
-      const targetDuration = this.targetDuration;
-      const totalEvents = (sim.events || []).length;
-      const eventDensity = Number((totalEvents / targetDuration).toFixed(2));
-      const scoreRatio = Number((Math.max(sim.leftScore, sim.rightScore) / Math.max(1, Math.min(sim.leftScore, sim.rightScore))).toFixed(2));
-
-      // 1. FULL-DURATION DETERMINISTIC REPLAY CHECK (Run complete match twice using identical initial conditions)
-      let deterministicResult = 'NOT_CHECKED';
-      let replayReport = null;
-      try {
-        const checkGame = GameRegistry.createGame(sim.config);
-        const frames = sim.config.durationSeconds * (sim.config.fps || 60);
-        const dt = 1 / (sim.config.fps || 60);
-
-        for (let f = 0; f < frames && !checkGame.isFinished(); f++) {
-          checkGame.step(dt);
-        }
-
-        const checkObs = checkGame.observe();
-        const checkEvents = checkGame.getEvents();
-
-        const winnerMatch = checkObs.winner?.name === sim.winner;
-        const leftScoreMatch = checkObs.leftScore === sim.leftScore;
-        const rightScoreMatch = checkObs.rightScore === sim.rightScore;
-        const eventCountMatch = checkEvents.length === (sim.events || []).length;
-        const finishTimeDiff = Math.abs((checkObs.winner?.finishTime || 0) - sim.finishTime);
-        const finishTimeMatch = finishTimeDiff < 0.005;
-
-        const isExactMatch = winnerMatch && leftScoreMatch && rightScoreMatch && eventCountMatch && finishTimeMatch;
-        deterministicResult = isExactMatch ? 'PASS' : 'FAIL';
-
-        replayReport = {
-          status: deterministicResult,
-          winnerMatch,
-          leftScoreMatch,
-          rightScoreMatch,
-          eventCountMatch,
-          finishTimeMatch,
-          finishTimeDiffSeconds: Number(finishTimeDiff.toFixed(4)),
-          replayedEvents: checkEvents.length,
-          originalEvents: (sim.events || []).length,
-          finalReplayFrame: checkObs.frameIndex,
-          replayedWinner: checkObs.winner?.name,
-          originalWinner: sim.winner
-        };
-      } catch (e) {
-        deterministicResult = 'FAIL';
-        replayReport = { status: 'FAIL', error: e.message };
-      }
-
-      // 2. Physical boundary containment check
-      const escapedStatus = sim.escapedMarblesCount === 0 ? 'PASS' : 'FAIL';
-
-      // 3. Finish decided check
-      const finishDecidedStatus = (sim.winner && sim.winner !== 'DRAW') ? 'PASS' : 'FAIL';
-
-      // 4. Winner Ground-Truth Enforcement
-      const expectedWinner = sim.config.expectedWinner;
-      const winnerGroundTruth = (!expectedWinner || sim.winner === expectedWinner) ? 'PASS' : 'FAIL';
-
-      // 5. Narrative Role Ground-Truth Enforcement
-      let narrativeRoleTruth = 'PASS';
-      let narrativeRoleReason = null;
-      if (sim.narrativeRole === 'UNDERDOG_EXPONENTIAL_WIN') {
-        const leftStart = sim.config.lanes.left.startBalls;
-        const rightStart = sim.config.lanes.right.startBalls;
-        const winnerStart = sim.winner === 'MULTIPLY' ? leftStart : rightStart;
-        const loserStart = sim.winner === 'MULTIPLY' ? rightStart : leftStart;
-        const winnerEarlyDeficit = sim.winner === 'MULTIPLY' ? sim.maxEarlyLeftDeficit : sim.maxEarlyRightDeficit;
-
-        if (winnerStart >= loserStart) {
-          narrativeRoleTruth = 'FAIL';
-          narrativeRoleReason = `Winner started with ${winnerStart} >= ${loserStart} (no starting deficit)`;
-        } else if (winnerEarlyDeficit <= 0) {
-          narrativeRoleTruth = 'FAIL';
-          narrativeRoleReason = `Underdog was never trailing early (deficit: ${winnerEarlyDeficit}); requires early trailing deficit before overtake`;
-        } else if (sim.leadChanges < 1) {
-          narrativeRoleTruth = 'FAIL';
-          narrativeRoleReason = 'Underdog did not demonstrate an overtake lead change';
-        }
-      } else if (sim.narrativeRole === 'COMEBACK_REVERSAL') {
-        const winnerEarlyDeficit = sim.winner === 'MULTIPLY' ? sim.maxEarlyLeftDeficit : sim.maxEarlyRightDeficit;
-
-        if (winnerEarlyDeficit <= 0) {
-          narrativeRoleTruth = 'FAIL';
-          narrativeRoleReason = `Winner was never trailing early (deficit: ${winnerEarlyDeficit}); comeback reversal requires early trailing deficit`;
-        } else if (sim.leadChanges < 1) {
-          narrativeRoleTruth = 'FAIL';
-          narrativeRoleReason = 'Zero lead changes observed; comeback reversal requires at least 1 lead change';
-        }
-      } else if (sim.narrativeRole === 'HEAVY_SWARM_ESCALATION') {
-        const pop = sim.populationProgression;
-        const winnerStart = sim.winner === 'MULTIPLY' ? sim.config.lanes.left.startBalls : sim.config.lanes.right.startBalls;
-        const winnerFinal = sim.winner === 'MULTIPLY' ? sim.leftScore : sim.rightScore;
-        const winnerMultiplier = winnerFinal / Math.max(1, winnerStart);
-        const winnerGrowth = winnerFinal - winnerStart;
-
-        if (winnerMultiplier < 2.5 || winnerGrowth < 30 || pop.totalMultiplier < 2.5) {
-          narrativeRoleTruth = 'FAIL';
-          narrativeRoleReason = `Insufficient swarm escalation (winner multiplier: ${winnerMultiplier.toFixed(1)}x / +${winnerGrowth} balls, total multiplier: ${pop.totalMultiplier.toFixed(1)}x)`;
-        }
-      } else if (sim.narrativeRole === 'PHOTO_FINISH_CLASH') {
-        if (sim.finishMargin === null || sim.finishMargin > 0.25) {
-          narrativeRoleTruth = 'FAIL';
-          narrativeRoleReason = `Finish margin ${sim.finishMargin}s exceeds photo-finish threshold of 0.25s`;
-        }
-      } else if (sim.narrativeRole === 'RAZOR_THIN_UPSET') {
-        if (sim.finishMargin === null || sim.finishMargin > 0.20) {
-          narrativeRoleTruth = 'FAIL';
-          narrativeRoleReason = `Finish margin ${sim.finishMargin}s exceeds razor threshold of 0.20s`;
-        }
-      }
-
-      // 6. Timing Reconciliation (Reconciles exactly to 20.0s)
-      const hookDur = 1.5;
-      const gameplayDur = Number((sim.finishTime - hookDur).toFixed(2));
-      const celebrationDur = Number((targetDuration - sim.finishTime).toFixed(2));
-      const reconciledSum = Number((hookDur + gameplayDur + celebrationDur).toFixed(2));
-      const timingReconciled = (reconciledSum === targetDuration) ? 'PASS' : 'FAIL';
-
-      // 7. Visual Readability & Contrast Measurement (Calculated WCAG Relative Luminance)
-      const contrastRatio = {
-        measuredRatio,
-        thresholdAAA: 7.0,
-        standard: 'WCAG_2.1_AAA',
-        status: contrastPass ? 'PASS' : 'FAIL'
-      };
-      const fontLegibility = {
-        status: 'NOT_CHECKED',
-        note: 'Requires human visual evaluation / OCR rather than automated Boolean assumption'
-      };
-
-      // 8. Vault uniqueness check
-      const uniquenessPass = !sim.vaultUniqueness || sim.vaultUniqueness.isUnique;
-
-      // Quality Screening Verdict
-      const allPassed = (
-        deterministicResult === 'PASS' &&
-        escapedStatus === 'PASS' &&
-        finishDecidedStatus === 'PASS' &&
-        winnerGroundTruth === 'PASS' &&
-        narrativeRoleTruth === 'PASS' &&
-        timingReconciled === 'PASS' &&
-        uniquenessPass &&
-        totalEvents >= 50 &&
-        sim.finishTime >= 5.0
-      );
-
-      let rejectionReason = null;
-      if (!allPassed) {
-        rejectionReason = [
-          deterministicResult !== 'PASS' ? 'DETERMINISM_FAILED' : null,
-          escapedStatus !== 'PASS' ? 'ESCAPED_MARBLES' : null,
-          winnerGroundTruth !== 'PASS' ? `WINNER_MISMATCH (expected ${expectedWinner}, got ${sim.winner})` : null,
-          narrativeRoleTruth !== 'PASS' ? `NARRATIVE_ROLE_MISMATCH (${narrativeRoleReason})` : null,
-          timingReconciled !== 'PASS' ? 'TIMING_NOT_RECONCILED' : null,
-          !uniquenessPass ? `VAULT_DUPLICATE (${sim.vaultUniqueness?.reason})` : null,
-          totalEvents < 50 ? `INSUFFICIENT_EVENTS (${totalEvents} < 50)` : null,
-          sim.finishTime < 5.0 ? `PREMATURE_FINISH (${sim.finishTime}s < 5s)` : null
-        ].filter(Boolean).join('; ');
-      }
-
-      const evaluation = {
-        simulationValidity: {
-          valid: allPassed ? 'PASS' : 'FAIL',
-          deterministic: deterministicResult,
-          deterministicReplayReport: replayReport,
-          escapedMarbles: { count: sim.escapedMarblesCount, status: escapedStatus },
-          finishDecided: finishDecidedStatus,
-          winnerGroundTruth,
-          narrativeRoleGroundTruth: narrativeRoleTruth,
-          vaultUniqueness: uniquenessPass ? 'PASS' : 'FAIL'
-        },
-        metrics: {
-          totalSimulatedEvents: totalEvents,
-          eventDensityEventsPerSec: eventDensity,
-          scoreProgressionRatio: scoreRatio,
-          leadChangeCount: sim.leadChanges,
-          finishMarginSeconds: sim.finishMargin,
-          leftScore: sim.leftScore,
-          rightScore: sim.rightScore
-        },
-        visualReadability: {
-          resolution: '1080x1920',
-          fps: this.fps,
-          contrastRatio,
-          fontLegibility
-        },
-        narrativeStructure: {
-          format: 'FULL_MATCH',
-          openingHookDurationSeconds: hookDur,
-          gameplayProgressionDurationSeconds: gameplayDur,
-          celebrationDurationSeconds: celebrationDur,
-          totalDurationSeconds: targetDuration,
-          reconciled: timingReconciled
-        },
-        approval: {
-          machineScreening: allPassed ? 'PASS' : 'FAIL',
-          status: allPassed
-            ? (this.unattendedApproval ? 'APPROVED_FOR_PUBLISHING' : 'HUMAN_REVIEW_PENDING')
-            : 'REJECTED',
-          approvalPolicy: this.unattendedApproval ? 'UNATTENDED_AUTOMATED_POLICY' : 'MANUAL_SIGN_OFF_REQUIRED',
-          humanReviewStatus: this.unattendedApproval ? 'BYPASSED_BY_CONFIG' : 'PENDING'
-        },
-        status: allPassed ? 'APPROVED' : 'REJECTED',
-        rejectionReason
-      };
-
-      scored.push({
-        clipId: `${sim.simId}_flagship`,
-        simId: sim.simId,
-        format: 'FULL_MATCH',
-        startTime: 0.0,
-        endTime: targetDuration,
-        targetDuration,
-        title: sim.title,
-        hookText: sim.config.hookText,
-        config: sim.config,
-        simOutcome: sim,
-        evaluation,
-        status: evaluation.status,
-        approvalStatus: evaluation.approval.status,
-        rejectionReason: evaluation.rejectionReason,
-        lifecycleState: LIFECYCLE_STATES.SCORED
-      });
-    }
-
-    return scored;
+    return scoreCandidates(simulations, {
+      targetDuration: this.targetDuration,
+      fps: this.fps,
+      unattendedApproval: this.unattendedApproval
+    });
   }
 
   // Stages 5 & 6: RENDERED & VALIDATED - Physical 1080x1920 MP4 export & full FFmpeg decoding inspection
@@ -622,7 +137,7 @@ class ProductionOrchestrator {
           config: clip.config,
           output: outPath,
           startTime: 0,
-          duration: clip.targetDuration, // 20.0s
+          duration: clip.targetDuration,
           fps: this.fps,
           quality: 0.82
         });
@@ -704,144 +219,12 @@ class ProductionOrchestrator {
 
   // Validates human creative approval authorization against trusted tokens or cryptographically signed records
   validateApprovalAuthorization(approvalToken = this.humanApprovalToken, reviewer = this.reviewer) {
-    if (this.unattendedApproval) {
-      return {
-        authorized: true,
-        mode: 'UNATTENDED',
-        approver: 'AUTOMATED_UNATTENDED_POLICY',
-        approverRole: 'Automated CI/CD Pipeline Policy',
-        token: null,
-        notes: 'Automated unattended policy explicitly enabled via configuration.'
-      };
-    }
-
-    // Strict security: Fail closed if no external trusted secret is configured
-    if (!this.trustedApprovalToken && this.trustedApprovalTokens.size === 0) {
-      return {
-        authorized: false,
-        reason: 'NO_TRUSTED_SECRET_CONFIGURED',
-        notes: 'Human approval failed closed: no trusted approval secret is configured externally.'
-      };
-    }
-
-    // 1. Check for token passed directly or in reviewer object
-    const rawToken = approvalToken !== undefined && approvalToken !== null
-      ? String(approvalToken).trim()
-      : (reviewer?.token !== undefined && reviewer?.token !== null ? String(reviewer.token).trim() : null);
-
-    if (rawToken !== null) {
-      if (rawToken.length === 0) {
-        return { authorized: false, reason: 'EMPTY_TOKEN' };
-      }
-
-      let tokenMatched = false;
-      for (const trusted of this.trustedApprovalTokens) {
-        const bufA = Buffer.from(rawToken);
-        const bufB = Buffer.from(trusted);
-        if (bufA.length === bufB.length && crypto.timingSafeEqual(bufA, bufB)) {
-          tokenMatched = true;
-          break;
-        }
-      }
-
-      if (tokenMatched) {
-        return {
-          authorized: true,
-          mode: 'TOKEN',
-          approver: reviewer?.name || 'Human Creative Director',
-          approverRole: reviewer?.role || 'Human QA Architect & Release Auditor',
-          token: true,
-          notes: reviewer?.notes || 'Explicit human creative sign-off verified with trusted approval token.'
-        };
-      } else {
-        return { authorized: false, reason: 'INVALID_APPROVAL_TOKEN' };
-      }
-    }
-
-    // 2. Check for signed approval record with cryptographic HMAC
-    if (reviewer && (reviewer.signature || reviewer.signedApproval)) {
-      if (!reviewer.signature) {
-        return { authorized: false, reason: 'MISSING_SIGNATURE' };
-      }
-      if (!this.trustedApprovalToken) {
-        return { authorized: false, reason: 'NO_TRUSTED_SECRET_CONFIGURED' };
-      }
-      const approverName = reviewer.name || 'Human Creative Director';
-      const approverRole = reviewer.role || 'Human QA Architect & Release Auditor';
-      const expectedSig = crypto
-        .createHmac('sha256', this.trustedApprovalToken)
-        .update(`${approverName}:${approverRole}`)
-        .digest('hex');
-
-      const sigBufA = Buffer.from(String(reviewer.signature).trim());
-      const sigBufB = Buffer.from(expectedSig);
-      if (sigBufA.length === sigBufB.length && crypto.timingSafeEqual(sigBufA, sigBufB)) {
-        return {
-          authorized: true,
-          mode: 'SIGNED_RECORD',
-          approver: approverName,
-          approverRole,
-          token: true,
-          signatureVerified: true,
-          notes: reviewer.notes || 'Explicit cryptographically signed human approval record verified.'
-        };
-      } else {
-        return { authorized: false, reason: 'INVALID_SIGNATURE' };
-      }
-    }
-
-    return { authorized: false, reason: 'MISSING_APPROVAL_CREDENTIALS' };
+    return validateApprovalAuthorization(this._getAuthConfig(), approvalToken, reviewer);
   }
 
   // Stage 8: HUMAN REVIEW & CREATIVE APPROVAL GATE
   reviewAndApproveClips(archivedClips, reviewer = this.reviewer, approvalToken = this.humanApprovalToken) {
-    const approved = [];
-    const auth = this.validateApprovalAuthorization(approvalToken, reviewer);
-
-    for (const clip of archivedClips) {
-      if (auth.authorized) {
-        const approvalRecord = {
-          approver: auth.approver,
-          approverRole: auth.approverRole || 'Human Creative Auditor',
-          approvalMode: auth.mode,
-          timestamp: new Date().toISOString(),
-          policyVersion: 'BURSTPOINT_HUMAN_CREATIVE_POLICY_V1',
-          creativeVerdict: 'APPROVED_FOR_PUBLISHING',
-          notes: auth.notes || `Explicit human creative sign-off verified for ${clip.clipId}.`
-        };
-
-        this.vault.updateVideo(clip.clipId, {
-          reviewStatus: 'APPROVED_FOR_PUBLISHING',
-          approvalStatus: 'APPROVED',
-          approvalRecord
-        });
-
-        approved.push({
-          ...clip,
-          approvalRecord,
-          reviewStatus: 'APPROVED_FOR_PUBLISHING',
-          approvalStatus: 'APPROVED',
-          lifecycleState: LIFECYCLE_STATES.APPROVED
-        });
-      } else {
-        // Unattended is false and NO valid explicit approval token/signature given!
-        // Strictly retain HUMAN_REVIEW_PENDING. Zero synthetic approvals.
-        this.vault.updateVideo(clip.clipId, {
-          reviewStatus: 'HUMAN_REVIEW_PENDING',
-          approvalStatus: 'PENDING_HUMAN_REVIEW',
-          approvalRecord: null
-        });
-
-        approved.push({
-          ...clip,
-          approvalRecord: null,
-          reviewStatus: 'HUMAN_REVIEW_PENDING',
-          approvalStatus: 'PENDING_HUMAN_REVIEW',
-          lifecycleState: LIFECYCLE_STATES.VALIDATED
-        });
-      }
-    }
-    return approved;
+    return reviewAndApproveClips(this.vault, archivedClips, reviewer, approvalToken, this._getAuthConfig());
   }
 
   // Stage 9: SCHEDULED - Cadence queue insertion (Only APPROVED clips permitted)
@@ -1082,7 +465,6 @@ class ProductionOrchestrator {
     return report;
   }
 
-  // Alias for backward compatibility with CLI
   async execute() {
     return this.runProductionProof();
   }

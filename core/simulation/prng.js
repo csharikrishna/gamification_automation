@@ -26,6 +26,11 @@ class PRNG {
     return Math.floor(this.range(min, max + 1));
   }
 
+  // Alias for rangeInt for backwards compatibility
+  int(min, max) {
+    return this.rangeInt(min, max);
+  }
+
   // Returns random element from array
   choice(arr) {
     if (!arr || arr.length === 0) return null;

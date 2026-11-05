@@ -1,12 +1,12 @@
 [
   {
-    "queueId": "post_2026-11-09_multi_race",
-    "date": "2026-11-09",
+    "queueId": "post_2026-11-05_multi_race",
+    "date": "2026-11-05",
     "dayOfWeek": "Monday",
     "cycleDay": 1,
     "gameType": "multi_race",
     "gameLabel": "Game 1 — Multiplying Ball Race",
-    "status": "FAILED",
+    "status": "SCHEDULED",
     "candidateId": "clip_race_01",
     "seed": 64942,
     "title": "⚡ 1 BALL VS 100 BALLS: CAN MULTIPLY WIN? ⚡",
@@ -20,7 +20,7 @@
     ],
     "description": "⚡ 1 BALL VS 100 BALLS: CAN MULTIPLY WIN? ⚡\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
     "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
-    "scheduledTime": "2026-11-09T17:00:00.000Z",
+    "scheduledTime": "2026-11-05T17:00:00.000Z",
     "retryCount": 0,
     "maxRetries": 3,
     "config": {
@@ -124,12 +124,11 @@
         "#satisfying"
       ]
     },
-    "qualityScore": 100,
-    "error": "Duplicate candidate protection triggered: already published in history!"
+    "qualityScore": 100
   },
   {
-    "queueId": "gap_2026-11-10",
-    "date": "2026-11-10",
+    "queueId": "gap_2026-11-06",
+    "date": "2026-11-06",
     "dayOfWeek": "Tuesday",
     "cycleDay": 2,
     "action": "GAP_DAY",
@@ -139,8 +138,8 @@
     "notes": "Audience rest day between viral game releases"
   },
   {
-    "queueId": "post_2026-11-11_mega_plinko",
-    "date": "2026-11-11",
+    "queueId": "post_2026-11-07_mega_plinko",
+    "date": "2026-11-07",
     "dayOfWeek": "Wednesday",
     "cycleDay": 3,
     "gameType": "mega_plinko",
@@ -159,7 +158,7 @@
     ],
     "description": "🎰 1,000× JACKPOT HUNT · CAN WE HIT GOLD? 🎰\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
     "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
-    "scheduledTime": "2026-11-11T17:00:00.000Z",
+    "scheduledTime": "2026-11-07T17:00:00.000Z",
     "retryCount": 0,
     "maxRetries": 3,
     "config": {
@@ -183,8 +182,8 @@
     "qualityScore": 100
   },
   {
-    "queueId": "gap_2026-11-12",
-    "date": "2026-11-12",
+    "queueId": "gap_2026-11-08",
+    "date": "2026-11-08",
     "dayOfWeek": "Thursday",
     "cycleDay": 4,
     "action": "GAP_DAY",
@@ -194,8 +193,8 @@
     "notes": "Audience rest day between viral game releases"
   },
   {
-    "queueId": "post_2026-11-13_sumo_arena",
-    "date": "2026-11-13",
+    "queueId": "post_2026-11-09_sumo_arena",
+    "date": "2026-11-09",
     "dayOfWeek": "Friday",
     "cycleDay": 5,
     "gameType": "sumo_arena",
@@ -214,7 +213,7 @@
     ],
     "description": "👑 32-MARBLE BATTLE ROYALE · 1 SOLE SURVIVOR 👑\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
     "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
-    "scheduledTime": "2026-11-13T17:00:00.000Z",
+    "scheduledTime": "2026-11-09T17:00:00.000Z",
     "retryCount": 0,
     "maxRetries": 3,
     "config": {
@@ -238,8 +237,8 @@
     "qualityScore": 95
   },
   {
-    "queueId": "gap_2026-11-14",
-    "date": "2026-11-14",
+    "queueId": "gap_2026-11-10",
+    "date": "2026-11-10",
     "dayOfWeek": "Saturday",
     "cycleDay": 6,
     "action": "MAINTENANCE",
@@ -249,8 +248,8 @@
     "notes": "Analytics ingestion & batch simulation pipeline"
   },
   {
-    "queueId": "gap_2026-11-15",
-    "date": "2026-11-15",
+    "queueId": "gap_2026-11-11",
+    "date": "2026-11-11",
     "dayOfWeek": "Sunday",
     "cycleDay": 7,
     "action": "MAINTENANCE",
@@ -260,8 +259,8 @@
     "notes": "Analytics ingestion & batch simulation pipeline"
   },
   {
-    "queueId": "post_2026-11-16_brick_breaker",
-    "date": "2026-11-16",
+    "queueId": "post_2026-11-12_brick_breaker",
+    "date": "2026-11-12",
     "dayOfWeek": "Following Monday",
     "cycleDay": 8,
     "gameType": "brick_breaker",
@@ -280,7 +279,7 @@
     ],
     "description": "💥 300 BALL SWARM VS 1,000 HP NEON BRICKS 💥\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
     "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
-    "scheduledTime": "2026-11-16T17:00:00.000Z",
+    "scheduledTime": "2026-11-12T17:00:00.000Z",
     "retryCount": 0,
     "maxRetries": 3,
     "config": {
@@ -304,8 +303,8 @@
     "qualityScore": 100
   },
   {
-    "queueId": "post_2026-11-17_multi_race",
-    "date": "2026-11-17",
+    "queueId": "post_2026-11-13_multi_race",
+    "date": "2026-11-13",
     "dayOfWeek": "Monday",
     "cycleDay": 1,
     "gameType": "multi_race",
@@ -324,7 +323,7 @@
     ],
     "description": "📈 EXPONENTIAL ×2 VS LINEAR +25 SHOWDOWN 📈\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
     "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
-    "scheduledTime": "2026-11-17T17:00:00.000Z",
+    "scheduledTime": "2026-11-13T17:00:00.000Z",
     "retryCount": 0,
     "maxRetries": 3,
     "config": {
@@ -431,8 +430,8 @@
     "qualityScore": 90
   },
   {
-    "queueId": "gap_2026-11-18",
-    "date": "2026-11-18",
+    "queueId": "gap_2026-11-14",
+    "date": "2026-11-14",
     "dayOfWeek": "Tuesday",
     "cycleDay": 2,
     "action": "GAP_DAY",
@@ -442,8 +441,8 @@
     "notes": "Audience rest day between viral game releases"
   },
   {
-    "queueId": "post_2026-11-19_mega_plinko",
-    "date": "2026-11-19",
+    "queueId": "post_2026-11-15_mega_plinko",
+    "date": "2026-11-15",
     "dayOfWeek": "Wednesday",
     "cycleDay": 3,
     "gameType": "mega_plinko",
@@ -462,7 +461,7 @@
     ],
     "description": "⚡ 250 GLOWING BALLS VS PYRAMID OF FORTUNE ⚡\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
     "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
-    "scheduledTime": "2026-11-19T17:00:00.000Z",
+    "scheduledTime": "2026-11-15T17:00:00.000Z",
     "retryCount": 0,
     "maxRetries": 3,
     "config": {
@@ -486,8 +485,8 @@
     "qualityScore": 100
   },
   {
-    "queueId": "gap_2026-11-20",
-    "date": "2026-11-20",
+    "queueId": "gap_2026-11-16",
+    "date": "2026-11-16",
     "dayOfWeek": "Thursday",
     "cycleDay": 4,
     "action": "GAP_DAY",
@@ -497,8 +496,8 @@
     "notes": "Audience rest day between viral game releases"
   },
   {
-    "queueId": "post_2026-11-21_sumo_arena",
-    "date": "2026-11-21",
+    "queueId": "post_2026-11-17_sumo_arena",
+    "date": "2026-11-17",
     "dayOfWeek": "Friday",
     "cycleDay": 5,
     "gameType": "sumo_arena",
@@ -517,7 +516,7 @@
     ],
     "description": "🔥 RING OF FIRE: LAST MARBLE IN THE CIRCLE WINS 🔥\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
     "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
-    "scheduledTime": "2026-11-21T17:00:00.000Z",
+    "scheduledTime": "2026-11-17T17:00:00.000Z",
     "retryCount": 0,
     "maxRetries": 3,
     "config": {
@@ -541,8 +540,8 @@
     "qualityScore": 95
   },
   {
-    "queueId": "gap_2026-11-22",
-    "date": "2026-11-22",
+    "queueId": "gap_2026-11-18",
+    "date": "2026-11-18",
     "dayOfWeek": "Saturday",
     "cycleDay": 6,
     "action": "MAINTENANCE",
@@ -552,8 +551,8 @@
     "notes": "Analytics ingestion & batch simulation pipeline"
   },
   {
-    "queueId": "gap_2026-11-23",
-    "date": "2026-11-23",
+    "queueId": "gap_2026-11-19",
+    "date": "2026-11-19",
     "dayOfWeek": "Sunday",
     "cycleDay": 7,
     "action": "MAINTENANCE",
@@ -563,8 +562,8 @@
     "notes": "Analytics ingestion & batch simulation pipeline"
   },
   {
-    "queueId": "post_2026-11-24_brick_breaker",
-    "date": "2026-11-24",
+    "queueId": "post_2026-11-20_brick_breaker",
+    "date": "2026-11-20",
     "dayOfWeek": "Following Monday",
     "cycleDay": 8,
     "gameType": "brick_breaker",
@@ -583,7 +582,7 @@
     ],
     "description": "🌈 CAN THIS GLOWING SWARM CLEAR 100% OF THE BOARD? 🌈\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
     "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
-    "scheduledTime": "2026-11-24T17:00:00.000Z",
+    "scheduledTime": "2026-11-20T17:00:00.000Z",
     "retryCount": 0,
     "maxRetries": 3,
     "config": {
@@ -607,8 +606,8 @@
     "qualityScore": 100
   },
   {
-    "queueId": "post_2026-11-25_multi_race",
-    "date": "2026-11-25",
+    "queueId": "post_2026-11-21_multi_race",
+    "date": "2026-11-21",
     "dayOfWeek": "Monday",
     "cycleDay": 1,
     "gameType": "multi_race",
@@ -627,7 +626,7 @@
     ],
     "description": "🔥 50,000 MARBLE SURGE: ×4 VS ×3 🔥\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
     "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
-    "scheduledTime": "2026-11-25T17:00:00.000Z",
+    "scheduledTime": "2026-11-21T17:00:00.000Z",
     "retryCount": 0,
     "maxRetries": 3,
     "config": {
@@ -728,8 +727,8 @@
     "qualityScore": 100
   },
   {
-    "queueId": "gap_2026-11-26",
-    "date": "2026-11-26",
+    "queueId": "gap_2026-11-22",
+    "date": "2026-11-22",
     "dayOfWeek": "Tuesday",
     "cycleDay": 2,
     "action": "GAP_DAY",
@@ -739,8 +738,8 @@
     "notes": "Audience rest day between viral game releases"
   },
   {
-    "queueId": "post_2026-11-27_mega_plinko",
-    "date": "2026-11-27",
+    "queueId": "post_2026-11-23_mega_plinko",
+    "date": "2026-11-23",
     "dayOfWeek": "Wednesday",
     "cycleDay": 3,
     "gameType": "mega_plinko",
@@ -759,7 +758,7 @@
     ],
     "description": "💰 EXTREME HIGH-ROLLER PLINKO: ALL OR NOTHING 💰\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
     "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
-    "scheduledTime": "2026-11-27T17:00:00.000Z",
+    "scheduledTime": "2026-11-23T17:00:00.000Z",
     "retryCount": 0,
     "maxRetries": 3,
     "config": {
@@ -783,8 +782,8 @@
     "qualityScore": 100
   },
   {
-    "queueId": "gap_2026-11-28",
-    "date": "2026-11-28",
+    "queueId": "gap_2026-11-24",
+    "date": "2026-11-24",
     "dayOfWeek": "Thursday",
     "cycleDay": 4,
     "action": "GAP_DAY",
@@ -794,8 +793,8 @@
     "notes": "Audience rest day between viral game releases"
   },
   {
-    "queueId": "post_2026-11-29_sumo_arena",
-    "date": "2026-11-29",
+    "queueId": "post_2026-11-25_sumo_arena",
+    "date": "2026-11-25",
     "dayOfWeek": "Friday",
     "cycleDay": 5,
     "gameType": "sumo_arena",
@@ -814,7 +813,7 @@
     ],
     "description": "⚡ TITAN GOLD VS CYBER CYAN · DEADLY KNOCKOUTS ⚡\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
     "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
-    "scheduledTime": "2026-11-29T17:00:00.000Z",
+    "scheduledTime": "2026-11-25T17:00:00.000Z",
     "retryCount": 0,
     "maxRetries": 3,
     "config": {
@@ -838,8 +837,8 @@
     "qualityScore": 95
   },
   {
-    "queueId": "gap_2026-11-30",
-    "date": "2026-11-30",
+    "queueId": "gap_2026-11-26",
+    "date": "2026-11-26",
     "dayOfWeek": "Saturday",
     "cycleDay": 6,
     "action": "MAINTENANCE",
@@ -849,8 +848,8 @@
     "notes": "Analytics ingestion & batch simulation pipeline"
   },
   {
-    "queueId": "gap_2026-12-01",
-    "date": "2026-12-01",
+    "queueId": "gap_2026-11-27",
+    "date": "2026-11-27",
     "dayOfWeek": "Sunday",
     "cycleDay": 7,
     "action": "MAINTENANCE",
@@ -860,8 +859,8 @@
     "notes": "Analytics ingestion & batch simulation pipeline"
   },
   {
-    "queueId": "post_2026-12-02_brick_breaker",
-    "date": "2026-12-02",
+    "queueId": "post_2026-11-28_brick_breaker",
+    "date": "2026-11-28",
     "dayOfWeek": "Following Monday",
     "cycleDay": 8,
     "gameType": "brick_breaker",
@@ -880,7 +879,7 @@
     ],
     "description": "⚡ ASMR BRICK DEMOLITION: MAXIMUM SATISFACTION ⚡\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
     "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
-    "scheduledTime": "2026-12-02T17:00:00.000Z",
+    "scheduledTime": "2026-11-28T17:00:00.000Z",
     "retryCount": 0,
     "maxRetries": 3,
     "config": {
@@ -904,8 +903,8 @@
     "qualityScore": 100
   },
   {
-    "queueId": "post_2026-12-03_multi_race",
-    "date": "2026-12-03",
+    "queueId": "post_2026-11-29_multi_race",
+    "date": "2026-11-29",
     "dayOfWeek": "Monday",
     "cycleDay": 1,
     "gameType": "multi_race",
@@ -924,7 +923,7 @@
     ],
     "description": "⚠️ HIGH STAKES GAMBLE: ×5 VS SAFE +15 ⚠️\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
     "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
-    "scheduledTime": "2026-12-03T17:00:00.000Z",
+    "scheduledTime": "2026-11-29T17:00:00.000Z",
     "retryCount": 0,
     "maxRetries": 3,
     "config": {
@@ -1031,8 +1030,8 @@
     "qualityScore": 90
   },
   {
-    "queueId": "gap_2026-12-04",
-    "date": "2026-12-04",
+    "queueId": "gap_2026-11-30",
+    "date": "2026-11-30",
     "dayOfWeek": "Tuesday",
     "cycleDay": 2,
     "action": "GAP_DAY",
@@ -1042,8 +1041,8 @@
     "notes": "Audience rest day between viral game releases"
   },
   {
-    "queueId": "post_2026-12-05_mega_plinko",
-    "date": "2026-12-05",
+    "queueId": "post_2026-12-01_mega_plinko",
+    "date": "2026-12-01",
     "dayOfWeek": "Wednesday",
     "cycleDay": 3,
     "gameType": "mega_plinko",
@@ -1062,7 +1061,7 @@
     ],
     "description": "🔥 UNSTOPPABLE MARBLE AVALANCHE · PICK YOUR BIN! 🔥\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
     "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
-    "scheduledTime": "2026-12-05T17:00:00.000Z",
+    "scheduledTime": "2026-12-01T17:00:00.000Z",
     "retryCount": 0,
     "maxRetries": 3,
     "config": {
@@ -1086,8 +1085,8 @@
     "qualityScore": 100
   },
   {
-    "queueId": "gap_2026-12-06",
-    "date": "2026-12-06",
+    "queueId": "gap_2026-12-02",
+    "date": "2026-12-02",
     "dayOfWeek": "Thursday",
     "cycleDay": 4,
     "action": "GAP_DAY",
@@ -1097,8 +1096,8 @@
     "notes": "Audience rest day between viral game releases"
   },
   {
-    "queueId": "post_2026-12-07_sumo_arena",
-    "date": "2026-12-07",
+    "queueId": "post_2026-12-03_sumo_arena",
+    "date": "2026-12-03",
     "dayOfWeek": "Friday",
     "cycleDay": 5,
     "gameType": "sumo_arena",
@@ -1117,7 +1116,7 @@
     ],
     "description": "💀 SHRINKING DANGER ZONE: WHO OUTLASTS THEM ALL? 💀\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
     "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
-    "scheduledTime": "2026-12-07T17:00:00.000Z",
+    "scheduledTime": "2026-12-03T17:00:00.000Z",
     "retryCount": 0,
     "maxRetries": 3,
     "config": {
@@ -1141,8 +1140,8 @@
     "qualityScore": 95
   },
   {
-    "queueId": "gap_2026-12-08",
-    "date": "2026-12-08",
+    "queueId": "gap_2026-12-04",
+    "date": "2026-12-04",
     "dayOfWeek": "Saturday",
     "cycleDay": 6,
     "action": "MAINTENANCE",
@@ -1152,8 +1151,8 @@
     "notes": "Analytics ingestion & batch simulation pipeline"
   },
   {
-    "queueId": "gap_2026-12-09",
-    "date": "2026-12-09",
+    "queueId": "gap_2026-12-05",
+    "date": "2026-12-05",
     "dayOfWeek": "Sunday",
     "cycleDay": 7,
     "action": "MAINTENANCE",
@@ -1163,8 +1162,8 @@
     "notes": "Analytics ingestion & batch simulation pipeline"
   },
   {
-    "queueId": "post_2026-12-10_brick_breaker",
-    "date": "2026-12-10",
+    "queueId": "post_2026-12-06_brick_breaker",
+    "date": "2026-12-06",
     "dayOfWeek": "Following Monday",
     "cycleDay": 8,
     "gameType": "brick_breaker",
@@ -1183,7 +1182,7 @@
     ],
     "description": "💥 300 BALL SWARM VS 1,000 HP NEON BRICKS 💥\n\nCan you predict the final outcome? Watch till the end to see the winner!\n\n🔔 Subscribe to Burstpoint for daily autonomous physics simulations!",
     "pinnedComment": "Did you pick the winner? Let us know in the comments below! ⬇️",
-    "scheduledTime": "2026-12-10T17:00:00.000Z",
+    "scheduledTime": "2026-12-06T17:00:00.000Z",
     "retryCount": 0,
     "maxRetries": 3,
     "config": {
@@ -1207,539 +1206,10 @@
     "qualityScore": 100
   },
   {
-    "queueId": "queue_flagship_scenario_01_climax",
-    "clipId": "flagship_scenario_01_climax",
-    "simId": "flagship_scenario_01",
-    "scheduledDate": "2026-11-04",
-    "scheduledTime": "2026-11-04T17:00:00.000Z",
-    "status": "DRY_RUN_PASSED",
-    "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\flagship_scenario_01_climax.mp4",
-    "fileSizeBytes": 3088347,
-    "sha256": "1072e7e963285a8643aaefe43cfa5b5cd24e44d2e0983b5cef7b44799a70fae4",
-    "durationSeconds": 6.2,
-    "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
-    "hookText": "Look at the final gate breakthrough! 😱",
-    "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nLook at the final gate breakthrough! 😱\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
-    "tags": [
-      "shorts",
-      "physics",
-      "marblerun",
-      "gaming",
-      "satisfying"
-    ],
-    "qualityScore": 97,
-    "lifecycleState": "UPLOAD_PREFLIGHT_PASSED",
-    "enqueuedAt": "2026-11-04T11:44:37.088Z",
-    "attempts": 1,
-    "claimedBy": "scheduler-dispatch",
-    "claimedAt": "2026-11-04T12:30:38.351Z",
-    "success": true,
-    "mode": "DRY_RUN",
-    "platform": "youtube",
-    "platformVideoId": null,
-    "url": null,
-    "fileSize": 3406522,
-    "bitstreamVerified": true,
-    "metadata": {
-      "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
-      "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nLook at the final gate breakthrough! 😱\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
-      "tags": [
-        "shorts",
-        "physics",
-        "marblerun",
-        "gaming",
-        "satisfying"
-      ],
-      "categoryId": "20"
-    },
-    "metrics": null,
-    "timestamp": "2026-11-04T12:30:38.888Z",
-    "completedAt": "2026-11-04T12:30:38.889Z"
-  },
-  {
-    "queueId": "queue_flagship_scenario_02_climax",
-    "clipId": "flagship_scenario_02_climax",
-    "simId": "flagship_scenario_02",
-    "scheduledDate": "2026-11-06",
-    "scheduledTime": "2026-11-06T17:00:00.000Z",
-    "status": "DRY_RUN_PASSED",
-    "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\flagship_scenario_02_climax.mp4",
-    "fileSizeBytes": 4220877,
-    "sha256": "2c802be075e57669ed7feca425d93185a6225d3b938af99d74bc236c71c40a30",
-    "durationSeconds": 6.2,
-    "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
-    "hookText": "Look at the final gate breakthrough! 😱",
-    "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nLook at the final gate breakthrough! 😱\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
-    "tags": [
-      "shorts",
-      "physics",
-      "marblerun",
-      "gaming",
-      "satisfying"
-    ],
-    "qualityScore": 97,
-    "lifecycleState": "UPLOAD_PREFLIGHT_PASSED",
-    "enqueuedAt": "2026-11-04T11:44:37.097Z",
-    "attempts": 1,
-    "claimedBy": "worker-8052",
-    "claimedAt": "2026-11-04T13:15:15.182Z",
-    "lastAttemptTime": "2026-11-04T13:15:15.182Z",
-    "success": true,
-    "mode": "DRY_RUN",
-    "platform": "youtube",
-    "platformVideoId": null,
-    "url": null,
-    "fileSize": 3823785,
-    "bitstreamVerified": true,
-    "metadata": {
-      "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
-      "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nLook at the final gate breakthrough! 😱\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
-      "tags": [
-        "shorts",
-        "physics",
-        "marblerun",
-        "gaming",
-        "satisfying"
-      ],
-      "categoryId": "20"
-    },
-    "metrics": null,
-    "timestamp": "2026-11-04T13:15:15.849Z",
-    "completedAt": "2026-11-04T13:15:15.851Z"
-  },
-  {
-    "queueId": "queue_flagship_scenario_04_climax",
-    "clipId": "flagship_scenario_04_climax",
-    "simId": "flagship_scenario_04",
-    "scheduledDate": "2026-11-08",
-    "scheduledTime": "2026-11-08T17:00:00.000Z",
-    "status": "DRY_RUN_PASSED",
-    "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\flagship_scenario_04_climax.mp4",
-    "fileSizeBytes": 4195160,
-    "sha256": "598091429560fb263cd42be269c5bd3698865469f81841698266a7ab85db28a5",
-    "durationSeconds": 6.2,
-    "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
-    "hookText": "Look at the final gate breakthrough! 😱",
-    "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nLook at the final gate breakthrough! 😱\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
-    "tags": [
-      "shorts",
-      "physics",
-      "marblerun",
-      "gaming",
-      "satisfying"
-    ],
-    "qualityScore": 97,
-    "lifecycleState": "UPLOAD_PREFLIGHT_PASSED",
-    "enqueuedAt": "2026-11-04T11:44:37.106Z",
-    "attempts": 1,
-    "claimedBy": "worker-8052",
-    "claimedAt": "2026-11-04T13:15:15.870Z",
-    "lastAttemptTime": "2026-11-04T13:15:15.871Z",
-    "success": true,
-    "mode": "DRY_RUN",
-    "platform": "youtube",
-    "platformVideoId": null,
-    "url": null,
-    "fileSize": 4006090,
-    "bitstreamVerified": true,
-    "metadata": {
-      "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
-      "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nLook at the final gate breakthrough! 😱\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
-      "tags": [
-        "shorts",
-        "physics",
-        "marblerun",
-        "gaming",
-        "satisfying"
-      ],
-      "categoryId": "20"
-    },
-    "metrics": null,
-    "timestamp": "2026-11-04T13:15:16.475Z",
-    "completedAt": "2026-11-04T13:15:16.476Z"
-  },
-  {
-    "queueId": "queue_flagship_scenario_05_climax",
-    "clipId": "flagship_scenario_05_climax",
-    "simId": "flagship_scenario_05",
-    "scheduledDate": "2026-11-10",
-    "scheduledTime": "2026-11-10T17:00:00.000Z",
-    "status": "DRY_RUN_PASSED",
-    "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\flagship_scenario_05_climax.mp4",
-    "fileSizeBytes": 3871586,
-    "sha256": "27af9bb4955c0a1e21e69594b65c82a861b58ca1f8d04db234488725ce60713a",
-    "durationSeconds": 6.2,
-    "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
-    "hookText": "Look at the final gate breakthrough! 😱",
-    "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nLook at the final gate breakthrough! 😱\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
-    "tags": [
-      "shorts",
-      "physics",
-      "marblerun",
-      "gaming",
-      "satisfying"
-    ],
-    "qualityScore": 97,
-    "lifecycleState": "UPLOAD_PREFLIGHT_PASSED",
-    "enqueuedAt": "2026-11-04T11:44:37.114Z",
-    "attempts": 1,
-    "claimedBy": "worker-8052",
-    "claimedAt": "2026-11-04T13:15:16.492Z",
-    "lastAttemptTime": "2026-11-04T13:15:16.492Z",
-    "success": true,
-    "mode": "DRY_RUN",
-    "platform": "youtube",
-    "platformVideoId": null,
-    "url": null,
-    "fileSize": 3834524,
-    "bitstreamVerified": true,
-    "metadata": {
-      "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
-      "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nLook at the final gate breakthrough! 😱\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
-      "tags": [
-        "shorts",
-        "physics",
-        "marblerun",
-        "gaming",
-        "satisfying"
-      ],
-      "categoryId": "20"
-    },
-    "metrics": null,
-    "timestamp": "2026-11-04T13:15:17.111Z",
-    "completedAt": "2026-11-04T13:15:17.114Z"
-  },
-  {
-    "queueId": "queue_flagship_scenario_03_climax",
-    "clipId": "flagship_scenario_03_climax",
-    "simId": "flagship_scenario_03",
-    "scheduledDate": "2026-11-08",
-    "scheduledTime": "2026-11-08T17:00:00.000Z",
-    "status": "DRY_RUN_PASSED",
-    "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\flagship_scenario_03_climax.mp4",
-    "fileSizeBytes": 3311261,
-    "sha256": "36746ff6bfad7984e2fb4611afb552f68ae60753bab07510c95bf5868253aeaf",
-    "durationSeconds": 6.2,
-    "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
-    "hookText": "Look at the final gate breakthrough! 😱",
-    "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nLook at the final gate breakthrough! 😱\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
-    "tags": [
-      "shorts",
-      "physics",
-      "marblerun",
-      "gaming",
-      "satisfying"
-    ],
-    "qualityScore": 97,
-    "lifecycleState": "UPLOAD_PREFLIGHT_PASSED",
-    "enqueuedAt": "2026-11-04T12:29:25.196Z",
-    "attempts": 1,
-    "claimedBy": "worker-8052",
-    "claimedAt": "2026-11-04T13:15:17.129Z",
-    "lastAttemptTime": "2026-11-04T13:15:17.129Z",
-    "success": true,
-    "mode": "DRY_RUN",
-    "platform": "youtube",
-    "platformVideoId": null,
-    "url": null,
-    "fileSize": 3311261,
-    "bitstreamVerified": true,
-    "metadata": {
-      "title": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥",
-      "description": "🔥 FINAL BARRIER SHOWDOWN: ADD TAKES IT! 🔥\n\nLook at the final gate breakthrough! 😱\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
-      "tags": [
-        "shorts",
-        "physics",
-        "marblerun",
-        "gaming",
-        "satisfying"
-      ],
-      "categoryId": "20"
-    },
-    "metrics": null,
-    "timestamp": "2026-11-04T13:15:17.744Z",
-    "completedAt": "2026-11-04T13:15:17.746Z"
-  },
-  {
-    "queueId": "queue_flagship_scenario_01_flagship",
-    "clipId": "flagship_scenario_01_flagship",
-    "simId": "flagship_scenario_01",
-    "scheduledDate": "2026-11-04",
-    "scheduledTime": "2026-11-04T17:00:00.000Z",
-    "status": "DRY_RUN_PASSED",
-    "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\flagship_scenario_01_flagship.mp4",
-    "fileSizeBytes": 12552274,
-    "sha256": "89231577166e0a4b129073ea596e2f83f5f48184c823223c8f1d39e6dd7e8c7d",
-    "durationSeconds": 20,
-    "title": "⚡ 3 BALLS VS 12 BALLS: CAN THE UNDERDOG WIN? ⚡",
-    "hookText": "Can 3 multiplying balls beat 12 balls? 😱",
-    "description": "⚡ 3 BALLS VS 12 BALLS: CAN THE UNDERDOG WIN? ⚡\n\nCan 3 multiplying balls beat 12 balls? 😱\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
-    "tags": [
-      "shorts",
-      "physics",
-      "marblerun",
-      "gaming",
-      "satisfying"
-    ],
-    "lifecycleState": "UPLOAD_PREFLIGHT_PASSED",
-    "enqueuedAt": "2026-11-04T13:15:15.107Z",
-    "timezone": "Asia/Kolkata",
-    "attempts": 0,
-    "claimedBy": "worker-6444",
-    "claimedAt": "2026-11-04T16:57:10.849Z",
-    "lastAttemptTime": "2026-11-04T16:57:10.849Z",
-    "success": true,
-    "mode": "DRY_RUN",
-    "platform": "youtube",
-    "platformVideoId": null,
-    "url": null,
-    "fileSize": 12552274,
-    "bitstreamVerified": true,
-    "metadata": {
-      "title": "⚡ 3 BALLS VS 12 BALLS: CAN THE UNDERDOG WIN? ⚡",
-      "description": "⚡ 3 BALLS VS 12 BALLS: CAN THE UNDERDOG WIN? ⚡\n\nCan 3 multiplying balls beat 12 balls? 😱\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
-      "tags": [
-        "shorts",
-        "physics",
-        "marblerun",
-        "gaming",
-        "satisfying"
-      ],
-      "categoryId": "20"
-    },
-    "metrics": null,
-    "timestamp": "2026-11-04T16:57:12.344Z",
-    "completedAt": "2026-11-04T16:57:12.350Z",
-    "updatedAt": "2026-11-04T16:57:10.808Z",
-    "idempotencyKey": "idemp_bd614271-5a53-408c-a474-9d1d896bce3d",
-    "lastError": null,
-    "failedAt": null
-  },
-  {
-    "queueId": "queue_flagship_scenario_02_flagship",
-    "clipId": "flagship_scenario_02_flagship",
-    "simId": "flagship_scenario_02",
-    "scheduledDate": "2026-11-06",
-    "scheduledTime": "2026-11-06T17:00:00.000Z",
-    "status": "DRY_RUN_PASSED",
-    "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\flagship_scenario_02_flagship.mp4",
-    "fileSizeBytes": 13127795,
-    "sha256": "ccbdbee5e91a780119171c1112ad0a445b3c7249ac39f119b3aa9a5f6359ca77",
-    "durationSeconds": 20,
-    "title": "📈 PHOTO FINISH: MULTIPLY VS ADD NECK-AND-NECK 📈",
-    "hookText": "Look at how close this finish is! 😱",
-    "description": "📈 PHOTO FINISH: MULTIPLY VS ADD NECK-AND-NECK 📈\n\nLook at how close this finish is! 😱\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
-    "tags": [
-      "shorts",
-      "physics",
-      "marblerun",
-      "gaming",
-      "satisfying"
-    ],
-    "lifecycleState": "UPLOAD_PREFLIGHT_PASSED",
-    "enqueuedAt": "2026-11-04T13:15:15.124Z",
-    "timezone": "Asia/Kolkata",
-    "attempts": 0,
-    "claimedBy": "worker-6444",
-    "claimedAt": "2026-11-04T16:57:12.366Z",
-    "lastAttemptTime": "2026-11-04T16:57:12.366Z",
-    "success": true,
-    "mode": "DRY_RUN",
-    "platform": "youtube",
-    "platformVideoId": null,
-    "url": null,
-    "fileSize": 13127795,
-    "bitstreamVerified": true,
-    "metadata": {
-      "title": "📈 PHOTO FINISH: MULTIPLY VS ADD NECK-AND-NECK 📈",
-      "description": "📈 PHOTO FINISH: MULTIPLY VS ADD NECK-AND-NECK 📈\n\nLook at how close this finish is! 😱\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
-      "tags": [
-        "shorts",
-        "physics",
-        "marblerun",
-        "gaming",
-        "satisfying"
-      ],
-      "categoryId": "20"
-    },
-    "metrics": null,
-    "timestamp": "2026-11-04T16:57:13.940Z",
-    "completedAt": "2026-11-04T16:57:13.946Z",
-    "updatedAt": "2026-11-04T16:57:10.816Z",
-    "idempotencyKey": "idemp_c18205be-0b43-4b96-88ab-dbc177501cea",
-    "lastError": null,
-    "failedAt": null
-  },
-  {
-    "queueId": "queue_flagship_scenario_03_flagship",
-    "clipId": "flagship_scenario_03_flagship",
-    "simId": "flagship_scenario_03",
-    "scheduledDate": "2026-11-08",
-    "scheduledTime": "2026-11-08T17:00:00.000Z",
-    "status": "DRY_RUN_PASSED",
-    "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\flagship_scenario_03_flagship.mp4",
-    "fileSizeBytes": 13114916,
-    "sha256": "52a0199eedc4cf1056c1f4cbbb75a88d0db257188edb6e6ed7019fc3235950ad",
-    "durationSeconds": 20,
-    "title": "💥 EARLY DEFICIT TO DRAMATIC FINAL TIER REVERSAL 💥",
-    "hookText": "Watch the insane final tier comeback! 🤯",
-    "description": "💥 EARLY DEFICIT TO DRAMATIC FINAL TIER REVERSAL 💥\n\nWatch the insane final tier comeback! 🤯\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
-    "tags": [
-      "shorts",
-      "physics",
-      "marblerun",
-      "gaming",
-      "satisfying"
-    ],
-    "lifecycleState": "UPLOAD_PREFLIGHT_PASSED",
-    "enqueuedAt": "2026-11-04T13:15:15.139Z",
-    "timezone": "Asia/Kolkata",
-    "attempts": 0,
-    "updatedAt": "2026-11-04T16:57:10.824Z",
-    "claimedBy": "worker-6444",
-    "claimedAt": "2026-11-04T16:57:13.960Z",
-    "lastAttemptTime": "2026-11-04T16:57:13.960Z",
-    "success": true,
-    "mode": "DRY_RUN",
-    "platform": "youtube",
-    "platformVideoId": null,
-    "url": null,
-    "fileSize": 13114916,
-    "bitstreamVerified": true,
-    "metadata": {
-      "title": "💥 EARLY DEFICIT TO DRAMATIC FINAL TIER REVERSAL 💥",
-      "description": "💥 EARLY DEFICIT TO DRAMATIC FINAL TIER REVERSAL 💥\n\nWatch the insane final tier comeback! 🤯\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
-      "tags": [
-        "shorts",
-        "physics",
-        "marblerun",
-        "gaming",
-        "satisfying"
-      ],
-      "categoryId": "20"
-    },
-    "metrics": null,
-    "timestamp": "2026-11-04T16:57:15.644Z",
-    "completedAt": "2026-11-04T16:57:15.650Z",
-    "idempotencyKey": "idemp_934f8bc0-400d-4de6-9363-36f57f1fc33d",
-    "lastError": null,
-    "failedAt": null
-  },
-  {
-    "queueId": "queue_flagship_scenario_04_flagship",
-    "clipId": "flagship_scenario_04_flagship",
-    "simId": "flagship_scenario_04",
-    "scheduledDate": "2026-11-11",
-    "scheduledTime": "2026-11-11T17:00:00.000Z",
-    "status": "DRY_RUN_PASSED",
-    "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\flagship_scenario_04_flagship.mp4",
-    "fileSizeBytes": 11513485,
-    "sha256": "3a264d4dc28e5f8022e67e5482b68b5b4e65cbbb8f1d8375120e84356bbe07e1",
-    "durationSeconds": 20,
-    "title": "🔥 HIGH MULTIPLIER: ×3 GAMBLE VS +14 TANK 🔥",
-    "hookText": "Can high multipliers survive against the additive tank? 🤯",
-    "description": "🔥 HIGH MULTIPLIER: ×3 GAMBLE VS +14 TANK 🔥\n\nCan high multipliers survive against the additive tank? 🤯\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
-    "tags": [
-      "shorts",
-      "physics",
-      "marblerun",
-      "gaming",
-      "satisfying"
-    ],
-    "lifecycleState": "UPLOAD_PREFLIGHT_PASSED",
-    "enqueuedAt": "2026-11-04T13:15:15.151Z",
-    "timezone": "Asia/Kolkata",
-    "attempts": 0,
-    "updatedAt": "2026-11-04T16:57:10.831Z",
-    "claimedBy": "worker-6444",
-    "claimedAt": "2026-11-04T16:57:15.667Z",
-    "lastAttemptTime": "2026-11-04T16:57:15.667Z",
-    "success": true,
-    "mode": "DRY_RUN",
-    "platform": "youtube",
-    "platformVideoId": null,
-    "url": null,
-    "fileSize": 11513485,
-    "bitstreamVerified": true,
-    "metadata": {
-      "title": "🔥 HIGH MULTIPLIER: ×3 GAMBLE VS +14 TANK 🔥",
-      "description": "🔥 HIGH MULTIPLIER: ×3 GAMBLE VS +14 TANK 🔥\n\nCan high multipliers survive against the additive tank? 🤯\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
-      "tags": [
-        "shorts",
-        "physics",
-        "marblerun",
-        "gaming",
-        "satisfying"
-      ],
-      "categoryId": "20"
-    },
-    "metrics": null,
-    "timestamp": "2026-11-04T16:57:17.182Z",
-    "completedAt": "2026-11-04T16:57:17.187Z",
-    "idempotencyKey": "idemp_15f30391-23d3-4bc9-a203-75ac2117b9a0",
-    "lastError": null,
-    "failedAt": null
-  },
-  {
-    "queueId": "queue_flagship_scenario_05_flagship",
-    "clipId": "flagship_scenario_05_flagship",
-    "simId": "flagship_scenario_05",
-    "scheduledDate": "2026-11-12",
-    "scheduledTime": "2026-11-12T17:00:00.000Z",
-    "status": "DRY_RUN_PASSED",
-    "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\proof_clips\\flagship_scenario_05_flagship.mp4",
-    "fileSizeBytes": 13001477,
-    "sha256": "f94a66734248a49e022de98157266e6377f1ceee940c1b05cff80b58154ea051",
-    "durationSeconds": 20,
-    "title": "🏆 FINAL TIER SHOWDOWN: 0.07s UPSET VICTORY 🏆",
-    "hookText": "Only 0.07 seconds apart at the finish! 😱",
-    "description": "🏆 FINAL TIER SHOWDOWN: 0.07s UPSET VICTORY 🏆\n\nOnly 0.07 seconds apart at the finish! 😱\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
-    "tags": [
-      "shorts",
-      "physics",
-      "marblerun",
-      "gaming",
-      "satisfying"
-    ],
-    "lifecycleState": "UPLOAD_PREFLIGHT_PASSED",
-    "enqueuedAt": "2026-11-04T13:15:15.168Z",
-    "timezone": "Asia/Kolkata",
-    "attempts": 0,
-    "updatedAt": "2026-11-04T16:57:10.839Z",
-    "claimedBy": "worker-6444",
-    "claimedAt": "2026-11-04T16:57:17.204Z",
-    "lastAttemptTime": "2026-11-04T16:57:17.204Z",
-    "success": true,
-    "mode": "DRY_RUN",
-    "platform": "youtube",
-    "platformVideoId": null,
-    "url": null,
-    "fileSize": 13001477,
-    "bitstreamVerified": true,
-    "metadata": {
-      "title": "🏆 FINAL TIER SHOWDOWN: 0.07s UPSET VICTORY 🏆",
-      "description": "🏆 FINAL TIER SHOWDOWN: 0.07s UPSET VICTORY 🏆\n\nOnly 0.07 seconds apart at the finish! 😱\n\nAutonomous marble physics showdown! 🔔 Subscribe for daily battles!\n\n#shorts #physics #marblerun #gaming #satisfying",
-      "tags": [
-        "shorts",
-        "physics",
-        "marblerun",
-        "gaming",
-        "satisfying"
-      ],
-      "categoryId": "20"
-    },
-    "metrics": null,
-    "timestamp": "2026-11-04T16:57:18.926Z",
-    "completedAt": "2026-11-04T16:57:18.931Z",
-    "idempotencyKey": "idemp_4f3b9b1d-9246-4401-80be-41d4a2bc1ead",
-    "lastError": null,
-    "failedAt": null
-  },
-  {
     "queueId": "queue_test_clip_01_approval_check",
     "clipId": "test_clip_01_approval_check",
-    "scheduledDate": "2026-11-04",
-    "scheduledTime": "2026-11-04T17:00:00.000Z",
+    "scheduledDate": "2026-11-05",
+    "scheduledTime": "2026-11-05T17:00:00.000Z",
     "status": "READY_TO_PUBLISH",
     "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\underdog_slow_composed.mp4",
     "durationSeconds": 20,
@@ -1755,17 +1225,17 @@
     ],
     "timezone": "Asia/Kolkata",
     "lifecycleState": "SCHEDULED",
-    "enqueuedAt": "2026-11-04T17:24:17.474Z",
+    "enqueuedAt": "2026-11-05T06:21:45.916Z",
     "attempts": 0,
     "lastError": null,
     "failedAt": null,
-    "updatedAt": "2026-11-04T17:52:48.608Z"
+    "updatedAt": "2026-11-05T06:31:51.811Z"
   },
   {
     "queueId": "queue_test_clip_02_approval_check",
     "clipId": "test_clip_02_approval_check",
-    "scheduledDate": "2026-11-06",
-    "scheduledTime": "2026-11-06T17:00:00.000Z",
+    "scheduledDate": "2026-11-07",
+    "scheduledTime": "2026-11-07T17:00:00.000Z",
     "status": "READY_TO_PUBLISH",
     "videoPath": "C:\\Users\\cshar\\Downloads\\Gamification\\output\\underdog_slow_composed.mp4",
     "durationSeconds": 20,
@@ -1781,10 +1251,10 @@
     ],
     "timezone": "Asia/Kolkata",
     "lifecycleState": "SCHEDULED",
-    "enqueuedAt": "2026-11-04T17:24:17.479Z",
+    "enqueuedAt": "2026-11-05T06:21:45.929Z",
     "attempts": 0,
     "lastError": null,
     "failedAt": null,
-    "updatedAt": "2026-11-04T17:52:48.618Z"
+    "updatedAt": "2026-11-05T06:31:51.829Z"
   }
 ]

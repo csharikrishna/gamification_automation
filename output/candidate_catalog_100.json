@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-11-03T08:11:51.000Z",
+  "generatedAt": "2026-11-05T05:40:14.042Z",
   "totalTarget": 100,
   "totalGenerated": 100,
-  "totalQualified": 56,
+  "totalQualified": 58,
   "games": {
     "multi_race": {
       "target": 25,
-      "qualified": 7,
+      "qualified": 9,
       "list": [
         "clip_race_01",
         "clip_race_02",
@@ -153,9 +153,9 @@
       "resultSummary": {
         "winner": "ADD",
         "score": 148,
-        "finishTime": 4.65
+        "finishTime": 6.07
       },
-      "fingerprint": "894763ffc6",
+      "fingerprint": "073be5c88b",
       "isQualified": true,
       "config": {
         "id": "clip_race_01",
@@ -273,19 +273,19 @@
         "#marblerun",
         "#satisfying"
       ],
-      "qualityScore": 90,
+      "qualityScore": 100,
       "breakdown": {
         "hook": 25,
-        "pacing": 15,
+        "pacing": 25,
         "drama": 25,
         "technical": 25
       },
       "resultSummary": {
         "winner": "ADD",
         "score": 180,
-        "finishTime": 5.05
+        "finishTime": 5.63
       },
-      "fingerprint": "186f6c51ed",
+      "fingerprint": "ededc6f95e",
       "isQualified": true,
       "config": {
         "id": "clip_race_02",
@@ -413,7 +413,7 @@
       "resultSummary": {
         "winner": "ADD",
         "score": 768,
-        "finishTime": 5.28
+        "finishTime": 5.25
       },
       "fingerprint": "17f69c820c",
       "isQualified": true,
@@ -527,17 +527,17 @@
         "#marblerun",
         "#satisfying"
       ],
-      "qualityScore": 90,
+      "qualityScore": 100,
       "breakdown": {
         "hook": 25,
-        "pacing": 15,
+        "pacing": 25,
         "drama": 25,
         "technical": 25
       },
       "resultSummary": {
         "winner": "MULTIPLY",
         "score": 78125,
-        "finishTime": 3.62
+        "finishTime": 4.1
       },
       "fingerprint": "102c9a127c",
       "isQualified": true,
@@ -667,9 +667,9 @@
       "resultSummary": {
         "winner": "ADD",
         "score": 128,
-        "finishTime": 14.45
+        "finishTime": 12.93
       },
-      "fingerprint": "81be9fd325",
+      "fingerprint": "fa45777d77",
       "isQualified": true,
       "config": {
         "id": "clip_race_05",
@@ -797,9 +797,9 @@
       "resultSummary": {
         "winner": "ADD",
         "score": 148,
-        "finishTime": 4.73
+        "finishTime": 5.77
       },
-      "fingerprint": "894763ffc6",
+      "fingerprint": "073be5c88b",
       "isQualified": true,
       "config": {
         "id": "clip_race_06",
@@ -917,7 +917,7 @@
         "#marblerun",
         "#satisfying"
       ],
-      "qualityScore": 90,
+      "qualityScore": 100,
       "breakdown": {
         "hook": 25,
         "pacing": 25,
@@ -927,7 +927,7 @@
       "resultSummary": {
         "winner": "ADD",
         "score": 180,
-        "finishTime": 4.92
+        "finishTime": 5.3
       },
       "fingerprint": "186f6c51ed",
       "isQualified": true,
@@ -1032,7 +1032,7 @@
           "#satisfying"
         ]
       },
-      "isDuplicate": true
+      "isDuplicate": false
     },
     {
       "id": "clip_race_08",
@@ -1047,7 +1047,7 @@
         "#marblerun",
         "#satisfying"
       ],
-      "qualityScore": 90,
+      "qualityScore": 100,
       "breakdown": {
         "hook": 25,
         "pacing": 25,
@@ -1057,9 +1057,9 @@
       "resultSummary": {
         "winner": "ADD",
         "score": 768,
-        "finishTime": 5.22
+        "finishTime": 5.52
       },
-      "fingerprint": "17f69c820c",
+      "fingerprint": "31e7011f11",
       "isQualified": true,
       "config": {
         "id": "clip_race_08",
@@ -1156,7 +1156,7 @@
           "#satisfying"
         ]
       },
-      "isDuplicate": true
+      "isDuplicate": false
     },
     {
       "id": "clip_race_09",
@@ -1171,17 +1171,17 @@
         "#marblerun",
         "#satisfying"
       ],
-      "qualityScore": 80,
+      "qualityScore": 90,
       "breakdown": {
         "hook": 25,
-        "pacing": 15,
+        "pacing": 25,
         "drama": 25,
         "technical": 25
       },
       "resultSummary": {
         "winner": "MULTIPLY",
         "score": 78125,
-        "finishTime": 3.9
+        "finishTime": 3.93
       },
       "fingerprint": "102c9a127c",
       "isQualified": true,
@@ -1311,7 +1311,7 @@
       "resultSummary": {
         "winner": "ADD",
         "score": 128,
-        "finishTime": 14.53
+        "finishTime": 14.82
       },
       "fingerprint": "704d90d717",
       "isQualified": true,
@@ -1441,9 +1441,9 @@
       "resultSummary": {
         "winner": "ADD",
         "score": 148,
-        "finishTime": 4.65
+        "finishTime": 5.9
       },
-      "fingerprint": "894763ffc6",
+      "fingerprint": "073be5c88b",
       "isQualified": true,
       "config": {
         "id": "clip_race_11",
@@ -1571,9 +1571,9 @@
       "resultSummary": {
         "winner": "ADD",
         "score": 180,
-        "finishTime": 4.93
+        "finishTime": 5.53
       },
-      "fingerprint": "186f6c51ed",
+      "fingerprint": "ededc6f95e",
       "isQualified": true,
       "config": {
         "id": "clip_race_12",
@@ -1701,7 +1701,7 @@
       "resultSummary": {
         "winner": "ADD",
         "score": 768,
-        "finishTime": 5.08
+        "finishTime": 5.18
       },
       "fingerprint": "17f69c820c",
       "isQualified": true,
@@ -1815,17 +1815,17 @@
         "#marblerun",
         "#satisfying"
       ],
-      "qualityScore": 80,
+      "qualityScore": 90,
       "breakdown": {
         "hook": 25,
-        "pacing": 15,
+        "pacing": 25,
         "drama": 25,
         "technical": 25
       },
       "resultSummary": {
         "winner": "MULTIPLY",
         "score": 78125,
-        "finishTime": 3.73
+        "finishTime": 4.13
       },
       "fingerprint": "102c9a127c",
       "isQualified": true,
@@ -1945,7 +1945,7 @@
         "#marblerun",
         "#satisfying"
       ],
-      "qualityScore": 90,
+      "qualityScore": 100,
       "breakdown": {
         "hook": 25,
         "pacing": 25,
@@ -1955,9 +1955,9 @@
       "resultSummary": {
         "winner": "ADD",
         "score": 128,
-        "finishTime": 14.5
+        "finishTime": 13.57
       },
-      "fingerprint": "704d90d717",
+      "fingerprint": "81be9fd325",
       "isQualified": true,
       "config": {
         "id": "clip_race_15",
@@ -2060,7 +2060,7 @@
           "#satisfying"
         ]
       },
-      "isDuplicate": true
+      "isDuplicate": false
     },
     {
       "id": "clip_race_16",
@@ -2085,9 +2085,9 @@
       "resultSummary": {
         "winner": "ADD",
         "score": 148,
-        "finishTime": 4.75
+        "finishTime": 5.78
       },
-      "fingerprint": "894763ffc6",
+      "fingerprint": "073be5c88b",
       "isQualified": true,
       "config": {
         "id": "clip_race_16",
@@ -2215,7 +2215,7 @@
       "resultSummary": {
         "winner": "ADD",
         "score": 180,
-        "finishTime": 5.05
+        "finishTime": 5.43
       },
       "fingerprint": "186f6c51ed",
       "isQualified": true,
@@ -2345,7 +2345,7 @@
       "resultSummary": {
         "winner": "ADD",
         "score": 768,
-        "finishTime": 4.93
+        "finishTime": 5.17
       },
       "fingerprint": "17f69c820c",
       "isQualified": true,
@@ -2462,16 +2462,16 @@
       "qualityScore": 90,
       "breakdown": {
         "hook": 25,
-        "pacing": 15,
+        "pacing": 25,
         "drama": 25,
         "technical": 25
       },
       "resultSummary": {
         "winner": "MULTIPLY",
         "score": 78125,
-        "finishTime": 3.5
+        "finishTime": 3.53
       },
-      "fingerprint": "3735d436b9",
+      "fingerprint": "102c9a127c",
       "isQualified": true,
       "config": {
         "id": "clip_race_19",
@@ -2574,7 +2574,7 @@
           "#satisfying"
         ]
       },
-      "isDuplicate": false
+      "isDuplicate": true
     },
     {
       "id": "clip_race_20",
@@ -2599,9 +2599,9 @@
       "resultSummary": {
         "winner": "ADD",
         "score": 128,
-        "finishTime": 14.05
+        "finishTime": 13.38
       },
-      "fingerprint": "81be9fd325",
+      "fingerprint": "fa45777d77",
       "isQualified": true,
       "config": {
         "id": "clip_race_20",
@@ -2729,9 +2729,9 @@
       "resultSummary": {
         "winner": "ADD",
         "score": 148,
-        "finishTime": 4.72
+        "finishTime": 5.88
       },
-      "fingerprint": "894763ffc6",
+      "fingerprint": "073be5c88b",
       "isQualified": true,
       "config": {
         "id": "clip_race_21",
@@ -2849,17 +2849,17 @@
         "#marblerun",
         "#satisfying"
       ],
-      "qualityScore": 80,
+      "qualityScore": 90,
       "breakdown": {
         "hook": 25,
-        "pacing": 15,
+        "pacing": 25,
         "drama": 25,
         "technical": 25
       },
       "resultSummary": {
         "winner": "ADD",
         "score": 180,
-        "finishTime": 4.93
+        "finishTime": 5.47
       },
       "fingerprint": "186f6c51ed",
       "isQualified": true,
@@ -2979,17 +2979,17 @@
         "#marblerun",
         "#satisfying"
       ],
-      "qualityScore": 80,
+      "qualityScore": 90,
       "breakdown": {
         "hook": 25,
-        "pacing": 15,
+        "pacing": 25,
         "drama": 25,
         "technical": 25
       },
       "resultSummary": {
         "winner": "ADD",
         "score": 768,
-        "finishTime": 5.17
+        "finishTime": 5.33
       },
       "fingerprint": "17f69c820c",
       "isQualified": true,
@@ -3103,17 +3103,17 @@
         "#marblerun",
         "#satisfying"
       ],
-      "qualityScore": 80,
+      "qualityScore": 90,
       "breakdown": {
         "hook": 25,
-        "pacing": 15,
+        "pacing": 25,
         "drama": 25,
         "technical": 25
       },
       "resultSummary": {
         "winner": "MULTIPLY",
         "score": 78125,
-        "finishTime": 3.85
+        "finishTime": 3.88
       },
       "fingerprint": "102c9a127c",
       "isQualified": true,
@@ -3243,7 +3243,7 @@
       "resultSummary": {
         "winner": "ADD",
         "score": 128,
-        "finishTime": 14.62
+        "finishTime": 14.77
       },
       "fingerprint": "704d90d717",
       "isQualified": true,

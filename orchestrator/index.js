@@ -82,7 +82,7 @@ async function main() {
 
       const game = GameRegistry.createGame(config);
       const dt = 1 / 60;
-      for (let f = 0; f < 300 && !game.isFinished(); f++) {
+      for (let f = 0; f < 300 && !(typeof game.isFinished === 'function' ? game.isFinished() : game.isFinished); f++) {
         game.step(dt);
       }
       const obs = game.observe();

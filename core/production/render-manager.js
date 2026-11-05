@@ -145,6 +145,11 @@ async function renderVideo(options = {}) {
       } else {
         // Hardened path resolution: strict path.relative traversal guardrail
         let relPath = decodeURIComponent(url).replace(/^\//, '');
+        if (relPath === 'favicon.ico') {
+          res.writeHead(204);
+          res.end();
+          return;
+        }
         if (!relPath) relPath = 'index.html';
         const filePath = path.resolve(rootDir, relPath);
         const relBoundary = path.relative(rootDir, filePath);
@@ -222,7 +227,8 @@ async function renderVideo(options = {}) {
       const endFrame = startFrame + Math.ceil(clipDurationSec * fps);
 
       for (let f = 0; f < endFrame; f++) {
-        game.update(dt);
+        if (typeof game.update === 'function') game.update(dt);
+        else if (typeof game.step === 'function') game.step(dt);
         if (f >= startFrame) {
           game.render(ctx, { theme: simConfigWithTheme.theme });
 

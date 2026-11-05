@@ -381,18 +381,40 @@
   </main>
 
   <!-- Load Game Environments, Sounds, Engine, and AI Director -->
+  <script src="core/simulation/prng.js"></script>
   <script src="src/prng.js"></script>
+  <script src="core/contracts/game-adapter.js"></script>
   <script src="src/game_adapter.js"></script>
+  <script src="core/contracts/scenario-schema.js"></script>
   <script src="src/config_validator.js"></script>
+  <script src="core/audio/web-audio-synthesizer.js"></script>
   <script src="src/sound.js"></script>
+  <script src="games/multiplying-ball-race/engine/simulation.js"></script>
   <script src="src/engine.js"></script>
+  <script src="games/multiplying-ball-race/rendering/themes.js"></script>
+  <script src="games/multiplying-ball-race/rendering/director.js"></script>
+  <script src="games/multiplying-ball-race/rendering/layers/background.js"></script>
+  <script src="games/multiplying-ball-race/rendering/layers/header.js"></script>
+  <script src="games/multiplying-ball-race/rendering/layers/tracks.js"></script>
+  <script src="games/multiplying-ball-race/rendering/layers/obstacles.js"></script>
+  <script src="games/multiplying-ball-race/rendering/layers/balls.js"></script>
+  <script src="games/multiplying-ball-race/rendering/layers/particles.js"></script>
+  <script src="games/multiplying-ball-race/rendering/layers/celebration.js"></script>
+  <script src="games/multiplying-ball-race/rendering/renderer.js"></script>
   <script src="src/renderer.js"></script>
+  <script src="games/multiplying-ball-race/game-adapter.js"></script>
+  <script src="core/utilities/math-evaluator.js"></script>
   <script src="src/math_evaluator.js"></script>
+  <script src="games/mega-plinko/game-adapter.js"></script>
   <script src="src/games/mega_plinko.js"></script>
+  <script src="games/sumo-battle-royale/game-adapter.js"></script>
   <script src="src/games/sumo_arena.js"></script>
+  <script src="games/neon-brick-breaker/game-adapter.js"></script>
   <script src="src/games/brick_breaker.js"></script>
+  <script src="games/marble-run/game-adapter.js"></script>
   <script src="src/games/marble_run.js"></script>
   <script src="src/game_manager.js"></script>
+  <script src="core/ai-director/ai-director.js"></script>
   <script src="src/ai_director.js"></script>
 
   <script>
@@ -544,10 +566,12 @@
 
       accumulator += elapsed * playbackSpeed;
       while (accumulator >= fixedDt) {
-        game.update(fixedDt);
+        if (typeof game.update === 'function') game.update(fixedDt);
+        else if (typeof game.step === 'function') game.step(fixedDt);
         syncLiveAudio();
         accumulator -= fixedDt;
-        if (game.isFinished) {
+        const isDone = typeof game.isFinished === 'function' ? game.isFinished() : !!game.isFinished;
+        if (isDone) {
           isRunning = false;
           document.getElementById('playBtn').textContent = '↻ Replay';
           break;
@@ -562,7 +586,8 @@
     }
 
     function play() {
-      if (game.isFinished) reset();
+      const isDone = typeof game.isFinished === 'function' ? game.isFinished() : !!game.isFinished;
+      if (isDone) reset();
       isRunning = true;
       lastTime = performance.now();
       document.getElementById('playBtn').textContent = '⏸ Pause';
@@ -756,7 +781,8 @@ ${(meta.tags || []).join(', ')}`;
       btn.textContent = '⏹ Stop Recording';
 
       const checkFinished = setInterval(() => {
-        if (game.isFinished) {
+        const isDone = typeof game.isFinished === 'function' ? game.isFinished() : !!game.isFinished;
+        if (isDone) {
           clearInterval(checkFinished);
           if (mediaRecorder && mediaRecorder.state === 'recording') {
             mediaRecorder.stop();

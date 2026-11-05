@@ -3,8 +3,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { AIDirector } = require('./src/ai_director');
-const { renderVideo } = require('./render');
+const { AIDirector } = require('../../src/ai_director');
+const { renderVideo } = require('../../render');
 
 async function runDailyAutomation() {
   const args = process.argv.slice(2);

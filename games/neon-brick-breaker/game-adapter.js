@@ -33,7 +33,7 @@ class BrickBreakerGame extends _GameAdapter {
     this.fps = config.fps || 60;
     this.simTime = 0;
     this.frameIndex = 0;
-    this.isFinished = false;
+    this.finished = false;
 
     this.events = [];
     this.particles = [];
@@ -211,8 +211,12 @@ class BrickBreakerGame extends _GameAdapter {
     }
 
     if (this.simTime >= this.durationSeconds - 0.001) {
-      this.isFinished = true;
+      this.finished = true;
     }
+  }
+
+  isFinished() {
+    return !!this.finished;
   }
 
   logSound(volume = 0.05, pitch = 640) {
@@ -250,7 +254,7 @@ class BrickBreakerGame extends _GameAdapter {
       totalBricks: this.bricks.length,
       ballsActive: this.balls.length,
       winner: this.winner,
-      isFinished: this.isFinished
+      isFinished: this.isFinished()
     };
   }
 
@@ -270,7 +274,7 @@ class BrickBreakerGame extends _GameAdapter {
       totalBricks: this.bricks.length,
       bricksDemolished: this.bricks.filter(b => !b.alive).length,
       finishTime: this.simTime,
-      isFinished: this.isFinished,
+      isFinished: this.isFinished(),
       stats: {
         totalBalls: this.balls.length,
         initialHp: this.initialTotalHp,

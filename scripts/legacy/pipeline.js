@@ -4,7 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const { generateScenarios } = require('./generate_scenarios');
-const { renderVideo } = require('./render');
+const { renderVideo } = require('../../render');
 
 async function runBatchPipeline() {
   const count = parseInt(process.argv[2], 10) || 3;

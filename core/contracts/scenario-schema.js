@@ -2,64 +2,96 @@
 // Enforces structural integrity and parameter boundaries for simulation configs.
 
 class ConfigValidator {
+  static VALID_OPERATIONS = ['multiply', 'add', 'subtract', 'divide', 'fibonacci', 'factorial', 'power'];
+
   static validate(config) {
+    const errors = [];
+    const warnings = [];
+
     if (!config || typeof config !== 'object') {
-      throw new Error('Config validation failed: Configuration must be a non-null object.');
+      throw new Error('Config must be a valid JSON object');
     }
 
     if (!config.id) {
       config.id = 'simulation';
+      warnings.push('Missing config.id; defaulting to "simulation"');
     } else if (typeof config.id !== 'string') {
-      throw new Error('Config validation failed: "id" must be a string identifier.');
+      errors.push('Config validation failed: "id" must be a string identifier.');
     }
 
-    if (typeof config.durationSeconds !== 'number' || config.durationSeconds <= 0) {
-      throw new Error(`Config validation failed: "durationSeconds" must be a positive number (got ${config.durationSeconds}).`);
+    const duration = config.durationSeconds ?? 16;
+    if (typeof duration !== 'number' || duration <= 0) {
+      errors.push(`Invalid durationSeconds: ${duration}. Must be positive number.`);
     }
 
     if (config.fps !== undefined && (typeof config.fps !== 'number' || config.fps <= 0)) {
-      throw new Error(`Config validation failed: "fps" must be a positive number (got ${config.fps}).`);
+      errors.push(`Invalid fps: ${config.fps}. Must be positive number.`);
     }
 
     const gameType = config.gameType || config.type || 'multi_race';
     const supportedTypes = ['multi_race', 'mega_plinko', 'sumo_arena', 'brick_breaker', 'marble_run'];
     if (!supportedTypes.includes(gameType)) {
-      throw new Error(`Config validation failed: Unsupported gameType "${gameType}". Supported: ${supportedTypes.join(', ')}.`);
+      errors.push(`Unsupported gameType "${gameType}". Supported: ${supportedTypes.join(', ')}.`);
     }
 
     if (gameType === 'multi_race') {
-      this._validateMultiRace(config);
+      this._validateMultiRace(config, errors, warnings);
     }
 
-    return true;
+    if (errors.length > 0) {
+      const err = new Error(`Configuration Validation Failed:\n- ${errors.join('\n- ')}`);
+      err.errors = errors;
+      err.warnings = warnings;
+      throw err;
+    }
+
+    return {
+      valid: true,
+      warnings
+    };
   }
 
-  static _validateMultiRace(config) {
+  static _validateMultiRace(config, errors, warnings) {
     if (!config.lanes || typeof config.lanes !== 'object') {
-      throw new Error('Config validation failed: "lanes" object is required for multi_race.');
+      errors.push('Missing config.lanes object');
+      return;
     }
 
     for (const side of ['left', 'right']) {
       const lane = config.lanes[side];
       if (!lane) {
-        throw new Error(`Config validation failed: Missing "${side}" lane configuration.`);
+        errors.push(`Missing lane configuration for side: ${side}`);
+        continue;
       }
 
-      if (lane.startBalls !== undefined && (typeof lane.startBalls !== 'number' || lane.startBalls < 0)) {
-        throw new Error(`Config validation failed: "${side}.startBalls" must be a non-negative number.`);
+      const startBalls = lane.startBalls ?? (side === 'left' ? 1 : 12);
+      if (typeof startBalls !== 'number' || startBalls <= 0) {
+        errors.push(`Invalid startBalls (${startBalls}) for lane ${side}. Must be positive integer.`);
       }
 
       if (lane.stages && Array.isArray(lane.stages)) {
         for (let i = 0; i < lane.stages.length; i++) {
           const stage = lane.stages[i];
-          const validTypes = ['multiply', 'add', 'subtract', 'divide', 'fibonacci', 'factorial', 'power'];
-          if (stage.type && !validTypes.includes(stage.type)) {
-            throw new Error(`Config validation failed: "${side}" stage ${i} has invalid type "${stage.type}". Valid: ${validTypes.join(', ')}.`);
+          const op = stage.type || 'multiply';
+          if (!this.VALID_OPERATIONS.includes(op)) {
+            errors.push(`Lane ${side} stage ${i} has unsupported operation: "${op}". Valid: ${this.VALID_OPERATIONS.join(', ')}`);
           }
-          if (stage.value !== undefined && typeof stage.value !== 'number') {
-            throw new Error(`Config validation failed: "${side}" stage ${i} "value" must be a number.`);
+          if (stage.value !== undefined && (typeof stage.value !== 'number' || isNaN(stage.value))) {
+            errors.push(`Lane ${side} stage ${i} has invalid numeric value: ${stage.value}`);
           }
         }
+      }
+    }
+
+    if (config.hpTiers) {
+      if (!Array.isArray(config.hpTiers)) {
+        errors.push('config.hpTiers must be an array of positive numbers');
+      } else {
+        config.hpTiers.forEach((hp, idx) => {
+          if (typeof hp !== 'number' || hp <= 0 || isNaN(hp)) {
+            errors.push(`Invalid hpTier at index ${idx}: ${hp}. Must be positive number.`);
+          }
+        });
       }
     }
   }

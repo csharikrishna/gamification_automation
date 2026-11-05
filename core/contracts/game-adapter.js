@@ -36,6 +36,11 @@ class GameAdapter {
     this.frameIndex++;
   }
 
+  // Alias for step(deltaTime) for backwards compatibility
+  update(deltaTime = 1 / 60) {
+    return this.step(deltaTime);
+  }
+
   // Returns current observable snapshot state of the simulation
   observe() {
     return {

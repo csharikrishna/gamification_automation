@@ -13,7 +13,7 @@ class DeterministicRuntime {
   // Runs full simulation to conclusion or frame limit synchronously
   runToCompletion() {
     const startTime = Date.now();
-    while (this.currentFrame < this.maxFrames && !this.engine.isFinished) {
+    while (this.currentFrame < this.maxFrames && !(typeof this.engine.isFinished === 'function' ? this.engine.isFinished() : this.engine.isFinished)) {
       this.step();
     }
     const elapsedMs = Date.now() - startTime;
